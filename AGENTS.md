@@ -29,6 +29,7 @@ Tres piezas:
 - **Método de aprendizaje:** "a mano una vez, automatiza la segunda". No automatices un proceso que Ysst no haya hecho antes a mano.
 - **Sé explícito:** indica siempre desde qué carpeta se ejecuta cada comando y distingue entre "comando de terminal" y "contenido de un archivo". (Ya pasó: pegó una línea JSON en la terminal.)
 - **Si te equivocas, dilo y corrígelo.** Comprueba las rutas reales antes de darlas (el template no tiene `src/`; ver §7).
+- **No ejecutes comandos que contacten con GitHub (`git fetch`/`pull`/`push`, `gh`) sin avisar antes a Ysst.**
 - **Secretos:** nunca escribas tokens en archivos del repo ni en comandos que queden en el historial (`echo TOKEN`). Usa `nano`.
 - **Validación en Python:** si se añade un script en Python que valide datos (por ejemplo, el generador de `site.config` desde Postgres), recuerda a Ysst usar **Marshmallow**.
 - Cuando expliques un concepto, añade una versión simple ("para un niño de 12 años").
@@ -66,12 +67,13 @@ kit/
 ├─ packages/
 │  └─ core/                  # @andrei-leads/core
 │     ├─ package.json
-│     ├─ styles.css          # @source "./src";
+│     ├─ styles.css          # @source "./src"; + --color-primario por defecto
 │     ├─ CHANGELOG.md        # lo genera Changesets
 │     └─ src/
 │        ├─ index.ts         # API pública (todo lo exportado sale de aquí)
 │        ├─ site-config.ts   # esquema Zod del contrato de contenido
-│        └─ boton-llamada.tsx
+│        ├─ boton-llamada.tsx
+│        └─ legal.tsx        # AvisoLegal, PoliticaPrivacidad, PoliticaCookies, enlacesLegales
 ├─ templates/
 │  └─ pergolas/              # template DE PRUEBA (no es un diseño real)
 └─ apps/                     # vacío por ahora (reservado, p. ej. playground)
@@ -126,8 +128,13 @@ Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <
 | `defineSiteConfig(config)` | Valida el `site.config` con Zod; si falla, detiene la compilación con un error legible en español | Núcleo del contrato |
 | `siteConfigSchema` | El esquema Zod | |
 | `SiteConfig`, `SiteConfigInput` | Tipos de salida (con valores por defecto aplicados) y de entrada | |
-| `BotonLlamada({ telefono })` | Enlace `tel:` con `aria-label` | Usa `bg-emerald-600` **fijo**: decisión pendiente (¿pasar a `bg-primario`?), ver §12 |
-| `saludo(nombre)` | Función de prueba del aprendizaje | Candidata a eliminar |
+| `BotonLlamada({ telefono, className?, children? })` | Enlace `tel:` con `aria-label` | Core pone el comportamiento; el aspecto lo decide el template con `className`. Sin `className`, usa un estilo por defecto con `bg-primario` |
+| `AvisoLegal`, `PoliticaPrivacidad`, `PoliticaCookies` | Páginas legales (LSSI, RGPD, cookies) generadas desde `config` | El template solo crea las rutas (ver §7) |
+| `enlacesLegales` | Lista `{ href, texto }` de las tres rutas legales | El pie de cada template **debe** enlazarlas |
+
+`saludo` se eliminó en 0.2.0.
+
+`packages/core/styles.css` define el color por defecto (`@theme { --color-primario: #1f2937; }`), así que `bg-primario` existe aunque el template no lo defina.
 
 ### Requisitos para consumir core (en un template o en una web de cliente)
 
@@ -155,7 +162,7 @@ Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con 
 | Bloque | Campos (`?` = opcional) |
 |---|---|
 | `negocio` | `nombre`, `nombreLegal`, `nif` (9 caracteres), `sector`, `descripcionCorta` (≤ 160), `logo?` |
-| `contacto` | `telefono` (`+34` + 9 dígitos), `whatsapp?`, `email?`, `direccion` {`calle`, `cp` (5 dígitos), `ciudad`, `provincia`}, `horario` [{`dias`, `horas`}], `coordenadas?` {`lat`, `lng`} |
+| `contacto` | `telefono` (`+34` + 9 dígitos), `whatsapp?`, `email` (obligatorio desde 0.2.0: lo exigen las páginas legales), `direccion` {`calle`, `cp` (5 dígitos), `ciudad`, `provincia`}, `horario` [{`dias`, `horas`}], `coordenadas?` {`lat`, `lng`} |
 | `zonas` | lista de municipios (SEO local); por defecto `[]` |
 | `servicios` | lista de {`titulo`, `descripcion`, `imagen?`}; **mínimo 1** |
 | `resenas` | lista de {`autor`, `texto`, `puntuacion` 1–5}; por defecto `[]` |
@@ -169,7 +176,7 @@ Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con 
 
 - **Validación con Zod** (Zod 4: `z.email()`, `z.url()`, `z.prettifyError`). Si un dato obligatorio falta o tiene mal formato, la web **no compila**; nunca se entrega una web rota.
 - **El template decide qué secciones salen y en qué orden.** Si una sección no tiene datos (por ejemplo, `resenas` vacío), se oculta: `{resenas.length > 0 && (...)}`.
-- **Color de marca:** el template define el suyo por defecto en `globals.css`:
+- **Color de marca:** tres niveles, de menos a más prioridad: core (`styles.css`, `#1f2937`) → template (`globals.css`, después del `@import` de core) → `site.config` (`marca.colorPrimario`). El template define el suyo así:
 
   ```css
   @theme {
@@ -200,6 +207,22 @@ Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con 
   - `templates/pergolas/AGENTS.md` lo generó Next.js (apunta a su documentación); no es de este proyecto.
   - Lleva su propio `.gitignore` (de `create-next-app`); es correcto. Un `.git` dentro de un template **no**, y habría que borrarlo.
 - Si `create-next-app` deja un `pnpm-lock.yaml` o un `pnpm-workspace.yaml` dentro del template, se borra: en el monorepo solo cuentan los de la raíz.
+- **Qué pone cada template (frontera con core):**
+  - **Componentes shadcn:** dentro del template (copiados), nunca en core.
+  - **Cabecera y pie:** del template. El pie **debe** enlazar `enlacesLegales` de core.
+  - **Rutas legales obligatorias:** `app/aviso-legal/page.tsx`, `app/privacidad/page.tsx` y `app/cookies/page.tsx`, cada una solo renderiza el componente de core:
+
+    ```tsx
+    import { AvisoLegal } from "@andrei-leads/core";
+    import config from "@/site.config";
+
+    export default function Page() {
+      return <AvisoLegal config={config} />;
+    }
+    ```
+
+  - **Aspecto de `BotonLlamada`:** vía `className`.
+- **Nada de iframes ni scripts de terceros sin consentimiento** (Google Maps, YouTube, píxeles de Meta/Google, analítica de terceros…). La política de cookies de core declara que la web **no usa cookies de terceros**; uno de estos elementos la convierte en falsa. Alternativas: imagen estática del mapa con enlace a Google Maps, miniatura con enlace al vídeo. Si algún día hace falta, primero hay que añadir consentimiento a core y actualizar la política.
 - **Qué puede tocar Claude Design:** solo `templates/<nicho>-<n>` (diseño, secciones y tokens). Nunca core. El brief para Claude Design irá en `docs/brief-claude-design.md` (pendiente).
 
 ---
@@ -259,6 +282,13 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | **Color de marca opcional en `site.config`** | Un mismo template sirve para clientes con colores distintos. |
 | **Changesets con opción A** (PR "Version Packages" y publicación al fusionarlo) | Punto de revisión antes de que nada llegue a los clientes. |
 | **Changelog sin integración de GitHub; Changesets sin autocommit** | Trabaja solo; la nota de cambio va en el mismo commit que el código. |
+| **shadcn en cada template, no en core** | Son piezas de diseño que cada template personaliza; en core obligarían a versionar cambios visuales. |
+| **`BotonLlamada`: core da el comportamiento, el template el aspecto (`className`; por defecto `bg-primario`)** | Lo que debe ser igual en todas las webs (`tel:`, accesibilidad) se importa; lo visual se decide en el template. |
+| **`--color-primario` por defecto en core; el template lo sobrescribe** | `bg-primario` funciona siempre, aunque un template olvide definirlo. |
+| **Cabecera y pie en el template; el pie enlaza `enlacesLegales`** | Son diseño; los enlaces legales salen de core para no olvidarlos. |
+| **Páginas legales en core; rutas en el template** | El texto legal se mejora una vez y llega a todas las webs. |
+| **`contacto.email` obligatorio** | El aviso legal y la privacidad necesitan un email de contacto. |
+| **Sin iframes ni scripts de terceros sin consentimiento** | La política de cookies declara que no hay cookies de terceros. |
 | **Turborepo aplazado** | Con un solo template no aporta nada; se añade con 3 o 4 templates. |
 | **Organización como "My personal account"** | Autónomo = persona física. |
 
@@ -283,15 +313,11 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 ## 12. Estado y hoja de ruta
 
-**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas`, publicación en GitHub Packages, web de cliente de prueba (`web-prueba`), Changesets y Action. Versiones publicadas: `0.1.0` (a mano) y `0.1.1` (por la Action: `aria-label` en `BotonLlamada`).
+**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas`, publicación en GitHub Packages, web de cliente de prueba (`web-prueba`), Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`) y `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`).
 
 **Siguiente, en orden:**
 
-1. **Frontera core / template.** Decisiones abiertas que debe tomar Ysst:
-   - ¿Componentes shadcn en core (importados) o en cada template (copiados)?
-   - ¿`BotonLlamada` pasa a usar `bg-primario`? (Hoy lleva `bg-emerald-600` fijo; usarlo crearía un contrato: todo template debe definir `--color-primario`.)
-   - ¿Cabecera, pie de página, aviso legal, privacidad y cookies/consentimiento van en core por defecto?
-   - ¿Se elimina `saludo`?
+1. ~~**Frontera core / template.**~~ **Resuelta en core 0.2.0** (ver §5, §7 y §10).
 2. **`docs/brief-claude-design.md`:** el mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
 3. **Piloto `jardineria-1`:** Claude Design → template → web de prueba → despliegue en Vercel (resolver el token de paquetes privados).
 4. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del piloto.
