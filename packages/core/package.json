@@ -11,5 +11,13 @@
   },
   "dependencies": {
     "zod": "^4.6.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Andrei-Leads/kit.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "files": ["src", "styles.css"]
 }
