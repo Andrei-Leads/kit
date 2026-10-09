@@ -165,9 +165,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4          # lee la versión de "packageManager"
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v5          # lee la versión de "packageManager"
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: pnpm
@@ -192,6 +192,7 @@ En la **organización** y en el **repo** `kit`: Settings → Actions → General
 |---|---|---|
 | `401` al publicar o instalar en local | Token caducado, ausente o mal pegado (por ejemplo, con `ghp_` duplicado) | `npm whoami --registry=https://npm.pkg.github.com`; si falla, regenera el token (sección anterior) |
 | `403` al publicar desde la Action | El repo `kit` no tiene permiso de escritura sobre el paquete | Página del paquete `core` → Package settings → Manage Actions access → añadir `kit` con rol **Write** |
+| “GitHub Actions is not permitted to create or approve pull requests” en la Action | Falta el permiso para que las Actions creen PRs | Settings → Actions → General → Workflow permissions → marcar “Allow GitHub Actions to create and approve pull requests” y Save: primero en la organización (https://github.com/organizations/Andrei-Leads/settings/actions) y después en el repo kit (https://github.com/Andrei-Leads/kit/settings/actions). Luego, en Actions: Re-run failed jobs |
 | La Action no abre el PR | Falta el permiso de crear PRs | Ver "Ajustes de GitHub" |
 | `--frozen-lockfile` falla en la Action | `pnpm-lock.yaml` desactualizado o sin commitear | `pnpm install` en local, commit del lockfile y push |
 | "cannot publish over the previously published version" | Cambio publicado sin nota nueva | Crear una nota con `pnpm changeset` |
