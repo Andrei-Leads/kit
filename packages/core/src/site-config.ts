@@ -45,6 +45,24 @@ export const siteConfigSchema = z.object({
       })
     )
     .default([]),
+  galeria: z
+    .array(
+      z.object({
+        src: z.string().min(1),
+        alt: z.string().min(1, "Texto alternativo obligatorio"),
+        titulo: z.string().optional(),
+      })
+    )
+    .default([]),
+  preguntas: z
+    .array(
+      z.object({
+        pregunta: z.string().min(1),
+        respuesta: z.string().min(1),
+      })
+    )
+    .default([]),
+  
   marca: z
     .object({
       colorPrimario: z
