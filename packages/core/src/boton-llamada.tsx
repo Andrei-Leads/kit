@@ -1,11 +1,22 @@
-export function BotonLlamada({ telefono }: { telefono: string }) {
+import type { ReactNode } from "react";
+
+type Props = {
+  telefono: string;
+  className?: string;
+  children?: ReactNode;
+};
+
+export function BotonLlamada({ telefono, className, children }: Props) {
   return (
     <a
       href={`tel:${telefono}`}
-      className="inline-block rounded-full bg-orange-600 px-6 py-3 font-semibold text-white"
       aria-label={`Llamar al ${telefono}`}
+      className={
+        className ??
+        "inline-block rounded-full bg-primario px-6 py-3 font-semibold text-white"
+      }
     >
-      Llamar ahora gang
+      {children ?? "Llamar ahora"}
     </a>
   );
 }

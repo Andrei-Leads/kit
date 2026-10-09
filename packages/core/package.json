@@ -19,5 +19,15 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "files": ["src", "styles.css"]
+  "files": [
+    "src",
+    "styles.css"
+  ],
+  "devDependencies": {
+    "@types/react": "^19",
+    "typescript": "^5"
+  },
+  "scripts": {
+    "typecheck": "tsc"
+  }
 }

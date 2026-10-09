@@ -16,7 +16,7 @@ export const siteConfigSchema = z.object({
   contacto: z.object({
     telefono: telefonoES,
     whatsapp: telefonoES.optional(),
-    email: z.email().optional(),
+    email: z.email(),
     direccion: z.object({
       calle: z.string().min(1),
       cp: z.string().regex(/^\d{5}$/, "Código postal de 5 dígitos"),

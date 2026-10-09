@@ -9,7 +9,10 @@ export default function Home() {
       <header className="bg-primario p-10 text-white">
         <h1 className="text-3xl font-bold">{negocio.nombre}</h1>
         <p>{negocio.descripcionCorta}</p>
-        <BotonLlamada telefono={contacto.telefono} />
+        <BotonLlamada
+          telefono={contacto.telefono}
+          className="mt-4 inline-block rounded-full bg-white px-6 py-3 font-semibold text-primario"
+        />
       </header>
 
       <section className="p-10">

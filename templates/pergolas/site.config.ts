@@ -10,6 +10,7 @@ export default defineSiteConfig({
   },
   contacto: {
     telefono: "+34600000000",
+    email: "info@ejemplo.com",
     direccion: {
       calle: "Calle Mayor 1",
       cp: "46440",

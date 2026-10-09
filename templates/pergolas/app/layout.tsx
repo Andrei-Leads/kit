@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import config from "@/site.config";
+import Link from "next/link";
+import { enlacesLegales } from "@andrei-leads/core";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +27,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       style={{ "--color-primario": config.marca.colorPrimario } as React.CSSProperties}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <footer className="flex gap-4 p-10 text-sm">
+          {enlacesLegales.map((e) => (
+            <Link key={e.href} href={e.href}>{e.texto}</Link>
+          ))}
+        </footer>
+      </body>
     </html>
   );
 }
