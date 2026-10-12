@@ -1,40 +1,59 @@
-import { BotonLlamada } from "@andrei-leads/core";
 import config from "@/site.config";
+import { BarraMovil } from "@/components/secciones/BarraMovil";
+import { Cabecera } from "@/components/secciones/Cabecera";
+import { Contacto } from "@/components/secciones/Contacto";
+import { Galeria } from "@/components/secciones/Galeria";
+import { Hero } from "@/components/secciones/Hero";
+import { Pie } from "@/components/secciones/Pie";
+import { Preguntas } from "@/components/secciones/Preguntas";
+import { Resenas } from "@/components/secciones/Resenas";
+import { Servicios } from "@/components/secciones/Servicios";
+import { Zonas } from "@/components/secciones/Zonas";
+import { anclasMenu, fotoHero } from "@/lib/formato";
 
 export default function Home() {
-  const { negocio, contacto, servicios, resenas, zonas } = config;
+  const { negocio, contacto, zonas, servicios, resenas, galeria, preguntas, redes } = config;
 
   return (
-    <main>
-      <header className="bg-primario p-10 text-white">
-        <h1 className="text-3xl font-bold">{negocio.nombre}</h1>
-        <p>{negocio.descripcionCorta}</p>
-        <BotonLlamada
-          telefono={contacto.telefono}
-          className="mt-4 inline-block rounded-full bg-white px-6 py-3 font-semibold text-primario"
+    <>
+      <Cabecera
+        nombre={negocio.nombre}
+        logo={negocio.logo}
+        telefono={contacto.telefono}
+        anclas={anclasMenu(config)}
+      />
+      <main>
+        <Hero
+          negocio={{
+            nombre: negocio.nombre,
+            sector: negocio.sector,
+            descripcionCorta: negocio.descripcionCorta,
+          }}
+          contacto={{
+            telefono: contacto.telefono,
+            whatsapp: contacto.whatsapp,
+            horario: contacto.horario,
+          }}
+          zonas={zonas}
+          resenas={resenas}
+          foto={fotoHero(config)}
         />
-      </header>
-
-      <section className="p-10">
-        <h2 className="text-2xl font-bold">Servicios</h2>
-        <ul>
-          {servicios.map((s) => (
-            <li key={s.titulo}>
-              <strong>{s.titulo}</strong>: {s.descripcion}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {resenas.length > 0 && (
-        <section className="p-10">
-          <h2 className="text-2xl font-bold">Opiniones</h2>
-        </section>
-      )}
-
-      {zonas.length > 0 && (
-        <p className="p-10">Trabajamos en: {zonas.join(", ")}</p>
-      )}
-    </main>
+        <Resenas resenas={resenas} />
+        <Servicios servicios={servicios} telefono={contacto.telefono} />
+        <Galeria galeria={galeria} />
+        <Zonas
+          zonas={zonas}
+          direccion={{ ciudad: contacto.direccion.ciudad, provincia: contacto.direccion.provincia }}
+          telefono={contacto.telefono}
+        />
+        <Preguntas preguntas={preguntas} />
+        <Contacto contacto={contacto} />
+      </main>
+      <Pie
+        negocio={{ nombre: negocio.nombre, nombreLegal: negocio.nombreLegal, nif: negocio.nif }}
+        redes={redes}
+      />
+      <BarraMovil telefono={contacto.telefono} whatsapp={contacto.whatsapp} />
+    </>
   );
 }
