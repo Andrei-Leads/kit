@@ -73,9 +73,12 @@ kit/
 │        ├─ index.ts         # API pública (todo lo exportado sale de aquí)
 │        ├─ site-config.ts   # esquema Zod del contrato de contenido
 │        ├─ boton-llamada.tsx
+│        ├─ boton-whatsapp.tsx
 │        └─ legal.tsx        # AvisoLegal, PoliticaPrivacidad, PoliticaCookies, enlacesLegales
 ├─ templates/
-│  └─ pergolas/              # template DE PRUEBA (no es un diseño real)
+│  ├─ pergolas/              # template DE PRUEBA (no es un diseño real)
+│  ├─ jardineria-1/          # piloto «Rótulo» (one-page, referencia; se sustituirá)
+│  └─ <nicho>/<nicho>-<n>/   # PREVISTO: carpetas por nicho, p. ej. fontaneria/fontaneria-1 (ver §7)
 └─ apps/                     # vacío por ahora (reservado, p. ej. playground)
 ```
 
@@ -87,6 +90,8 @@ packages:
   - "templates/*"
   - "apps/*"
 ```
+
+**Pendiente:** al crear el primer template anidado (`templates/<nicho>/<nicho>-<n>`) hay que añadir `"templates/*/*"` a `pnpm-workspace.yaml`; con `templates/*` solo, pnpm no lo ve. `pergolas` y `jardineria-1` siguen planos hasta entonces.
 
 Cada carpeta dentro de esas rutas que tenga un `package.json` es un proyecto del workspace. Para listarlos: `pnpm ls -r --depth -1` (`pnpm ls -r` sin `--depth -1` lista dependencias, no proyectos).
 
@@ -127,12 +132,15 @@ Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <
 |---|---|---|
 | `defineSiteConfig(config)` | Valida el `site.config` con Zod; si falla, detiene la compilación con un error legible en español | Núcleo del contrato |
 | `siteConfigSchema` | El esquema Zod | |
-| `SiteConfig`, `SiteConfigInput` | Tipos de salida (con valores por defecto aplicados) y de entrada | |
+| `SiteConfig`, `SiteConfigInput` | Tipos de salida (con valores por defecto aplicados y `slug` relleno) y de entrada | |
+| `Imagen`, `Servicio`, `Trabajo`, `Resena`, `Pregunta`, `Acreditacion`, `Tarifas`, `Empresa`, `Comunidades` | Tipos de salida de cada pieza del contrato (desde 0.3.0) | Para las props de las secciones del template |
+| `crearSlug(texto)` | `"Reformas de baño"` → `"reformas-de-bano"` | La misma función que usa el esquema cuando falta `slug` (desde 0.3.0) |
 | `BotonLlamada({ telefono, className?, children? })` | Enlace `tel:` con `aria-label` | Core pone el comportamiento; el aspecto lo decide el template con `className`. Sin `className`, usa un estilo por defecto con `bg-primario` |
+| `BotonWhatsApp({ numero, mensaje?, className?, children? })` | Enlace `wa.me` con mensaje precargado opcional | Mismo reparto que `BotonLlamada` |
 | `AvisoLegal`, `PoliticaPrivacidad`, `PoliticaCookies` | Páginas legales (LSSI, RGPD, cookies) generadas desde `config` | El template solo crea las rutas (ver §7) |
 | `enlacesLegales` | Lista `{ href, texto }` de las tres rutas legales | El pie de cada template **debe** enlazarlas |
 
-`saludo` se eliminó en 0.2.0.
+`saludo` se eliminó en 0.2.0. `AvisoLegal` muestra `negocio.registroMercantil` si existe (desde 0.3.0).
 
 `packages/core/styles.css` define el color por defecto (`@theme { --color-primario: #1f2937; }`), así que `bg-primario` existe aunque el template no lo defina.
 
@@ -159,24 +167,44 @@ Consecuencia: **toda clase de Tailwind usada por core tiene que estar dentro de 
 
 Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con `export default defineSiteConfig({...})`. **Los templates no contienen ningún dato del negocio escrito a mano: todo sale de `config`.** Crear una web nueva consiste en rellenar ese archivo.
 
-| Bloque | Campos (`?` = opcional) |
-|---|---|
-| `negocio` | `nombre`, `nombreLegal`, `nif` (9 caracteres), `sector`, `descripcionCorta` (≤ 160), `logo?` |
-| `contacto` | `telefono` (`+34` + 9 dígitos), `whatsapp?`, `email` (obligatorio desde 0.2.0: lo exigen las páginas legales), `direccion` {`calle`, `cp` (5 dígitos), `ciudad`, `provincia`}, `horario` [{`dias`, `horas`}], `coordenadas?` {`lat`, `lng`} |
-| `zonas` | lista de municipios (SEO local); por defecto `[]` |
-| `servicios` | lista de {`titulo`, `descripcion`, `imagen?`}; **mínimo 1** |
-| `resenas` | lista de {`autor`, `texto`, `puntuacion` 1–5}; por defecto `[]` |
-| `galeria` | lista de {`src`, `alt` (obligatorio, accesibilidad), `titulo?`}; por defecto `[]` (desde 0.2.0) |
-| `preguntas` | lista de {`pregunta`, `respuesta`}; por defecto `[]` (desde 0.2.0) |
-| `marca` | `colorPrimario?` (hex `#rrggbb`); por defecto `{}` |
-| `seo` | `titulo` (≤ 60), `descripcion` (≤ 160), `url` |
-| `redes` | `instagram?`, `facebook?`; por defecto `{}` |
+Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `string[]`. Las listas sin "mínimo" son `[]` por defecto.
 
-`nombreLegal` y `nif` existen para el aviso legal que exige la LSSI.
+| Bloque | Campos (`?` = opcional) | Sin datos |
+|---|---|---|
+| `negocio` | `nombre`, `nombreLegal`, `nif` (9 caracteres), `sector`, `descripcionCorta` (≤ 160), `logo?` (imagen), `anioFundacion?`, `registroMercantil?`, `tipoSchema` (lista de tipos de schema.org; por defecto `["HomeAndConstructionBusiness"]`) | — |
+| `contacto` | `telefono` (`+34` + 9 dígitos), `whatsapp?`, `email` (obligatorio: lo exigen las legales), `direccion` {`calle`, `cp` (5 dígitos), `ciudad`, `provincia`}, `horario` [{`dias`, `horas`}], `coordenadas?` {`lat`, `lng`}, `mensajeWhatsapp?` (≤ 200), `urgencias24h` (por defecto `false`), `tiempoLlegada?` (≤ 20), `fichaGoogle?` (URL) | Sin `whatsapp`, no hay botones de WhatsApp |
+| `zonas` | lista de municipios (solo lista, nunca páginas) | Sección oculta |
+| `servicios` | **mínimo 1**: {`titulo`, `descripcion`, `slug?`, `contenido` (párrafos), `incluye`, `imagenes` (imagen[]), `preguntas`, `mensajeWhatsapp?`, `precioDesde?`} | Página `/servicios/<slug>` siempre; sin `contenido`, `noindex` |
+| `trabajos` | {`titulo`, `slug?`, `descripcion` (≤ 300), `ubicacion?`, `anio?`, `servicio?` (slug de un servicio existente), `superficie?`, `duracion?`, `precio?`, `contenido` (párrafos), `imagenes` (imagen[], **mínimo 1**), `antes?` (imagen), `testimonio?` {`autor`, `texto`}} | Sin trabajos ni `galeria`, no hay `/trabajos` |
+| `valoracion` | opcional: {`media` 1–5, `total`} (resumen de Google) | Sin estrellas. **No** va al JSON-LD (`aggregateRating`) |
+| `resenas` | {`autor`, `texto`, `puntuacion` 1–5, `fecha?` (`AAAA-MM[-DD]`), `fuente?` (`google`, `web`, `otra`)} | Sección oculta |
+| `proceso` | ≤ 6 × {`titulo`, `texto`} | El template usa sus pasos por defecto según el tipo |
+| `acreditaciones` | {`nombre`, `numero?`} (solo números reales) | Se oculta |
+| `garantias` | ≤ 6 textos (≤ 80) | Se oculta |
+| `marcas` | lista de nombres | Se oculta |
+| `tarifas` | opcional: {`items` [{`concepto`, `precio`}] (mínimo 1), `nota?`} | Sin sección de precios |
+| `empresa` | {`historia` (párrafos), `imagenes` (imagen[]), `equipo` [{`nombre`, `cargo?`, `foto?` (imagen)}]}; por defecto, todo vacío | `/empresa` existe siempre; cada bloque vacío se oculta |
+| `comunidades` | opcional: {`texto` (párrafos, mínimo 1), `puntos`, `ieev` (por defecto `false`)} | Sin bloque ni `/comunidades` |
+| `imagenesHero` | imagen[] | Hero sin foto (o con la que elija el template) |
+| `galeria` | imagen[] con `titulo?` | Se oculta |
+| `preguntas` | {`pregunta`, `respuesta`} | Se oculta |
+| `marca` | `colorPrimario?` (hex `#rrggbb`); por defecto `{}` | Color del template |
+| `seo` | `titulo` (≤ 60), `descripcion` (≤ 160), `url` | — |
+| `redes` | `instagram?`, `facebook?`; por defecto `{}` | — |
+
+`nombreLegal`, `nif` y `registroMercantil` existen para el aviso legal que exige la LSSI (`registroMercantil` solo en sociedades).
+
+**Cambio incompatible en 0.3.0:** `servicios[].imagen?: string` pasó a `servicios[].imagenes: {src, alt}[]`.
 
 **Reglas decididas:**
 
 - **Validación con Zod** (Zod 4: `z.email()`, `z.url()`, `z.prettifyError`). Si un dato obligatorio falta o tiene mal formato, la web **no compila**; nunca se entrega una web rota.
+- **Mensajes de error en español:** los propios del esquema y, para los genéricos de Zod, la traducción `z.locales.es()` aplicada solo dentro de `defineSiteConfig` (no toca la configuración global de Zod).
+- **Un único tipo de imagen** `{src, alt}` en todo el contrato, incluido `negocio.logo` (desde 0.3.0). Si el logo va junto al nombre escrito, el template puede usar `alt=""` para no repetirlo al lector de pantalla.
+- **Textos largos como lista de párrafos** (`string[]`): `contenido`, `historia`, `comunidades.texto`. El template pinta un `<p>` por elemento; no hay Markdown ni HTML en los datos.
+- **`slug`:** opcional en `servicios` y `trabajos`. Si falta, se genera del título con `crearSlug` (sin acentos, minúsculas, guiones). Debe ser único dentro de su lista; si se repite, la compilación falla con un mensaje en español. `trabajos[].servicio` debe ser el slug de un servicio existente.
+- **Precios (`precioDesde`, `trabajos[].precio`, `tarifas`):** opcionales y **solo con cifras validadas por el cliente**. Nunca se inventan ni se copian de la competencia. Sin datos, la sección no sale.
+- **Bloques opcionales** (`tarifas`, `comunidades`, `valoracion`): si faltan, su página o sección no existe.
 - **El template decide qué secciones salen y en qué orden.** Si una sección no tiene datos (por ejemplo, `resenas` vacío), se oculta: `{resenas.length > 0 && (...)}`.
 - **Color de marca:** tres niveles, de menos a más prioridad: core (`styles.css`, `#1f2937`) → template (`globals.css`, después del `@import` de core) → `site.config` (`marca.colorPrimario`). El template define el suyo así:
 
@@ -194,14 +222,25 @@ Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con 
 
   Si el campo no existe, React omite el estilo y se usa el color del template.
 
-**Datos que vendrán del scraper de leads** (gosom/google-maps-scraper → DuckDB → Postgres): nombre, sector, la mayor parte de `contacto`, parte de `zonas`, `resenas` y a veces `redes`. Esto es la base de un futuro generador de `site.config` (§12).
+**Datos que vendrán del scraper de leads** (gosom/google-maps-scraper → DuckDB → Postgres): nombre, sector, la mayor parte de `contacto` (y `fichaGoogle`), parte de `zonas`, `resenas`, `valoracion` y a veces `redes`. La demo debe verse completa solo con eso; todo lo demás es opcional. Esto es la base de un futuro generador de `site.config` (§12).
 
 ---
 
 ## 7. Templates
 
-- **Nombre:** `templates/<nicho>-<n>`, por ejemplo `jardineria-1`, `jardineria-2`, `electricistas-1`. Objetivo: al menos 3 diseños por nicho.
-- **`templates/pergolas` es un template de prueba** del aprendizaje, no un diseño real.
+- **Nombre:** `templates/<nicho>/<nicho>-<n>`, por ejemplo `templates/fontaneria/fontaneria-1`. **3 templates por nicho**, cada uno con datos (`site.config.ts`) y fotos de ejemplo (`public/ejemplo/`) de su sector. Requiere el cambio pendiente de `pnpm-workspace.yaml` (§4).
+- **El tipo de negocio es la guía de diseño, no la carpeta.** Cada nicho sigue las reglas de su tipo (objetivo, páginas, orden de la home, CTA, barra móvil, qué no llevar), detalladas en `docs/brief-claude-design.md` §6:
+
+  | Tipo | Nichos | Objetivo | Barra móvil |
+  |---|---|---|---|
+  | urgencias | fontanería, electricidad, desatascos, cerrajería | Llamada en < 5 min | Llamar \| WhatsApp |
+  | proyecto | reformas, carpintería, pérgolas, pintura, alicatado/pladur, aluminio y ventanas | Entrar en la lista corta de presupuestos | WhatsApp \| Llamar |
+  | obra-tecnica | albañilería, pavimentos y hormigón, tejados, humedades y fachadas, movimiento de tierras | Visita técnica; presupuesto para junta | Llamar \| WhatsApp |
+  | recurrente *(aplazado)* | jardinería, piscinas, climatización | Contrato periódico | Por definir |
+
+  Los 3 templates de un nicho difieren en al menos 4 ejes de estructura (hero, orden, sección estrella, trabajos, navegación, botones, tipografía, densidad), no solo en el color.
+- **Webs multipágina.** Rutas fijas en todos los templates: `/`, `/servicios`, `/servicios/[slug]`, `/trabajos`, `/trabajos/[slug]`, `/empresa`, `/contacto`, las tres legales y `/comunidades` (solo obra técnica, si existe `comunidades`). La etiqueta del menú es libre; la ruta no. Sin páginas por municipio. Cabecera, pie y barra móvil en `app/layout.tsx`, presentes en todas las páginas.
+- **`templates/pergolas` es un template de prueba** del aprendizaje, no un diseño real; se borrará cuando exista el primer template real. **`templates/jardineria-1`** («Rótulo», one-page) es la referencia del tipo recurrente; se moverá a `templates/jardineria/` cuando se trabaje ese tipo.
 - **Estructura de `pergolas`** (creado con `create-next-app`: TypeScript, ESLint, Tailwind v4, App Router, Turbopack, **sin `src/`**):
   - `app/` en la raíz del template (`app/page.tsx`, `app/layout.tsx`, `app/globals.css`).
   - `site.config.ts` en la raíz del template.
@@ -212,7 +251,7 @@ Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con 
 - **Qué pone cada template (frontera con core):**
   - **Componentes shadcn:** dentro del template (copiados), nunca en core.
   - **Cabecera y pie:** del template. El pie **debe** enlazar `enlacesLegales` de core.
-  - **Rutas legales obligatorias:** `app/aviso-legal/page.tsx`, `app/privacidad/page.tsx` y `app/cookies/page.tsx`, cada una solo renderiza el componente de core:
+  - **Rutas legales obligatorias:** `app/aviso-legal/page.tsx`, `app/privacidad/page.tsx` y `app/cookies/page.tsx`. Core pone el texto; el template lo envuelve con su layout (cabecera, pie, barra móvil). Cada ruta solo renderiza el componente de core:
 
     ```tsx
     import { AvisoLegal } from "@andrei-leads/core";
@@ -223,12 +262,13 @@ Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con 
     }
     ```
 
-  - **Aspecto de `BotonLlamada`:** vía `className`.
+  - **Botones:** todo botón de llamada es `BotonLlamada` y todo botón de WhatsApp es `BotonWhatsApp`. Aspecto vía `className`, distinto por sección. Cada `BotonWhatsApp` lleva un `mensaje` precargado según la página (servicio, trabajo…).
+  - **Asistente de WhatsApp** (componente cliente del template): 2–3 preguntas con botones que solo componen el `mensaje` de `BotonWhatsApp`. Sustituye a formularios y calculadoras: no guarda ni envía datos.
   - **Tokens de diseño:** cada template define los suyos en `@theme` de `globals.css` (colores, radios, sombras…). Solo `--color-primario` se puede sobrescribir desde `site.config`; el resto es diseño del template.
   - **Imágenes:** el template trae imágenes de ejemplo **neutras** en `public/ejemplo/`. Las fotos reales del cliente van en `public/` de su web y se referencian desde `site.config` (por ejemplo, `galeria[].src`).
   - **Tipografías:** siempre con `next/font` (se sirven desde la propia web: sin peticiones a Google Fonts ni cookies de terceros).
 - **Nada de iframes ni scripts de terceros sin consentimiento** (Google Maps, YouTube, píxeles de Meta/Google, analítica de terceros…). La política de cookies de core declara que la web **no usa cookies de terceros**; uno de estos elementos la convierte en falsa. Alternativas: imagen estática del mapa con enlace a Google Maps, miniatura con enlace al vídeo. Si algún día hace falta, primero hay que añadir consentimiento a core y actualizar la política.
-- **Qué puede tocar Claude Design:** solo `templates/<nicho>-<n>` (diseño, secciones y tokens). Nunca core. El encargo para Claude Design está en `docs/brief-claude-design.md`.
+- **Qué puede tocar Claude Design:** solo `templates/<nicho>/<nicho>-<n>` (diseño, secciones y tokens). Nunca core. El encargo para Claude Design está en `docs/brief-claude-design.md`.
 
 ---
 
@@ -280,8 +320,9 @@ Después hay que rellenar `site.config.ts` con los datos del cliente.
 | Documento | Estado | Úsalo cuando… |
 |---|---|---|
 | `docs/publicar-core.md` | Listo | Se cambia algo en `packages/core` que debe llegar a las webs |
-| `docs/brief-claude-design.md` | Listo | Se va a pedir un diseño a Claude Design |
-| `docs/nuevo-template.md` | Pendiente (se escribe tras el piloto) | Se convierte un diseño en `templates/<nicho>-<n>` |
+| `docs/brief-claude-design.md` | Listo (contrato 0.3.0, multipágina, reglas por tipo) | Se va a pedir un diseño a Claude Design. Es genérico: el encargo concreto de cada template se escribe aparte |
+| `docs/investigacion-nichos.md` | Referencia («investigación por nichos») | Se quiere el porqué de las reglas por tipo (estructura que más convierte por nicho) |
+| `docs/nuevo-template.md` | Pendiente (se escribe tras el primer template real) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
 | `docs/nuevo-cliente.md` | Pendiente (se escribe tras el piloto) | Se crea la web de un cliente a partir de un template y se despliega |
 | `docs/actualizar-cliente.md` | Pendiente | Se lleva una versión nueva de core a una web ya entregada |
 
@@ -317,6 +358,18 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | **Tipografías siempre con `next/font`** | Rendimiento y sin peticiones a terceros. |
 | **Turborepo aplazado** | Con un solo template no aporta nada; se añade con 3 o 4 templates. |
 | **Organización como "My personal account"** | Autónomo = persona física. |
+| **Webs multipágina con rutas fijas** (página por servicio y por trabajo; sin páginas por municipio) | La página por servicio es el primer factor de SEO local; las páginas por zona son contenido duplicado ("doorway"). Rutas fijas = mismo `create-site` y mismos enlaces en todos los templates (investigación por nichos) |
+| **Carpetas por nicho (`templates/<nicho>/<nicho>-<n>`), 3 por nicho** | La demo debe parecer del oficio del cliente, con datos y fotos de su sector |
+| **El tipo de negocio (urgencias, proyecto, obra-tecnica, recurrente) es la guía de diseño, no la carpeta** | La estructura que convierte depende de la urgencia del cliente, no del oficio (investigación por nichos) |
+| **Contrato 0.3.0: núcleo común + bloques opcionales; todo lo nuevo es opcional o con `default`** | La demo se hace con los datos del scraper; lo que falte oculta su sección |
+| **`servicios[].imagen` → `servicios[].imagenes`** (cambio incompatible) | Varias fotos por servicio y un único tipo de imagen con `alt`. Se hizo antes de entregar ninguna web |
+| **`slug` opcional generado del título, único por lista** | Rutas legibles sin trabajo extra; el error salta al compilar, no en producción |
+| **Textos largos como `string[]`** | Sin Markdown ni HTML en los datos; el template decide cómo pinta cada párrafo |
+| **Precios opcionales, solo con cifras validadas por el cliente** | Los precios orientativos convierten (sobre todo en urgencias), pero una cifra inventada es un problema con el cliente y con su clientela |
+| **`valoracion` se muestra pero no va al JSON-LD** | Las directrices de Google no permiten `aggregateRating` con reseñas de Google |
+| **Sin formularios; asistente de WhatsApp en su lugar** | Sin backend ni datos personales que custodiar; WhatsApp lo usa el 94 % en España |
+| **`BotonLlamada` y `BotonWhatsApp` para todo botón de contacto; mensaje de WhatsApp precargado por página** | Accesibilidad y enlaces iguales en todas las webs; el mensaje dice de dónde viene el lead |
+| **Legales con el layout del template** | Core da el texto; navbar y pie en todas las páginas para no dejar al visitante sin salida |
 
 ---
 
@@ -341,15 +394,21 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 ## 12. Estado y hoja de ruta
 
-**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas`, publicación en GitHub Packages, web de cliente de prueba (`web-prueba`), Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`) y `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`).
+**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas`, piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, web de cliente de prueba (`web-prueba`) desplegada en Vercel, Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`) y `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`).
+
+**En curso, sin publicar (core 0.3.0):** `BotonWhatsApp`, `imagenesHero` y el contrato multipágina (§6), con sus notas en `.changeset/`. Brief reescrito para webs multipágina y reglas por tipo.
 
 **Siguiente, en orden:**
 
 1. ~~**Frontera core / template.**~~ **Resuelta en core 0.2.0** (ver §5, §7 y §10).
 2. ~~**`docs/brief-claude-design.md`**~~ **Hecho.** El mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
-3. **Piloto `jardineria-1`:** Claude Design → template → web de prueba → despliegue en Vercel. Despliegue ya resuelto y probado con `web-prueba` (§8).
-4. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del piloto.
-5. **Escalar:** 3 templates por nicho (jardineros, electricistas y los nichos que Ysst decida).
+3. ~~**Piloto `jardineria-1`**~~ **Hecho** (one-page; queda como referencia). Despliegue probado con `web-prueba` (§8).
+4. **Encargos de Claude Design** (uno por template, aparte del brief) → **primer template de fontanería** (`templates/fontaneria/fontaneria-1`, tipo urgencias). Al crearlo: `templates/*/*` en `pnpm-workspace.yaml`.
+5. **SEO técnico en core:** metadatos por página, JSON-LD `LocalBusiness` (con `tipoSchema`, sin `aggregateRating`), sitemap y `noindex` de servicios sin `contenido`.
+6. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del primer template real.
+7. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
+
+**Aplazado (antes de publicar 0.3.0):** el arreglo de accesibilidad de `BotonLlamada` y `BotonWhatsApp`, que hará Ysst a mano. No publicar 0.3.0 sin él.
 
 **Más adelante:** Turborepo (con 3 o 4 templates); script `create-site` (automatiza §8); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
 
