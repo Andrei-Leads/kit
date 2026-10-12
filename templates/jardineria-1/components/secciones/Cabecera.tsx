@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BotonLlamada } from "@andrei-leads/core";
+import { BotonLlamada, type Imagen } from "@andrei-leads/core";
 
 import { buttonVariants } from "@/components/ui/button";
 import { contenedor } from "@/components/TituloSeccion";
@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   nombre: string;
-  logo?: string;
+  logo?: Imagen;
   telefono: string;
   /** Solo secciones con datos (ver anclasMenu). */
   anclas: Ancla[];
@@ -24,7 +24,7 @@ export function Cabecera({ nombre, logo, telefono, anclas }: Props) {
           className="flex min-h-11 min-w-0 items-center gap-3 text-[22px] leading-none font-extrabold tracking-[0.01em] text-balance text-tinta uppercase no-underline font-stretch-68%"
         >
           {logo && (
-            <Image src={logo} alt="" width={160} height={40} className="h-10 w-auto flex-none" />
+            <Image src={logo.src} alt="" width={160} height={40} className="h-10 w-auto flex-none" />
           )}
           <span>{nombre}</span>
         </a>

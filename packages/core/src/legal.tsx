@@ -38,6 +38,7 @@ export function AvisoLegal({ config }: { config: SiteConfig }) {
       <ul className="list-disc space-y-1 pl-6">
         <li>Titular: {negocio.nombreLegal}</li>
         <li>NIF: {negocio.nif}</li>
+        {negocio.registroMercantil && <li>Datos registrales: {negocio.registroMercantil}</li>}
         <li>Domicilio: {direccionCompleta(config)}</li>
         <li>Email: {contacto.email}</li>
         <li>Teléfono: {contacto.telefono}</li>

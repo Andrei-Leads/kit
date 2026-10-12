@@ -28,11 +28,11 @@ export function Servicios({ servicios, telefono }: Props) {
           {servicios.map((s, i) => (
             <li key={`${s.titulo}-${i}`} className="flex">
               <Card className="grid w-full grid-cols-[88px_minmax(0,1fr)] items-start gap-3.5 rounded-none border-0 border-b-2 bg-transparent py-4 md:flex md:gap-0 md:overflow-hidden md:rounded-md md:border-2 md:bg-tarjeta md:p-0">
-                {s.imagen ? (
+                {s.imagenes[0] ? (
                   <div className="relative aspect-square w-[88px] overflow-hidden rounded-sm bg-linea md:aspect-[16/10] md:w-full md:rounded-none md:border-b-2 md:border-tinta">
                     <Image
-                      src={s.imagen}
-                      alt={s.titulo}
+                      src={s.imagenes[0].src}
+                      alt={s.imagenes[0].alt}
                       fill
                       sizes="(min-width: 768px) 400px, 88px"
                       className="object-cover"

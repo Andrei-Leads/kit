@@ -78,8 +78,8 @@ export function fotoHero(
   if (propia) return { src: propia.src, alt: propia.alt };
   const galeria = config.galeria[0];
   if (galeria) return { src: galeria.src, alt: galeria.alt };
-  const servicio = config.servicios.find((s) => s.imagen);
-  if (servicio?.imagen) return { src: servicio.imagen, alt: servicio.titulo };
+  const servicio = config.servicios.find((s) => s.imagenes.length > 0);
+  if (servicio) return { src: servicio.imagenes[0].src, alt: servicio.imagenes[0].alt };
   return null;
 }
 
