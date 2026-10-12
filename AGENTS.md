@@ -166,6 +166,8 @@ Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con 
 | `zonas` | lista de municipios (SEO local); por defecto `[]` |
 | `servicios` | lista de {`titulo`, `descripcion`, `imagen?`}; **mínimo 1** |
 | `resenas` | lista de {`autor`, `texto`, `puntuacion` 1–5}; por defecto `[]` |
+| `galeria` | lista de {`src`, `alt` (obligatorio, accesibilidad), `titulo?`}; por defecto `[]` (desde 0.2.0) |
+| `preguntas` | lista de {`pregunta`, `respuesta`}; por defecto `[]` (desde 0.2.0) |
 | `marca` | `colorPrimario?` (hex `#rrggbb`); por defecto `{}` |
 | `seo` | `titulo` (≤ 60), `descripcion` (≤ 160), `url` |
 | `redes` | `instagram?`, `facebook?`; por defecto `{}` |
@@ -222,8 +224,11 @@ Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con 
     ```
 
   - **Aspecto de `BotonLlamada`:** vía `className`.
+  - **Tokens de diseño:** cada template define los suyos en `@theme` de `globals.css` (colores, radios, sombras…). Solo `--color-primario` se puede sobrescribir desde `site.config`; el resto es diseño del template.
+  - **Imágenes:** el template trae imágenes de ejemplo **neutras** en `public/ejemplo/`. Las fotos reales del cliente van en `public/` de su web y se referencian desde `site.config` (por ejemplo, `galeria[].src`).
+  - **Tipografías:** siempre con `next/font` (se sirven desde la propia web: sin peticiones a Google Fonts ni cookies de terceros).
 - **Nada de iframes ni scripts de terceros sin consentimiento** (Google Maps, YouTube, píxeles de Meta/Google, analítica de terceros…). La política de cookies de core declara que la web **no usa cookies de terceros**; uno de estos elementos la convierte en falsa. Alternativas: imagen estática del mapa con enlace a Google Maps, miniatura con enlace al vídeo. Si algún día hace falta, primero hay que añadir consentimiento a core y actualizar la política.
-- **Qué puede tocar Claude Design:** solo `templates/<nicho>-<n>` (diseño, secciones y tokens). Nunca core. El brief para Claude Design irá en `docs/brief-claude-design.md` (pendiente).
+- **Qué puede tocar Claude Design:** solo `templates/<nicho>-<n>` (diseño, secciones y tokens). Nunca core. El encargo para Claude Design está en `docs/brief-claude-design.md`.
 
 ---
 
@@ -258,7 +263,7 @@ Después hay que rellenar `site.config.ts` con los datos del cliente.
 | Documento | Estado | Úsalo cuando… |
 |---|---|---|
 | `docs/publicar-core.md` | Listo | Se cambia algo en `packages/core` que debe llegar a las webs |
-| `docs/brief-claude-design.md` | Pendiente | Se va a pedir un diseño a Claude Design |
+| `docs/brief-claude-design.md` | Listo | Se va a pedir un diseño a Claude Design |
 | `docs/nuevo-template.md` | Pendiente (se escribe tras el piloto) | Se convierte un diseño en `templates/<nicho>-<n>` |
 | `docs/nuevo-cliente.md` | Pendiente (se escribe tras el piloto) | Se crea la web de un cliente a partir de un template y se despliega |
 | `docs/actualizar-cliente.md` | Pendiente | Se lleva una versión nueva de core a una web ya entregada |
@@ -289,6 +294,10 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | **Páginas legales en core; rutas en el template** | El texto legal se mejora una vez y llega a todas las webs. |
 | **`contacto.email` obligatorio** | El aviso legal y la privacidad necesitan un email de contacto. |
 | **Sin iframes ni scripts de terceros sin consentimiento** | La política de cookies declara que no hay cookies de terceros. |
+| **`galeria` y `preguntas` en `site.config`, por defecto `[]`** | Secciones opcionales: sin datos, el template las oculta. `alt` obligatorio por accesibilidad. |
+| **Tokens de diseño en cada template; solo `--color-primario` sobrescribible desde `site.config`** | El diseño es del template; el cliente solo personaliza su color de marca. |
+| **Imágenes de ejemplo neutras en `public/ejemplo/`; fotos del cliente en `public/`** | El template se ve completo sin datos reales, y las fotos del cliente no se mezclan con las de ejemplo. |
+| **Tipografías siempre con `next/font`** | Rendimiento y sin peticiones a terceros. |
 | **Turborepo aplazado** | Con un solo template no aporta nada; se añade con 3 o 4 templates. |
 | **Organización como "My personal account"** | Autónomo = persona física. |
 
@@ -313,12 +322,12 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 ## 12. Estado y hoja de ruta
 
-**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas`, publicación en GitHub Packages, web de cliente de prueba (`web-prueba`), Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`) y `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`).
+**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas`, publicación en GitHub Packages, web de cliente de prueba (`web-prueba`), Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`) y `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`).
 
 **Siguiente, en orden:**
 
 1. ~~**Frontera core / template.**~~ **Resuelta en core 0.2.0** (ver §5, §7 y §10).
-2. **`docs/brief-claude-design.md`:** el mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
+2. ~~**`docs/brief-claude-design.md`**~~ **Hecho.** El mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
 3. **Piloto `jardineria-1`:** Claude Design → template → web de prueba → despliegue en Vercel (resolver el token de paquetes privados).
 4. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del piloto.
 5. **Escalar:** 3 templates por nicho (jardineros, electricistas y los nichos que Ysst decida).
