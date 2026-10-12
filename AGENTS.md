@@ -254,7 +254,24 @@ Después hay que rellenar `site.config.ts` con los datos del cliente.
 
 **Comportamiento esperado:** la web queda **congelada** en la versión de core que instaló. Los cambios en `kit/packages/core` no le afectan hasta que se ejecuta `pnpm up @andrei-leads/core` (o `pnpm add @andrei-leads/core@^0.N.0` si es un minor en 0.x; ver `docs/publicar-core.md`).
 
-**Pendiente:** el despliegue en Vercel necesita un token para instalar paquetes privados de GitHub Packages (variable de entorno más `.npmrc`). Está sin resolver; se hará en el piloto.
+### Despliegue en Vercel (probado con `web-prueba`, oct 2026)
+
+1. Primer commit de la web y repo en la org `Andrei-Leads` (`https://github.com/Andrei-Leads/web-<cliente>`), vacío (sin README ni `.gitignore`); después `git remote add origin …` y `git push -u origin main`.
+2. Vercel → **Add New → Project** → importar el repo. La GitHub App de Vercel solo tiene acceso a los repos seleccionados (**Only select repositories**): hay que añadir cada repo nuevo.
+3. **Configure Project:** preset Next.js, Root Directory `./`; los comandos de build e install se dejan por defecto (Vercel detecta pnpm por el lockfile).
+4. **Environment Variables:** `NPM_RC` (Production y Preview; *Sensitive* si existe la opción), con este valor (**contenido de la variable, no un comando**):
+
+   ```
+   @andrei-leads:registry=https://npm.pkg.github.com
+   //npm.pkg.github.com/:_authToken=<token de solo lectura>
+   ```
+
+   Vercel usa `NPM_RC` como `.npmrc` durante el build. **El `.npmrc` del repo no lleva la línea del token** (solo la del registro): si llevara `${NPM_TOKEN}`, en local tendría prioridad sobre `~/.npmrc` y `pnpm install` daría 401.
+5. **Deploy.**
+
+**Token de Vercel:** classic, **solo `read:packages`**, 1 año, nota `Vercel — leer @andrei-leads/core (despliegues de clientes)`, guardado en Bitwarden y con recordatorio en el calendario dos semanas antes de que caduque. Es distinto del token personal de publicación (§12): si el de Vercel se filtra, solo permite leer core. Cuando caduca, las webs publicadas siguen funcionando, pero **fallan todos los despliegues nuevos** hasta actualizar `NPM_RC` en cada proyecto y hacer *Redeploy*.
+
+**Plan de Vercel:** Hobby no despliega repos **privados de una organización** y no permite uso comercial. `web-prueba` se hizo **público** para la prueba (datos ficticios y sin secretos; el código de core sigue privado porque solo se descarga en el build). **Clientes reales: Vercel Pro (unos 20 $/mes por miembro, proyectos ilimitados) y repos privados**, para que no se vea el código del template.
 
 ---
 
@@ -316,6 +333,8 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | `pnpm publish` se niega a publicar | Árbol de Git sucio (por ejemplo, un `.tgz` de `pnpm pack`) | Borrar el archivo o hacer commit |
 | Al cambiar core, la web no se actualiza | En una web de cliente es lo esperado (versión congelada); en el monorepo, puede que la página no use lo que cambiaste | Comprobar qué se renderiza realmente |
 | Texto claro sobre fondo oscuro "sin estilos" | `globals.css` por defecto + modo oscuro de Kubuntu | Normal; mirar si existen las clases, no el color |
+| Vercel no muestra el repo o pide Pro al importarlo | Hobby no despliega repos privados de una organización, o la GitHub App de Vercel no tiene acceso a ese repo | Pro (o repo público solo para pruebas); añadir el repo en los permisos de la GitHub App |
+| `401` en el build de Vercel al instalar core | Falta `NPM_RC`, está mal pegada o el token de Vercel ha caducado | Revisar y actualizar `NPM_RC` en el proyecto y hacer *Redeploy* (§8) |
 | Se pega JSON en la terminal | Confusión entre comando y archivo | Decir siempre "esto va en el archivo X" |
 
 ---
@@ -328,7 +347,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 1. ~~**Frontera core / template.**~~ **Resuelta en core 0.2.0** (ver §5, §7 y §10).
 2. ~~**`docs/brief-claude-design.md`**~~ **Hecho.** El mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
-3. **Piloto `jardineria-1`:** Claude Design → template → web de prueba → despliegue en Vercel (resolver el token de paquetes privados).
+3. **Piloto `jardineria-1`:** Claude Design → template → web de prueba → despliegue en Vercel. Despliegue ya resuelto y probado con `web-prueba` (§8).
 4. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del piloto.
 5. **Escalar:** 3 templates por nicho (jardineros, electricistas y los nichos que Ysst decida).
 
@@ -336,5 +355,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 **Avisos con fecha:**
 
-- **Rebrand pendiente** ("Fragua" era la candidata). Si cambia el nombre de la org, cambia el scope del paquete. Hacerlo **antes de entregar la primera web de cliente**; después obliga a tocar cada repo.
+- **Nombre decidido:** "Andrei Leads" es la marca personal de Ysst; no habrá rebrand, así que el scope `@andrei-leads` se mantiene.
 - **Token personal de GitHub** (classic, `write:packages` + `repo`, 90 días, guardado en Bitwarden). Si aparece un 401, probablemente ha caducado: ver `docs/publicar-core.md`.
+- **Token de Vercel** (classic, `read:packages`, caduca el 12/10/2027; recordatorio el 28/09/2027). Ver §8.
+- **Antes del primer cliente real:** pasar a Vercel Pro (§8).
