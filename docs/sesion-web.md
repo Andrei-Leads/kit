@@ -21,14 +21,14 @@
   - `BotonWhatsApp`;
   - el contrato multipágina: trabajos, empresa, tarifas y precios opcionales, proceso, acreditaciones, garantías, marcas, comunidades, valoración y slugs;
   - dos cambios incompatibles: `servicios[].imagen` → `imagenes[]` y `negocio.logo` → `{src, alt}`.
-- **Hay un PR "Version Packages" abierto** por la Action, con la 0.3.0. **No debe fusionarse hasta que esté hecho el arreglo de accesibilidad (§3, tarea 1).**
+- **Hay un PR "Version Packages" abierto** por la Action, con la 0.3.0. El arreglo de accesibilidad (tarea 1) ya está en `main`: el PR se puede fusionar.
 - **El brief nuevo está en `docs/brief-claude-design.md`:** multipágina y con reglas por tipo de negocio (urgencias, proyecto, obra técnica). Se basa en `docs/investigacion-nichos.md`.
 - **Carpetas por nicho:** `templates/<nicho>/<nicho>-<n>`. Todavía no existe ninguna; hoy solo están `templates/pergolas` (prueba) y `templates/jardineria-1` (piloto «Rótulo», como referencia).
 - **Otra sesión (local) está escribiendo** los encargos para Claude Design de `fontaneria-1` «Aviso» y `pergolas-2` «A medida». Tú no los tienes.
 
 ## 3. Tareas, en orden
 
-### Tarea 1: arreglo de accesibilidad de `BotonLlamada` y `BotonWhatsApp` (urgente, pequeña)
+### Tarea 1: arreglo de accesibilidad de `BotonLlamada` y `BotonWhatsApp` — HECHA (13/10/2026, en local por Ysst; sáltala)
 
 **Problema:** los dos componentes ponen un `aria-label` («Llamar al +34…», «Escribir por WhatsApp al +34…») que **sustituye** al texto visible («Llamar ahora», «600 00 00 00», «WhatsApp»). Eso incumple WCAG 2.5.3 (Label in Name): el lector de pantalla no anuncia lo que se ve, y el control por voz no funciona.
 

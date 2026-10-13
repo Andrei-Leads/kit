@@ -135,7 +135,7 @@ Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <
 | `SiteConfig`, `SiteConfigInput` | Tipos de salida (con valores por defecto aplicados y `slug` relleno) y de entrada | |
 | `Imagen`, `Servicio`, `Trabajo`, `Resena`, `Pregunta`, `Acreditacion`, `Tarifas`, `Empresa`, `Comunidades` | Tipos de salida de cada pieza del contrato (desde 0.3.0) | Para las props de las secciones del template |
 | `crearSlug(texto)` | `"Reformas de baño"` → `"reformas-de-bano"` | La misma función que usa el esquema cuando falta `slug` (desde 0.3.0) |
-| `BotonLlamada({ telefono, className?, children? })` | Enlace `tel:` con `aria-label` | Core pone el comportamiento; el aspecto lo decide el template con `className`. Sin `className`, usa un estilo por defecto con `bg-primario` |
+| `BotonLlamada({ telefono, className?, children? })` | Enlace `tel:`; el nombre accesible es el texto visible (WCAG 2.5.3, desde 0.3.0) | Core pone el comportamiento; el aspecto lo decide el template con `className`. Sin `className`, usa un estilo por defecto con `bg-primario` |
 | `BotonWhatsApp({ numero, mensaje?, className?, children? })` | Enlace `wa.me` con mensaje precargado opcional | Mismo reparto que `BotonLlamada` |
 | `AvisoLegal`, `PoliticaPrivacidad`, `PoliticaCookies` | Páginas legales (LSSI, RGPD, cookies) generadas desde `config` | El template solo crea las rutas (ver §7) |
 | `enlacesLegales` | Lista `{ href, texto }` de las tres rutas legales | El pie de cada template **debe** enlazarlas |
@@ -409,7 +409,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 6. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del primer template real.
 7. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
 
-**Aplazado (antes de publicar 0.3.0):** el arreglo de accesibilidad de `BotonLlamada` y `BotonWhatsApp`, que hará Ysst a mano. No publicar 0.3.0 sin él.
+**Hecho (antes de publicar 0.3.0):** arreglo de accesibilidad de `BotonLlamada` y `BotonWhatsApp` (sin `aria-label`; WCAG 2.5.3).
 
 **Más adelante:** Turborepo (con 3 o 4 templates); script `create-site` (automatiza §8); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
 

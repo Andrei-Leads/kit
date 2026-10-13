@@ -18,7 +18,6 @@ export function BotonWhatsApp({ numero, mensaje, className, children }: Props) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Escribir por WhatsApp al ${numero}`}
       className={
         className ??
         "inline-block rounded-full border-2 border-current px-6 py-3 font-semibold"

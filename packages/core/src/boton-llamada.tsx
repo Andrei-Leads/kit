@@ -10,7 +10,6 @@ export function BotonLlamada({ telefono, className, children }: Props) {
   return (
     <a
       href={`tel:${telefono}`}
-      aria-label={`Llamar al ${telefono}`}
       className={
         className ??
         "inline-block rounded-full bg-primario px-6 py-3 font-semibold text-white"
