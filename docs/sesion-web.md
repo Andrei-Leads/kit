@@ -16,42 +16,21 @@
 
 ## 2. Estado actual
 
-- **Core local en 0.2.0 (publicada).** La **0.3.0** está lista en `main`, pero **sin publicar**. Incluye:
+- **Core 0.3.0 publicada** en GitHub Packages (PR #2 "Version Packages" fusionado). Incluye:
   - `imagenesHero`;
   - `BotonWhatsApp`;
   - el contrato multipágina: trabajos, empresa, tarifas y precios opcionales, proceso, acreditaciones, garantías, marcas, comunidades, valoración y slugs;
-  - dos cambios incompatibles: `servicios[].imagen` → `imagenes[]` y `negocio.logo` → `{src, alt}`.
-- **Hay un PR "Version Packages" abierto** por la Action, con la 0.3.0. El arreglo de accesibilidad (tarea 1) ya está en `main`: el PR se puede fusionar.
+  - dos cambios incompatibles: `servicios[].imagen` → `imagenes[]` y `negocio.logo` → `{src, alt}`;
+  - el arreglo de accesibilidad de los botones: sin `aria-label`, el nombre accesible es el texto visible (WCAG 2.5.3).
+- **No hay PR "Version Packages" abierto ni notas pendientes en `.changeset/`.**
 - **El brief nuevo está en `docs/brief-claude-design.md`:** multipágina y con reglas por tipo de negocio (urgencias, proyecto, obra técnica). Se basa en `docs/investigacion-nichos.md`.
 - **Carpetas por nicho:** `templates/<nicho>/<nicho>-<n>`. Todavía no existe ninguna; hoy solo están `templates/pergolas` (prueba) y `templates/jardineria-1` (piloto «Rótulo», como referencia).
-- **Otra sesión (local) está escribiendo** los encargos para Claude Design de `fontaneria-1` «Aviso» y `pergolas-2` «A medida». Tú no los tienes.
+- **Primer template real: `carpinteria-metalica-1` «Medida»** (tipo proyecto: aluminio y ventanas). Claude Design lo está diseñando. Se integra **solo este** y se lleva hasta el despliegue antes de hacer `-2` «Exposición» y `-3` «Reparaciones»; fontanería y pérgolas, después.
+- **Los encargos para Claude Design** (carpintería metálica, fontanería y pérgolas) los tiene Ysst en `mis_datos/encargos-claude-design/`, fuera del repo. Tú no los tienes.
 
 ## 3. Tareas, en orden
 
-### Tarea 1: arreglo de accesibilidad de `BotonLlamada` y `BotonWhatsApp` — HECHA (13/10/2026, en local por Ysst; sáltala)
-
-**Problema:** los dos componentes ponen un `aria-label` («Llamar al +34…», «Escribir por WhatsApp al +34…») que **sustituye** al texto visible («Llamar ahora», «600 00 00 00», «WhatsApp»). Eso incumple WCAG 2.5.3 (Label in Name): el lector de pantalla no anuncia lo que se ve, y el control por voz no funciona.
-
-**Solución acordada:** quitar el `aria-label` de los dos, de modo que el nombre accesible sea el texto visible. Los textos por defecto («Llamar ahora», «Escribir por WhatsApp») ya garantizan que nunca quede vacío.
-
-Cómo hacerlo, **guiando a Ysst paso a paso**. Él quería hacer este cambio a mano; pregúntale si lo hace él o lo haces tú.
-
-1. Crear la rama `fix/botones-nombre-accesible`.
-2. Borrar la línea `aria-label={…}` en `packages/core/src/boton-llamada.tsx` y en `packages/core/src/boton-whatsapp.tsx`.
-3. Comprobar que `grep -n "aria-label" packages/core/src/boton-*.tsx` no devuelve nada.
-4. Comprobar que compilan, desde la raíz: `pnpm install`, `pnpm --filter pergolas build` y `pnpm --filter jardineria-1 build`.
-5. Crear la nota de Changesets. Tipo **patch**; resumen: `Botones de llamada y WhatsApp: el nombre accesible es el texto visible (WCAG 2.5.3)`.
-6. Actualizar `AGENTS.md`:
-   - en §5, la fila de `BotonLlamada` dice «Enlace `tel:` con `aria-label`»; debe decir que el nombre accesible es el texto visible;
-   - en §12, quitar este pendiente de la hoja de ruta.
-7. Hacer commit en la rama, push y abrir el PR hacia `main`. Explícale a Ysst qué contiene.
-
-**Orden de fusión** (lo hace Ysst):
-1. Fusiona este PR en `main`.
-2. La Action actualiza sola el PR "Version Packages", que pasa a incluir las 4 notas pendientes.
-3. Ysst revisa en ese PR la versión `0.3.0` y el `CHANGELOG.md`, y lo fusiona.
-4. La Action publica.
-5. Comprobación: la Action "Release" en verde y la `0.3.0` en `https://github.com/orgs/Andrei-Leads/packages`.
+### Tarea 1: arreglo de accesibilidad de `BotonLlamada` y `BotonWhatsApp` — HECHA y publicada en 0.3.0 (sáltala)
 
 ### Tarea 2: SEO técnico en core (si hay tiempo; primero se propone, después se implementa)
 
@@ -67,17 +46,17 @@ Piezas previstas:
   - **`noindex`** en `/servicios/<slug>` cuando el servicio no tenga `contenido`.
 - **JSON-LD `LocalBusiness`** con el `@type` de `negocio.tipoSchema`: nombre, teléfono, dirección, horario, `areaServed` (zonas) y `url`. **No** incluir `aggregateRating` a partir de `valoracion` (decisión ya tomada: Google lo considera reseñas autopromocionadas).
 - Todo lo que se exporte nuevo sale de `src/index.ts`. Si añades archivos fuera de `src/`, añádelos también a `exports`/`files` de `packages/core/package.json`.
-- **Es una funcionalidad nueva (nota *minor*).** Si la 0.3.0 ya está publicada, saldrá en la **0.4.0**. Si no, entra en la 0.3.0.
-- Rama `feat/seo-tecnico` y PR, igual que en la tarea 1.
+- **Es una funcionalidad nueva (nota *minor*):** saldrá en la **0.4.0**.
+- Rama `feat/seo-tecnico` y PR hacia `main` (ver §1, Git).
 
 ### Tarea 3: primer template real (solo si Ysst trae el diseño de Claude Design)
 
-Si Ysst te pasa el diseño de `fontaneria-1` (un enlace o archivos):
-1. Revisa que cumple `docs/brief-claude-design.md`.
+Si Ysst te pasa el diseño de `carpinteria-metalica-1` «Medida» (un enlace o archivos; en local lo exportará a `mis_datos/disenyo-carpinteria-metalica-1/`):
+1. Revisa que cumple `docs/brief-claude-design.md` y su encargo (`carpinteria-metalica-1.md`; pídeselo a Ysst).
 2. **Antes de crear nada, propón el plan y espera su confirmación.** El plan debe cubrir:
    - añadir `"templates/*/*"` a `pnpm-workspace.yaml`;
    - qué hacer con `templates/pergolas`: borrarla o moverla, porque el nicho pergolas tendrá su propia carpeta `templates/pergolas/pergolas-n`;
-   - crear `templates/fontaneria/fontaneria-1` con nombre de paquete `fontaneria-1`;
+   - crear `templates/carpinteria-metalica/carpinteria-metalica-1` con nombre de paquete `carpinteria-metalica-1`;
    - qué se reutiliza de `jardineria-1`: conexión con core, rutas legales, shadcn sin ensuciar `globals.css`, el año del pie con `"use cache"` y la caída del hero cuando no hay foto.
 
    Ysst decidió que el frontend lo construya un subagente con un encargo cerrado.

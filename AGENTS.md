@@ -194,7 +194,7 @@ Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `st
 
 `nombreLegal`, `nif` y `registroMercantil` existen para el aviso legal que exige la LSSI (`registroMercantil` solo en sociedades).
 
-**Cambio incompatible en 0.3.0:** `servicios[].imagen?: string` pasó a `servicios[].imagenes: {src, alt}[]`.
+**Cambios incompatibles en 0.3.0:** `servicios[].imagen?: string` pasó a `servicios[].imagenes: {src, alt}[]`, y `negocio.logo` (texto) pasó a `{src, alt}`.
 
 **Reglas decididas:**
 
@@ -320,7 +320,7 @@ Después hay que rellenar `site.config.ts` con los datos del cliente.
 | Documento | Estado | Úsalo cuando… |
 |---|---|---|
 | `docs/publicar-core.md` | Listo | Se cambia algo en `packages/core` que debe llegar a las webs |
-| `docs/sesion-web.md` | Listo (estado al 13/10/2026) | Se trabaja desde Claude Code en la web: qué cambia respecto a local, estado actual y tareas pendientes en orden |
+| `docs/sesion-web.md` | Listo (estado al 13/10/2026, con 0.3.0 publicada) | Se trabaja desde Claude Code en la web: qué cambia respecto a local, estado actual y tareas pendientes en orden |
 | `docs/brief-claude-design.md` | Listo (contrato 0.3.0, multipágina, reglas por tipo) | Se va a pedir un diseño a Claude Design. Es genérico: el encargo concreto de cada template se escribe aparte |
 | `docs/investigacion-nichos.md` | Referencia («investigación por nichos») | Se quiere el porqué de las reglas por tipo (estructura que más convierte por nicho) |
 | `docs/nuevo-template.md` | Pendiente (se escribe tras el primer template real) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
@@ -395,21 +395,20 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 ## 12. Estado y hoja de ruta
 
-**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas`, piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, web de cliente de prueba (`web-prueba`) desplegada en Vercel, Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`) y `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`).
+**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas`, piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, web de cliente de prueba (`web-prueba`) desplegada en Vercel, Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`), `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`) y `0.3.0` (por la Action, PR #2: contrato multipágina, `BotonWhatsApp`, `imagenesHero`, slugs, `servicios[].imagenes` y `negocio.logo` como `{src, alt}`, y botones sin `aria-label`: el nombre accesible es el texto visible, WCAG 2.5.3). Brief reescrito para webs multipágina y reglas por tipo. Encargos de Claude Design escritos (3 por nicho: carpintería metálica, fontanería y pérgolas), fuera del repo en `mis_datos/encargos-claude-design/`.
 
-**En curso, sin publicar (core 0.3.0):** `BotonWhatsApp`, `imagenesHero` y el contrato multipágina (§6), con sus notas en `.changeset/`. Brief reescrito para webs multipágina y reglas por tipo.
+**En curso:** Claude Design diseña `carpinteria-metalica-1` «Medida»; el diseño se exportará a `mis_datos/disenyo-carpinteria-metalica-1/`.
 
 **Siguiente, en orden:**
 
 1. ~~**Frontera core / template.**~~ **Resuelta en core 0.2.0** (ver §5, §7 y §10).
 2. ~~**`docs/brief-claude-design.md`**~~ **Hecho.** El mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
 3. ~~**Piloto `jardineria-1`**~~ **Hecho** (one-page; queda como referencia). Despliegue probado con `web-prueba` (§8).
-4. **Encargos de Claude Design** (uno por template, aparte del brief) → **primer template de fontanería** (`templates/fontaneria/fontaneria-1`, tipo urgencias). Al crearlo: `templates/*/*` en `pnpm-workspace.yaml`.
-5. **SEO técnico en core:** metadatos por página, JSON-LD `LocalBusiness` (con `tipoSchema`, sin `aggregateRating`), sitemap y `noindex` de servicios sin `contenido`.
-6. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del primer template real.
-7. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
-
-**Hecho (antes de publicar 0.3.0):** arreglo de accesibilidad de `BotonLlamada` y `BotonWhatsApp` (sin `aria-label`; WCAG 2.5.3).
+4. **Primer template real: `templates/carpinteria-metalica/carpinteria-metalica-1` «Medida»** (tipo proyecto: aluminio y ventanas). **Solo este**: se lleva hasta el despliegue antes de hacer `-2` «Exposición» y `-3` «Reparaciones». El frontend lo construye un subagente con un encargo cerrado, después de que Ysst apruebe el plan de integración. Al crearlo: `templates/*/*` en `pnpm-workspace.yaml`. Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
+5. **Prueba con cliente ficticio** con `carpinteria-metalica-1`: web fuera de `kit` (proceso de §8 con `kit/templates/carpinteria-metalica/carpinteria-metalica-1` y core `^0.3.0`), datos ficticios, fotos libres de derechos, `noindex` y **repo público en Vercel Hobby**, igual que `web-prueba`.
+6. **SEO técnico en core:** metadatos por página, JSON-LD `LocalBusiness` (con `tipoSchema`, sin `aggregateRating`), sitemap y `noindex` de servicios sin `contenido`.
+7. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del primer template real (`nuevo-cliente.md`, a partir de la prueba del punto 5).
+8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
 
 **Más adelante:** Turborepo (con 3 o 4 templates); script `create-site` (automatiza §8); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
 
@@ -418,4 +417,4 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 - **Nombre decidido:** "Andrei Leads" es la marca personal de Ysst; no habrá rebrand, así que el scope `@andrei-leads` se mantiene.
 - **Token personal de GitHub** (classic, `write:packages` + `repo`, 90 días, guardado en Bitwarden). Si aparece un 401, probablemente ha caducado: ver `docs/publicar-core.md`.
 - **Token de Vercel** (classic, `read:packages`, caduca el 12/10/2027; recordatorio el 28/09/2027). Ver §8.
-- **Antes del primer cliente real:** pasar a Vercel Pro (§8).
+- **Antes del primer cliente real:** SEO técnico en core (sin él, la web va con `noindex`), Vercel Pro y repo privado (§8), y `docs/nuevo-cliente.md` escrito a partir de la prueba con cliente ficticio.
