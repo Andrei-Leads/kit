@@ -56,14 +56,17 @@ export default defineSiteConfig({
         "Si el cristal no se puede cambiar en el momento, tapamos el hueco para que la casa o el local queden cerrados y volvemos con el cristal a medida.",
       ],
       incluye: ["Retirada del cristal roto", "Cierre provisional si hace falta", "Cristal a medida", "Limpieza"],
-      imagenes: [{ src: "/ejemplo/servicio-cristal.jpg", alt: "Cristal de ventana con cinta de seguridad" }],
+      imagenes: [{ src: "/ejemplo/servicio-cristal.jpg", alt: "Cristal de ventana agrietado con cinta adhesiva en forma de X" }],
       mensajeWhatsapp: "Hola, tengo un cristal roto. Os envío una foto y las medidas aproximadas:",
       precioDesde: "desde 60 €", // PRECIO FICTICIO: borrar en la web del cliente
     },
     {
       titulo: "Puertas de garaje que no abren",
       descripcion: "Motores, mandos, muelles y guías de puertas de garaje y comunidades.",
-      imagenes: [{ src: "/ejemplo/servicio-garaje.jpg", alt: "Motor de una puerta de garaje seccional" }],
+      imagenes: [
+        { src: "/ejemplo/servicio-garaje.jpg", alt: "Motor de una puerta de garaje seccional en el techo" },
+        { src: "/ejemplo/servicio-garaje-2.jpg", alt: "Técnico de espaldas ajustando el motor de una puerta de garaje" },
+      ],
       mensajeWhatsapp: "Hola, la puerta del garaje no abre. Os envío una foto:",
     },
     {
@@ -74,6 +77,7 @@ export default defineSiteConfig({
     {
       titulo: "Rejas y barandillas dañadas",
       descripcion: "Soldamos, enderezamos y pintamos rejas, barandillas y vallas.",
+      imagenes: [{ src: "/ejemplo/servicio-rejas.jpg", alt: "Soldador con careta reparando una puerta metálica" }],
     },
     {
       titulo: "Motorización de persianas",
@@ -86,6 +90,7 @@ export default defineSiteConfig({
     {
       titulo: "Puertas de portal que no cierran",
       descripcion: "Portales de comunidad que no cierran solos o no encajan.",
+      imagenes: [{ src: "/ejemplo/servicio-portal.jpg", alt: "Bisagra de una puerta de portal metálica junto al portero automático" }],
     },
   ],
   trabajos: [
@@ -107,7 +112,7 @@ export default defineSiteConfig({
       anio: 2026,
       servicio: "puertas-de-garaje-que-no-abren",
       duracion: "1 día",
-      imagenes: [{ src: "/ejemplo/trabajo-garaje.jpg", alt: "Puerta de garaje seccional abierta" }],
+      imagenes: [{ src: "/ejemplo/trabajo-garaje.jpg", alt: "Motor y guías de una puerta de garaje seccional abierta" }],
     },
     {
       titulo: "Barandilla de balcón en Mislata",
@@ -115,7 +120,7 @@ export default defineSiteConfig({
       ubicacion: "Mislata",
       anio: 2025,
       servicio: "rejas-y-barandillas-danadas",
-      imagenes: [{ src: "/ejemplo/trabajo-barandilla.jpg", alt: "Barandilla metálica de balcón recién pintada" }],
+      imagenes: [{ src: "/ejemplo/trabajo-barandilla.jpg", alt: "Barandilla de acero inoxidable en un balcón, durante su instalación" }],
     },
   ],
   resenas: [
