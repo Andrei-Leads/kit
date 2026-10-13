@@ -320,6 +320,7 @@ Después hay que rellenar `site.config.ts` con los datos del cliente.
 | Documento | Estado | Úsalo cuando… |
 |---|---|---|
 | `docs/publicar-core.md` | Listo | Se cambia algo en `packages/core` que debe llegar a las webs |
+| `docs/sesion-web.md` | Listo (estado al 13/10/2026) | Se trabaja desde Claude Code en la web: qué cambia respecto a local, estado actual y tareas pendientes en orden |
 | `docs/brief-claude-design.md` | Listo (contrato 0.3.0, multipágina, reglas por tipo) | Se va a pedir un diseño a Claude Design. Es genérico: el encargo concreto de cada template se escribe aparte |
 | `docs/investigacion-nichos.md` | Referencia («investigación por nichos») | Se quiere el porqué de las reglas por tipo (estructura que más convierte por nicho) |
 | `docs/nuevo-template.md` | Pendiente (se escribe tras el primer template real) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
