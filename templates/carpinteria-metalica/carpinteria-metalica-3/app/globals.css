@@ -1,0 +1,82 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+
+/* Tokens del diseño «Reparaciones» (carpinteria-metalica-3).
+   Solo --color-primario se sobrescribe desde site.config (layout.tsx). */
+@theme {
+  --color-primario: #9a3412; /* marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-primario-tinte: color-mix(in oklab, var(--color-primario) 8%, var(--color-papel));
+  --color-papel: #f5f4f1;
+  --color-tarjeta: #ffffff;
+  --color-tinta: #17181a;
+  --color-tinta-suave: #45474b;
+  --color-acero: #5b6670;
+  --color-linea: #b9b6ae;
+
+  --font-sans: var(--font-barlow), system-ui, sans-serif;
+
+  --radius-sm: 2px; /* etiquetas «Foto de ejemplo», «Antes/Después» */
+  --radius-md: 4px; /* todo lo demás: botones, filas, tarjetas, chips */
+
+  --shadow-placa: 3px 3px 0 rgb(23 24 26 / 0.12); /* filas y tarjetas de CTA */
+  --shadow-placa-lg: 6px 6px 0 rgb(23 24 26 / 0.12); /* tarjeta del hero (escritorio) */
+  --shadow-boton: 3px 3px 0 rgb(23 24 26 / 0.18); /* llamada-hero */
+  --shadow-barra: 0 -6px 18px rgb(23 24 26 / 0.14); /* barra móvil */
+
+  --animate-acordeon-abrir: acordeon-abrir 0.18s ease-out;
+  --animate-acordeon-cerrar: acordeon-cerrar 0.18s ease-out;
+
+  @keyframes acordeon-abrir {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes acordeon-cerrar {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/* Borde de chapa: 2px en tinta. En clases: border-2 border-tinta. */
+:root {
+  --border-chapa: 2px solid var(--color-tinta);
+}
+
+/* Ancho de contenido de la maqueta (1120px). */
+@utility contenedor {
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  @media (min-width: 48rem) {
+    padding-inline: 32px;
+  }
+}
+
+@layer base {
+  html {
+    /* Las anclas no quedan tapadas por la cabecera fija (64px). */
+    scroll-padding-top: 5rem;
+  }
+  body {
+    background-color: var(--color-papel);
+    color: var(--color-tinta);
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-tinta);
+    outline-offset: 3px;
+  }
+  /* Sobre fondos oscuros o de color (primario, tinta) el foco va en blanco. */
+  .foco-claro :focus-visible {
+    outline-color: #ffffff;
+  }
+}

@@ -56,7 +56,7 @@ kit/
 ├─ AGENTS.md                 # este archivo
 ├─ CLAUDE.md                 # importa AGENTS.md para Claude Code
 ├─ package.json              # raíz: private, packageManager, devDeps (@changesets/cli)
-├─ pnpm-workspace.yaml       # define el monorepo: packages/*, templates/*, apps/*
+├─ pnpm-workspace.yaml       # define el monorepo: packages/*, templates/*, templates/*/*, apps/*
 ├─ pnpm-lock.yaml            # versiones exactas; se commitea siempre
 ├─ .npmrc                    # DIRECCIÓN del registro para @andrei-leads (sin token)
 ├─ .gitignore                # node_modules, .next, .turbo
@@ -76,9 +76,9 @@ kit/
 │        ├─ boton-whatsapp.tsx
 │        └─ legal.tsx        # AvisoLegal, PoliticaPrivacidad, PoliticaCookies, enlacesLegales
 ├─ templates/
-│  ├─ pergolas/              # template DE PRUEBA (no es un diseño real)
 │  ├─ jardineria-1/          # piloto «Rótulo» (one-page, referencia; se sustituirá)
-│  └─ <nicho>/<nicho>-<n>/   # PREVISTO: carpetas por nicho, p. ej. fontaneria/fontaneria-1 (ver §7)
+│  └─ carpinteria-metalica/
+│     └─ carpinteria-metalica-3/   # «Reparaciones» (primer template real, multipágina; ver §7)
 └─ apps/                     # vacío por ahora (reservado, p. ej. playground)
 ```
 
@@ -88,14 +88,15 @@ kit/
 packages:
   - "packages/*"
   - "templates/*"
+  - "templates/*/*"
   - "apps/*"
 ```
 
-**Pendiente:** al crear el primer template anidado (`templates/<nicho>/<nicho>-<n>`) hay que añadir `"templates/*/*"` a `pnpm-workspace.yaml`; con `templates/*` solo, pnpm no lo ve. `pergolas` y `jardineria-1` siguen planos hasta entonces.
+`templates/*` cubre los planos (`jardineria-1`) y `templates/*/*` los anidados por nicho (`templates/<nicho>/<nicho>-<n>`); sin esa línea, pnpm no ve los anidados.
 
 Cada carpeta dentro de esas rutas que tenga un `package.json` es un proyecto del workspace. Para listarlos: `pnpm ls -r --depth -1` (`pnpm ls -r` sin `--depth -1` lista dependencias, no proyectos).
 
-Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <comando>` (por ejemplo, `pnpm --filter pergolas dev`).
+Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <comando>` (por ejemplo, `pnpm --filter carpinteria-metalica-3 dev`).
 
 ---
 
@@ -228,7 +229,7 @@ Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `st
 
 ## 7. Templates
 
-- **Nombre:** `templates/<nicho>/<nicho>-<n>`, por ejemplo `templates/fontaneria/fontaneria-1`. **3 templates por nicho**, cada uno con datos (`site.config.ts`) y fotos de ejemplo (`public/ejemplo/`) de su sector. Requiere el cambio pendiente de `pnpm-workspace.yaml` (§4).
+- **Nombre:** `templates/<nicho>/<nicho>-<n>`, por ejemplo `templates/fontaneria/fontaneria-1`. **3 templates por nicho**, cada uno con datos (`site.config.ts`) y fotos de ejemplo (`public/ejemplo/`) de su sector. `pnpm-workspace.yaml` ya los incluye (`templates/*/*`, §4).
 - **El tipo de negocio es la guía de diseño, no la carpeta.** Cada nicho sigue las reglas de su tipo (objetivo, páginas, orden de la home, CTA, barra móvil, qué no llevar), detalladas en `docs/brief-claude-design.md` §6:
 
   | Tipo | Nichos | Objetivo | Barra móvil |
@@ -240,13 +241,15 @@ Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `st
 
   Los 3 templates de un nicho difieren en al menos 4 ejes de estructura (hero, orden, sección estrella, trabajos, navegación, botones, tipografía, densidad), no solo en el color.
 - **Webs multipágina.** Rutas fijas en todos los templates: `/`, `/servicios`, `/servicios/[slug]`, `/trabajos`, `/trabajos/[slug]`, `/empresa`, `/contacto`, las tres legales y `/comunidades` (solo obra técnica, si existe `comunidades`). La etiqueta del menú es libre; la ruta no. Sin páginas por municipio. Cabecera, pie y barra móvil en `app/layout.tsx`, presentes en todas las páginas.
-- **`templates/pergolas` es un template de prueba** del aprendizaje, no un diseño real; se borrará cuando exista el primer template real. **`templates/jardineria-1`** («Rótulo», one-page) es la referencia del tipo recurrente; se moverá a `templates/jardineria/` cuando se trabaje ese tipo.
-- **Estructura de `pergolas`** (creado con `create-next-app`: TypeScript, ESLint, Tailwind v4, App Router, Turbopack, **sin `src/`**):
-  - `app/` en la raíz del template (`app/page.tsx`, `app/layout.tsx`, `app/globals.css`).
+- **`templates/carpinteria-metalica/carpinteria-metalica-3`** («Reparaciones», sigue las reglas de urgencias) es el primer template real. **`templates/jardineria-1`** («Rótulo», one-page) es la referencia del tipo recurrente; se moverá a `templates/jardineria/` cuando se trabaje ese tipo. El template de prueba `pergolas` ya se borró.
+- **Estructura de un template** (la de `carpinteria-metalica-3`, con el esqueleto de `jardineria-1`: Next 16, TypeScript, ESLint, Tailwind v4, App Router, Turbopack, `cacheComponents: true`, **sin `src/`**):
+  - `app/` en la raíz del template: `layout.tsx`, `page.tsx`, `globals.css` y una carpeta por ruta fija. Además, `components/ui/` (shadcn), `components/secciones/`, `lib/` y `public/ejemplo/`.
   - `site.config.ts` en la raíz del template.
   - Alias `@/*` → `./*`, así que se importa con `import config from "@/site.config"`.
-  - `templates/pergolas/AGENTS.md` lo generó Next.js (apunta a su documentación); no es de este proyecto.
+  - El `AGENTS.md` del template lo genera Next.js (apunta a su documentación en `node_modules/next/dist/docs/`); no es de este proyecto.
   - Lleva su propio `.gitignore` (de `create-next-app`); es correcto. Un `.git` dentro de un template **no**, y habría que borrarlo.
+  - Con `cacheComponents`, `generateStaticParams` no puede devolver `[]` (falla el build): sin trabajos, devuelve un slug de relleno (`[{ slug: "_" }]`) que hace `notFound()`. Nada de `new Date()` en el render: el año sale de `lib/anio.ts` (`"use cache"` + `cacheLife("days")`).
+  - Mientras core no tenga SEO técnico, toda la web lleva `noindex` (`metadata.robots` en `app/layout.tsx`).
 - Si `create-next-app` deja un `pnpm-lock.yaml` o un `pnpm-workspace.yaml` dentro del template, se borra: en el monorepo solo cuentan los de la raíz.
 - **Qué pone cada template (frontera con core):**
   - **Componentes shadcn:** dentro del template (copiados), nunca en core.
@@ -395,17 +398,17 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 ## 12. Estado y hoja de ruta
 
-**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas`, piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, web de cliente de prueba (`web-prueba`) desplegada en Vercel, Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`), `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`) y `0.3.0` (por la Action, PR #2: contrato multipágina, `BotonWhatsApp`, `imagenesHero`, slugs, `servicios[].imagenes` y `negocio.logo` como `{src, alt}`, y botones sin `aria-label`: el nombre accesible es el texto visible, WCAG 2.5.3). Brief reescrito para webs multipágina y reglas por tipo. Encargos de Claude Design escritos (3 por nicho: carpintería metálica, fontanería y pérgolas), fuera del repo en `mis_datos/encargos-claude-design/`.
+**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas` (ya borrado), piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, web de cliente de prueba (`web-prueba`) desplegada en Vercel, Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`), `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`) y `0.3.0` (por la Action, PR #2: contrato multipágina, `BotonWhatsApp`, `imagenesHero`, slugs, `servicios[].imagenes` y `negocio.logo` como `{src, alt}`, y botones sin `aria-label`: el nombre accesible es el texto visible, WCAG 2.5.3). Brief reescrito para webs multipágina y reglas por tipo. Encargos de Claude Design escritos (3 por nicho: carpintería metálica, fontanería y pérgolas), fuera del repo en `mis_datos/encargos-claude-design/`.
 
-**En curso:** Claude Design diseña `carpinteria-metalica-1` «Medida»; el diseño se exportará a `mis_datos/disenyo-carpinteria-metalica-1/`.
+**En curso:** `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» integrado desde el diseño de Claude Design (`mis_datos/designs/carpinteria_metalica/3/`), sin commit: build y lint OK, `noindex`, fotos de relleno en `public/ejemplo/` (las reales, pendientes: ver su `CREDITOS.md`). Claude Design diseña `carpinteria-metalica-1` «Medida»; el diseño se exportará a `mis_datos/disenyo-carpinteria-metalica-1/`.
 
 **Siguiente, en orden:**
 
 1. ~~**Frontera core / template.**~~ **Resuelta en core 0.2.0** (ver §5, §7 y §10).
 2. ~~**`docs/brief-claude-design.md`**~~ **Hecho.** El mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
 3. ~~**Piloto `jardineria-1`**~~ **Hecho** (one-page; queda como referencia). Despliegue probado con `web-prueba` (§8).
-4. **Primer template real: `templates/carpinteria-metalica/carpinteria-metalica-1` «Medida»** (tipo proyecto: aluminio y ventanas). **Solo este**: se lleva hasta el despliegue antes de hacer `-2` «Exposición» y `-3` «Reparaciones». El frontend lo construye un subagente con un encargo cerrado, después de que Ysst apruebe el plan de integración. Al crearlo: `templates/*/*` en `pnpm-workspace.yaml`. Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
-5. **Prueba con cliente ficticio** con `carpinteria-metalica-1`: web fuera de `kit` (proceso de §8 con `kit/templates/carpinteria-metalica/carpinteria-metalica-1` y core `^0.3.0`), datos ficticios, fotos libres de derechos, `noindex` y **repo público en Vercel Hobby**, igual que `web-prueba`.
+4. **Templates de carpintería metálica.** `-3` «Reparaciones» ya está integrado (faltan las fotos reales y la revisión visual de Ysst). Siguen `-1` «Medida» (tipo proyecto: aluminio y ventanas) y `-2` «Exposición», cada uno construido por subagentes con un encargo cerrado. Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
+5. **Prueba con cliente ficticio** con el primer template terminado (`carpinteria-metalica-3`, salvo que Ysst prefiera esperar a `-1`): web fuera de `kit` (proceso de §8 con `kit/templates/carpinteria-metalica/carpinteria-metalica-<n>` y core `^0.3.0`), datos ficticios, fotos libres de derechos, `noindex` y **repo público en Vercel Hobby**, igual que `web-prueba`.
 6. **SEO técnico en core:** metadatos por página, JSON-LD `LocalBusiness` (con `tipoSchema`, sin `aggregateRating`), sitemap y `noindex` de servicios sin `contenido`.
 7. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del primer template real (`nuevo-cliente.md`, a partir de la prueba del punto 5).
 8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
