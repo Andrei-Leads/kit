@@ -251,7 +251,7 @@ Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `st
 - **Qué pone cada template (frontera con core):**
   - **Componentes shadcn:** dentro del template (copiados), nunca en core.
   - **Cabecera y pie:** del template. El pie **debe** enlazar `enlacesLegales` de core.
-  - **Rutas legales obligatorias:** `app/aviso-legal/page.tsx`, `app/privacidad/page.tsx` y `app/cookies/page.tsx`. Core pone el texto; el template lo envuelve con su layout (cabecera, pie, barra móvil). Cada ruta solo renderiza el componente de core:
+  - **Rutas legales obligatorias:** `app/aviso-legal/page.tsx`, `app/privacidad/page.tsx` y `app/cookies/page.tsx`. Core pone el texto; el template lo envuelve con su layout (cabecera, pie, barra móvil). El `<h1>` lo pone core: el template puede añadir migas, pero **no un segundo título**. Cada ruta solo renderiza el componente de core:
 
     ```tsx
     import { AvisoLegal } from "@andrei-leads/core";
@@ -370,7 +370,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | **`valoracion` se muestra pero no va al JSON-LD** | Las directrices de Google no permiten `aggregateRating` con reseñas de Google |
 | **Sin formularios; asistente de WhatsApp en su lugar** | Sin backend ni datos personales que custodiar; WhatsApp lo usa el 94 % en España |
 | **`BotonLlamada` y `BotonWhatsApp` para todo botón de contacto; mensaje de WhatsApp precargado por página** | Accesibilidad y enlaces iguales en todas las webs; el mensaje dice de dónde viene el lead |
-| **Legales con el layout del template** | Core da el texto; navbar y pie en todas las páginas para no dejar al visitante sin salida |
+| **Legales con el layout del template; el `<h1>` lo pone core** | Core da el texto; navbar y pie en todas las páginas para no dejar al visitante sin salida. Un solo `<h1>` por página (accesibilidad y SEO): el template solo añade migas |
 
 ---
 
