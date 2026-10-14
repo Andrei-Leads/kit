@@ -78,6 +78,7 @@ kit/
 ├─ templates/
 │  ├─ jardineria-1/          # piloto «Rótulo» (one-page, referencia; se sustituirá)
 │  └─ carpinteria-metalica/
+│     ├─ carpinteria-metalica-1/   # «Medida» (tipo proyecto: asistente de WhatsApp en el hero; fotos de relleno)
 │     └─ carpinteria-metalica-3/   # «Reparaciones» (primer template real, multipágina; ver §7)
 └─ apps/                     # vacío por ahora (reservado, p. ej. playground)
 ```
@@ -309,6 +310,7 @@ Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `st
 | `docs/nuevo-template.md` | Pendiente (se escribe tras el primer template real) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
 | `docs/nuevo-cliente.md` | Listo (probado con `web-metalicas-ejemplo`, 13/10/2026) | Se crea la web de un cliente a partir de un template y se despliega |
 | `docs/actualizar-cliente.md` | Pendiente | Se lleva una versión nueva de core a una web ya entregada |
+| `docs/cambio-de-plan.md` | SOP provisional (diseño sin implementar: core 0.5.0/0.6.0) | Un cliente pasa de plan Básico a Pro (analítica con consentimiento) o al revés. El agente pregunta los datos y hace el cambio en `site.config` |
 
 Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en este archivo y propón escribir el documento cuando el proceso funcione.
 
@@ -354,6 +356,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | **Sin formularios; asistente de WhatsApp en su lugar** | Sin backend ni datos personales que custodiar; WhatsApp lo usa el 94 % en España |
 | **`BotonLlamada` y `BotonWhatsApp` para todo botón de contacto; mensaje de WhatsApp precargado por página** | Accesibilidad y enlaces iguales en todas las webs; el mensaje dice de dónde viene el lead |
 | **Legales con el layout del template; el `<h1>` lo pone core** | Core da el texto; navbar y pie en todas las páginas para no dejar al visitante sin salida. Un solo `<h1>` por página (accesibilidad y SEO): el template solo añade migas |
+| **Planes por datos (provisional): Básico = Vercel Web Analytics sin cookies ni banner; Pro = + GA4/Meta con banner de consentimiento de core** | El cambio de plan es solo un cambio en `site.config` (sin tocar el template) y lo puede hacer un agente siguiendo `docs/cambio-de-plan.md`. Vercel Web Analytics se sirve desde la propia web y no usa cookies: es la única analítica permitida sin consentimiento. Pendiente de confirmar límites y coste de Vercel por plan |
 
 ---
 
@@ -381,15 +384,15 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 **Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas` (ya borrado), piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, webs de cliente de prueba desplegadas en Vercel (`web-prueba` y `web-metalicas-ejemplo`), Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`), `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`) y `0.3.0` (por la Action, PR #2: contrato multipágina, `BotonWhatsApp`, `imagenesHero`, slugs, `servicios[].imagenes` y `negocio.logo` como `{src, alt}`, y botones sin `aria-label`: el nombre accesible es el texto visible, WCAG 2.5.3). Brief reescrito para webs multipágina y reglas por tipo. Encargos de Claude Design escritos (3 por nicho: carpintería metálica, fontanería y pérgolas), fuera del repo en `mis_datos/encargos-claude-design/`.
 
-**En curso:** `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» integrado y subido; faltan 4 fotos de ejemplo (ver su `CREDITOS.md`). Diseños `-1` «Medida» y `-2` «Exposición» entregados por Claude Design en `mis_datos/designs/carpinteria_metalica/`; siguen en ese orden (to-dos en `mis_datos/PENDIENTES-kit.md`).
+**En curso:** `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» integrado y subido, con las 9 fotos de ejemplo (IA). `-1` «Medida» (tipo proyecto) integrado el 14/10/2026, sin commit: compila, rutas fijas, asistente de WhatsApp paso a paso en el hero, probado con datos completos, mínimos (con y sin WhatsApp), 1 servicio, solo galería + logo y primario `#1e40af`; sus 15 fotos de `public/ejemplo/` son **relleno gris** con los nombres de su `CREDITOS.md` (sustituirlas = reemplazar archivos) y falta la revisión visual de Ysst. `-2` «Exposición» entregado por Claude Design en `mis_datos/designs/carpinteria_metalica/`; es el siguiente (to-dos en `mis_datos/PENDIENTES-kit.md`).
 
 **Siguiente, en orden:**
 
 1. ~~**Frontera core / template.**~~ **Resuelta en core 0.2.0** (ver §5, §7 y §10).
 2. ~~**`docs/brief-claude-design.md`**~~ **Hecho.** El mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
 3. ~~**Piloto `jardineria-1`**~~ **Hecho** (one-page; queda como referencia). Despliegue probado con `web-prueba` (§8).
-4. **Templates de carpintería metálica.** `-3` «Reparaciones» ya está integrado (faltan las fotos reales y la revisión visual de Ysst). Siguen `-1` «Medida» (tipo proyecto: aluminio y ventanas) y `-2` «Exposición», cada uno construido por subagentes con un encargo cerrado. Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
-5. ~~**Prueba con cliente ficticio**~~ **Hecha (13/10/2026):** `web-metalicas-ejemplo` (template `carpinteria-metalica-3`, core `^0.3.0`, datos ficticios, `noindex`), repo público en Vercel Hobby: https://web-metalicas-ejemplo-nu.vercel.app. Proceso en `docs/nuevo-cliente.md`. Por verificar: que un `git push` a `main` redespliega solo (al subir las fotos que faltan).
+4. **Templates de carpintería metálica.** `-3` «Reparaciones» y `-1` «Medida» (tipo proyecto: aluminio y ventanas) ya están integrados (faltan las fotos reales y la revisión visual de Ysst). Sigue `-2` «Exposición», construido por subagentes con un encargo cerrado. Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
+5. ~~**Prueba con cliente ficticio**~~ **Hecha (13/10/2026):** `web-metalicas-ejemplo` (template `carpinteria-metalica-3`, core `^0.3.0`, datos ficticios, `noindex`), repo público en Vercel Hobby: https://web-metalicas-ejemplo-nu.vercel.app. Proceso en `docs/nuevo-cliente.md`. Redespliegue automático con `git push` a `main` comprobado (14/10/2026).
 6. **SEO técnico en core:** metadatos por página, JSON-LD `LocalBusiness` (con `tipoSchema`, sin `aggregateRating`), sitemap y `noindex` de servicios sin `contenido`.
 7. **Escribir `nuevo-template.md` y `actualizar-cliente.md`** a partir del primer template real (`nuevo-cliente.md` ya está hecho, a partir de la prueba del punto 5).
 8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.

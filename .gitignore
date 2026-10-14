@@ -1,3 +1,6 @@
 node_modules
 .next
 .turbo
+
+# worktrees temporales de Claude Code
+.claude/worktrees/

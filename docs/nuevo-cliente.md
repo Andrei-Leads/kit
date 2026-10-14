@@ -193,7 +193,7 @@ Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren co
 
 ### 13. Cambios posteriores
 
-- Cambios de datos, fotos o diseño en la web: commit y `git push` a `main` desde `web-<cliente>/`; Vercel redespliega solo. **Por verificar** (se probará al subir las fotos que faltan en `web-metalicas-ejemplo`).
+- Cambios de datos, fotos o diseño en la web: commit y `git push` a `main` desde `web-<cliente>/`; Vercel redespliega solo. Comprobado el 14/10/2026 con `web-metalicas-ejemplo`.
 - Llevar una versión nueva de core a una web ya entregada: futuro `docs/actualizar-cliente.md` (de momento, `docs/publicar-core.md` paso 6). La web queda **congelada** en su versión de core hasta que se actualiza a mano.
 
 ## Problemas frecuentes
