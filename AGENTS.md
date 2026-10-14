@@ -275,46 +275,26 @@ Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `st
 
 ---
 
-## 8. Webs de clientes (proceso manual provisional)
+## 8. Webs de clientes
 
-Mientras no existan `docs/nuevo-cliente.md` y el script `create-site`, este es el proceso que se probó con `web-prueba` (carpeta hermana de `kit`, solo local):
+**Proceso completo, paso a paso: `docs/nuevo-cliente.md`** (probado con `web-metalicas-ejemplo`, 13/10/2026). Resumen:
 
-```bash
-# Desde mis_datos/ (la carpeta que contiene a kit). La web debe quedar FUERA de kit.
-cp -r kit/templates/<template> web-<cliente>
-cd web-<cliente>
-rm -rf node_modules .next
-sed -i 's/"workspace:[^"]*"/"^X.Y.Z"/' package.json          # versión publicada de core
-sed -i 's/"name": "<template>"/"name": "web-<cliente>"/' package.json
-grep andrei-leads package.json                                 # comprobar
-echo "@andrei-leads:registry=https://npm.pkg.github.com" > .npmrc
-git init
-pnpm install
-readlink -f node_modules/@andrei-leads/core   # debe apuntar a node_modules/.pnpm/@andrei-leads+core@X.Y.Z…
-```
-
-Después hay que rellenar `site.config.ts` con los datos del cliente.
+1. Desde `mis_datos/` (la web queda **fuera** de `kit`): `cp -r kit/templates/<nicho>/<nicho>-<n> web-<cliente>`, borrar `node_modules` y `.next`, cambiar `workspace:^` por la versión publicada de core (`^X.Y.Z`) y el `name` en `package.json`, `.npmrc` con **solo** la línea del registro, `git init`, `pnpm install` (core descargado de GitHub Packages) y `pnpm build`.
+2. Rellenar `site.config.ts` **de la web** (nunca el del template) y poner las fotos.
+3. Commit, repo vacío `Andrei-Leads/web-<cliente>`, push, acceso de la GitHub App de Vercel al repo, proyecto en Vercel con la variable `NPM_RC` y comprobación de rutas, `noindex`, `<h1>` y botones.
 
 **Comportamiento esperado:** la web queda **congelada** en la versión de core que instaló. Los cambios en `kit/packages/core` no le afectan hasta que se ejecuta `pnpm up @andrei-leads/core` (o `pnpm add @andrei-leads/core@^0.N.0` si es un minor en 0.x; ver `docs/publicar-core.md`).
 
-### Despliegue en Vercel (probado con `web-prueba`, oct 2026)
+**`NPM_RC` en Vercel** (contenido de la variable, no un comando). Vercel lo usa como `.npmrc` durante el build. **El `.npmrc` del repo no lleva la línea del token**: si llevara `${NPM_TOKEN}`, en local tendría prioridad sobre `~/.npmrc` y `pnpm install` daría 401.
 
-1. Primer commit de la web y repo en la org `Andrei-Leads` (`https://github.com/Andrei-Leads/web-<cliente>`), vacío (sin README ni `.gitignore`); después `git remote add origin …` y `git push -u origin main`.
-2. Vercel → **Add New → Project** → importar el repo. La GitHub App de Vercel solo tiene acceso a los repos seleccionados (**Only select repositories**): hay que añadir cada repo nuevo.
-3. **Configure Project:** preset Next.js, Root Directory `./`; los comandos de build e install se dejan por defecto (Vercel detecta pnpm por el lockfile).
-4. **Environment Variables:** `NPM_RC` (Production y Preview; *Sensitive* si existe la opción), con este valor (**contenido de la variable, no un comando**):
-
-   ```
-   @andrei-leads:registry=https://npm.pkg.github.com
-   //npm.pkg.github.com/:_authToken=<token de solo lectura>
-   ```
-
-   Vercel usa `NPM_RC` como `.npmrc` durante el build. **El `.npmrc` del repo no lleva la línea del token** (solo la del registro): si llevara `${NPM_TOKEN}`, en local tendría prioridad sobre `~/.npmrc` y `pnpm install` daría 401.
-5. **Deploy.**
+```
+@andrei-leads:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=<token de solo lectura>
+```
 
 **Token de Vercel:** classic, **solo `read:packages`**, 1 año, nota `Vercel — leer @andrei-leads/core (despliegues de clientes)`, guardado en Bitwarden y con recordatorio en el calendario dos semanas antes de que caduque. Es distinto del token personal de publicación (§12): si el de Vercel se filtra, solo permite leer core. Cuando caduca, las webs publicadas siguen funcionando, pero **fallan todos los despliegues nuevos** hasta actualizar `NPM_RC` en cada proyecto y hacer *Redeploy*.
 
-**Plan de Vercel:** Hobby no despliega repos **privados de una organización** y no permite uso comercial. `web-prueba` se hizo **público** para la prueba (datos ficticios y sin secretos; el código de core sigue privado porque solo se descarga en el build). **Clientes reales: Vercel Pro (unos 20 $/mes por miembro, proyectos ilimitados) y repos privados**, para que no se vea el código del template.
+**Plan de Vercel:** Hobby no despliega repos **privados de una organización** y no permite uso comercial. `web-prueba` y `web-metalicas-ejemplo` se hicieron **públicos** para las pruebas (datos ficticios y sin secretos; el código de core sigue privado porque solo se descarga en el build). **Clientes reales: Vercel Pro (unos 20 $/mes por miembro, proyectos ilimitados) y repos privados**, para que no se vea el código del template.
 
 ---
 
@@ -327,7 +307,7 @@ Después hay que rellenar `site.config.ts` con los datos del cliente.
 | `docs/brief-claude-design.md` | Listo (contrato 0.3.0, multipágina, reglas por tipo) | Se va a pedir un diseño a Claude Design. Es genérico: el encargo concreto de cada template se escribe aparte |
 | `docs/investigacion-nichos.md` | Referencia («investigación por nichos») | Se quiere el porqué de las reglas por tipo (estructura que más convierte por nicho) |
 | `docs/nuevo-template.md` | Pendiente (se escribe tras el primer template real) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
-| `docs/nuevo-cliente.md` | Pendiente (se escribe tras el piloto) | Se crea la web de un cliente a partir de un template y se despliega |
+| `docs/nuevo-cliente.md` | Listo (probado con `web-metalicas-ejemplo`, 13/10/2026) | Se crea la web de un cliente a partir de un template y se despliega |
 | `docs/actualizar-cliente.md` | Pendiente | Se lleva una versión nueva de core a una web ya entregada |
 
 Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en este archivo y propón escribir el documento cuando el proceso funcione.
@@ -392,15 +372,16 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | Texto claro sobre fondo oscuro "sin estilos" | `globals.css` por defecto + modo oscuro de Kubuntu | Normal; mirar si existen las clases, no el color |
 | Vercel no muestra el repo o pide Pro al importarlo | Hobby no despliega repos privados de una organización, o la GitHub App de Vercel no tiene acceso a ese repo | Pro (o repo público solo para pruebas); añadir el repo en los permisos de la GitHub App |
 | `401` en el build de Vercel al instalar core | Falta `NPM_RC`, está mal pegada o el token de Vercel ha caducado | Revisar y actualizar `NPM_RC` en el proyecto y hacer *Redeploy* (§8) |
+| `ERR_PNPM_FETCH_401` en el build de Vercel y el log muestra `_authToken=` con algo que no empieza por `ghp_` | Se copió otro campo de Bitwarden en `NPM_RC` | Editar `NPM_RC` con el token `ghp_…` → Save → Deployments → ⋯ → Redeploy; si lo pegado era una contraseña, cambiarla (`docs/nuevo-cliente.md`) |
 | Se pega JSON en la terminal | Confusión entre comando y archivo | Decir siempre "esto va en el archivo X" |
 
 ---
 
 ## 12. Estado y hoja de ruta
 
-**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas` (ya borrado), piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, web de cliente de prueba (`web-prueba`) desplegada en Vercel, Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`), `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`) y `0.3.0` (por la Action, PR #2: contrato multipágina, `BotonWhatsApp`, `imagenesHero`, slugs, `servicios[].imagenes` y `negocio.logo` como `{src, alt}`, y botones sin `aria-label`: el nombre accesible es el texto visible, WCAG 2.5.3). Brief reescrito para webs multipágina y reglas por tipo. Encargos de Claude Design escritos (3 por nicho: carpintería metálica, fontanería y pérgolas), fuera del repo en `mis_datos/encargos-claude-design/`.
+**Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas` (ya borrado), piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, webs de cliente de prueba desplegadas en Vercel (`web-prueba` y `web-metalicas-ejemplo`), Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`), `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`) y `0.3.0` (por la Action, PR #2: contrato multipágina, `BotonWhatsApp`, `imagenesHero`, slugs, `servicios[].imagenes` y `negocio.logo` como `{src, alt}`, y botones sin `aria-label`: el nombre accesible es el texto visible, WCAG 2.5.3). Brief reescrito para webs multipágina y reglas por tipo. Encargos de Claude Design escritos (3 por nicho: carpintería metálica, fontanería y pérgolas), fuera del repo en `mis_datos/encargos-claude-design/`.
 
-**En curso:** `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» integrado desde el diseño de Claude Design (`mis_datos/designs/carpinteria_metalica/3/`), sin commit: build y lint OK, `noindex`, fotos de relleno en `public/ejemplo/` (las reales, pendientes: ver su `CREDITOS.md`). Claude Design diseña `carpinteria-metalica-1` «Medida»; el diseño se exportará a `mis_datos/disenyo-carpinteria-metalica-1/`.
+**En curso:** `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» integrado y subido; faltan 4 fotos de ejemplo (ver su `CREDITOS.md`). Diseños `-1` «Medida» y `-2` «Exposición» entregados por Claude Design en `mis_datos/designs/carpinteria_metalica/`; siguen en ese orden (to-dos en `mis_datos/PENDIENTES-kit.md`).
 
 **Siguiente, en orden:**
 
@@ -408,16 +389,16 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 2. ~~**`docs/brief-claude-design.md`**~~ **Hecho.** El mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
 3. ~~**Piloto `jardineria-1`**~~ **Hecho** (one-page; queda como referencia). Despliegue probado con `web-prueba` (§8).
 4. **Templates de carpintería metálica.** `-3` «Reparaciones» ya está integrado (faltan las fotos reales y la revisión visual de Ysst). Siguen `-1` «Medida» (tipo proyecto: aluminio y ventanas) y `-2` «Exposición», cada uno construido por subagentes con un encargo cerrado. Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
-5. **Prueba con cliente ficticio** con el primer template terminado (`carpinteria-metalica-3`, salvo que Ysst prefiera esperar a `-1`): web fuera de `kit` (proceso de §8 con `kit/templates/carpinteria-metalica/carpinteria-metalica-<n>` y core `^0.3.0`), datos ficticios, fotos libres de derechos, `noindex` y **repo público en Vercel Hobby**, igual que `web-prueba`.
+5. ~~**Prueba con cliente ficticio**~~ **Hecha (13/10/2026):** `web-metalicas-ejemplo` (template `carpinteria-metalica-3`, core `^0.3.0`, datos ficticios, `noindex`), repo público en Vercel Hobby: https://web-metalicas-ejemplo-nu.vercel.app. Proceso en `docs/nuevo-cliente.md`. Por verificar: que un `git push` a `main` redespliega solo (al subir las fotos que faltan).
 6. **SEO técnico en core:** metadatos por página, JSON-LD `LocalBusiness` (con `tipoSchema`, sin `aggregateRating`), sitemap y `noindex` de servicios sin `contenido`.
-7. **Escribir `nuevo-template.md`, `nuevo-cliente.md` y `actualizar-cliente.md`** a partir del primer template real (`nuevo-cliente.md`, a partir de la prueba del punto 5).
+7. **Escribir `nuevo-template.md` y `actualizar-cliente.md`** a partir del primer template real (`nuevo-cliente.md` ya está hecho, a partir de la prueba del punto 5).
 8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
 
-**Más adelante:** Turborepo (con 3 o 4 templates); script `create-site` (automatiza §8); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
+**Más adelante:** Turborepo (con 3 o 4 templates); script `create-site` (automatiza los pasos 1–4 de `docs/nuevo-cliente.md`); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
 
 **Avisos con fecha:**
 
 - **Nombre decidido:** "Andrei Leads" es la marca personal de Ysst; no habrá rebrand, así que el scope `@andrei-leads` se mantiene.
 - **Token personal de GitHub** (classic, `write:packages` + `repo`, 90 días, guardado en Bitwarden). Si aparece un 401, probablemente ha caducado: ver `docs/publicar-core.md`.
 - **Token de Vercel** (classic, `read:packages`, caduca el 12/10/2027; recordatorio el 28/09/2027). Ver §8.
-- **Antes del primer cliente real:** SEO técnico en core (sin él, la web va con `noindex`), Vercel Pro y repo privado (§8), y `docs/nuevo-cliente.md` escrito a partir de la prueba con cliente ficticio.
+- **Antes del primer cliente real:** SEO técnico en core (sin él, la web va con `noindex`), Vercel Pro y repo privado (§8), y fotos reales del cliente (checklist en `docs/nuevo-cliente.md`).

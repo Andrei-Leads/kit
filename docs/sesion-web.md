@@ -25,7 +25,7 @@
 - **No hay PR "Version Packages" abierto ni notas pendientes en `.changeset/`.**
 - **El brief nuevo está en `docs/brief-claude-design.md`:** multipágina y con reglas por tipo de negocio (urgencias, proyecto, obra técnica). Se basa en `docs/investigacion-nichos.md`.
 - **Carpetas por nicho:** `templates/<nicho>/<nicho>-<n>`. Todavía no existe ninguna; hoy solo están `templates/pergolas` (prueba) y `templates/jardineria-1` (piloto «Rótulo», como referencia).
-- **Primer template real: `carpinteria-metalica-1` «Medida»** (tipo proyecto: aluminio y ventanas). Claude Design lo está diseñando. Se integra **solo este** y se lleva hasta el despliegue antes de hacer `-2` «Exposición» y `-3` «Reparaciones»; fontanería y pérgolas, después.
+- **Primer template real: `carpinteria-metalica-3` «Reparaciones»**, integrado y desplegado como cliente ficticio (`web-metalicas-ejemplo`). Siguen `-1` «Medida» y `-2` «Exposición»; fontanería y pérgolas, después.
 - **Los encargos para Claude Design** (carpintería metálica, fontanería y pérgolas) los tiene Ysst en `mis_datos/encargos-claude-design/`, fuera del repo. Tú no los tienes.
 
 ## 3. Tareas, en orden
@@ -49,7 +49,7 @@ Piezas previstas:
 - **Es una funcionalidad nueva (nota *minor*):** saldrá en la **0.4.0**.
 - Rama `feat/seo-tecnico` y PR hacia `main` (ver §1, Git).
 
-### Tarea 3: primer template real (solo si Ysst trae el diseño de Claude Design)
+### Tarea 3: primer template real — HECHA con `carpinteria-metalica-3` «Reparaciones» (sáltala; `-1` «Medida» sigue pendiente, ver `AGENTS.md` §12)
 
 Si Ysst te pasa el diseño de `carpinteria-metalica-1` «Medida» (un enlace o archivos; en local lo exportará a `mis_datos/disenyo-carpinteria-metalica-1/`):
 1. Revisa que cumple `docs/brief-claude-design.md` y su encargo (`carpinteria-metalica-1.md`; pídeselo a Ysst).
