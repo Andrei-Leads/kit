@@ -74,7 +74,9 @@ kit/
 │        ├─ site-config.ts   # esquema Zod del contrato de contenido
 │        ├─ boton-llamada.tsx
 │        ├─ boton-whatsapp.tsx
-│        └─ legal.tsx        # AvisoLegal, PoliticaPrivacidad, PoliticaCookies, enlacesLegales
+│        ├─ legal.tsx        # AvisoLegal, PoliticaPrivacidad, PoliticaCookies, enlacesLegales
+│        ├─ horario.ts       # días de la semana y formatearHorario
+│        └─ seo.tsx          # sitemap, robots, metadatos por página y JSON-LD
 ├─ templates/
 │  ├─ jardineria-1/          # piloto «Rótulo» (one-page, referencia; se sustituirá)
 │  └─ carpinteria-metalica/
@@ -140,6 +142,14 @@ Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <
 | `BotonWhatsApp({ numero, mensaje?, className?, children? })` | Enlace `wa.me` con mensaje precargado opcional | Mismo reparto que `BotonLlamada` |
 | `AvisoLegal`, `PoliticaPrivacidad`, `PoliticaCookies` | Páginas legales (LSSI, RGPD, cookies) generadas desde `config` | El template solo crea las rutas (ver §7) |
 | `enlacesLegales` | Lista `{ href, texto }` de las tres rutas legales | El pie de cada template **debe** enlazarlas |
+| `crearSitemap(config)` | Lista `{ url }` de las páginas que existen según los datos: `/`, `/servicios`, cada servicio **con `contenido`**, `/trabajos` y cada trabajo (si hay trabajos o `galeria`), `/empresa`, `/contacto` y `/comunidades` (si existe). Sin legales; URLs absolutas con `seo.url` | Vacía si `seo.indexar` es `false` (desde 0.4.0). Para `app/sitemap.ts` |
+| `crearRobots(config)` | `indexar: true`: todo permitido + `Sitemap:`; `false`: `Disallow: /` | Para `app/robots.ts` (desde 0.4.0) |
+| `crearMetadatos(config)` | Metadatos del layout: `metadataBase`, plantilla de título `%s · <nombre>`, descripción, `robots`, canonical `/`, Open Graph y Twitter (imagen: `imagenesHero[0]` → `galeria[0]` → primera foto de servicio) | `export const metadata = crearMetadatos(config)` (desde 0.4.0) |
+| `metadatosPagina(config, { ruta, titulo, descripcion?, indexable? })` | Metadatos de una página estática con su canonical. Sin `descripcion`, la genera de los datos según la ruta (`/servicios`, `/trabajos`, `/empresa`, `/contacto`, legales; ≤ 160 caracteres sin cortar palabras). `indexable: false` → `noindex, follow` | Todas las páginas que no son la home ni `[slug]`. Legales con `indexable: false` (desde 0.4.0) |
+| `metadatosServicio(config, slug)`, `metadatosTrabajo(config, slug)` | Título, descripción, canonical e imagen OG de su primera foto. Servicio sin `contenido`: `noindex, follow`. Slug inexistente: `{}` | Para `generateMetadata` (desde 0.4.0) |
+| `DatosEstructurados({ config })` | `<script type="application/ld+json">` con el `LocalBusiness` (`@type` = `tipoSchema`, dirección, `geo`, `areaServed`, `image`, `logo`, `sameAs`, `foundingDate`, `description` = `descripcionCorta`, `openingHoursSpecification` del horario). **Nunca** `aggregateRating` ni `review`. `urgencias24h` no se convierte en 24/7 | En el `<body>` del layout; siempre, aunque no se indexe (desde 0.4.0). `crearDatosEstructurados(config)` devuelve el objeto |
+| `formatearHorario(horario)` | Franjas → `{ dias, horas }[]` para pintar: agrupa días con las mismas franjas (`{ dias: "Lunes a viernes", horas: "8:00–14:00 y 16:00–19:00" }`, `"Lunes, miércoles y viernes"`). Los días sin franja no salen | Desde 0.4.0. Tipos `Dia`, `FranjaHorario`, `LineaHorario` |
+| `Metadatos`, `EntradaSitemap`, `Robots` | Tipos de salida de los ayudantes de SEO | Objetos planos compatibles con `Metadata` y `MetadataRoute` de Next: core no depende de `next` |
 
 `saludo` se eliminó en 0.2.0. `AvisoLegal` muestra `negocio.registroMercantil` si existe (desde 0.3.0).
 
@@ -168,12 +178,12 @@ Consecuencia: **toda clase de Tailwind usada por core tiene que estar dentro de 
 
 Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con `export default defineSiteConfig({...})`. **Los templates no contienen ningún dato del negocio escrito a mano: todo sale de `config`.** Crear una web nueva consiste en rellenar ese archivo.
 
-Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `string[]`. Las listas sin "mínimo" son `[]` por defecto.
+Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0). *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `string[]`. Las listas sin "mínimo" son `[]` por defecto.
 
 | Bloque | Campos (`?` = opcional) | Sin datos |
 |---|---|---|
 | `negocio` | `nombre`, `nombreLegal`, `nif` (9 caracteres), `sector`, `descripcionCorta` (≤ 160), `logo?` (imagen), `anioFundacion?`, `registroMercantil?`, `tipoSchema` (lista de tipos de schema.org; por defecto `["HomeAndConstructionBusiness"]`) | — |
-| `contacto` | `telefono` (`+34` + 9 dígitos), `whatsapp?`, `email` (obligatorio: lo exigen las legales), `direccion` {`calle`, `cp` (5 dígitos), `ciudad`, `provincia`}, `horario` [{`dias`, `horas`}], `coordenadas?` {`lat`, `lng`}, `mensajeWhatsapp?` (≤ 200), `urgencias24h` (por defecto `false`), `tiempoLlegada?` (≤ 20), `fichaGoogle?` (URL) | Sin `whatsapp`, no hay botones de WhatsApp |
+| `contacto` | `telefono` (`+34` + 9 dígitos), `whatsapp?`, `email` (obligatorio: lo exigen las legales), `direccion` {`calle`, `cp` (5 dígitos), `ciudad`, `provincia`}, `horario` [{`dias` (lista de `lunes`…`domingo`, sin tildes), `abre`, `cierra` (`HH:MM`; cierra > abre; medianoche = `"23:59"`)}] (jornada partida = dos franjas), `coordenadas?` {`lat`, `lng`}, `mensajeWhatsapp?` (≤ 200), `urgencias24h` (por defecto `false`), `tiempoLlegada?` (≤ 20), `fichaGoogle?` (URL) | Sin `whatsapp`, no hay botones de WhatsApp |
 | `zonas` | lista de municipios (solo lista, nunca páginas) | Sección oculta |
 | `servicios` | **mínimo 1**: {`titulo`, `descripcion`, `slug?`, `contenido` (párrafos), `incluye`, `imagenes` (imagen[]), `preguntas`, `mensajeWhatsapp?`, `precioDesde?`} | Página `/servicios/<slug>` siempre; sin `contenido`, `noindex` |
 | `trabajos` | {`titulo`, `slug?`, `descripcion` (≤ 300), `ubicacion?`, `anio?`, `servicio?` (slug de un servicio existente), `superficie?`, `duracion?`, `precio?`, `contenido` (párrafos), `imagenes` (imagen[], **mínimo 1**), `antes?` (imagen), `testimonio?` {`autor`, `texto`}} | Sin trabajos ni `galeria`, no hay `/trabajos` |
@@ -190,12 +200,14 @@ Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `st
 | `galeria` | imagen[] con `titulo?` | Se oculta |
 | `preguntas` | {`pregunta`, `respuesta`} | Se oculta |
 | `marca` | `colorPrimario?` (hex `#rrggbb`); por defecto `{}` | Color del template |
-| `seo` | `titulo` (≤ 60), `descripcion` (≤ 160), `url` | — |
+| `seo` | `titulo` (≤ 60), `descripcion` (≤ 160), `url`, `indexar?` (por defecto `false`; desde 0.4.0) | Sin `indexar: true`: `noindex` en todas las páginas, robots cerrado y sitemap vacío |
 | `redes` | `instagram?`, `facebook?`; por defecto `{}` | — |
 
 `nombreLegal`, `nif` y `registroMercantil` existen para el aviso legal que exige la LSSI (`registroMercantil` solo en sociedades).
 
 **Cambios incompatibles en 0.3.0:** `servicios[].imagen?: string` pasó a `servicios[].imagenes: {src, alt}[]`, y `negocio.logo` (texto) pasó a `{src, alt}`.
+
+**Cambio incompatible en 0.4.0:** `contacto.horario` pasó de `[{dias: "Lunes a viernes", horas: "8:00–19:00"}]` (texto libre) a franjas `[{dias: ["lunes", …, "viernes"], abre: "08:00", cierra: "19:00"}]`. Las urgencias ya no van en el horario: solo `urgencias24h`. Migración en `docs/publicar-core.md`.
 
 **Reglas decididas:**
 
@@ -206,6 +218,7 @@ Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `st
 - **`slug`:** opcional en `servicios` y `trabajos`. Si falta, se genera del título con `crearSlug` (sin acentos, minúsculas, guiones). Debe ser único dentro de su lista; si se repite, la compilación falla con un mensaje en español. `trabajos[].servicio` debe ser el slug de un servicio existente.
 - **Precios (`precioDesde`, `trabajos[].precio`, `tarifas`):** opcionales y **solo con cifras validadas por el cliente**. Nunca se inventan ni se copian de la competencia. Sin datos, la sección no sale.
 - **Bloques opcionales** (`tarifas`, `comunidades`, `valoracion`): si faltan, su página o sección no existe.
+- **`seo.indexar`:** `false` por defecto (demos y pruebas, con datos ficticios). Solo se pone `indexar: true` en la web de un cliente real, con sus datos y fotos reales.
 - **El template decide qué secciones salen y en qué orden.** Si una sección no tiene datos (por ejemplo, `resenas` vacío), se oculta: `{resenas.length > 0 && (...)}`.
 - **Color de marca:** tres niveles, de menos a más prioridad: core (`styles.css`, `#1f2937`) → template (`globals.css`, después del `@import` de core) → `site.config` (`marca.colorPrimario`). El template define el suyo así:
 
@@ -249,7 +262,8 @@ Contrato **0.3.0**. *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `st
   - El `AGENTS.md` del template lo genera Next.js (apunta a su documentación en `node_modules/next/dist/docs/`); no es de este proyecto.
   - Lleva su propio `.gitignore` (de `create-next-app`); es correcto. Un `.git` dentro de un template **no**, y habría que borrarlo.
   - Con `cacheComponents`, `generateStaticParams` no puede devolver `[]` (falla el build): sin trabajos, devuelve un slug de relleno (`[{ slug: "_" }]`) que hace `notFound()`. Nada de `new Date()` en el render: el año sale de `lib/anio.ts` (`"use cache"` + `cacheLife("days")`).
-  - Mientras core no tenga SEO técnico, toda la web lleva `noindex` (`metadata.robots` en `app/layout.tsx`).
+  - **SEO técnico (core 0.4.0):** `app/sitemap.ts` (`crearSitemap`), `app/robots.ts` (`crearRobots`), `metadata = crearMetadatos(config)` y `<DatosEstructurados config={config} />` en `app/layout.tsx`, `generateMetadata` con `metadatosServicio`/`metadatosTrabajo` en las páginas `[slug]` y `metadatosPagina` en el resto (legales incluidas: si no, heredan el canonical `/` del layout). El `noindex` ya no se pone a mano: sale de `seo.indexar`. Las legales llevan `indexable: false`. Tipa cada uno con `Metadata` / `MetadataRoute` de Next.
+  - **Horario:** se pinta con `formatearHorario(config.contacto.horario)`, nunca leyendo las franjas a mano. Si el diseño muestra una fila de urgencias, la añade el template cuando `contacto.urgencias24h` es `true` (como `horarioVisible` en `carpinteria-metalica-3/lib/formato.ts`).
 - Si `create-next-app` deja un `pnpm-lock.yaml` o un `pnpm-workspace.yaml` dentro del template, se borra: en el monorepo solo cuentan los de la raíz.
 - **Qué pone cada template (frontera con core):**
   - **Componentes shadcn:** dentro del template (copiados), nunca en core.
@@ -353,6 +367,11 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | **`valoracion` se muestra pero no va al JSON-LD** | Las directrices de Google no permiten `aggregateRating` con reseñas de Google |
 | **Sin formularios; asistente de WhatsApp en su lugar** | Sin backend ni datos personales que custodiar; WhatsApp lo usa el 94 % en España |
 | **`BotonLlamada` y `BotonWhatsApp` para todo botón de contacto; mensaje de WhatsApp precargado por página** | Accesibilidad y enlaces iguales en todas las webs; el mensaje dice de dónde viene el lead |
+| **`seo.indexar` por defecto `false`** (noindex, robots cerrado y sitemap vacío) | Las demos y pruebas llevan datos ficticios y no deben aparecer en Google; olvidarse de activarlo en un cliente real se ve en la comprobación del despliegue, mientras que olvidarse de desactivarlo en una demo indexaría un negocio inventado |
+| **Horario estructurado** (franjas `{dias, abre, cierra}`; el texto lo genera `formatearHorario`) | Google necesita `openingHoursSpecification` en el JSON-LD y el horario debe coincidir con la ficha de Google; con texto libre no se puede generar. Las urgencias van solo en `urgencias24h` y no se declaran como 24/7 en el schema |
+| **Legales con `noindex, follow` y fuera del sitemap** | No aportan nada a la búsqueda; `follow` deja que Google siga los enlaces |
+| **Descripciones por página generadas en core desde los datos** | Cada página con su meta description sin trabajo extra por cliente; el template puede pasar la suya |
+| **SEO técnico en core, sin dependencia de `next`** (objetos planos compatibles con `Metadata` y `MetadataRoute`) | Canonical, sitemap, robots y JSON-LD iguales en todas las webs y mejorables una vez; core sigue sin atarse a una versión de Next |
 | **Legales con el layout del template; el `<h1>` lo pone core** | Core da el texto; navbar y pie en todas las páginas para no dejar al visitante sin salida. Un solo `<h1>` por página (accesibilidad y SEO): el template solo añade migas |
 
 ---
@@ -390,7 +409,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 3. ~~**Piloto `jardineria-1`**~~ **Hecho** (one-page; queda como referencia). Despliegue probado con `web-prueba` (§8).
 4. **Templates de carpintería metálica.** `-3` «Reparaciones» ya está integrado (faltan las fotos reales y la revisión visual de Ysst). Siguen `-1` «Medida» (tipo proyecto: aluminio y ventanas) y `-2` «Exposición», cada uno construido por subagentes con un encargo cerrado. Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
 5. ~~**Prueba con cliente ficticio**~~ **Hecha (13/10/2026):** `web-metalicas-ejemplo` (template `carpinteria-metalica-3`, core `^0.3.0`, datos ficticios, `noindex`), repo público en Vercel Hobby: https://web-metalicas-ejemplo-nu.vercel.app. Proceso en `docs/nuevo-cliente.md`. Por verificar: que un `git push` a `main` redespliega solo (al subir las fotos que faltan).
-6. **SEO técnico en core:** metadatos por página, JSON-LD `LocalBusiness` (con `tipoSchema`, sin `aggregateRating`), sitemap y `noindex` de servicios sin `contenido`.
+6. **SEO técnico en core (0.4.0, sin publicar):** hecho en la rama `feat/seo-tecnico` con su nota en `.changeset/` (incluye el horario estructurado, cambio incompatible) y conectado en `carpinteria-metalica-3`; `jardineria-1` solo migrado al horario nuevo. Pendiente: conectar el SEO en `jardineria-1` y en `carpinteria-metalica-1`/`-2` (y migrar su horario), publicar 0.4.0 y actualizar `web-metalicas-ejemplo`.
 7. **Escribir `nuevo-template.md` y `actualizar-cliente.md`** a partir del primer template real (`nuevo-cliente.md` ya está hecho, a partir de la prueba del punto 5).
 8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
 
@@ -401,4 +420,4 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 - **Nombre decidido:** "Andrei Leads" es la marca personal de Ysst; no habrá rebrand, así que el scope `@andrei-leads` se mantiene.
 - **Token personal de GitHub** (classic, `write:packages` + `repo`, 90 días, guardado en Bitwarden). Si aparece un 401, probablemente ha caducado: ver `docs/publicar-core.md`.
 - **Token de Vercel** (classic, `read:packages`, caduca el 12/10/2027; recordatorio el 28/09/2027). Ver §8.
-- **Antes del primer cliente real:** SEO técnico en core (sin él, la web va con `noindex`), Vercel Pro y repo privado (§8), y fotos reales del cliente (checklist en `docs/nuevo-cliente.md`).
+- **Antes del primer cliente real:** core 0.4.0 publicado y `seo.indexar: true` en su `site.config.ts` (sin él, la web va con `noindex`), Vercel Pro y repo privado (§8), y fotos reales del cliente (checklist en `docs/nuevo-cliente.md`).

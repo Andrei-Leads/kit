@@ -15,8 +15,8 @@ export default defineSiteConfig({
     email: "info@ejemplo.com",
     direccion: { calle: "Calle Mayor 1", cp: "46460", ciudad: "Silla", provincia: "Valencia" },
     horario: [
-      { dias: "Lunes a viernes", horas: "8:00–18:00" },
-      { dias: "Sábados", horas: "9:00–13:00" },
+      { dias: ["lunes", "martes", "miercoles", "jueves", "viernes"], abre: "08:00", cierra: "18:00" },
+      { dias: ["sabado"], abre: "09:00", cierra: "13:00" },
     ],
   },
   zonas: ["Silla", "Almussafes", "Sollana", "Benifaió", "Alginet", "Picassent"],

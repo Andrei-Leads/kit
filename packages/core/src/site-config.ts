@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { DIAS } from "./horario";
 
 /* ─────────────────────────── Piezas reutilizables ─────────────────────────── */
 
@@ -25,6 +26,32 @@ const pregunta = z.object({
 const slug = z
   .string()
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug: solo minúsculas sin acentos, números y guiones");
+
+/** "08:00", "19:30". */
+const formatoHora = /^([01]\d|2[0-3]):[0-5]\d$/;
+const horaHHMM = z
+  .string()
+  .regex(formatoHora, "Hora en formato HH:MM, de 00:00 a 23:59 (p. ej. \"08:00\")");
+
+/** { dias: ["lunes", "martes"], abre: "08:00", cierra: "14:00" } */
+const franjaHorario = z
+  .object({
+    dias: z
+      .array(
+        z.enum(DIAS, {
+          error: "Día no válido: usa lunes, martes, miercoles, jueves, viernes, sabado o domingo (en minúsculas y sin tildes)",
+        })
+      )
+      .min(1, "Al menos un día por franja")
+      .refine((dias) => new Set(dias).size === dias.length, "Día repetido en la misma franja"),
+    abre: horaHHMM,
+    cierra: horaHHMM,
+  })
+  // Solo se compara si las dos horas tienen buen formato (si no, ya hay error).
+  .refine((f) => !formatoHora.test(f.abre) || !formatoHora.test(f.cierra) || f.cierra > f.abre, {
+    path: ["cierra"],
+    message: "La hora de cierre debe ser posterior a la de apertura (para medianoche, usa \"23:59\")",
+  });
 
 /** Mensaje precargado de WhatsApp. */
 const mensajeWhatsapp = z.string().min(1).max(200);
@@ -159,7 +186,12 @@ export const siteConfigSchema = z
         ciudad: z.string().min(1),
         provincia: z.string().min(1),
       }),
-      horario: z.array(z.object({ dias: z.string(), horas: z.string() })),
+      /**
+       * Franjas de apertura (desde 0.4.0). Jornada partida: dos franjas con los
+       * mismos días. Para cerrar a medianoche, "23:59". Las urgencias van aparte
+       * (`urgencias24h`).
+       */
+      horario: z.array(franjaHorario).min(1, "Añade al menos una franja de horario"),
       coordenadas: z.object({ lat: z.number(), lng: z.number() }).optional(),
       /** Mensaje de WhatsApp por defecto. */
       mensajeWhatsapp: mensajeWhatsapp.optional(),
@@ -267,6 +299,11 @@ export const siteConfigSchema = z
       titulo: z.string().max(60),
       descripcion: z.string().max(160),
       url: z.url(),
+      /**
+       * false (por defecto): demo o prueba, todas las páginas con noindex,
+       * robots.txt cerrado y sitemap vacío. Cliente real: true.
+       */
+      indexar: z.boolean().default(false),
     }),
     redes: z
       .object({

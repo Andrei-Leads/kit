@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AvisoLegal } from "@andrei-leads/core";
+import { AvisoLegal, metadatosPagina } from "@andrei-leads/core";
 import config from "@/site.config";
 
-export const metadata: Metadata = { title: "Aviso legal" };
+export const metadata: Metadata = metadatosPagina(config, { ruta: "/aviso-legal", titulo: "Aviso legal", indexable: false });
 
 // El <h1> lo pone core; aquí solo van las migas.
 export default function Page() {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { metadatosPagina } from "@andrei-leads/core";
 import { Check } from "lucide-react";
 
 import { Foto } from "@/components/Foto";
@@ -9,7 +10,7 @@ import { anioActual } from "@/lib/anio";
 import { seccion } from "@/lib/estilos";
 import { mensajeGeneral } from "@/lib/mensajes";
 
-export const metadata: Metadata = { title: "Quiénes somos" };
+export const metadata: Metadata = metadatosPagina(config, { ruta: "/empresa", titulo: "Quiénes somos" });
 
 const h2Bloque = "m-0 text-2xl leading-[1.15] font-extrabold md:text-[32px]";
 

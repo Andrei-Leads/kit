@@ -1,4 +1,4 @@
-import type { SiteConfig } from "@andrei-leads/core";
+import { formatearHorario, type LineaHorario, type SiteConfig } from "@andrei-leads/core";
 
 type Contacto = SiteConfig["contacto"];
 
@@ -25,8 +25,15 @@ export function listaY(lista: string[]): string {
   return lista.slice(0, -1).join(", ") + " y " + lista[lista.length - 1];
 }
 
-/** "Lunes a viernes 8:00–18:00 · Sábados 9:00–13:00". */
-export function horarioCorto(horario: Contacto["horario"]): string {
+/** Líneas de horario para pintar; con `urgencias24h`, añade la fila de urgencias. */
+export function horarioVisible(contacto: Pick<Contacto, "horario" | "urgencias24h">): LineaHorario[] {
+  const lineas = formatearHorario(contacto.horario);
+  if (contacto.urgencias24h) lineas.push({ dias: "Urgencias", horas: "24 horas, todos los días" });
+  return lineas;
+}
+
+/** "Lunes a viernes 8:00–18:00 · Sábado 9:00–13:00". */
+export function horarioCorto(horario: LineaHorario[]): string {
   return horario.map((h) => `${h.dias} ${h.horas}`).join(" · ");
 }
 

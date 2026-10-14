@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
-import { BotonLlamada, BotonWhatsApp } from "@andrei-leads/core";
+import { BotonLlamada, BotonWhatsApp, metadatosPagina } from "@andrei-leads/core";
 import { ExternalLink, Mail, MapPin, MessageCircle } from "lucide-react";
 
 import { ContenidoLlamada } from "@/components/ContenidoLlamada";
 import { Zonas } from "@/components/secciones/Zonas";
 import { buttonVariants } from "@/components/ui/button";
 import config from "@/site.config";
-import { direccionLinea, enlaceMaps } from "@/lib/formato";
+import { direccionLinea, enlaceMaps, horarioVisible } from "@/lib/formato";
 import { seccion } from "@/lib/estilos";
 import { mensajeGeneral } from "@/lib/mensajes";
 
-export const metadata: Metadata = { title: "Contacto" };
+export const metadata: Metadata = metadatosPagina(config, { ruta: "/contacto", titulo: "Contacto" });
 
 const h2Bloque = "m-0 text-2xl font-extrabold";
 
 export default function Page() {
   const { contacto } = config;
+  const horario = horarioVisible(contacto);
   return (
     <>
       <section className={`contenedor flex flex-col gap-6 ${seccion}`}>
@@ -47,12 +48,12 @@ export default function Page() {
           </div>
 
           <div className="flex flex-col gap-7">
-            {contacto.horario.length > 0 && (
+            {horario.length > 0 && (
               <div className="flex flex-col gap-2">
                 <h2 className={h2Bloque}>Horario</h2>
                 <table className="w-full border-collapse rounded-md border border-linea bg-tarjeta">
                   <tbody>
-                    {contacto.horario.map((h) => (
+                    {horario.map((h) => (
                       <tr key={h.dias} className="border-b border-linea last:border-b-0">
                         <th scope="row" className="px-4 py-2.5 text-left font-normal text-tinta-suave">
                           {h.dias}

@@ -20,9 +20,8 @@ export default defineSiteConfig({
     email: "info@ejemplo.com",
     direccion: { calle: "Calle de Ejemplo 7, bajo", cp: "46920", ciudad: "Mislata", provincia: "Valencia" },
     horario: [
-      { dias: "Lunes a viernes", horas: "8:00–19:00" },
-      { dias: "Sábados", horas: "9:00–14:00" },
-      { dias: "Urgencias", horas: "24 horas, todos los días" },
+      { dias: ["lunes", "martes", "miercoles", "jueves", "viernes"], abre: "08:00", cierra: "19:00" },
+      { dias: ["sabado"], abre: "09:00", cierra: "14:00" },
     ],
     mensajeWhatsapp: "Hola, os escribo desde vuestra web. Se me ha roto algo y os envío una foto:",
     urgencias24h: true,

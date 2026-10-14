@@ -8,6 +8,7 @@ import { Proceso } from "@/components/secciones/Proceso";
 import { Resenas } from "@/components/secciones/Resenas";
 import { Tarifas } from "@/components/secciones/Tarifas";
 import { Zonas } from "@/components/secciones/Zonas";
+import { horarioVisible } from "@/lib/formato";
 import { mensajeGeneral } from "@/lib/mensajes";
 import config from "@/site.config";
 
@@ -21,7 +22,7 @@ export default function Page() {
         ciudad={contacto.direccion.ciudad}
         urgencias24h={contacto.urgencias24h}
         tiempoLlegada={contacto.tiempoLlegada}
-        horario={contacto.horario}
+        horario={horarioVisible(contacto)}
         telefono={contacto.telefono}
         whatsapp={contacto.whatsapp}
         mensajeWhatsapp={mensajeGeneral(contacto)}

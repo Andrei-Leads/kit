@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Barlow } from "next/font/google";
+import { crearMetadatos, DatosEstructurados } from "@andrei-leads/core";
 import "./globals.css";
 import config from "@/site.config";
 import { menu } from "@/lib/navegacion";
@@ -15,23 +16,7 @@ const barlow = Barlow({
   variable: "--font-barlow",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(config.seo.url),
-  title: {
-    default: config.seo.titulo,
-    template: "%s · " + config.negocio.nombre,
-  },
-  description: config.seo.descripcion,
-  // Negocio ficticio y aún sin SEO técnico: no se indexa.
-  robots: { index: false, follow: false },
-  openGraph: {
-    type: "website",
-    locale: "es_ES",
-    siteName: config.negocio.nombre,
-    title: config.seo.titulo,
-    description: config.seo.descripcion,
-  },
-};
+export const metadata: Metadata = crearMetadatos(config);
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   const items = menu(config);
@@ -42,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${barlow.variable} antialiased`}
     >
       <body className="min-h-full font-sans">
+        <DatosEstructurados config={config} />
         <Cabecera
           nombre={config.negocio.nombre}
           logo={config.negocio.logo}
