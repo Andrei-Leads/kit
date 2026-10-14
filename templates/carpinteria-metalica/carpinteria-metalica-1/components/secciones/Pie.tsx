@@ -3,6 +3,7 @@ import {
   BotonLlamada,
   BotonWhatsApp,
   enlacesLegales,
+  formatearHorario,
   type SiteConfig,
 } from "@andrei-leads/core";
 import { ExternalLink, Mail, MessageCircle, Phone } from "lucide-react";
@@ -77,7 +78,7 @@ export async function Pie({ negocio, contacto, redes, items }: Props) {
 
           <div className="flex flex-col">
             <p className={titulo}>Horario</p>
-            {contacto.horario.map((h) => (
+            {formatearHorario(contacto.horario).map((h) => (
               <p key={h.dias} className="m-0 flex flex-col py-1 text-[15px]">
                 <span className="font-semibold">{h.dias}</span>
                 <span className="text-linea tabular-nums">{h.horas}</span>

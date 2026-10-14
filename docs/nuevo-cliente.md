@@ -178,6 +178,8 @@ for r in / /servicios /servicios/<slug> /trabajos /trabajos/<slug> /empresa /con
   echo "$(curl -s -o /dev/null -w '%{http_code}' "$URL$r") $r"
 done
 curl -s "$URL/" | grep -o '<meta name="robots"[^>]*>'
+curl -s "$URL/robots.txt"
+curl -s "$URL/sitemap.xml" | grep -o '<loc>' | wc -l
 curl -s "$URL/" | grep -o '<h1' | wc -l
 curl -s "$URL/" | grep -o -E 'href="(tel:|https://wa\.me/)[^"?]*' | sort -u
 ```
@@ -185,7 +187,8 @@ curl -s "$URL/" | grep -o -E 'href="(tel:|https://wa\.me/)[^"?]*' | sort -u
 Debe salir:
 
 - `200` en todas las rutas y `404` en `/no-existe`.
-- `<meta name="robots" content="noindex, nofollow"/>` (mientras core no tenga SEO técnico).
+- Demo (sin `seo.indexar`): `<meta name="robots" content="noindex, nofollow"/>`, `robots.txt` con `Disallow: /` y `0` URLs en el sitemap.
+- Cliente real (`seo.indexar: true`, core ≥ 0.4.0): `index, follow`, `robots.txt` con `Allow: /` y `Sitemap: <url>/sitemap.xml`, y en el sitemap una URL por página (sin legales ni servicios sin `contenido`).
 - `1` (un solo `<h1>`).
 - `tel:` y `wa.me/` con el número correcto.
 
@@ -215,7 +218,7 @@ Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren co
 ## Antes de un cliente real
 
 - [ ] **Vercel Pro** (Hobby no admite uso comercial ni repos privados de una organización) y repo **privado**.
-- [ ] **SEO técnico en core** publicado y la web actualizada; entonces se quita el `noindex` (`metadata.robots` en `app/layout.tsx`).
+- [ ] Core **≥ 0.4.0** (SEO técnico) y `seo: { …, indexar: true }` en `site.config.ts`, con `seo.url` = dominio definitivo. Comprobar con el paso 12.
 - [ ] **Fotos reales** del cliente fuera de `public/ejemplo/`; ninguna foto de ejemplo ni generada con IA.
 - [ ] `site.config.ts` sin nada ficticio (paso 5) y precios validados por el cliente.
 

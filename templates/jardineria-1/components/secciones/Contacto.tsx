@@ -1,4 +1,4 @@
-import { BotonLlamada, BotonWhatsApp, type SiteConfig } from "@andrei-leads/core";
+import { BotonLlamada, BotonWhatsApp, formatearHorario, type SiteConfig } from "@andrei-leads/core";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -9,7 +9,8 @@ import { cn } from "@/lib/utils";
 const etiqueta = "m-0 text-[13px] font-bold tracking-[0.08em] uppercase";
 
 export function Contacto({ contacto }: { contacto: SiteConfig["contacto"] }) {
-  const { telefono, whatsapp, email, direccion, horario } = contacto;
+  const { telefono, whatsapp, email, direccion } = contacto;
+  const horario = formatearHorario(contacto.horario);
 
   return (
     <section

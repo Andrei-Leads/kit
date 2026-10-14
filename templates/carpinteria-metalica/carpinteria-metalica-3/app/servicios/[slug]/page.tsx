@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Check } from "lucide-react";
+import { metadatosServicio } from "@andrei-leads/core";
 
 import config from "@/site.config";
 import { Foto } from "@/components/Foto";
@@ -10,7 +11,7 @@ import { OtrasAverias } from "@/components/secciones/OtrasAverias";
 import { Preguntas } from "@/components/secciones/Preguntas";
 import { Resenas } from "@/components/secciones/Resenas";
 import { TarjetaCtaServicio } from "@/components/secciones/TarjetaCtaServicio";
-import { horarioCorto } from "@/lib/formato";
+import { horarioCorto, horarioVisible } from "@/lib/formato";
 import { mensajeServicio } from "@/lib/mensajes";
 
 const h2Bloque = "m-0 text-2xl leading-[1.15] font-extrabold md:text-[32px]";
@@ -22,13 +23,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/servicios/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const servicio = config.servicios.find((s) => s.slug === slug);
-  if (!servicio) return {};
-  return {
-    title: servicio.titulo,
-    description: servicio.descripcion,
-    ...(servicio.contenido.length === 0 && { robots: { index: false, follow: false } }),
-  };
+  return metadatosServicio(config, slug);
 }
 
 export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
@@ -36,7 +31,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
   const servicio = config.servicios.find((s) => s.slug === slug);
   if (!servicio) notFound();
 
-  const { telefono, whatsapp, direccion, horario } = config.contacto;
+  const { telefono, whatsapp, direccion } = config.contacto;
   const parrafos = servicio.contenido.length > 0 ? servicio.contenido : [servicio.descripcion];
   const trabajos = config.trabajos.filter((t) => t.servicio === servicio.slug);
   const otros = config.servicios.filter((s) => s.slug !== servicio.slug);
@@ -76,7 +71,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
             whatsapp={whatsapp}
             mensaje={mensaje}
             precioDesde={servicio.precioDesde}
-            horario={horarioCorto(horario)}
+            horario={horarioCorto(horarioVisible(config.contacto))}
             className="md:sticky md:top-22 md:col-start-2 md:row-start-2 md:self-start"
           />
 

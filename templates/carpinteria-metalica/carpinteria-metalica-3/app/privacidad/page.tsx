@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PoliticaPrivacidad } from "@andrei-leads/core";
+import { PoliticaPrivacidad, metadatosPagina } from "@andrei-leads/core";
 import config from "@/site.config";
 
-export const metadata: Metadata = { title: "Política de privacidad" };
+export const metadata: Metadata = metadatosPagina(config, { ruta: "/privacidad", titulo: "Política de privacidad", indexable: false });
 
 // El <h1> lo pone core; aquí solo van las migas.
 export default function Page() {

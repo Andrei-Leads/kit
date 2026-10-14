@@ -22,8 +22,9 @@ export default defineSiteConfig({
     email: "info@ejemplo.com",
     direccion: { calle: "Polígono Ejemplo, calle 3, nave 12", cp: "46960", ciudad: "Aldaia", provincia: "Valencia" },
     horario: [
-      { dias: "Lunes a viernes", horas: "8:00–14:00 y 16:00–19:00" },
-      { dias: "Sábados", horas: "9:00–13:00" },
+      { dias: ["lunes", "martes", "miercoles", "jueves", "viernes"], abre: "08:00", cierra: "14:00" },
+      { dias: ["lunes", "martes", "miercoles", "jueves", "viernes"], abre: "16:00", cierra: "19:00" },
+      { dias: ["sabado"], abre: "09:00", cierra: "13:00" },
     ],
     mensajeWhatsapp: "Hola, os escribo desde vuestra web. Quiero presupuesto para:",
     fichaGoogle: "https://maps.google.com/?cid=0000000000000000006",

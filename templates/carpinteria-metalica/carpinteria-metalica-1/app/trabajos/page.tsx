@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { Trabajo } from "@andrei-leads/core";
+import { metadatosPagina, type Trabajo } from "@andrei-leads/core";
 import { notFound } from "next/navigation";
 
 import { EncabezadoSeccion } from "@/components/EncabezadoSeccion";
@@ -12,7 +12,7 @@ import { hayTrabajos } from "@/lib/navegacion";
 import { mensajeGeneral } from "@/lib/mensajes";
 import { seccion } from "@/lib/estilos";
 
-export const metadata: Metadata = { title: "Proyectos" };
+export const metadata: Metadata = metadatosPagina(config, { ruta: "/trabajos", titulo: "Proyectos" });
 
 const chip =
   "inline-flex min-h-11 items-center rounded-chip border border-tinta-suave bg-primario-tinte px-4 text-[15px] font-semibold text-tinta hover:bg-tarjeta";

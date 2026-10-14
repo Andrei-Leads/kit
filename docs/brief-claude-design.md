@@ -89,7 +89,7 @@ Cada sección es un componente que recibe **solo su parte** de los datos. Por ej
 | Bloque | Campos |
 |---|---|
 | `negocio` | `nombre`, `nombreLegal`, `nif`, `sector`, `descripcionCorta` (≤ 160), `logo?` (imagen), `anioFundacion?`, `registroMercantil?`, `tipoSchema` (tipo para Google; tiene valor por defecto) |
-| `contacto` | `telefono`, `whatsapp?`, `email`, `direccion` {`calle`, `cp`, `ciudad`, `provincia`}, `horario` [{`dias`, `horas`}], `coordenadas?`, `mensajeWhatsapp?` (mensaje por defecto), `urgencias24h` (sí/no), `tiempoLlegada?` ("45 min"), `fichaGoogle?` (enlace a la ficha de Google) |
+| `contacto` | `telefono`, `whatsapp?`, `email`, `direccion` {`calle`, `cp`, `ciudad`, `provincia`}, `horario` (franjas `{dias, abre, cierra}`; el template lo pinta con `formatearHorario`, que da filas `{dias, horas}`: «Lunes a viernes» · «8:00–19:00»), `coordenadas?`, `mensajeWhatsapp?` (mensaje por defecto), `urgencias24h` (sí/no), `tiempoLlegada?` ("45 min"), `fichaGoogle?` (enlace a la ficha de Google) |
 | `zonas` | lista de municipios |
 | `servicios` | lista, **mínimo 1**, de {`titulo`, `descripcion` (corta), `slug?` (si falta, se genera del título), `contenido` (párrafos), `incluye` (lista), `imagenes` (lista de imagen), `preguntas` (lista), `mensajeWhatsapp?`, `precioDesde?` ("desde 60 €")} |
 | `trabajos` | lista de {`titulo`, `slug?` (si falta, se genera del título), `descripcion` (≤ 300), `ubicacion?`, `anio?`, `servicio?` (slug de un servicio), `superficie?` ("5 m²"), `duracion?` ("10 días"), `precio?` (rango aproximado), `contenido` (párrafos), `imagenes` (**mínimo 1**; la primera es el "después"), `antes?` (imagen), `testimonio?` {`autor`, `texto`}} |

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { BotonLlamada, BotonWhatsApp } from "@andrei-leads/core";
+import { BotonLlamada, BotonWhatsApp, metadatosServicio } from "@andrei-leads/core";
 import { Check, MessageCircle, Phone } from "lucide-react";
 
 import config from "@/site.config";
@@ -30,13 +30,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/servicios/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const servicio = config.servicios.find((s) => s.slug === slug);
-  if (!servicio) return {};
-  return {
-    title: servicio.titulo,
-    description: servicio.descripcion,
-    ...(servicio.contenido.length === 0 && { robots: { index: false, follow: false } }),
-  };
+  return metadatosServicio(config, slug);
 }
 
 export default async function Page({ params }: PageProps<"/servicios/[slug]">) {

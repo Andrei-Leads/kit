@@ -1,4 +1,4 @@
-import { BotonLlamada, BotonWhatsApp, type SiteConfig } from "@andrei-leads/core";
+import { BotonLlamada, BotonWhatsApp, formatearHorario, type SiteConfig } from "@andrei-leads/core";
 import { ExternalLink, Mail, MessageCircle, Phone } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -48,7 +48,7 @@ export function ContactoDatos({ contacto }: Props) {
         <div className="flex flex-col gap-3">
           <h2 className={h2}>Horario</h2>
           <ul className="m-0 flex list-none flex-col p-0">
-            {horario.map((h) => (
+            {formatearHorario(horario).map((h) => (
               <li
                 key={h.dias}
                 className="flex flex-wrap justify-between gap-x-4 border-b border-linea py-2.5 first:border-t"

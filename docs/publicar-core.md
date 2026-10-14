@@ -90,6 +90,28 @@ grep andrei-leads package.json
 
 Después, probar la web y hacer commit y push. Esto lo detallará `docs/actualizar-cliente.md` cuando exista.
 
+### Migraciones con cambios incompatibles
+
+**0.3.x → 0.4.0: `contacto.horario` estructurado.** En `site.config.ts` de la web (contenido del archivo, no comandos), cada fila de texto pasa a una o varias franjas con días sin tildes y horas `HH:MM`:
+
+```ts
+// Antes (0.3.x)
+horario: [
+  { dias: "Lunes a viernes", horas: "8:00–14:00 y 16:00–19:00" },
+  { dias: "Sábados", horas: "9:00–13:00" },
+  { dias: "Urgencias", horas: "24 horas, todos los días" },
+],
+// Después (0.4.0)
+horario: [
+  { dias: ["lunes", "martes", "miercoles", "jueves", "viernes"], abre: "08:00", cierra: "14:00" },
+  { dias: ["lunes", "martes", "miercoles", "jueves", "viernes"], abre: "16:00", cierra: "19:00" },
+  { dias: ["sabado"], abre: "09:00", cierra: "13:00" },
+],
+urgencias24h: true, // la fila «Urgencias» desaparece del horario
+```
+
+En el código de la web, todo lo que leía `h.dias` / `h.horas` de `config.contacto.horario` pasa a leerlos de `formatearHorario(config.contacto.horario)` (importado de `@andrei-leads/core`). Si la web pintaba la fila de urgencias, el template la añade cuando `urgencias24h` es `true`. Además, para el SEO: `app/sitemap.ts`, `app/robots.ts`, metadatos y JSON-LD como en `templates/carpinteria-metalica/carpinteria-metalica-3`, y `seo.indexar: true` si es un cliente real. `pnpm build` avisa en español de cualquier franja mal escrita.
+
 ## Reglas
 
 - **No ejecutes `pnpm changeset version` en local.** Ese paso lo hace la Action en el PR (opción A, con revisión). La única excepción fue la `0.1.1`, durante el aprendizaje.

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { metadatosPagina } from "@andrei-leads/core";
 import { notFound } from "next/navigation";
 
 import { Foto } from "@/components/Foto";
@@ -7,7 +8,7 @@ import config from "@/site.config";
 import { hayTrabajos } from "@/lib/navegacion";
 import { seccion } from "@/lib/estilos";
 
-export const metadata: Metadata = { title: "Trabajos" };
+export const metadata: Metadata = metadatosPagina(config, { ruta: "/trabajos", titulo: "Trabajos" });
 
 export default function Page() {
   if (!hayTrabajos(config)) notFound();

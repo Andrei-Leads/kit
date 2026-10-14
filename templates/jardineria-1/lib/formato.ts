@@ -1,4 +1,4 @@
-import type { SiteConfig } from "@andrei-leads/core";
+import { formatearHorario, type SiteConfig } from "@andrei-leads/core";
 
 type Contacto = SiteConfig["contacto"];
 type Resena = SiteConfig["resenas"][number];
@@ -35,9 +35,9 @@ export function resumenZonas(zonas: string[]): string {
   } más`;
 }
 
-/** "Lunes a viernes 8:00–18:00 · Sábados 9:00–13:00". */
+/** "Lunes a viernes 8:00–18:00 · Sábado 9:00–13:00". */
 export function horarioCorto(horario: Contacto["horario"]): string {
-  return horario.map((h) => `${h.dias} ${h.horas}`).join(" · ");
+  return formatearHorario(horario).map((h) => `${h.dias} ${h.horas}`).join(" · ");
 }
 
 /** "★★★★☆" para una puntuación de 1 a 5. */

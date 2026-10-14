@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { metadatosPagina } from "@andrei-leads/core";
 
 import { Foto } from "@/components/Foto";
 import { Migas } from "@/components/Migas";
@@ -13,7 +14,7 @@ import config from "@/site.config";
 import { mensajeGeneral } from "@/lib/mensajes";
 import { seccion } from "@/lib/estilos";
 
-export const metadata: Metadata = { title: "Quiénes somos" };
+export const metadata: Metadata = metadatosPagina(config, { ruta: "/empresa", titulo: "Quiénes somos" });
 
 export default function Page() {
   const { negocio, empresa, contacto, acreditaciones, marcas, proceso, garantias, zonas } = config;

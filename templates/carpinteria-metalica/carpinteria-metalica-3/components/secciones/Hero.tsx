@@ -1,4 +1,4 @@
-import type { SiteConfig } from "@andrei-leads/core";
+import type { LineaHorario, SiteConfig } from "@andrei-leads/core";
 import { BotonLlamada, BotonWhatsApp } from "@andrei-leads/core";
 import { Clock, MessageCircle, Truck } from "lucide-react";
 
@@ -12,7 +12,7 @@ type Props = {
   ciudad: string;
   urgencias24h: boolean;
   tiempoLlegada?: string;
-  horario: SiteConfig["contacto"]["horario"];
+  horario: LineaHorario[];
   telefono: string;
   whatsapp?: string;
   mensajeWhatsapp: string;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { metadatosPagina } from "@andrei-leads/core";
 
 import { Migas } from "@/components/Migas";
 import { BloqueAsistente } from "@/components/secciones/BloqueAsistente";
@@ -7,7 +8,7 @@ import { Zonas } from "@/components/secciones/Zonas";
 import config from "@/site.config";
 import { seccion } from "@/lib/estilos";
 
-export const metadata: Metadata = { title: "Contacto" };
+export const metadata: Metadata = metadatosPagina(config, { ruta: "/contacto", titulo: "Contacto" });
 
 export default function Page() {
   const { contacto, servicios, zonas } = config;

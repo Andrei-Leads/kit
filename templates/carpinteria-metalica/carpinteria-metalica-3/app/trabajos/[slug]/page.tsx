@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
+import { metadatosTrabajo } from "@andrei-leads/core";
 
 import { Foto } from "@/components/Foto";
 import { TarjetaTrabajo } from "@/components/secciones/TarjetaTrabajo";
@@ -16,9 +17,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/trabajos/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const trabajo = config.trabajos.find((t) => t.slug === slug);
-  if (!trabajo) return {};
-  return { title: trabajo.titulo, description: trabajo.descripcion };
+  return metadatosTrabajo(config, slug);
 }
 
 const etiquetaFoto =

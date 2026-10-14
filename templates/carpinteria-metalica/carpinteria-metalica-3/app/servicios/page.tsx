@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { metadatosPagina } from "@andrei-leads/core";
 
 import config from "@/site.config";
 import { AsistenteMedida } from "@/components/secciones/AsistenteMedida";
@@ -9,7 +10,7 @@ import { h2Seccion, seccion } from "@/lib/estilos";
 import { serviciosAMedida, serviciosAveria } from "@/lib/medida";
 import { mensajeGeneral } from "@/lib/mensajes";
 
-export const metadata: Metadata = { title: "Averías y reparaciones" };
+export const metadata: Metadata = metadatosPagina(config, { ruta: "/servicios", titulo: "Averías y reparaciones" });
 
 export default function Page() {
   const averias = serviciosAveria(config.servicios);
