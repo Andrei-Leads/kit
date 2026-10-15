@@ -10,7 +10,7 @@ Probado de principio a fin con `web-metalicas-ejemplo` (template `carpinteria-me
 
 ## Cómo funciona
 
-La web es una **copia** del template en una carpeta propia, **fuera de `kit`**, con su propio repo de Git. Lo único que la une a `kit` es core, que deja de leerse del monorepo (`workspace:^`) y se descarga de GitHub Packages con una versión fija (`^0.3.0`). Vercel compila la web desde su repo de GitHub y descarga core con un token de solo lectura.
+La web es una **copia** del template en una carpeta propia, **fuera de `kit`**, con su propio repo de Git. Lo único que la une a `kit` es core, que deja de leerse del monorepo (`workspace:^`) y se descarga de GitHub Packages con una versión fija (`^0.N.0`, la publicada). Vercel compila la web desde su repo de GitHub y descarga core con un token de solo lectura.
 
 Versión simple: fotocopias la maqueta, le pones los datos del cliente y la mandas a la imprenta. La pieza común (core) la imprenta la pide al almacén con una llave que solo sirve para mirar.
 
@@ -18,7 +18,7 @@ Versión simple: fotocopias la maqueta, le pones los datos del cliente y la mand
 
 - [ ] **Token personal** en `~/.npmrc` (para instalar core en local). Comprobación: `npm whoami --registry=https://npm.pkg.github.com` debe devolver tu usuario. Si falla, ver `docs/publicar-core.md` → «Llave».
 - [ ] Acceso a **Bitwarden** (token de Vercel «Vercel — leer @andrei-leads/core»).
-- [ ] **Template elegido** (`kit/templates/<nicho>/<nicho>-<n>`) y versión publicada de core que usa (hoy, `0.3.0`).
+- [ ] **Template elegido** (`kit/templates/<nicho>/<nicho>-<n>`) y versión publicada de core que usa (hoy, `0.4.0`).
 - [ ] **Datos del cliente** (o ficticios, si es una prueba) y **fotos** (reales del cliente, o las de ejemplo del template para una demo).
 - [ ] Nombre de la web: `web-<cliente>` (minúsculas y guiones).
 
@@ -43,13 +43,13 @@ rm -rf node_modules .next
 Desde **`web-<cliente>/`**:
 
 ```bash
-sed -i 's/"workspace:[^"]*"/"^0.3.0"/' package.json
+sed -i 's/"workspace:[^"]*"/"^0.N.0"/' package.json
 sed -i 's/"name": "<template>"/"name": "web-<cliente>"/' package.json
 grep -n -E '"name"|andrei-leads' package.json
 echo "@andrei-leads:registry=https://npm.pkg.github.com" > .npmrc
 ```
 
-- El `grep` debe mostrar `"name": "web-<cliente>"` y `"@andrei-leads/core": "^0.3.0"`.
+- El `grep` debe mostrar `"name": "web-<cliente>"` y `"@andrei-leads/core": "^0.N.0"` (`0.N.0` = la versión publicada actual, hoy `0.4.0`: `sed` con el número real, no con `N`).
 - El `.npmrc` lleva **solo la dirección del registro**, nunca el token (el token está en `~/.npmrc`). Si llevara `${NPM_TOKEN}`, en local tendría prioridad sobre `~/.npmrc` y daría 401.
 
 ### 3. Instalar core desde GitHub Packages
@@ -62,7 +62,7 @@ pnpm install
 readlink -f node_modules/@andrei-leads/core
 ```
 
-`readlink` debe apuntar a `…/web-<cliente>/node_modules/.pnpm/@andrei-leads+core@0.3.0_…`: core **descargado**, no enlazado a `kit`. Un `401` aquí = token personal caducado o mal pegado (ver `docs/publicar-core.md`).
+`readlink` debe apuntar a `…/web-<cliente>/node_modules/.pnpm/@andrei-leads+core@0.N.0_…`: core **descargado**, no enlazado a `kit`. Un `401` aquí = token personal caducado o mal pegado (ver `docs/publicar-core.md`).
 
 `pnpm install` crea `pnpm-lock.yaml`: se commitea (Vercel detecta pnpm por él).
 
@@ -74,13 +74,14 @@ Desde **`web-<cliente>/`**:
 pnpm build
 ```
 
-Prueba de que la web compila con el core descargado, antes de tocar datos. Con `carpinteria-metalica-3` salen 24 páginas.
+Prueba de que la web compila con el core descargado, antes de tocar datos. Con `carpinteria-metalica-3` salen 24 páginas. Si luego quieres verla en local, espera a que este build **termine** antes de `pnpm start` (si no: «Could not find a production build»).
 
 ### 5. Rellenar `site.config.ts`
 
 Se edita **`web-<cliente>/site.config.ts`**, **nunca** el del template en `kit` (error típico: abrir el archivo equivocado en VS Code; mira la ruta de la pestaña).
 
 - **Cliente real:** sus datos (contrato en `AGENTS.md` §6). Borra todo lo ficticio del ejemplo: precios marcados `PRECIO FICTICIO`, `registroMercantil`, `fichaGoogle`, `valoracion`, reseñas, trabajos y textos que no sean suyos. Precios solo con cifras validadas por el cliente.
+- **Demo:** `seo.url` = la URL de Vercel del proyecto (`https://web-<cliente>.vercel.app`), porque de ahí salen el canonical y la imagen de la vista previa al compartir por WhatsApp; con `https://ejemplo.com` la vista previa sale sin foto. Esa URL no se conoce hasta el primer despliegue: pon un valor provisional ahora y corrígelo tras el paso 11 (ver «Corregir `seo.url`» en el paso 12). **Cliente real:** su dominio.
 - **Prueba o demo:** en `contacto.telefono` y `contacto.whatsapp`, un número tuyo (formato `+34` + 9 dígitos, sin espacios), para que los botones funcionen sin llamar a un desconocido.
 
 Comprobación, desde **`web-<cliente>/`** (no debe salir nada):
@@ -126,7 +127,7 @@ cat .npmrc
 Revisa que en `git status` **no** aparecen `node_modules/` ni `.next/`, y que `cat .npmrc` muestra **solo** la línea del registro (sin token). Después:
 
 ```bash
-git commit -m "Web de <cliente> (template <template>, core 0.3.0)"
+git commit -m "Web de <cliente> (template <template>, core 0.N.0)"
 git branch -M main
 ```
 
@@ -192,12 +193,14 @@ Debe salir:
 - `1` (un solo `<h1>`).
 - `tel:` y `wa.me/` con el número correcto.
 
+**Corregir `seo.url` (solo demos):** con la URL real de Vercel a la vista, edita `web-<cliente>/site.config.ts` (`seo.url: "https://web-<cliente>.vercel.app"`), `pnpm build`, commit y `git push` (lo ejecuta Ysst); Vercel redespliega solo. Comprueba con `curl -s "$URL/" | grep -o '<link rel="canonical"[^>]*>'` que sale esa URL.
+
 Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren con el número y el mensaje precargado.
 
 ### 13. Cambios posteriores
 
 - Cambios de datos, fotos o diseño en la web: commit y `git push` a `main` desde `web-<cliente>/`; Vercel redespliega solo. Comprobado el 14/10/2026 con `web-metalicas-ejemplo`.
-- Llevar una versión nueva de core a una web ya entregada: futuro `docs/actualizar-cliente.md` (de momento, `docs/publicar-core.md` paso 6). La web queda **congelada** en su versión de core hasta que se actualiza a mano.
+- Llevar una versión nueva de core a una web ya entregada: `docs/actualizar-cliente.md`. La web queda **congelada** en su versión de core hasta que se actualiza a mano.
 
 ## Problemas frecuentes
 
@@ -213,6 +216,9 @@ Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren co
 | Vercel no muestra el repo o pide Pro al importarlo | La GitHub App de Vercel no tiene acceso al repo, o el repo es privado en Hobby | Paso 10; repo público solo para pruebas, Vercel Pro para clientes |
 | El primer `git push` es rechazado | El repo se creó con README o `.gitignore` | Borrar el repo y crearlo vacío |
 | `node_modules` o `.next` en `git status` | Falta el `.gitignore` del template | Copiar el `.gitignore` del template; `git rm -r --cached node_modules .next` |
+| En local se ven fotos antiguas o de otra web | Next cachea `/_next/image` ~4 h y otra web se abrió antes en el mismo puerto | DevTools → Red → **Disable cache** y recargar, o otro puerto (`docs/actualizar-cliente.md` → Problemas frecuentes) |
+| `pnpm start` dice «Could not find a production build» | Se lanzó mientras `pnpm build` aún compilaba | Esperar a que termine el build |
+| Al compartir la demo por WhatsApp la vista previa sale sin foto | `seo.url` sigue en `https://ejemplo.com` | Poner la URL de Vercel (paso 5 y paso 12) |
 | Se pega el contenido de `NPM_RC` en la terminal | Confusión entre comando y contenido | Va en el campo *Value* de Vercel, no en la terminal |
 
 ## Antes de un cliente real
@@ -229,4 +235,4 @@ Pasos 1 a 4: copiar el template fuera de `kit`, borrar `node_modules` y `.next`,
 ## Historial
 
 - `web-prueba` (oct 2026): primera prueba de despliegue en Vercel (proceso provisional).
-- `web-metalicas-ejemplo` (13/10/2026): proceso completo con `carpinteria-metalica-3` y core `0.3.0`; repo público y Vercel Hobby. Trampa encontrada: `NPM_RC` con otro campo de Bitwarden (401).
+- `web-metalicas-ejemplo` (13/10/2026): proceso completo con `carpinteria-metalica-3` y core `0.3.0` (hoy `0.4.0`); repo público y Vercel Hobby. Trampa encontrada: `NPM_RC` con otro campo de Bitwarden (401).

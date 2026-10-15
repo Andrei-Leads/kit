@@ -88,7 +88,7 @@ pnpm add @andrei-leads/core@^0.N.0      # nuevo minor en 0.x
 grep andrei-leads package.json
 ```
 
-Después, probar la web y hacer commit y push. Esto lo detallará `docs/actualizar-cliente.md` cuando exista.
+Después, probar la web y hacer commit y push. El proceso completo (incluido traer el código del template) está en `docs/actualizar-cliente.md`.
 
 ### Migraciones con cambios incompatibles
 

@@ -81,6 +81,7 @@ kit/
 │  ├─ jardineria-1/          # piloto «Rótulo» (one-page, referencia; se sustituirá)
 │  └─ carpinteria-metalica/
 │     ├─ carpinteria-metalica-1/   # «Medida» (tipo proyecto: asistente de WhatsApp en el hero; fotos de relleno)
+│     ├─ carpinteria-metalica-2/   # «Exposición» (tipo proyecto, variante tienda: «Cómo llegar» + llamada; fotos de relleno)
 │     └─ carpinteria-metalica-3/   # «Reparaciones» (primer template real, multipágina; ver §7)
 └─ apps/                     # vacío por ahora (reservado, p. ej. playground)
 ```
@@ -323,7 +324,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0).
 | `docs/investigacion-nichos.md` | Referencia («investigación por nichos») | Se quiere el porqué de las reglas por tipo (estructura que más convierte por nicho) |
 | `docs/nuevo-template.md` | Pendiente (se escribe tras el primer template real) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
 | `docs/nuevo-cliente.md` | Listo (probado con `web-metalicas-ejemplo`, 13/10/2026) | Se crea la web de un cliente a partir de un template y se despliega |
-| `docs/actualizar-cliente.md` | Pendiente | Se lleva una versión nueva de core a una web ya entregada |
+| `docs/actualizar-cliente.md` | Listo (probado con `web-metalicas-ejemplo` 0.3.0 → 0.4.0, 14/10/2026) | Se lleva una versión nueva de core a una web ya entregada |
 | `docs/cambio-de-plan.md` | SOP provisional (diseño sin implementar: core 0.5.0/0.6.0) | Un cliente pasa de plan Básico a Pro (analítica con consentimiento) o al revés. El agente pregunta los datos y hace el cambio en `site.config` |
 
 Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en este archivo y propón escribir el documento cuando el proceso funcione.
@@ -395,6 +396,9 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | Vercel no muestra el repo o pide Pro al importarlo | Hobby no despliega repos privados de una organización, o la GitHub App de Vercel no tiene acceso a ese repo | Pro (o repo público solo para pruebas); añadir el repo en los permisos de la GitHub App |
 | `401` en el build de Vercel al instalar core | Falta `NPM_RC`, está mal pegada o el token de Vercel ha caducado | Revisar y actualizar `NPM_RC` en el proyecto y hacer *Redeploy* (§8) |
 | `ERR_PNPM_FETCH_401` en el build de Vercel y el log muestra `_authToken=` con algo que no empieza por `ghp_` | Se copió otro campo de Bitwarden en `NPM_RC` | Editar `NPM_RC` con el token `ghp_…` → Save → Deployments → ⋯ → Redeploy; si lo pegado era una contraseña, cambiarla (`docs/nuevo-cliente.md`) |
+| VS Code marca errores de tipos que citan `@andrei-leads+core@<versión vieja>` y el build compila | El servidor de TypeScript tiene la versión vieja en memoria | `Ctrl+Shift+P` → «TypeScript: Restart TS Server»; manda el build |
+| En local se ven imágenes antiguas o de otra web | Next cachea `/_next/image` ~4 h y otra web se abrió antes en el mismo puerto; `Ctrl+Shift+R` no basta | DevTools → Red → «Disable cache» y recargar, o otro puerto |
+| `pnpm start`: «Could not find a production build» | Se lanzó mientras `pnpm build` compilaba | Esperar a que termine el build |
 | Se pega JSON en la terminal | Confusión entre comando y archivo | Decir siempre "esto va en el archivo X" |
 
 ---
@@ -403,16 +407,16 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 **Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas` (ya borrado), piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, webs de cliente de prueba desplegadas en Vercel (`web-prueba` y `web-metalicas-ejemplo`), Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`), `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`) y `0.3.0` (por la Action, PR #2: contrato multipágina, `BotonWhatsApp`, `imagenesHero`, slugs, `servicios[].imagenes` y `negocio.logo` como `{src, alt}`, y botones sin `aria-label`: el nombre accesible es el texto visible, WCAG 2.5.3). Brief reescrito para webs multipágina y reglas por tipo. Encargos de Claude Design escritos (3 por nicho: carpintería metálica, fontanería y pérgolas), fuera del repo en `mis_datos/encargos-claude-design/`.
 
-**En curso:** `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» integrado y subido, con las 9 fotos de ejemplo (IA). `-1` «Medida» (tipo proyecto) integrado el 14/10/2026 y revisado por Ysst: compila, rutas fijas, asistente de WhatsApp paso a paso en el hero, probado con datos completos, mínimos (con y sin WhatsApp), 1 servicio, solo galería + logo y primario `#1e40af`; sus 15 fotos de `public/ejemplo/` son **relleno gris** con los nombres de su `CREDITOS.md` (sustituirlas = reemplazar archivos) . `-2` «Exposición» entregado por Claude Design en `mis_datos/designs/carpinteria_metalica/`; es el siguiente (to-dos en `mis_datos/PENDIENTES-kit.md`).
+**En curso:** `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» integrado y subido, con las 9 fotos de ejemplo (IA). `-1` «Medida» (tipo proyecto) integrado el 14/10/2026 y revisado por Ysst: compila, rutas fijas, asistente de WhatsApp paso a paso en el hero, probado con datos completos, mínimos (con y sin WhatsApp), 1 servicio, solo galería + logo y primario `#1e40af`; sus 15 fotos de `public/ejemplo/` son **relleno gris** con los nombres de su `CREDITOS.md` (sustituirlas = reemplazar archivos) . `-2` «Exposición» (tipo proyecto, variante tienda) integrado el 14/10/2026, **pendiente de revisión de Ysst y sin commit**: compila con lint limpio, rutas fijas, SEO de core conectado, bloque «Visítanos» (dirección, horario con `formatearHorario`, «Cómo llegar» como enlace a Google Maps + llamada) en hero, `/empresa`, `/contacto` y CTA, catálogo por familias con precio «desde» y asistente compacto; probado con datos completos, mínimos (con y sin WhatsApp), 1 servicio, solo galería, horario de 3 filas, sector largo, primario `#1e40af` y con `mis_datos/datos-ficticios/carpinteria-metalica-2` (defecto conocido: con logo y nombre muy largo, el nombre se corta en móvil); sus fotos de `public/ejemplo/` son **relleno gris** con los nombres de su `CREDITOS.md`.
 
 **Siguiente, en orden:**
 
 1. ~~**Frontera core / template.**~~ **Resuelta en core 0.2.0** (ver §5, §7 y §10).
 2. ~~**`docs/brief-claude-design.md`**~~ **Hecho.** El mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
 3. ~~**Piloto `jardineria-1`**~~ **Hecho** (one-page; queda como referencia). Despliegue probado con `web-prueba` (§8).
-4. **Templates de carpintería metálica.** `-3` «Reparaciones» y `-1` «Medida» (tipo proyecto: aluminio y ventanas) ya están integrados. Sigue `-2` «Exposición», construido por subagentes con un encargo cerrado. Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
+4. **Templates de carpintería metálica.** `-3` «Reparaciones», `-1` «Medida» y `-2` «Exposición» (tipo proyecto: aluminio y ventanas) ya están integrados (`-2`, pendiente de revisión). Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
 5. ~~**Prueba con cliente ficticio**~~ **Hecha (13/10/2026):** `web-metalicas-ejemplo` (template `carpinteria-metalica-3`, core `^0.3.0`, datos ficticios, `noindex`), repo público en Vercel Hobby: https://web-metalicas-ejemplo-nu.vercel.app. Proceso en `docs/nuevo-cliente.md`. Redespliegue automático con `git push` a `main` comprobado (14/10/2026).
-6. **SEO técnico en core (0.4.0, sin publicar):** fusionado en `main` (rama `feat/seo-tecnico`) con su nota en `.changeset/` (incluye el horario estructurado, cambio incompatible); conectado en `carpinteria-metalica-3` y `carpinteria-metalica-1`; `jardineria-1` solo migrado al horario nuevo. Pendiente: publicar 0.4.0, actualizar `web-metalicas-ejemplo` y conectar el SEO en `jardineria-1` y `-2`.
+6. **SEO técnico en core (0.4.0, sin publicar):** fusionado en `main` (rama `feat/seo-tecnico`) con su nota en `.changeset/` (incluye el horario estructurado, cambio incompatible); conectado en `carpinteria-metalica-3`, `-1` y `-2`; `jardineria-1` solo migrado al horario nuevo. Pendiente: publicar 0.4.0, actualizar `web-metalicas-ejemplo` y conectar el SEO en `jardineria-1` (`-2` ya lo tiene).
 7. **Escribir `nuevo-template.md` y `actualizar-cliente.md`** a partir del primer template real (`nuevo-cliente.md` ya está hecho, a partir de la prueba del punto 5).
 8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
 

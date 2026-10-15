@@ -14,55 +14,24 @@
 - **`pnpm changeset` es interactivo.** Si no funciona en este entorno, crea la nota a mano en `.changeset/<nombre>.md` con el formato de las que ya existen.
 - **Al terminar, recuerda a Ysst** que ejecute `git pull` desde la raíz de `kit` en su PC antes de seguir trabajando en local.
 
-## 2. Estado actual
+## 2. Estado actual (14/10/2026)
 
-- **Core 0.3.0 publicada** en GitHub Packages (PR #2 "Version Packages" fusionado). Incluye:
-  - `imagenesHero`;
-  - `BotonWhatsApp`;
-  - el contrato multipágina: trabajos, empresa, tarifas y precios opcionales, proceso, acreditaciones, garantías, marcas, comunidades, valoración y slugs;
-  - dos cambios incompatibles: `servicios[].imagen` → `imagenes[]` y `negocio.logo` → `{src, alt}`;
-  - el arreglo de accesibilidad de los botones: sin `aria-label`, el nombre accesible es el texto visible (WCAG 2.5.3).
-- **No hay PR "Version Packages" abierto ni notas pendientes en `.changeset/`.**
-- **El brief nuevo está en `docs/brief-claude-design.md`:** multipágina y con reglas por tipo de negocio (urgencias, proyecto, obra técnica). Se basa en `docs/investigacion-nichos.md`.
-- **Carpetas por nicho:** `templates/<nicho>/<nicho>-<n>`. Todavía no existe ninguna; hoy solo están `templates/pergolas` (prueba) y `templates/jardineria-1` (piloto «Rótulo», como referencia).
-- **Primer template real: `carpinteria-metalica-3` «Reparaciones»**, integrado y desplegado como cliente ficticio (`web-metalicas-ejemplo`). Siguen `-1` «Medida» y `-2` «Exposición»; fontanería y pérgolas, después.
-- **Los encargos para Claude Design** (carpintería metálica, fontanería y pérgolas) los tiene Ysst en `mis_datos/encargos-claude-design/`, fuera del repo. Tú no los tienes.
+- **Core 0.4.0 publicada** en GitHub Packages: contrato multipágina (0.3.0), SEO técnico (sitemap, robots, metadatos, JSON-LD, `seo.indexar` con valor por defecto `false`) y horario estructurado `{ dias, abre, cierra }`, que es un cambio incompatible. El estado detallado está en `AGENTS.md` §12.
+- **Templates reales** (carpetas por nicho): `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» y `-1` «Medida», integrados y con el SEO conectado. `-2` «Exposición» está en integración. `templates/jardineria-1` es la referencia one-page antigua, sin SEO.
+- **Webs de demo** (repos públicos en Vercel Hobby, fuera de `kit`): `web-metalicas-ejemplo` (`-3`, ya actualizada a 0.4.0) y `web-aluminis-rocamar` (`-1`).
+- **Procesos documentados:** `docs/nuevo-cliente.md`, `docs/actualizar-cliente.md` y `docs/cambio-de-plan.md` (SOP provisional; la analítica todavía no está implementada).
+- **Los encargos para Claude Design, los diseños, las fotos y los datos ficticios** los tiene Ysst en `mis_datos/`, fuera del repo. Tú no los tienes.
 
-## 3. Tareas, en orden
+## 3. Tareas que se pueden hacer desde la web
 
-### Tarea 1: arreglo de accesibilidad de `BotonLlamada` y `BotonWhatsApp` — HECHA y publicada en 0.3.0 (sáltala)
+Las tareas de antes (accesibilidad, SEO y primer template) ya están hechas. La lista viva de tareas está en `AGENTS.md` §12; Ysst guarda además la suya en `mis_datos/PENDIENTES-kit.md`. Antes de empezar cualquier tarea, propónsela a Ysst y espera su confirmación. Candidatas que no necesitan nada de fuera de `kit`:
 
-### Tarea 2: SEO técnico en core (si hay tiempo; primero se propone, después se implementa)
-
-**Objetivo:** que cada web de cliente tenga SEO básico automático a partir de su `site.config`, sin trabajo extra.
-
-**Antes de escribir código**, explica a Ysst qué es cada pieza y para qué sirve, con una versión simple. Propón la API y **espera su confirmación**.
-
-Piezas previstas:
-- Funciones en core que los templates usarán en `app/sitemap.ts`, `app/robots.ts` y `generateMetadata`:
-  - **`sitemap.xml`:** inicio, servicios, trabajos, empresa, contacto y legales, solo las páginas que existan según los datos;
-  - **`robots.txt`**, que apunte al sitemap;
-  - **metadatos por página:** título, descripción, canonical y Open Graph (con la imagen de `imagenesHero`, si hay);
-  - **`noindex`** en `/servicios/<slug>` cuando el servicio no tenga `contenido`.
-- **JSON-LD `LocalBusiness`** con el `@type` de `negocio.tipoSchema`: nombre, teléfono, dirección, horario, `areaServed` (zonas) y `url`. **No** incluir `aggregateRating` a partir de `valoracion` (decisión ya tomada: Google lo considera reseñas autopromocionadas).
-- Todo lo que se exporte nuevo sale de `src/index.ts`. Si añades archivos fuera de `src/`, añádelos también a `exports`/`files` de `packages/core/package.json`.
-- **Es una funcionalidad nueva (nota *minor*):** saldrá en la **0.4.0**.
-- Rama `feat/seo-tecnico` y PR hacia `main` (ver §1, Git).
-
-### Tarea 3: primer template real — HECHA con `carpinteria-metalica-3` «Reparaciones» (sáltala; `-1` «Medida» sigue pendiente, ver `AGENTS.md` §12)
-
-Si Ysst te pasa el diseño de `carpinteria-metalica-1` «Medida» (un enlace o archivos; en local lo exportará a `mis_datos/disenyo-carpinteria-metalica-1/`):
-1. Revisa que cumple `docs/brief-claude-design.md` y su encargo (`carpinteria-metalica-1.md`; pídeselo a Ysst).
-2. **Antes de crear nada, propón el plan y espera su confirmación.** El plan debe cubrir:
-   - añadir `"templates/*/*"` a `pnpm-workspace.yaml`;
-   - qué hacer con `templates/pergolas`: borrarla o moverla, porque el nicho pergolas tendrá su propia carpeta `templates/pergolas/pergolas-n`;
-   - crear `templates/carpinteria-metalica/carpinteria-metalica-1` con nombre de paquete `carpinteria-metalica-1`;
-   - qué se reutiliza de `jardineria-1`: conexión con core, rutas legales, shadcn sin ensuciar `globals.css`, el año del pie con `"use cache"` y la caída del hero cuando no hay foto.
-
-   Ysst decidió que el frontend lo construya un subagente con un encargo cerrado.
+- **Analítica nivel Básico (core 0.5.0):** campo `analitica.vercel` + mención en la política de privacidad, siguiendo `docs/cambio-de-plan.md`. Ysst aún no ha confirmado los límites de Vercel Analytics: pregúntale antes.
+- **«Falso 404»:** con Next 16 y el prerender parcial, un slug inexistente devuelve 200 en la primera visita y 404 en las siguientes. Hay que investigarlo y proponer el arreglo.
+- **`docs/nuevo-template.md`:** el proceso de diseño a template, a partir de cómo se integraron el `-3` y el `-1` (ver el historial de Git y `AGENTS.md` §7).
 
 ## 4. Fuera de alcance en la web
 
 - Cualquier cosa de `mis_datos/` fuera de `kit`.
-- La configuración de Vercel y los repos de clientes (`web-prueba`).
+- La configuración de Vercel y los repos de las webs (`web-*`).
 - Fusionar PRs o publicar a mano (`pnpm publish`).
