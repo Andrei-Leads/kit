@@ -21,7 +21,7 @@
 | Pieza | Estado |
 |---|---|
 | **core** `@andrei-leads/core` **0.4.0** (GitHub Packages, privado) | Contrato `site.config` con Zod 4 (multipágina, slugs, precios opcionales, horario estructurado), `BotonLlamada`, `BotonWhatsApp`, legales LSSI/RGPD/cookies y SEO técnico: sitemap, robots, metadatos por página, JSON-LD `LocalBusiness` sin `aggregateRating`, y `seo.indexar` con valor por defecto `false` |
-| **Templates** (Next 16, Tailwind 4, App Router, `cacheComponents`) | `carpinteria-metalica-3` «Reparaciones», `-1` «Medida» y `-2` «Exposición», multipágina, con fotos de ejemplo generadas por IA (al `-2` le faltan algunas). `jardineria-1` es un piloto one-page antiguo, sin SEO, pendiente de borrar o mover |
+| **Templates** (Next 16, Tailwind 4, App Router, `cacheComponents`) | `carpinteria-metalica-3` «Reparaciones», `-1` «Medida» y `-2` «Exposición», multipágina, con fotos de ejemplo generadas por IA (al `-2` le faltan algunas). `jardineria-1` (piloto one-page) se borró el 15/10/2026 |
 | **Webs de demo** (repos públicos `Andrei-Leads/web-*`, Vercel Hobby, `noindex`) | `web-metalicas-ejemplo` (`-3`, actualizada a 0.4.0) y `web-aluminis-rocamar` (`-1`). Falta Finestral Nord (`-2`) |
 | **Procesos probados y documentados** | `docs/publicar-core.md` (Changesets + Action), `docs/nuevo-cliente.md`, `docs/actualizar-cliente.md` (0.3.0 → 0.4.0 probado), `docs/cambio-de-plan.md` (SOP provisional), `docs/brief-claude-design.md` (encargos de diseño) |
 | **Flujo de producción de un template** | Encargo → Claude Design → revisión con agentes → integración con un orquestador Opus y subagentes Sonnet/Haiku → comprobaciones → commit. Fotos de ejemplo generadas con ChatGPT a partir de prompts escritos por agentes |

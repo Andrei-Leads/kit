@@ -17,7 +17,7 @@
 ## 2. Estado actual (14/10/2026)
 
 - **Core 0.4.0 publicada** en GitHub Packages: contrato multipágina (0.3.0), SEO técnico (sitemap, robots, metadatos, JSON-LD, `seo.indexar` con valor por defecto `false`) y horario estructurado `{ dias, abre, cierra }`, que es un cambio incompatible. El estado detallado está en `AGENTS.md` §12.
-- **Templates reales** (carpetas por nicho): `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» y `-1` «Medida», integrados y con el SEO conectado. `-2` «Exposición» está en integración. `templates/jardineria-1` es la referencia one-page antigua, sin SEO.
+- **Templates reales** (carpetas por nicho): `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» y `-1` «Medida», integrados y con el SEO conectado. `-2` «Exposición» está en integración. El piloto `jardineria-1` se borró el 15/10/2026.
 - **Webs de demo** (repos públicos en Vercel Hobby, fuera de `kit`): `web-metalicas-ejemplo` (`-3`, ya actualizada a 0.4.0) y `web-aluminis-rocamar` (`-1`).
 - **Procesos documentados:** `docs/nuevo-cliente.md`, `docs/actualizar-cliente.md` y `docs/cambio-de-plan.md` (SOP provisional; la analítica todavía no está implementada).
 - **Los encargos para Claude Design, los diseños, las fotos y los datos ficticios** los tiene Ysst en `mis_datos/`, fuera del repo. Tú no los tienes.

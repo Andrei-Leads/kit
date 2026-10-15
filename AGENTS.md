@@ -78,7 +78,6 @@ kit/
 │        ├─ horario.ts       # días de la semana y formatearHorario
 │        └─ seo.tsx          # sitemap, robots, metadatos por página y JSON-LD
 ├─ templates/
-│  ├─ jardineria-1/          # piloto «Rótulo» (one-page, referencia; se sustituirá)
 │  └─ carpinteria-metalica/
 │     ├─ carpinteria-metalica-1/   # «Medida» (tipo proyecto: asistente de WhatsApp en el hero; fotos de relleno)
 │     ├─ carpinteria-metalica-2/   # «Exposición» (tipo proyecto, variante tienda: «Cómo llegar» + llamada; fotos de relleno)
@@ -96,7 +95,7 @@ packages:
   - "apps/*"
 ```
 
-`templates/*` cubre los planos (`jardineria-1`) y `templates/*/*` los anidados por nicho (`templates/<nicho>/<nicho>-<n>`); sin esa línea, pnpm no ve los anidados.
+`templates/*` cubriría templates planos (hoy no hay ninguno) y `templates/*/*` los anidados por nicho (`templates/<nicho>/<nicho>-<n>`); sin esa línea, pnpm no ve los anidados.
 
 Cada carpeta dentro de esas rutas que tenga un `package.json` es un proyecto del workspace. Para listarlos: `pnpm ls -r --depth -1` (`pnpm ls -r` sin `--depth -1` lista dependencias, no proyectos).
 
@@ -256,8 +255,8 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0).
 
   Los 3 templates de un nicho difieren en al menos 4 ejes de estructura (hero, orden, sección estrella, trabajos, navegación, botones, tipografía, densidad), no solo en el color.
 - **Webs multipágina.** Rutas fijas en todos los templates: `/`, `/servicios`, `/servicios/[slug]`, `/trabajos`, `/trabajos/[slug]`, `/empresa`, `/contacto`, las tres legales y `/comunidades` (solo obra técnica, si existe `comunidades`). La etiqueta del menú es libre; la ruta no. Sin páginas por municipio. Cabecera, pie y barra móvil en `app/layout.tsx`, presentes en todas las páginas.
-- **`templates/carpinteria-metalica/carpinteria-metalica-3`** («Reparaciones», sigue las reglas de urgencias) es el primer template real. **`templates/jardineria-1`** («Rótulo», one-page) es la referencia del tipo recurrente; se moverá a `templates/jardineria/` cuando se trabaje ese tipo. El template de prueba `pergolas` ya se borró.
-- **Estructura de un template** (la de `carpinteria-metalica-3`, con el esqueleto de `jardineria-1`: Next 16, TypeScript, ESLint, Tailwind v4, App Router, Turbopack, `cacheComponents: true`, **sin `src/`**):
+- **`templates/carpinteria-metalica/carpinteria-metalica-3`** («Reparaciones», sigue las reglas de urgencias) es el primer template real. El piloto one-page `templates/jardineria-1` («Rótulo») se borró el 15/10/2026; el tipo recurrente tendrá un template nuevo. El template de prueba `pergolas` ya se borró.
+- **Estructura de un template** (la de `carpinteria-metalica-3`, con el esqueleto del antiguo piloto `jardineria-1`, ya borrado: Next 16, TypeScript, ESLint, Tailwind v4, App Router, Turbopack, `cacheComponents: true`, **sin `src/`**):
   - `app/` en la raíz del template: `layout.tsx`, `page.tsx`, `globals.css` y una carpeta por ruta fija. Además, `components/ui/` (shadcn), `components/secciones/`, `lib/` y `public/ejemplo/`.
   - `site.config.ts` en la raíz del template.
   - Alias `@/*` → `./*`, así que se importa con `import config from "@/site.config"`.
@@ -408,16 +407,16 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 
 **Hecho (oct 2026):** monorepo pnpm, core con contrato `site.config`, template de prueba `pergolas` (ya borrado), piloto `jardineria-1` («Rótulo»), publicación en GitHub Packages, webs de cliente de prueba desplegadas en Vercel (`web-prueba` y `web-metalicas-ejemplo`), Changesets y Action. Versiones: `0.1.0` (a mano), `0.1.1` (por la Action: `aria-label` en `BotonLlamada`), `0.2.0` (frontera core/template: páginas legales, `BotonLlamada` con `className`, `email` obligatorio, sin `saludo`, y `galeria` y `preguntas` en `site.config`) y `0.3.0` (por la Action, PR #2: contrato multipágina, `BotonWhatsApp`, `imagenesHero`, slugs, `servicios[].imagenes` y `negocio.logo` como `{src, alt}`, y botones sin `aria-label`: el nombre accesible es el texto visible, WCAG 2.5.3). Brief reescrito para webs multipágina y reglas por tipo. Encargos de Claude Design escritos (3 por nicho: carpintería metálica, fontanería y pérgolas), fuera del repo en `mis_datos/encargos-claude-design/`.
 
-**En curso:** `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» integrado y subido, con las 9 fotos de ejemplo (IA). `-1` «Medida» (tipo proyecto) integrado el 14/10/2026 y revisado por Ysst: compila, rutas fijas, asistente de WhatsApp paso a paso en el hero, probado con datos completos, mínimos (con y sin WhatsApp), 1 servicio, solo galería + logo y primario `#1e40af`; sus 15 fotos de `public/ejemplo/` son **relleno gris** con los nombres de su `CREDITOS.md` (sustituirlas = reemplazar archivos) . `-2` «Exposición» (tipo proyecto, variante tienda) integrado el 14/10/2026, **pendiente de revisión de Ysst y sin commit**: compila con lint limpio, rutas fijas, SEO de core conectado, bloque «Visítanos» (dirección, horario con `formatearHorario`, «Cómo llegar» como enlace a Google Maps + llamada) en hero, `/empresa`, `/contacto` y CTA, catálogo por familias con precio «desde» y asistente compacto; probado con datos completos, mínimos (con y sin WhatsApp), 1 servicio, solo galería, horario de 3 filas, sector largo, primario `#1e40af` y con `mis_datos/datos-ficticios/carpinteria-metalica-2` (defecto conocido: con logo y nombre muy largo, el nombre se corta en móvil); sus fotos de `public/ejemplo/` son **relleno gris** con los nombres de su `CREDITOS.md`.
+**En curso:** `templates/carpinteria-metalica/carpinteria-metalica-3` «Reparaciones» integrado y subido, con las 9 fotos de ejemplo (IA). `-1` «Medida» (tipo proyecto) integrado el 14/10/2026 y revisado por Ysst: compila, rutas fijas, asistente de WhatsApp paso a paso en el hero, probado con datos completos, mínimos (con y sin WhatsApp), 1 servicio, solo galería + logo y primario `#1e40af`; sus 15 fotos de `public/ejemplo/` son **relleno gris** con los nombres de su `CREDITOS.md` (sustituirlas = reemplazar archivos) . `-2` «Exposición» (tipo proyecto, variante tienda) integrado el 14/10/2026, revisado y subido: compila con lint limpio, rutas fijas, SEO de core conectado, bloque «Visítanos» (dirección, horario con `formatearHorario`, «Cómo llegar» como enlace a Google Maps + llamada) en hero, `/empresa`, `/contacto` y CTA, catálogo por familias con precio «desde» y asistente compacto; probado con datos completos, mínimos (con y sin WhatsApp), 1 servicio, solo galería, horario de 3 filas, sector largo, primario `#1e40af` y con `mis_datos/datos-ficticios/carpinteria-metalica-2` (defecto conocido: con logo y nombre muy largo, el nombre se corta en móvil); sus fotos de `public/ejemplo/` son **relleno gris** con los nombres de su `CREDITOS.md`.
 
 **Siguiente, en orden:**
 
 1. ~~**Frontera core / template.**~~ **Resuelta en core 0.2.0** (ver §5, §7 y §10).
 2. ~~**`docs/brief-claude-design.md`**~~ **Hecho.** El mapa visual para Claude Design (estructura del template, catálogo de secciones, tokens, contrato `site.config`). Sin backend ni procesos.
-3. ~~**Piloto `jardineria-1`**~~ **Hecho** (one-page; queda como referencia). Despliegue probado con `web-prueba` (§8).
-4. **Templates de carpintería metálica.** `-3` «Reparaciones», `-1` «Medida» y `-2` «Exposición» (tipo proyecto: aluminio y ventanas) ya están integrados (`-2`, pendiente de revisión). Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
+3. ~~**Piloto `jardineria-1`**~~ **Hecho** (one-page; borrado el 15/10/2026: queda en el historial de Git; el tipo recurrente tendrá un template nuevo multipágina). Despliegue probado con `web-prueba` (§8).
+4. **Templates de carpintería metálica.** `-3` «Reparaciones», `-1` «Medida» y `-2` «Exposición» (tipo proyecto: aluminio y ventanas) ya están integrados . Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
 5. ~~**Prueba con cliente ficticio**~~ **Hecha (13/10/2026):** `web-metalicas-ejemplo` (template `carpinteria-metalica-3`, core `^0.3.0`, datos ficticios, `noindex`), repo público en Vercel Hobby: https://web-metalicas-ejemplo-nu.vercel.app. Proceso en `docs/nuevo-cliente.md`. Redespliegue automático con `git push` a `main` comprobado (14/10/2026).
-6. **SEO técnico en core (0.4.0, sin publicar):** fusionado en `main` (rama `feat/seo-tecnico`) con su nota en `.changeset/` (incluye el horario estructurado, cambio incompatible); conectado en `carpinteria-metalica-3`, `-1` y `-2`; `jardineria-1` solo migrado al horario nuevo. Pendiente: publicar 0.4.0, actualizar `web-metalicas-ejemplo` y conectar el SEO en `jardineria-1` (`-2` ya lo tiene).
+6. ~~**SEO técnico en core**~~ **Publicado en 0.4.0 (14/10/2026)**: fusionado en `main` (rama `feat/seo-tecnico`) con su nota en `.changeset/` (incluye el horario estructurado, cambio incompatible); conectado en `carpinteria-metalica-3`, `-1` y `-2`; `jardineria-1` solo migrado al horario nuevo. `web-metalicas-ejemplo` ya actualizada a 0.4.0 (`docs/actualizar-cliente.md`).
 7. **Escribir `nuevo-template.md` y `actualizar-cliente.md`** a partir del primer template real (`nuevo-cliente.md` ya está hecho, a partir de la prueba del punto 5).
 8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
 
