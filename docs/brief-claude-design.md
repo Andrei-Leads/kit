@@ -225,6 +225,21 @@ El **tipo** no es el nombre de la carpeta: es la guía de diseño que sigue cada
 
 Cada template debe diferir de los otros dos en **al menos 4** de estos ejes: composición del hero (número de fotos o ninguna), orden de las secciones del inicio (dentro de lo que permite el tipo), sección "estrella", forma de trabajos/galería, estilo de navegación, estilo de los botones por sección, tipografía y densidad. **No vale cambiar solo el color.**
 
+**Los 3 templates de un nicho tienen que parecer de estudios distintos**, no variaciones de uno solo: distinta estructura, distinto diseño, distintas formas y distintas fuentes. Para conseguirlo, antes de escribir los encargos de un nicho se rellena una **matriz de variedad**. Cada eje tiene varias opciones, a cada template le toca una combinación **al azar** y **ninguna opción se repite entre los 3**:
+
+| Eje | Opciones (ejemplos) |
+|---|---|
+| Objetivo del negocio | urgencia (llamada inmediata) · confianza (obras grandes, reseñas y trabajos) · contenido/SEO (texto por servicio, guías, preguntas) · exposición/tienda |
+| Hero | foto a sangre · partido foto/texto · tipográfico sin foto · collage o carrusel · asistente como protagonista |
+| Tipografía | sans geométrica · sans humanista · serif editorial · display condensada · mono técnica (máximo 2 familias por template) |
+| Formas | rectas y duras · redondeadas · orgánicas/blob · diagonales y cortes · líneas de plano y cotas |
+| Paleta | clara · oscura · color pleno de fondo · neutra con acento fuerte |
+| Densidad | aireada · compacta tipo catálogo · editorial con mucho texto |
+| Navegación | barra clásica · menú a pantalla completa · navegación en el pie del móvil · índice lateral en escritorio |
+| Sección estrella | trabajos/antes-después · tarifas · proceso · reseñas · catálogo · asistente |
+
+El encargo de cada template dice qué combinación le ha tocado. Claude Design la respeta y, en su entrega, dice en qué ejes difiere de los otros dos.
+
 Variantes de referencia por tipo (el encargo te dirá cuál toca):
 
 | Tipo | Template 1 | Template 2 | Template 3 |
@@ -265,8 +280,22 @@ Sustituye al formulario o a la calculadora de presupuesto. Son 2–3 preguntas c
 6. **Imágenes:** con `next/image`, y el `alt` sale de los datos. Las de ejemplo son **neutras** (sin logos ni caras reconocibles) y están en `public/ejemplo/`. Aguantan fotos reales hechas con el móvil del cliente: proporciones fijas con recorte (`object-cover`) y nunca texto sobre una foto sin una capa oscura debajo.
 7. **Accesibilidad:** contraste WCAG AA, un solo `h1` por página, jerarquía de títulos sin saltos, foco visible, zonas táctiles de al menos 44 px, navegación móvil usable con teclado y lector de pantalla.
 8. **Legal:** el pie enlaza a `/aviso-legal`, `/privacidad` y `/cookies` (lista `enlacesLegales` de core). Esas páginas usan el layout del template.
-9. **Ligera:** sin animaciones pesadas ni nada que retrase la primera carga. Pensada para 4G.
+9. **Ligera y con animaciones baratas:** nada que retrase la primera carga. Pensada para 4G. Las animaciones siguen las reglas de «Animación» (abajo).
 10. **SEO local:** un servicio = una página; las zonas, solo como lista. Nada de páginas por municipio.
+11. **Móvil primero.** La mayoría de las visitas llegan desde el móvil. Se diseña y se pule **primero a 375 px**, incluidas las animaciones, y después se adapta a tablet y escritorio con la misma estructura, sin rehacerla. La entrega muestra el móvil primero, y el móvil es lo que se revisa con más detalle.
+
+### Animación (todos los templates)
+
+Todo template lleva **animaciones básicas que llamen la atención**, pensadas para el móvil y **sin empeorar el rendimiento**:
+
+- **Solo CSS** (`@keyframes`, `transition`, `animation-timeline: view()` dentro de `@supports`) y, como mucho, un `IntersectionObserver` de pocas líneas. **Ninguna librería de animación** (framer-motion, GSAP, AOS…).
+- **Solo se animan `transform` y `opacity`**. Nunca `width`, `height`, `top`, `margin` ni sombras grandes, porque obligan a recalcular la página.
+- **Lo primero que se ve no se anima:** el `h1`, la foto del hero y el botón de llamada del hero están visibles desde el primer pintado. Si se anima el elemento más grande de la primera pantalla (LCP), la web «tarda» más para Google.
+- **`prefers-reduced-motion: reduce`:** sin desplazamientos ni bucles; el contenido aparece directamente.
+- **Sin JavaScript** el contenido se ve entero: nada empieza oculto si depende de un script para aparecer.
+- **Tipos recomendados:** aparecer al hacer scroll (fundido + desplazamiento corto, 200–400 ms, escalonado en listas), respuesta al tocar o pasar por encima en botones y tarjetas, subrayados o cotas que se dibujan, contadores en cifras clave y la barra móvil que entra al cargar.
+- **Prohibido:** parallax pesado, vídeo de fondo, carruseles automáticos que se mueven solos, animaciones en bucle que distraigan del botón de llamada, y cualquier cosa que mueva el contenido mientras se lee.
+- En la entrega, describe cada animación: qué elemento, qué propiedad, cuánto dura y qué pasa con «reducir movimiento».
 
 ---
 

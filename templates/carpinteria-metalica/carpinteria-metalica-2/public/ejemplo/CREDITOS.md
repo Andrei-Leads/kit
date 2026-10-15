@@ -55,4 +55,4 @@ El logo de los lienzos K1–K7 no es una foto de ejemplo: representa `negocio.lo
 
 Las fotos se generan con IA (ChatGPT, OpenAI) por Andrei Leads; uso permitido por los términos de OpenAI. Las que no aparecen en esta lista siguen siendo relleno gris.
 
-- 15/10/2026: `hero-exposicion`, `cat-ventanas-aluminio`, `cat-ventanas-aluminio-2`, `cat-ventanas-aluminio-3`, `cat-ventanas-aluminio-4`, `cat-ventanas-pvc`, `cat-cerramientos`, `cat-toldos`.
+- 15/10/2026: las 23 fotos de la web (de `hero-exposicion` a `equipo-elena`). Siguen de relleno las opcionales `galeria-1` … `galeria-6`.
