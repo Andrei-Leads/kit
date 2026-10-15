@@ -399,6 +399,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | VS Code marca errores de tipos que citan `@andrei-leads+core@<versión vieja>` y el build compila | El servidor de TypeScript tiene la versión vieja en memoria | `Ctrl+Shift+P` → «TypeScript: Restart TS Server»; manda el build |
 | En local se ven imágenes antiguas o de otra web | Next cachea `/_next/image` ~4 h y otra web se abrió antes en el mismo puerto; `Ctrl+Shift+R` no basta | DevTools → Red → «Disable cache» y recargar, o otro puerto |
 | `pnpm start`: «Could not find a production build» | Se lanzó mientras `pnpm build` compilaba | Esperar a que termine el build |
+| Build: `site.config inválido: Inválido URL → at seo.url` | `seo.url` sin `https://`, o se copió la URL de un despliegue concreto (`web-x-ab12cd-…vercel.app`) | `url: "https://web-<cliente>.vercel.app"` (dominio fijo del proyecto) o el dominio del cliente |
 | Se pega JSON en la terminal | Confusión entre comando y archivo | Decir siempre "esto va en el archivo X" |
 
 ---
