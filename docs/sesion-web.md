@@ -28,7 +28,6 @@ Las tareas de antes (accesibilidad, SEO y primer template) ya están hechas. La 
 
 - **Analítica nivel Básico (core 0.5.0):** campo `analitica.vercel` + mención en la política de privacidad, siguiendo `docs/cambio-de-plan.md`. Ysst aún no ha confirmado los límites de Vercel Analytics: pregúntale antes.
 - **«Falso 404»:** con Next 16 y el prerender parcial, un slug inexistente devuelve 200 en la primera visita y 404 en las siguientes. Hay que investigarlo y proponer el arreglo.
-- **`docs/nuevo-template.md`:** el proceso de diseño a template, a partir de cómo se integraron el `-3` y el `-1` (ver el historial de Git y `AGENTS.md` §7).
 
 ## 4. Fuera de alcance en la web
 

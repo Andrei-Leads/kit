@@ -322,7 +322,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0).
 | `docs/contexto-estrategia.md` | Listo (15/10/2026) | Sesión de estrategia: qué le falta a `kit` para mantener muchas webs, SEO, relación con Pavimentos Albufera, Pavivasa y `monorepo_root` |
 | `docs/brief-claude-design.md` | Listo (contrato 0.3.0, multipágina, reglas por tipo) | Se va a pedir un diseño a Claude Design. Es genérico: el encargo concreto de cada template se escribe aparte |
 | `docs/investigacion-nichos.md` | Referencia («investigación por nichos») | Se quiere el porqué de las reglas por tipo (estructura que más convierte por nicho) |
-| `docs/nuevo-template.md` | Pendiente (se escribe tras el primer template real) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
+| `docs/nuevo-template.md` | Listo (a partir de `carpinteria-metalica-1/2/3`, 15/10/2026) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
 | `docs/nuevo-cliente.md` | Listo (probado con `web-metalicas-ejemplo`, 13/10/2026) | Se crea la web de un cliente a partir de un template y se despliega |
 | `docs/actualizar-cliente.md` | Listo (probado con `web-metalicas-ejemplo` 0.3.0 → 0.4.0, 14/10/2026) | Se lleva una versión nueva de core a una web ya entregada |
 | `docs/cambio-de-plan.md` | SOP provisional (diseño sin implementar: core 0.5.0/0.6.0) | Un cliente pasa de plan Básico a Pro (analítica con consentimiento) o al revés. El agente pregunta los datos y hace el cambio en `site.config` |
@@ -417,7 +417,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 4. **Templates de carpintería metálica.** `-3` «Reparaciones», `-1` «Medida» y `-2` «Exposición» (tipo proyecto: aluminio y ventanas) ya están integrados . Fontanería (`fontaneria-1/2/3`) y pérgolas (`pergolas-1/2/3`) van después.
 5. ~~**Prueba con cliente ficticio**~~ **Hecha (13/10/2026):** `web-metalicas-ejemplo` (template `carpinteria-metalica-3`, core `^0.3.0`, datos ficticios, `noindex`), repo público en Vercel Hobby: https://web-metalicas-ejemplo-nu.vercel.app. Proceso en `docs/nuevo-cliente.md`. Redespliegue automático con `git push` a `main` comprobado (14/10/2026).
 6. ~~**SEO técnico en core**~~ **Publicado en 0.4.0 (14/10/2026)**: fusionado en `main` (rama `feat/seo-tecnico`) con su nota en `.changeset/` (incluye el horario estructurado, cambio incompatible); conectado en `carpinteria-metalica-3`, `-1` y `-2`; `jardineria-1` solo migrado al horario nuevo. `web-metalicas-ejemplo` ya actualizada a 0.4.0 (`docs/actualizar-cliente.md`).
-7. **Escribir `nuevo-template.md` y `actualizar-cliente.md`** a partir del primer template real (`nuevo-cliente.md` ya está hecho, a partir de la prueba del punto 5).
+7. ~~**Escribir `nuevo-template.md` y `actualizar-cliente.md`**~~ **Hecho:** `actualizar-cliente.md` (14/10/2026) y `nuevo-template.md` (15/10/2026, a partir de `carpinteria-metalica-1/2/3`).
 8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
 
 **Más adelante:** Turborepo (con 3 o 4 templates); script `create-site` (automatiza los pasos 1–4 de `docs/nuevo-cliente.md`); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.

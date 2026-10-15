@@ -82,7 +82,7 @@ Cada sección es un componente que recibe **solo su parte** de los datos. Por ej
 
 ---
 
-## 4. Contrato de datos (`site.config`, core 0.3.0)
+## 4. Contrato de datos (`site.config`, core 0.4.0)
 
 `?` = opcional. "Lista" = puede llegar vacía salvo que se diga otra cosa. **Imagen** = `{ src, alt }`, siempre con `alt`. **Párrafos** = lista de textos, uno por párrafo.
 

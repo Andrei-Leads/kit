@@ -37,7 +37,7 @@
 - **Logo:** `negocio.logo.formato`, para la variante «solo logo» con nombres muy largos.
 - **Vercel Pro y repos privados** antes del primer cliente real.
 - **Automatización:** script o agente `create-site`.
-- **Documentación pendiente:** `docs/nuevo-template.md`.
+- **Documentación:** `docs/nuevo-template.md` (de diseño a template) ya está escrito; falta probarlo con el próximo nicho.
 - **Catálogo de templates** desplegado (`apps/catalogo`).
 - **Turborepo:** aplazado hasta tener 3–4 templates; ya hay 3.
 
