@@ -56,3 +56,4 @@ El logo de los lienzos K1–K7 no es una foto de ejemplo: representa `negocio.lo
 Las fotos se generan con IA (ChatGPT, OpenAI) por Andrei Leads; uso permitido por los términos de OpenAI. Las que no aparecen en esta lista siguen siendo relleno gris.
 
 - 15/10/2026: las 23 fotos de la web (de `hero-exposicion` a `equipo-elena`). Siguen de relleno las opcionales `galeria-1` … `galeria-6`.
+- 15/10/2026 (fotos extra de la demo Finestral Nord, generadas con IA): `cat-mosquiteras` (mosquitera plisada en puerta de terraza), `cat-cristaleria` (planchas de vidrio en un caballete de taller), `trabajo-la-canada` (chalet con ventanas de PVC imitación madera). Además `galeria-1` (opcional).
