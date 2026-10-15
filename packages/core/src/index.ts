@@ -33,3 +33,4 @@ export {
 export type { Metadatos, EntradaSitemap, Robots } from "./seo";
 export { formatearHorario } from "./horario";
 export type { Dia, FranjaHorario, LineaHorario } from "./horario";
+export { Analitica } from "./analitica";

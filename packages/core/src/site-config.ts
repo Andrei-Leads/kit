@@ -311,6 +311,18 @@ export const siteConfigSchema = z
         facebook: z.url().optional(),
       })
       .default({}),
+    /**
+     * Analítica (desde 0.5.0). `vercel: true` = plan Básico: Vercel Web
+     * Analytics sin cookies y clics de contacto como eventos propios. Hay que
+     * activar también Analytics en el proyecto de Vercel. Por defecto, nada.
+     */
+    analitica: z
+      .object({
+        vercel: z
+          .boolean({ error: "analitica.vercel debe ser true o false" })
+          .default(false),
+      })
+      .prefault({}),
   })
   .superRefine((config, ctx) => {
     const slugsServicios = new Set(config.servicios.map((s) => s.slug));

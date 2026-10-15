@@ -191,6 +191,9 @@ REQUISITOS (todos obligatorios)
   layout; app/sitemap.ts (crearSitemap) y app/robots.ts (crearRobots); generateMetadata con
   metadatosServicio / metadatosTrabajo en las [slug]; metadatosPagina en el resto y en las legales
   con `indexable: false`. Tipos Metadata / MetadataRoute de Next. Nunca noindex a mano.
+- Analítica de core (0.5.0): `<Analitica config={config} />` una sola vez en el <body> de
+  `app/layout.tsx`, justo después de <DatosEstructurados>. El `site.config.ts` del template NO activa
+  `analitica` (la activa cada web). Ninguna otra analítica.
 - Legales: solo el componente de core dentro del layout, con migas; sin <h1> propio (lo pone core).
   Un solo <h1> por página en todo el sitio y títulos sin saltos.
 - Accesibilidad: zonas táctiles ≥ 44 px, foco visible, contraste AA, chips que no son enlace = <span>,
@@ -202,7 +205,7 @@ REQUISITOS (todos obligatorios)
 - Tokens propios en @theme; --color-primario sobrescribible desde marca.colorPrimario (style del <html>);
   el diseño aguanta cualquier primario medio u oscuro con texto blanco.
 - Tipografías con next/font (máx. 2). Nada de Google Fonts en runtime, iframes, scripts de terceros,
-  analítica ni formularios.
+  analítica de terceros (la única es `<Analitica>` de core) ni formularios.
 - cacheComponents: generateStaticParams nunca devuelve [] (sin datos: [{ slug: "_" }] que hace
   notFound()); nada de new Date() en el render (el año sale de lib/anio.ts).
 - Animaciones: solo CSS (como mucho un IntersectionObserver corto), sin librerías; solo transform y
@@ -269,10 +272,12 @@ curl -s $URL/ | grep -o '<meta name="robots"[^>]*>'
 curl -s $URL/aviso-legal | grep -o '<link rel="canonical"[^>]*>'
 curl -s $URL/ | grep -c openingHoursSpecification
 curl -s $URL/ | grep -c aggregateRating
+grep -n 'Analitica' app/layout.tsx     # import y un único <Analitica config={config} />
+grep -n 'analitica' site.config.ts      # sin salida: el template no la activa
 kill $PID; ss -ltnp | grep :3005
 ```
 
-Debe salir: `200` y `h1=1` en todas las rutas, `404` en `/no-existe`; `noindex` (demo, sin `seo.indexar`); canonical de la propia página; `openingHoursSpecification` presente y `aggregateRating` = `0`. El último `ss` no debe mostrar nada; si muestra un proceso en el 3005, es el tuyo: para **ese** PID.
+Debe salir: `200` y `h1=1` en todas las rutas, `404` en `/no-existe`; `noindex` (demo, sin `seo.indexar`); canonical de la propia página; `openingHoursSpecification` presente y `aggregateRating` = `0`. En `app/layout.tsx`, `<Analitica config={config} />` aparece una sola vez (en el <body>, junto a `<DatosEstructurados>`), y `site.config.ts` no contiene `analitica`. El último `ss` no debe mostrar nada; si muestra un proceso en el 3005, es el tuyo: para **ese** PID.
 
 **Variantes de datos.** El template aún no está en Git, así que el original se guarda fuera:
 

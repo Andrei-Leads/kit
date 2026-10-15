@@ -197,7 +197,31 @@ Debe salir:
 
 Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren con el número y el mensaje precargado.
 
-### 13. Cambios posteriores
+### 13. Activar la analítica (plan Básico)
+
+Requiere core ≥ 0.5.0 en la web. Sin este paso la web no mide nada. Sirve también en demos (así se sabe si el prospecto abrió su demo).
+
+1. Desde `web-<cliente>/` (comando de terminal): `grep -n Analitica app/layout.tsx`. Debe salir el import y un `<Analitica config={config} />`. Si no sale nada (web creada desde un template anterior a 0.5.0), añade `Analitica` al import de `@andrei-leads/core` y `<Analitica config={config} />` una vez en el `<body>`, justo después de `<DatosEstructurados config={config} />`.
+2. En el **navegador**: dashboard de Vercel → el proyecto → **Analytics** → *Enable*.
+3. En `web-<cliente>/site.config.ts` (**contenido de archivo**, no comando; es el de la web, no el del template), añade:
+
+   ```ts
+   analitica: {
+     vercel: true,
+   },
+   ```
+
+4. Desde `web-<cliente>/` (comandos de terminal): `pnpm build`, `git add -A` y `git commit -m "Analítica: Vercel Web Analytics"`. El `git push` lo ejecuta Ysst; Vercel redespliega solo.
+
+Comprobación con la web desplegada (en el **navegador**, DevTools):
+
+- Red: se carga un `script.js` del propio dominio (`/_vercel/insights/script.js` u otra ruta propia del proyecto) y, al navegar entre páginas, hay envíos al mismo dominio. El script lo inyecta el navegador: no sale en «ver código fuente».
+- Aplicación → Cookies: vacío. Almacenamiento local: vacío.
+- `/privacidad` muestra «Estadísticas de visitas»; `/cookies` no cambia.
+
+Qué se ve en el panel y los límites por plan de Vercel: `docs/cambio-de-plan.md`.
+
+### 14. Cambios posteriores
 
 - Cambios de datos, fotos o diseño en la web: commit y `git push` a `main` desde `web-<cliente>/`; Vercel redespliega solo. Comprobado el 14/10/2026 con `web-metalicas-ejemplo`.
 - Llevar una versión nueva de core a una web ya entregada: `docs/actualizar-cliente.md`. La web queda **congelada** en su versión de core hasta que se actualiza a mano.
@@ -225,6 +249,7 @@ Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren co
 
 - [ ] **Vercel Pro** (Hobby no admite uso comercial ni repos privados de una organización) y repo **privado**.
 - [ ] Core **≥ 0.4.0** (SEO técnico) y `seo: { …, indexar: true }` en `site.config.ts`, con `seo.url` = dominio definitivo. Comprobar con el paso 12.
+- [ ] **Analítica** activada (paso 13): *Enable* en Vercel y `analitica: { vercel: true }` en el `site.config.ts` de la web.
 - [ ] **Fotos reales** del cliente fuera de `public/ejemplo/`; ninguna foto de ejemplo ni generada con IA.
 - [ ] `site.config.ts` sin nada ficticio (paso 5) y precios validados por el cliente.
 

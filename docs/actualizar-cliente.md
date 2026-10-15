@@ -82,6 +82,7 @@ grep andrei-leads package.json
 readlink -f node_modules/@andrei-leads/core | grep -o 'core@[0-9.]*'
 ```
 
+- **Al pasar a ≥ 0.5.0 (analítica):** compruébalo desde `web-<cliente>/` con `grep -n Analitica app/layout.tsx` (comando de terminal). Si no sale nada y no copiaste el código del template en el paso 2, edita `app/layout.tsx` (contenido de archivo): añade `Analitica` al import de `@andrei-leads/core` y `<Analitica config={config} />` una vez en el `<body>`, justo después de `<DatosEstructurados config={config} />`. Sin él, `analitica: { vercel: true }` solo cambia el texto de `/privacidad` y no mide nada. Activarla: `docs/nuevo-cliente.md` paso 13.
 - En 0.x, `^0.3.0` **nunca salta a 0.4.0**: hay que pedir la versión nueva de forma explícita (`pnpm up` no basta; ver `docs/publicar-core.md` paso 6).
 - El `grep` debe mostrar `"^0.N.0"` y el `readlink` + `grep -o`, `core@0.N.0`. Un `401` = token caducado (ver «Antes de empezar»).
 

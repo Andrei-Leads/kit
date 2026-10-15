@@ -108,6 +108,27 @@ export function PoliticaPrivacidad({ config }: { config: SiteConfig }) {
         garantías que exige el RGPD.
       </p>
 
+      {config.analitica.vercel && (
+        <>
+          <H2>Estadísticas de visitas</H2>
+          <p>
+            Para saber cuántas personas visitan esta web y qué páginas consultan, usamos Vercel Web
+            Analytics, un servicio de Vercel Inc. que actúa como encargado del tratamiento. Registra
+            de forma anónima y agregada la página visitada, la página de procedencia, el país y la
+            ciudad aproximados, el tipo de dispositivo, el sistema operativo, el navegador y si se
+            pulsa un botón de llamada o de WhatsApp.
+          </p>
+          <p>
+            No usa cookies ni guarda nada en tu navegador, y no permite identificarte: cada visita
+            se distingue con un código (hash) calculado a partir de la petición, que se descarta a
+            las 24 horas. Usamos estos datos solo para obtener estadísticas y mejorar la web. La
+            base legal es nuestro interés legítimo en conocer cómo se usa (artículo 6.1.f del RGPD).
+            Vercel Inc. tiene su sede en Estados Unidos, por lo que los datos pueden transferirse
+            allí con las garantías que ofrece el encargado conforme al RGPD.
+          </p>
+        </>
+      )}
+
       <H2>Tus derechos</H2>
       <p>
         Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación

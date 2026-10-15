@@ -76,7 +76,9 @@ kit/
 │        ├─ boton-whatsapp.tsx
 │        ├─ legal.tsx        # AvisoLegal, PoliticaPrivacidad, PoliticaCookies, enlacesLegales
 │        ├─ horario.ts       # días de la semana y formatearHorario
-│        └─ seo.tsx          # sitemap, robots, metadatos por página y JSON-LD
+│        ├─ seo.tsx          # sitemap, robots, metadatos por página y JSON-LD
+│        ├─ analitica.tsx    # <Analitica>: componente de servidor; sin analitica.vercel no pinta nada
+│        └─ analitica-cliente.tsx  # "use client": carga diferida de @vercel/analytics + clics de contacto como eventos
 ├─ templates/
 │  └─ carpinteria-metalica/
 │     ├─ carpinteria-metalica-1/   # «Medida» (tipo proyecto: asistente de WhatsApp en el hero; fotos de relleno)
@@ -117,7 +119,7 @@ Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <
   },
   "files": ["src", "styles.css"],
   "peerDependencies": { "react": "^19.0.0" },
-  "dependencies": { "zod": "…" },
+  "dependencies": { "zod": "…", "@vercel/analytics": "^2.0.1" },
   "devDependencies": { "@types/react": "…" },
   "repository": { "type": "git", "url": "https://github.com/Andrei-Leads/kit.git" },
   "publishConfig": { "registry": "https://npm.pkg.github.com" }
@@ -149,6 +151,7 @@ Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <
 | `metadatosPagina(config, { ruta, titulo, descripcion?, indexable? })` | Metadatos de una página estática con su canonical. Sin `descripcion`, la genera de los datos según la ruta (`/servicios`, `/trabajos`, `/empresa`, `/contacto`, legales; ≤ 160 caracteres sin cortar palabras). `indexable: false` → `noindex, follow` | Todas las páginas que no son la home ni `[slug]`. Legales con `indexable: false` (desde 0.4.0) |
 | `metadatosServicio(config, slug)`, `metadatosTrabajo(config, slug)` | Título, descripción, canonical e imagen OG de su primera foto. Servicio sin `contenido`: `noindex, follow`. Slug inexistente: `{}` | Para `generateMetadata` (desde 0.4.0) |
 | `DatosEstructurados({ config })` | `<script type="application/ld+json">` con el `LocalBusiness` (`@type` = `tipoSchema`, dirección, `geo`, `areaServed`, `image`, `logo`, `sameAs`, `foundingDate`, `description` = `descripcionCorta`, `openingHoursSpecification` del horario). **Nunca** `aggregateRating` ni `review`. `urgencias24h` no se convierte en 24/7 | En el `<body>` del layout; siempre, aunque no se indexe (desde 0.4.0). `crearDatosEstructurados(config)` devuelve el objeto |
+| `Analitica({ config })` | Vercel Web Analytics. Si `config.analitica.vercel` es `false`, devuelve `null` y el navegador no descarga nada de `@vercel/analytics`. Si es `true`, carga la librería con `import()` (chunk aparte, unos 3 KB), llama a su `inject()` y pone un listener de clics que envía `phone_click` / `whatsapp_click` (con `path`) al pulsar un enlace `tel:` o `wa.me`, sin tocar `BotonLlamada` ni `BotonWhatsApp`. Sin cookies ni almacenamiento. Con `vercel: true`, `PoliticaPrivacidad` añade el apartado «Estadísticas de visitas»; `PoliticaCookies` no cambia | Una vez en el `<body>` del layout (desde 0.5.0) |
 | `formatearHorario(horario)` | Franjas → `{ dias, horas }[]` para pintar: agrupa días con las mismas franjas (`{ dias: "Lunes a viernes", horas: "8:00–14:00 y 16:00–19:00" }`, `"Lunes, miércoles y viernes"`). Los días sin franja no salen | Desde 0.4.0. Tipos `Dia`, `FranjaHorario`, `LineaHorario` |
 | `Metadatos`, `EntradaSitemap`, `Robots` | Tipos de salida de los ayudantes de SEO | Objetos planos compatibles con `Metadata` y `MetadataRoute` de Next: core no depende de `next` |
 
@@ -179,7 +182,7 @@ Consecuencia: **toda clase de Tailwind usada por core tiene que estar dentro de 
 
 Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con `export default defineSiteConfig({...})`. **Los templates no contienen ningún dato del negocio escrito a mano: todo sale de `config`.** Crear una web nueva consiste en rellenar ese archivo.
 
-Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0). *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `string[]`. Las listas sin "mínimo" son `[]` por defecto.
+Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; + `analitica` en 0.5.0). *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `string[]`. Las listas sin "mínimo" son `[]` por defecto.
 
 | Bloque | Campos (`?` = opcional) | Sin datos |
 |---|---|---|
@@ -202,6 +205,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0).
 | `preguntas` | {`pregunta`, `respuesta`} | Se oculta |
 | `marca` | `colorPrimario?` (hex `#rrggbb`); por defecto `{}` | Color del template |
 | `seo` | `titulo` (≤ 60), `descripcion` (≤ 160), `url`, `indexar?` (por defecto `false`; desde 0.4.0) | Sin `indexar: true`: `noindex` en todas las páginas, robots cerrado y sitemap vacío |
+| `analitica` | `vercel` (por defecto `false`; desde 0.5.0); el bloque entero es `{}` por defecto | Sin `vercel: true`, no se carga nada ni cambia la privacidad |
 | `redes` | `instagram?`, `facebook?`; por defecto `{}` | — |
 
 `nombreLegal`, `nif` y `registroMercantil` existen para el aviso legal que exige la LSSI (`registroMercantil` solo en sociedades).
@@ -219,6 +223,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0).
 - **`slug`:** opcional en `servicios` y `trabajos`. Si falta, se genera del título con `crearSlug` (sin acentos, minúsculas, guiones). Debe ser único dentro de su lista; si se repite, la compilación falla con un mensaje en español. `trabajos[].servicio` debe ser el slug de un servicio existente.
 - **Precios (`precioDesde`, `trabajos[].precio`, `tarifas`):** opcionales y **solo con cifras validadas por el cliente**. Nunca se inventan ni se copian de la competencia. Sin datos, la sección no sale.
 - **Bloques opcionales** (`tarifas`, `comunidades`, `valoracion`): si faltan, su página o sección no existe.
+- **`analitica.vercel`:** `false` por defecto. Se activa en la web de un cliente con plan Básico **y también en demos**, para saber si el prospecto abrió su demo. Además hay que activar Analytics en el proyecto de Vercel (dashboard → Analytics → Enable). Los clics de contacto como eventos propios solo cuentan en Vercel Pro; en Hobby se ignoran sin error.
 - **`seo.indexar`:** `false` por defecto (demos y pruebas, con datos ficticios). Solo se pone `indexar: true` en la web de un cliente real, con sus datos y fotos reales.
 - **El template decide qué secciones salen y en qué orden.** Si una sección no tiene datos (por ejemplo, `resenas` vacío), se oculta: `{resenas.length > 0 && (...)}`.
 - **Color de marca:** tres niveles, de menos a más prioridad: core (`styles.css`, `#1f2937`) → template (`globals.css`, después del `@import` de core) → `site.config` (`marca.colorPrimario`). El template define el suyo así:
@@ -264,6 +269,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0).
   - Lleva su propio `.gitignore` (de `create-next-app`); es correcto. Un `.git` dentro de un template **no**, y habría que borrarlo.
   - Con `cacheComponents`, `generateStaticParams` no puede devolver `[]` (falla el build): sin trabajos, devuelve un slug de relleno (`[{ slug: "_" }]`) que hace `notFound()`. Nada de `new Date()` en el render: el año sale de `lib/anio.ts` (`"use cache"` + `cacheLife("days")`).
   - **SEO técnico (core 0.4.0):** `app/sitemap.ts` (`crearSitemap`), `app/robots.ts` (`crearRobots`), `metadata = crearMetadatos(config)` y `<DatosEstructurados config={config} />` en `app/layout.tsx`, `generateMetadata` con `metadatosServicio`/`metadatosTrabajo` en las páginas `[slug]` y `metadatosPagina` en el resto (legales incluidas: si no, heredan el canonical `/` del layout). El `noindex` ya no se pone a mano: sale de `seo.indexar`. Las legales llevan `indexable: false`. Tipa cada uno con `Metadata` / `MetadataRoute` de Next.
+  - **Analítica (core 0.5.0):** `app/layout.tsx` lleva `<Analitica config={config} />` una sola vez en el `<body>`, justo después de `<DatosEstructurados config={config} />`. Los `site.config.ts` de los templates **no** activan `analitica`: la activa cada web.
   - **Horario:** se pinta con `formatearHorario(config.contacto.horario)`, nunca leyendo las franjas a mano. Si el diseño muestra una fila de urgencias, la añade el template cuando `contacto.urgencias24h` es `true` (como `horarioVisible` en `carpinteria-metalica-3/lib/formato.ts`).
 - Si `create-next-app` deja un `pnpm-lock.yaml` o un `pnpm-workspace.yaml` dentro del template, se borra: en el monorepo solo cuentan los de la raíz.
 - **Qué pone cada template (frontera con core):**
@@ -325,7 +331,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0).
 | `docs/nuevo-template.md` | Listo (a partir de `carpinteria-metalica-1/2/3`, 15/10/2026) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
 | `docs/nuevo-cliente.md` | Listo (probado con `web-metalicas-ejemplo`, 13/10/2026) | Se crea la web de un cliente a partir de un template y se despliega |
 | `docs/actualizar-cliente.md` | Listo (probado con `web-metalicas-ejemplo` 0.3.0 → 0.4.0, 14/10/2026) | Se lleva una versión nueva de core a una web ya entregada |
-| `docs/cambio-de-plan.md` | SOP provisional (diseño sin implementar: core 0.5.0/0.6.0) | Un cliente pasa de plan Básico a Pro (analítica con consentimiento) o al revés. El agente pregunta los datos y hace el cambio en `site.config` |
+| `docs/cambio-de-plan.md` | Básico implementado en core 0.5.0 (pendiente de publicar); Pro provisional (core 0.6.0) | Un cliente pasa de plan Básico a Pro (analítica con consentimiento) o al revés. El agente pregunta los datos y hace el cambio en `site.config` |
 
 Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en este archivo y propón escribir el documento cuando el proceso funcione.
 
@@ -376,7 +382,10 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | **Descripciones por página generadas en core desde los datos** | Cada página con su meta description sin trabajo extra por cliente; el template puede pasar la suya |
 | **SEO técnico en core, sin dependencia de `next`** (objetos planos compatibles con `Metadata` y `MetadataRoute`) | Canonical, sitemap, robots y JSON-LD iguales en todas las webs y mejorables una vez; core sigue sin atarse a una versión de Next |
 | **Legales con el layout del template; el `<h1>` lo pone core** | Core da el texto; navbar y pie en todas las páginas para no dejar al visitante sin salida. Un solo `<h1>` por página (accesibilidad y SEO): el template solo añade migas |
-| **Planes por datos (provisional): Básico = Vercel Web Analytics sin cookies ni banner; Pro = + GA4/Meta con banner de consentimiento de core** | El cambio de plan es solo un cambio en `site.config` (sin tocar el template) y lo puede hacer un agente siguiendo `docs/cambio-de-plan.md`. Vercel Web Analytics se sirve desde la propia web y no usa cookies: es la única analítica permitida sin consentimiento. Pendiente de confirmar límites y coste de Vercel por plan |
+| **Planes por datos: Básico = Vercel Web Analytics sin cookies ni banner (implementado en 0.5.0, con los clics de llamada y WhatsApp como eventos propios, que solo cuentan en Vercel Pro); Pro = + GA4/Meta con banner de consentimiento de core (provisional, pendiente para 0.6.0)** | El cambio de plan es solo un cambio en `site.config` (sin tocar el template) y lo puede hacer un agente siguiendo `docs/cambio-de-plan.md`. Vercel Web Analytics se sirve desde la propia web y no usa cookies: es la única analítica permitida sin consentimiento. Límites (Vercel, 15/10/2026): Hobby 50.000 eventos/mes sin eventos propios; Pro 0,03 $ por 1.000 eventos, con eventos propios |
+| **`analitica.vercel` por defecto `false`** | Nada de terceros sin decidirlo web por web |
+| **Analítica también en demos** | Saber si el prospecto abrió su demo; sin cookies, no necesita banner |
+| **`@vercel/analytics` con `import()` + `inject()`, no `/next` ni `next/dynamic`** | Core no depende de `next`. Con `import()` la librería va en un chunk aparte: con `vercel: false` no se descarga. Las variables `NEXT_PUBLIC_VERCEL_OBSERVABILITY_*` se pasan a mano para el Resilient Intake |
 
 ---
 
@@ -420,6 +429,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 6. ~~**SEO técnico en core**~~ **Publicado en 0.4.0 (14/10/2026)**: fusionado en `main` (rama `feat/seo-tecnico`) con su nota en `.changeset/` (incluye el horario estructurado, cambio incompatible); conectado en `carpinteria-metalica-3`, `-1` y `-2`; `jardineria-1` solo migrado al horario nuevo. `web-metalicas-ejemplo` ya actualizada a 0.4.0 (`docs/actualizar-cliente.md`).
 7. ~~**Escribir `nuevo-template.md` y `actualizar-cliente.md`**~~ **Hecho:** `actualizar-cliente.md` (14/10/2026) y `nuevo-template.md` (15/10/2026, a partir de `carpinteria-metalica-1/2/3`).
 8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
+9. **Analítica del plan Básico** en core 0.5.0 (rama `feat/analitica-vercel`, **pendiente de revisión y publicación**): `analitica.vercel`, componente `Analitica`, apartado en la política de privacidad y clics de contacto como eventos; conectada en `carpinteria-metalica-1/2/3`. El Pro (GA4/Meta con consentimiento) queda para 0.6.0 (`docs/cambio-de-plan.md`).
 
 **Más adelante:** Turborepo (con 3 o 4 templates); script `create-site` (automatiza los pasos 1–4 de `docs/nuevo-cliente.md`); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
 

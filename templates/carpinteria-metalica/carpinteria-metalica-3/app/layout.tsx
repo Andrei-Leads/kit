@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Barlow } from "next/font/google";
-import { crearMetadatos, DatosEstructurados } from "@andrei-leads/core";
+import { Analitica, crearMetadatos, DatosEstructurados } from "@andrei-leads/core";
 import "./globals.css";
 import config from "@/site.config";
 import { menu } from "@/lib/navegacion";
@@ -28,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full font-sans">
         <DatosEstructurados config={config} />
+        <Analitica config={config} />
         <Cabecera
           nombre={config.negocio.nombre}
           logo={config.negocio.logo}
