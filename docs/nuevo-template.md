@@ -115,6 +115,8 @@ Un subagente (idealmente **Opus**) compara `extraido/` con el brief §9 y los en
 
 Ysst pega el mensaje, se repiten 3 y 4 hasta que no quede nada grave.
 
+**Obligatorio en cuanto la entrega se da por buena** (decisión de Ysst, 15/10/2026): se escriben **en ese momento** los prompts de ChatGPT de sus fotos (`mis_datos/fotos-ejemplo/<paquete>/prompts-chatgpt.md`, paso 9.1), a partir del `CREDITOS.md` **de la entrega** (`designs/<nicho>/<n>/extraido/…/public/ejemplo/CREDITOS.md`) y de la paleta de su Specs. No se espera a la integración: así Ysst genera las fotos mientras el orquestador construye el template. Si en la integración cambia algún nombre de foto, se actualiza el documento. Con varios templates a la vez, un subagente por template.
+
 ### 5. Plan de integración
 
 Claude propone y **Ysst aprueba**:
@@ -321,7 +323,7 @@ Y en `AGENTS.md`: §4 (mapa), §7 y §12 (estado).
 
 ### 9. Fotos de ejemplo
 
-1. Un subagente escribe `mis_datos/fotos-ejemplo/<paquete>/prompts-chatgpt.md` a partir de `public/ejemplo/CREDITOS.md` (modelo: `fotos-ejemplo/carpinteria-metalica-2/prompts-chatgpt.md`): tabla resumen (ficha `<n>.<m>`, archivo final, qué se ve, proporción), **bloque de estilo común** con la paleta de la Specs y **una ficha por foto** con su prompt completo. La esquina que cada prompt deja libre es la de la etiqueta en el `Foto.tsx` **del template nuevo** (no la de otro template).
+1. (Ya hecho al dar por buena la entrega; ver el final del paso 4.) Un subagente escribe `mis_datos/fotos-ejemplo/<paquete>/prompts-chatgpt.md` a partir de `public/ejemplo/CREDITOS.md` (modelo: `fotos-ejemplo/carpinteria-metalica-2/prompts-chatgpt.md`): tabla resumen (ficha `<n>.<m>`, archivo final, qué se ve, proporción), **bloque de estilo común** con la paleta de la Specs y **una ficha por foto** con su prompt completo. La esquina que cada prompt deja libre es la de la etiqueta en el `Foto.tsx` **del template nuevo** (no la de otro template).
 2. Lecciones que van en el documento:
    - Pareja antes/después: primero el «después» y, **en la misma conversación**, el «antes», con el daño descrito **de forma muy explícita**.
    - **Nada de caras**: de espaldas, manos o fuera de cuadro.
