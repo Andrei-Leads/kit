@@ -39,3 +39,5 @@ Todas las imágenes de esta carpeta son **de ejemplo**: cualquier `src` que empi
 ```
 | `hero.jpg` | … | 2:1 y 4:5 | https://unsplash.com/photos/<id> | Nombre del autor | Licencia Unsplash |
 ```
+
+- 15/10/2026 (fotos extra de la demo Aluminis Rocamar, generadas con IA): `servicio-vidrio` (operario colocando un doble vidrio) y `trabajo-alaquas` (pulsador de persiana motorizada).
