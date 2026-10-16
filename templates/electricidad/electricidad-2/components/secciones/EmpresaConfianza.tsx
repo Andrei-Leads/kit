@@ -79,7 +79,7 @@ export function EmpresaConfianza({ anios, acreditaciones, garantias, marcas }: P
                 (anios !== undefined || acreditaciones.length > 0 || garantias.length > 0) && "mt-8"
               )}
             >
-              <strong className="font-semibold">Marcas con las que trabajamos:</strong> {listaY(marcas)}.
+              <strong className="font-semibold">{textos.marcasTrabajamos}</strong> {listaY(marcas)}.
             </p>
           )}
         </div>

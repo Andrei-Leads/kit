@@ -1,5 +1,7 @@
 import type { SiteConfig, Trabajo } from "@andrei-leads/core";
 
+import { textos } from "@/lib/textos";
+
 /** Une con « · » solo lo que existe (nunca un separador colgando). */
 function unir(partes: (string | number | undefined)[]): string {
   return partes.filter((x) => x !== undefined && x !== "").join(" · ");
@@ -23,8 +25,8 @@ export type CampoFicha = { etiqueta: string; valor: string };
  */
 export function camposFicha(t: Pick<Trabajo, "superficie" | "precio">): CampoFicha[] {
   const campos: CampoFicha[] = [];
-  if (t.superficie) campos.push({ etiqueta: "Superficie", valor: t.superficie });
-  if (t.precio) campos.push({ etiqueta: "Precio", valor: t.precio });
+  if (t.superficie) campos.push({ etiqueta: textos.superficie, valor: t.superficie });
+  if (t.precio) campos.push({ etiqueta: textos.precio, valor: t.precio });
   return campos;
 }
 

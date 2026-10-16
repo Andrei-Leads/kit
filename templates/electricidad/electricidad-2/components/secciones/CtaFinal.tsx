@@ -46,8 +46,16 @@ export function CtaFinal({
         <div className="contenedor pt-6 pb-14 lg:pt-8 lg:pb-[72px]">
           <h2 className={cn(h2, "mb-2.5")}>{titulo}</h2>
           <p className="mt-0 mb-6 text-lg text-linea">{texto}</p>
-          <div className="flex max-w-[600px] flex-wrap gap-3">
-            <BotonLlamada telefono={contacto.telefono} className={buttonVariants({ variant: "bandaCtaLlamar" })}>
+          <div className="flex max-w-[840px] flex-wrap gap-3">
+            <BotonLlamada
+              telefono={contacto.telefono}
+              className={cn(
+                buttonVariants({ variant: "bandaCtaLlamar" }),
+                // Con WhatsApp, desde tablet la llamada mide lo que su contenido (≥ 300 px) y el WhatsApp
+                // se queda con el resto: «Pide presupuesto de {servicio} por WhatsApp» cabe en una línea.
+                contacto.whatsapp && "sm:w-auto sm:min-w-[300px] sm:flex-none sm:basis-auto"
+              )}
+            >
               <Phone aria-hidden="true" strokeWidth={2} strokeLinejoin="round" className="size-[22px] flex-none" />
               <span className="text-lg font-semibold">{textos.llamar}</span>
               <span className="text-[23px] font-bold whitespace-nowrap">{telefonoVisible(contacto.telefono)}</span>

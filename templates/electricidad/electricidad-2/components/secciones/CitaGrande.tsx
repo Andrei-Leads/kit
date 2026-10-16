@@ -14,7 +14,7 @@ type Props = {
 
 /**
  * Cita grande de cierre de la ficha (mockup 2b/2i, Specs): corte + banda piedra-2 con comillas « de 120 px
- * en primario (caja de 100 px subida 32 px: el glifo, que ocupa de los 42 a los 78 px, no pisa la primera línea), la reseña en serif cursiva de 30 px (hasta 30 caracteres de ancho; si es larga, de 24 px:
+ * en primario (caja de 56 px y `pt-9` en la cita, como `TrabajoCita`: el glifo no pisa la primera línea), la reseña en serif cursiva de 30 px (hasta 30 caracteres de ancho; si es larga, de 24 px:
  * no se recorta) y la firma en etiqueta oblicua blanca («Autor · mes de año»; sin fecha, solo el autor;
  * estrellas solo si la puntuación es < 5). El corte de salida lo dibuja el CTA siguiente. La página
  * solo la llama con al menos 1 reseña.
@@ -28,13 +28,13 @@ export function CitaGrande({ resena, desde = "piedra" }: Props) {
         <figure className="contenedor m-0">
           <div
             aria-hidden="true"
-            className="-mt-8 -ml-1.5 h-[100px] font-serif text-[120px] leading-none text-primario"
+            className="-ml-1.5 h-[56px] font-serif text-[120px] leading-none text-primario"
           >
             «
           </div>
           <blockquote
             className={cn(
-              "m-0 font-serif leading-[1.35] text-pretty italic",
+              "m-0 pt-9 font-serif leading-[1.35] text-pretty italic",
               larga ? "max-w-[44ch] text-2xl" : "max-w-[30ch] text-[26px] md:text-[30px]"
             )}
           >

@@ -56,10 +56,14 @@ export const textos = {
   comoLlegar: "Cómo llegar",
   verFichaGoogle: "Ver ficha en Google",
   paginas: "Páginas",
+  marcasTrabajamos: "Marcas con las que trabajamos:",
+  superficie: "Superficie",
+  precio: "Precio",
 
   // CTA final
   ctaTitulo: "¿Se te ha ido la luz?",
   ctaTexto: "Llámanos y te decimos a qué hora podemos ir.",
+  ctaTrabajoTitulo: "¿Quieres algo parecido?",
 
   // Fotos y legales
   fotoEjemplo: "Foto de ejemplo",

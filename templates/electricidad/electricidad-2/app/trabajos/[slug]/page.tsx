@@ -80,7 +80,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       <CtaFinal
         contacto={contacto}
         desde={trabajo.testimonio ? "piedra-2" : "piedra"}
-        titulo="¿Quieres algo parecido?"
+        titulo={textos.ctaTrabajoTitulo}
         etiquetaWhatsapp={textos.escribenosWhatsapp}
         mensaje={mensajeTrabajo(trabajo)}
       >
