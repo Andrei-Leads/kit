@@ -1,0 +1,336 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+
+/* Tokens del diseño «Del barrio» (electricidad-2), Specs §1 y §8.
+   Solo --color-primario se sobrescribe desde site.config (layout.tsx). */
+@theme {
+  --color-primario: #be185d; /* frambuesa; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-piedra: #fafaf9; /* fondo de página */
+  --color-piedra-2: #efedea; /* secciones alternas y banda de reseñas */
+  --color-tarjeta: #ffffff;
+  --color-tinta: #1c1917;
+  --color-tinta-suave: #57534e; /* texto secundario y bordes de controles (≥ 3:1) */
+  --color-linea: #d6d3d1; /* separadores; texto del pie sobre tinta */
+  --color-linea-suave: #e7e5e4; /* borde de cabecera, filas del menú y tarjetas sobre piedra-2 */
+  --color-foco: #1c1917; /* sobre foto o tinta: utilidades sobre-foto / sobre-tinta (blanco) */
+
+  /* Las variables --font-source-* las pone next/font en <html> (layout.tsx). */
+  --font-serif: var(--font-source-serif-4), Georgia, serif;
+  --font-sans: var(--font-source-sans-3), system-ui, sans-serif;
+
+  --radius-boton: 4px;
+  --radius-tarjeta: 4px;
+  --radius-foto: 0;
+
+  --shadow-resena: 0 1px 2px rgb(28 25 23 / 0.06);
+  --shadow-barra: 0 -6px 18px rgb(28 25 23 / 0.12);
+
+  /* Cortes diagonales: alto = tan(ángulo) × ancho (3° móvil, 5° escritorio). */
+  --corte-movil: 5.24%;
+  --corte-escritorio: 8.75%;
+  --altura-barra: 64px; /* barra móvil combinada, sin el área segura */
+
+  --container-contenido: 1184px;
+  --container-lectura: 68ch; /* legales */
+
+  /* Specs §8: solo transform y opacity, curva cubic-bezier(.2, .7, .2, 1). */
+  --animate-resena: resena 360ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-comillas: comillas 300ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-estrellas: estrellas 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-paso: paso 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-barra: barra 300ms cubic-bezier(0.2, 0.7, 0.2, 1) 150ms both;
+  --animate-hoja: hoja 240ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fondo: fondo 240ms ease-out both;
+
+  @keyframes resena {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes comillas {
+    from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes estrellas {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes paso {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes barra {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes hoja {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes fondo {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Ancho de contenido: 1184 px + margen de 20 px (móvil), 32 px (tablet) y 48 px (escritorio). */
+@utility contenedor {
+  max-width: calc(var(--container-contenido) + 96px);
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (min-width: 48rem) {
+    padding-inline: 32px;
+  }
+  @media (min-width: 64rem) {
+    padding-inline: 48px;
+  }
+}
+
+/* Padding vertical de sección: 64 px móvil, 104 px escritorio. */
+@utility seccion-y {
+  padding-block: 64px;
+  @media (min-width: 64rem) {
+    padding-block: 104px;
+  }
+}
+
+/*
+ * Corte diagonal (Specs §7): elemento propio ENTRE dos bandas, que sube siempre hacia la derecha
+ * (3° móvil, 5° escritorio: alto = tan(ángulo) × ancho, como padding-top en %). El texto nunca va encima.
+ *   corte         triángulo inferior derecho opaco (clip-path) sobre fondo transparente: la hoja del menú.
+ *   corte-bandas  un solo elemento con dos colores (--corte-de arriba, --corte-a abajo) y un degradado
+ *                 de 1 px en la diagonal (suaviza el escalón). Un solo trazo evita la línea fina de
+ *                 subpíxel que dejan dos capas (contenedor + triángulo) en el borde inferior.
+ *                 Ver components/Corte.tsx.
+ */
+@utility corte {
+  display: block;
+  padding-top: var(--corte-movil);
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  @media (min-width: 64rem) {
+    padding-top: var(--corte-escritorio);
+  }
+}
+@utility corte-bandas {
+  display: block;
+  padding-top: var(--corte-movil);
+  background-image: linear-gradient(
+    to bottom right,
+    var(--corte-de) calc(50% - 0.5px),
+    var(--corte-a) calc(50% + 0.5px)
+  );
+  @media (min-width: 64rem) {
+    padding-top: var(--corte-escritorio);
+  }
+}
+
+/* Capa del hero sobre la foto (Specs §1): el texto blanco va sobre la parte oscura. */
+@utility capa-hero {
+  background: linear-gradient(
+    180deg,
+    rgb(28 25 23 / 0.1) 0%,
+    rgb(28 25 23 / 0.55) 45%,
+    rgb(28 25 23 / 0.85) 100%
+  );
+}
+
+/* Contenedor sobre foto (hero con capa): anillo de foco blanco. */
+@utility sobre-foto {
+  --color-foco: #ffffff;
+}
+
+/* Bloque sobre tinta (CTA final, pie): fondo tinta, texto blanco y anillo de foco blanco. */
+@utility sobre-tinta {
+  --color-foco: #ffffff;
+  background-color: var(--color-tinta);
+  color: #ffffff;
+}
+
+/*
+ * Etiqueta oblicua (Specs §7): el fondo es un pseudoelemento con skewX(-10deg); el texto queda recto.
+ * Fondo por defecto, primario; se cambia con --etiqueta-fondo (p. ej. piedra-2 en las firmas de reseña).
+ * El color del texto lo pone quien la usa.
+ */
+@utility etiqueta-oblicua {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--etiqueta-fondo, var(--color-primario));
+    transform: skewX(-10deg);
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    /* Las anclas no quedan tapadas por la cabecera sticky (≈ 67 px). */
+    scroll-padding-top: 5rem;
+  }
+  /* En móvil, la barra inferior tampoco tapa lo que recibe el foco. */
+  @media (max-width: 63.99rem) {
+    html {
+      scroll-padding-bottom: calc(var(--altura-barra) + 1rem);
+    }
+  }
+  body {
+    background-color: var(--color-piedra);
+    color: var(--color-tinta);
+    font-size: 17px; /* Specs §1: cuerpo de 17 px, nunca < 16 px en móvil */
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Specs §4: anillo de 2 px tinta separado 2 px (blanco sobre foto o tinta: --color-foco). */
+  :focus-visible {
+    outline: 2px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  /* Títulos que reciben el foco por programa. */
+  [tabindex="-1"]:focus-visible {
+    outline-offset: 4px;
+  }
+}
+
+/*
+ * El pie va detrás del CTA final (también tinta) o, si la página no lo tiene (/contacto, legales),
+ * abre con su propio corte (Specs §2: «Tinta con corte arriba»). La línea fina entre CTA y pie solo
+ * existe cuando hay CTA.
+ */
+body:has(main .cta-final) .corte-pie {
+  display: none;
+}
+.pie-contenido {
+  padding-top: 24px;
+}
+body:has(main .cta-final) .pie-contenido {
+  padding-top: 40px;
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+}
+
+/* ------------------------------------------------------------------ *
+ * Animaciones de aparición (Specs §8).
+ *
+ * El componente cliente <Animaciones> añade `.en-vista` a cada [data-anim] cuando entra en pantalla;
+ * el script inline del layout pone `.js` en <html> antes del primer pintado. El estado inicial
+ * oculto SOLO existe bajo `.js`: sin JavaScript todo se ve ya dibujado.
+ * Nunca llevan data-anim la foto del hero, su capa, el h1, la valoración ni la llamada-foto (LCP).
+ * Cada elemento puede llevar style="--i: índice" para el escalonado.
+ *
+ *   data-anim="resena"     tarjeta de reseña: opacity + translateY(18px→0), 360 ms, escalonado 100 ms.
+ *   data-anim="comillas"   comillas «: opacity + translateX(-8px→0), 300 ms, 120 ms tras su reseña.
+ *   data-anim="estrellas"  capa de relleno de las estrellas del resumen: translateX(-100%→0) dentro de
+ *                          un contenedor que recorta al ancho de la media, 700 ms.
+ *   data-anim="paso"       paso de «Cómo trabajamos»: opacity + translateY(12px→0), 280 ms, escalonado 90 ms.
+ *   Barra combinada (animate-barra) y hoja del menú (animate-hoja / animate-fondo): CSS puro, sin JS.
+ * ------------------------------------------------------------------ */
+.js [data-anim="resena"] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.js [data-anim="resena"].en-vista {
+  animation: var(--animate-resena);
+  animation-delay: calc(var(--i, 0) * 100ms);
+}
+
+.js [data-anim="comillas"] {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+.js [data-anim="comillas"].en-vista {
+  animation: var(--animate-comillas);
+  animation-delay: calc(var(--i, 0) * 100ms + 120ms);
+}
+
+.js [data-anim="estrellas"] {
+  transform: translateX(-100%);
+}
+.js [data-anim="estrellas"].en-vista {
+  animation: var(--animate-estrellas);
+}
+
+.js [data-anim="paso"] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.js [data-anim="paso"].en-vista {
+  animation: var(--animate-paso);
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Tarjetas de servicio (Specs §8): suben 3 px al tocar o pasar (160 ms); con «reducir movimiento»,
+   solo cambia el borde. Borde sutil siempre: sobre la banda piedra-2 la tarjeta sin foto no se funde. */
+.tarjeta-servicio {
+  border: 1px solid var(--color-linea-suave);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease;
+}
+.tarjeta-servicio:hover,
+.tarjeta-servicio:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--color-tinta-suave);
+}
+
+/* Reseñas largas: sin JS ni CSS especial funcionan con details/summary (el recorte lo pone el componente). */
+
+/* Sin movimiento si el usuario lo pide: todo ya en su sitio, sin transiciones ni desplazamientos. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .js [data-anim] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .tarjeta-servicio:hover,
+  .tarjeta-servicio:focus-visible {
+    transform: none !important;
+  }
+}

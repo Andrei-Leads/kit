@@ -1,0 +1,222 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+
+/* Tokens del diseño «Sin sorpresas» (electricidad-3), Specs §1.
+   Solo --color-primario se sobrescribe desde site.config (layout.tsx).
+   Tailwind v4 descarta en silencio las clases de tokens que no existen: cada token de aquí abajo
+   genera su utilidad (bg-noche, text-texto-suave, border-borde-claro, rounded-organico…). */
+@theme {
+  --color-primario: #7e22ce; /* marca.colorPrimario; sobre noche lleva siempre borde-claro */
+  --color-sobre-primario: #ffffff;
+  --color-noche: #121214; /* fondo de página */
+  --color-superficie: #1b1b20; /* tarjetas, tablero, pie, Sheet */
+  --color-superficie-2: #26262d; /* pastillas de precio, chips */
+  --color-texto: #f4f3f6;
+  --color-texto-suave: #b9b7c3;
+  --color-borde-claro: rgb(244 243 246 / 0.45); /* contorno de botones y controles (≥ 3:1 sobre noche) */
+  --color-linea: #31313a; /* separadores (decorativo) */
+  /* Solo decorativo: manchas de luz. Sale del primario, así que sigue a marca.colorPrimario. */
+  --color-mancha: color-mix(in oklab, var(--color-primario) 38%, var(--color-noche));
+  --color-luz: #f4f3f6; /* fondo de llamada-luz (texto noche, 17:1) */
+
+  --font-sans: var(--font-fira-sans), system-ui, sans-serif;
+
+  --radius-boton: 999px;
+  --radius-pastilla: 999px;
+  --radius-tarjeta: 20px;
+  --radius-foto-recta: 16px;
+  /* Contornos orgánicos de foto: 16:9 y 1:1 / 4:3 (organico), 4:5 y empresa (organico-b). */
+  --radius-organico: 30% 42% 34% 38% / 40% 34% 48% 42%;
+  --radius-organico-b: 40% 30% 38% 32% / 34% 42% 36% 46%;
+  /* Formas de las manchas de luz. Las cuatro últimas son de uso concreto del diseño (Pantalla). */
+  --radius-mancha: 58% 42% 55% 45% / 47% 58% 42% 53%; /* hero con foto, tablero de precios */
+  --radius-mancha-b: 42% 58% 63% 37% / 52% 44% 56% 48%; /* hero sin foto */
+  --radius-mancha-servicio: 38% 62% 44% 56% / 46% 40% 60% 54%; /* servicio sin foto (icono sobre mancha) */
+  --radius-mancha-cta: 44% 56% 61% 39% / 49% 42% 58% 51%; /* CTA final */
+  --radius-mancha-chica: 46% 54% 42% 58% / 55% 45% 55% 45%; /* iconos y números de 38–40 px */
+
+  --ease-suave: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --container-contenido: 1280px;
+  --container-lectura: 68ch; /* legales */
+
+  /* Specs §8: solo transform y opacity, sin librerías. Las de aparición viven en
+     «Animaciones de aparición» (más abajo) porque solo existen bajo html.js. */
+  --animate-barra: barra 280ms var(--ease-suave) 150ms both;
+
+  @keyframes barra {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes fila {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes encender {
+    from {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes crecer {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Ancho de contenido: 1280 px con 16 px (móvil) / 40 px (desde 768 px) de margen. */
+@utility contenedor {
+  max-width: var(--container-contenido);
+  margin-inline: auto;
+  padding-inline: 16px;
+  @media (min-width: 48rem) {
+    padding-inline: 40px;
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    /* Las anclas no quedan tapadas por la cabecera sticky (64 px + borde). */
+    scroll-padding-top: 5rem;
+  }
+  /* En móvil, la barra inferior (fija) tampoco tapa lo que recibe el foco o un ancla. */
+  @media (max-width: 63.99rem) {
+    html {
+      scroll-padding-bottom: 6.5rem;
+    }
+  }
+  body {
+    background-color: var(--color-noche);
+    color: var(--color-texto);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Specs §1: anillo de 2 px en color texto, separado 2 px; se ve sobre noche, superficie y primario. */
+  :focus-visible {
+    outline: 2px solid var(--color-texto);
+    outline-offset: 2px;
+  }
+  [tabindex="-1"]:focus-visible {
+    outline-offset: 4px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Animaciones de aparición (Specs §8).
+ *
+ * El componente cliente <Animaciones> añade `.en-vista` a cada [data-anim] cuando entra en
+ * pantalla (una sola vez) y el script inline del layout pone `.js` en <html> antes del primer
+ * pintado. El estado inicial oculto SOLO existe bajo `.js`: sin JavaScript todo se ve ya dibujado.
+ * Nunca llevan data-anim el h1, la foto, la mancha, los chips ni la llamada-luz del hero (LCP).
+ *
+ *   data-anim="tablero"   tablero «Lo que cuesta»: hijos [data-fila] (opacity + translateY 10 px,
+ *                         240 ms, escalón 60 ms) y [data-pastilla] (scale .94→1 + opacity, 200 ms,
+ *                         160 ms tras su fila). Cada hijo lleva style="--i: índice de fila".
+ *   data-anim="mancha"    mancha de luz fuera del hero: scale .9→1 + opacity, 600 ms, una vez.
+ *                         Lleva data-umbral="0.05": está medio fuera de pantalla y con el umbral
+ *                         por defecto (0,2) a veces no llegaría a dispararse.
+ *   (índice lateral)      su marca se desliza con `transition` propia, 200 ms (IndiceLateral.tsx).
+ *   (contador de años)    componente cliente propio, 700 ms (fase 2).
+ *   (barra móvil)         animate-barra, CSS puro: no depende de JS.
+ * ------------------------------------------------------------------ */
+.js [data-anim="tablero"] [data-fila] {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.js [data-anim="tablero"].en-vista [data-fila] {
+  animation: fila 240ms var(--ease-suave) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+.js [data-anim="tablero"] [data-pastilla] {
+  opacity: 0;
+  transform: scale(0.94);
+}
+.js [data-anim="tablero"].en-vista [data-pastilla] {
+  animation: encender 200ms var(--ease-suave) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 160ms);
+}
+
+.js [data-anim="mancha"] {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.js [data-anim="mancha"].en-vista {
+  animation: crecer 600ms var(--ease-suave) both;
+}
+
+/* Tarjetas de servicio (Specs §8): suben 2 px al tocar o pasar (150 ms) y cambian de fondo. */
+.tarjeta-servicio {
+  transition:
+    transform 150ms var(--ease-suave),
+    background-color 150ms var(--ease-suave);
+}
+.tarjeta-servicio:hover,
+.tarjeta-servicio:focus-visible,
+.tarjeta-servicio:active {
+  transform: translateY(-2px);
+  background-color: var(--color-superficie-2);
+}
+
+/* Reseñas largas: el recorte a 4 líneas y el botón «Leer más» solo existen con JavaScript
+   (sin él, la reseña se lee entera). Mecanismo de TextoResena (fase 2). */
+.resena-mas {
+  display: none;
+}
+.js .resena-mas {
+  display: inline-flex;
+}
+.js .resena-texto[data-largo="true"][data-abierta="false"] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+/* Sin movimiento si el usuario lo pide: todo ya en su sitio, sin transiciones ni bucles. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .js [data-anim],
+  .js [data-anim] [data-fila],
+  .js [data-anim] [data-pastilla] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* «Solo cambia el fondo»: las tarjetas no se desplazan. */
+  .tarjeta-servicio:hover,
+  .tarjeta-servicio:focus-visible,
+  .tarjeta-servicio:active {
+    transform: none;
+  }
+}

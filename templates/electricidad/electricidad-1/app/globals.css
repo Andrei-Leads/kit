@@ -1,0 +1,255 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+
+/* Tokens del diseño «Boletín» (electricidad-1), Specs §1.
+   Solo --color-primario se sobrescribe desde site.config (layout.tsx). */
+@theme {
+  --color-primario: #854d0e; /* marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-primario-tinte: color-mix(in oklab, var(--color-primario) 8%, white);
+  --color-papel: #ffffff;
+  --color-papel-2: #f6f5f1;
+  --color-tinta: #18181b;
+  --color-tinta-cuerpo: #3f3f46; /* párrafos largos sobre tinte y en guías */
+  --color-tinta-suave: #52525b;
+  --color-regla: #d4d4d8; /* decorativo: nunca contorno de control */
+  --color-aviso: #facc15; /* solo decorativo: nunca texto */
+  --color-foco: #18181b; /* sobre tinta o primario: [--color-foco:#fff] (utilidad sobre-tinta) */
+
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-sans: var(--font-hanken-grotesk), system-ui, sans-serif;
+
+  --radius-campo: 0;
+  --radius-boton: 2px;
+
+  --shadow-barra: 0 -4px 14px rgb(24 24 27 / 0.12);
+
+  --container-contenido: 1200px;
+  --container-lectura: 66ch; /* legales y guías */
+
+  /* Specs §8: solo transform y opacity. */
+  --animate-regla: dibujar 400ms ease-out both;
+  --animate-sello: estampar 220ms ease-out both;
+  --animate-barra: entrar 280ms 150ms ease-out both;
+
+  @keyframes dibujar {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes trazar {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes estampar {
+    from {
+      opacity: 0;
+      transform: scale(1.12);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes entrar {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+}
+
+/* Ancho de contenido: 1200 px con 20 px (móvil) / 48 px (escritorio) de margen. */
+@utility contenedor {
+  max-width: var(--container-contenido);
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (min-width: 48rem) {
+    padding-inline: 48px;
+  }
+}
+
+/* Padding vertical de sección: 56 px móvil, 96 px escritorio. */
+@utility seccion-y {
+  padding-block: 56px;
+  @media (min-width: 48rem) {
+    padding-block: 96px;
+  }
+}
+
+/* Bloques sobre tinta (CTA final): anillo de foco blanco. */
+@utility sobre-tinta {
+  --color-foco: #ffffff;
+  background-color: var(--color-tinta);
+  color: #ffffff;
+}
+
+/* Cinta de aviso: 6 px, rayas a 45° aviso/tinta. Solo encima del CTA final y de la
+   cabecera de cada guía; nunca detrás de texto. Decorativa (aria-hidden en el uso). */
+@utility cinta-aviso {
+  height: 6px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-aviso) 0 8px,
+    var(--color-tinta) 8px 16px
+  );
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    /* Las anclas no quedan tapadas por la cabecera sticky (72 px). */
+    scroll-padding-top: 5.5rem;
+  }
+  /* En móvil, la barra inferior tampoco tapa lo que recibe el foco. */
+  @media (max-width: 47.99rem) {
+    html {
+      scroll-padding-bottom: 5rem;
+    }
+  }
+  body {
+    background-color: var(--color-papel);
+    color: var(--color-tinta);
+    font-size: 16px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Specs §8: anillo de 2 px tinta separado 2 px (blanco sobre tinta/primario). */
+  :focus-visible {
+    outline: 2px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  /* Títulos que reciben el foco por programa. */
+  [tabindex="-1"]:focus-visible {
+    outline-offset: 4px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Animaciones de aparición (Specs §8).
+ *
+ * El componente cliente <Animaciones> pone `.js` en <html> (script inline del layout, antes
+ * del primer pintado) y añade `.en-vista` a cada [data-anim] cuando entra en pantalla.
+ * El estado inicial oculto SOLO existe bajo `.js`: sin JavaScript todo se ve ya dibujado.
+ * Nunca llevan data-anim el h1, la llamada-campo, el teléfono, los chips ni el sello del hero.
+ *
+ *   data-anim="regla"    regla de 2 px de sección: scaleX 0→1, origen izquierda, 400 ms.
+ *   data-anim="sello"    sello de /empresa: scale 1,12→1 + opacity, 220 ms (umbral 0,5).
+ *   data-anim="tramite"  lista del trámite: hijos [data-tramo] (regla vertical, scaleY, 600 ms en
+ *                        total repartidos entre --n tramos) y [data-paso] (opacity + translateY,
+ *                        260 ms, escalonado 90 ms). Cada hijo lleva style="--i: índice"; la lista, --n.
+ * ------------------------------------------------------------------ */
+.js [data-anim="regla"] {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.js [data-anim="regla"].en-vista {
+  animation: var(--animate-regla);
+}
+
+.js [data-anim="sello"] {
+  opacity: 0;
+  transform: scale(1.12);
+}
+.js [data-anim="sello"].en-vista {
+  animation: var(--animate-sello);
+}
+
+.js [data-anim="tramite"] [data-tramo] {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.js [data-anim="tramite"].en-vista [data-tramo] {
+  animation: trazar calc(600ms / var(--n, 5)) linear both;
+  animation-delay: calc(var(--i, 0) * 600ms / var(--n, 5));
+}
+/* Escritorio: las reglas son horizontales y se trazan de izquierda a derecha (mismo reparto de tiempo). */
+.js [data-anim="tramite"] [data-tramo="h"] {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.js [data-anim="tramite"].en-vista [data-tramo="h"] {
+  animation-name: dibujar;
+}
+.js [data-anim="tramite"] [data-paso] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.js [data-anim="tramite"].en-vista [data-paso] {
+  animation: aparecer 260ms ease-out both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Filas de servicio (Specs §8): el tinte es una capa con opacity, la flecha avanza 4 px. */
+.fila-servicio .fila-tinte {
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+.fila-servicio .fila-flecha {
+  transition: transform 150ms ease-out;
+}
+.fila-servicio:hover .fila-tinte,
+.fila-servicio:focus-visible .fila-tinte {
+  opacity: 1;
+}
+.fila-servicio:hover .fila-flecha,
+.fila-servicio:focus-visible .fila-flecha {
+  transform: translateX(4px);
+}
+
+/* Reseñas largas: el recorte a 5 líneas y el botón «Leer más» solo existen con JavaScript
+   (sin él, la reseña se lee entera). */
+.resena-mas {
+  display: none;
+}
+.js .resena-mas {
+  display: inline-flex;
+}
+.js .resena-texto[data-largo="true"][data-abierta="false"] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
+}
+
+/* Sin movimiento si el usuario lo pide: todo ya en su sitio, sin transiciones. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .js [data-anim],
+  .js [data-anim] [data-tramo],
+  .js [data-anim] [data-paso],
+  .fila-servicio .fila-flecha {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
