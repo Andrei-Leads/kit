@@ -12,6 +12,6 @@ Generar con ChatGPT. Reglas para todas: fotos reales y sobrias, **sin caras** (d
 | `trabajo-enchufe.jpg` | Enchufe nuevo y limpio en la pared de una cocina, pared reparada | 4:3 |
 | `trabajo-enchufe-antes.jpg` | El mismo enchufe antes: plástico derretido y ennegrecido, marcas negras de quemado en la pared. Mismo encuadre que el «después» | 4:3 |
 | `trabajo-cuadro.jpg` | Cuadro eléctrico de un bajo comercial renovado, cableado ordenado | 4:3 |
-| `trabajo-iluminacion.jpg` | Pasillo de comunidad con apliques LED nuevos encendidos | 4:3 |
+| `trabajo-iluminacion.jpg` | Rellano de la escalera de una comunidad con apliques LED nuevos encendidos | 4:3 |
 | `empresa-furgoneta.jpg` | Furgoneta blanca sin rotular en una calle de barrio con naranjos | 4:3 |
 | `empresa-equipo.jpg` | Dos técnicos de espaldas caminando hacia un portal con la caja de herramientas | 4:3 |

@@ -95,7 +95,7 @@ export default defineSiteConfig({
       ubicacion: "Valencia (Campanar)",
       anio: 2025,
       servicio: "enchufes-e-iluminacion",
-      imagenes: [{ src: "/ejemplo/trabajo-iluminacion.jpg", alt: "Pasillo de comunidad con apliques LED encendidos" }],
+      imagenes: [{ src: "/ejemplo/trabajo-iluminacion.jpg", alt: "Rellano de la escalera de una comunidad con apliques LED encendidos" }],
     },
   ],
   resenas: [
