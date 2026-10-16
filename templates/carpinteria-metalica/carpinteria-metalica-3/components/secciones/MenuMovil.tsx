@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
-import { BotonLlamada } from "@andrei-leads/core";
-import { ArrowRight, Menu, Phone } from "lucide-react";
+import { ArrowRight, Menu } from "lucide-react";
 
-import { buttonVariants } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -13,10 +11,20 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { telefonoVisible, type Ancla } from "@/lib/formato";
+import type { Ancla } from "@/lib/formato";
+
+type Props = {
+  items: Ancla[];
+  /**
+   * El `BotonLlamada` del panel, ya renderizado por el servidor (Cabecera). Este archivo es
+   * "use client": si importara un valor de `@andrei-leads/core` (o de `lib/formato`, que lo
+   * importa), arrastraría zod y el contrato entero al JavaScript de todas las páginas.
+   */
+  llamada: ReactNode;
+};
 
 /** Menú móvil: botón «Menú» + panel derecho con enlaces y la llamada anclada abajo. */
-export function MenuMovil({ items, telefono }: { items: Ancla[]; telefono: string }) {
+export function MenuMovil({ items, llamada }: Props) {
   const [abierto, setAbierto] = useState(false);
 
   return (
@@ -48,13 +56,7 @@ export function MenuMovil({ items, telefono }: { items: Ancla[]; telefono: strin
           ))}
         </nav>
         <div className="mt-auto p-4">
-          <BotonLlamada
-            telefono={telefono}
-            className={buttonVariants({ variant: "llamadaSheet" })}
-          >
-            <Phone aria-hidden="true" className="size-6" />
-            <span>{telefonoVisible(telefono)}</span>
-          </BotonLlamada>
+          {llamada}
         </div>
       </SheetContent>
     </Sheet>

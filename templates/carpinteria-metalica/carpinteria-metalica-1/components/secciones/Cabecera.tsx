@@ -75,7 +75,19 @@ export function Cabecera({ nombre, logo, telefono, whatsapp, items }: Props) {
           <span className={nombreLargo ? "sr-only sm:not-sr-only lg:hidden" : "lg:hidden"}>Llamar</span>
           <span className="hidden lg:inline">{telefonoVisible(telefono)}</span>
         </BotonLlamada>
-        <MenuMovil items={items} telefono={telefono} whatsapp={whatsapp} />
+        <MenuMovil
+          items={items}
+          whatsapp={whatsapp}
+          llamada={
+            <BotonLlamada
+              telefono={telefono}
+              className={cn(buttonVariants({ variant: "llamadaSecundaria" }), "min-h-13 font-semibold")}
+            >
+              <Phone aria-hidden="true" strokeWidth={1.5} className="size-[18px] flex-none" />
+              <span>{telefonoVisible(telefono)}</span>
+            </BotonLlamada>
+          }
+        />
       </div>
     </header>
   );

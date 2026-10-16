@@ -1,9 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BotonLlamada } from "@andrei-leads/core";
 import { ArrowRight, Menu } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -14,7 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { telefonoVisible, type Ancla } from "@/lib/formato";
+import type { Ancla } from "@/lib/formato";
 import { etiquetaCampo } from "@/lib/estilos";
 
 /** "page" si es la ruta exacta, "true" si estamos dentro de la sección (p. ej. /servicios/x). */
@@ -44,7 +43,12 @@ export function NavEscritorio({ items }: { items: Ancla[] }) {
 
 type Props = {
   items: Ancla[];
-  telefono: string;
+  /**
+   * El `BotonLlamada` del panel, ya renderizado por el servidor (Cabecera). Este archivo es
+   * "use client": si importara un valor de `@andrei-leads/core` (o de `lib/formato`, que lo
+   * importa), arrastraría zod y el contrato entero al JavaScript de todas las páginas.
+   */
+  llamada: ReactNode;
 };
 
 /**
@@ -52,7 +56,7 @@ type Props = {
  * Accesible: el disparador lleva aria-expanded (Radix), el foco queda atrapado y vuelve al botón,
  * Esc cierra. El nombre accesible del botón es el texto «Menú» (sr-only), no un aria-label.
  */
-export function MenuMovil({ items, telefono }: Props) {
+export function MenuMovil({ items, llamada }: Props) {
   const pathname = usePathname();
   const [abierto, setAbierto] = useState(false);
   // Si el panel se cierra al navegar, el foco no debe volver al botón del menú.
@@ -99,12 +103,7 @@ export function MenuMovil({ items, telefono }: Props) {
         </nav>
         <div className="mt-6 flex flex-col gap-1">
           <span className={etiquetaCampo}>Llamar</span>
-          <BotonLlamada
-            telefono={telefono}
-            className="flex min-h-11 items-center font-mono text-[22px] font-bold text-tinta no-underline"
-          >
-            {telefonoVisible(telefono)}
-          </BotonLlamada>
+          {llamada}
         </div>
       </SheetContent>
     </Sheet>

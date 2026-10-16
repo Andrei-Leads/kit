@@ -1,14 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BotonLlamada } from "@andrei-leads/core";
-import { Menu, Phone } from "lucide-react";
+import { Menu } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { telefonoVisible, type Ancla } from "@/lib/formato";
+import type { Ancla } from "@/lib/formato";
 
 /** "page" si es la ruta exacta, "true" si estamos dentro de la sección (p. ej. /servicios/x). */
 function actual(pathname: string, href: string): "page" | "true" | undefined {
@@ -37,7 +36,12 @@ export function NavEscritorio({ items }: { items: Ancla[] }) {
 
 type Props = {
   items: Ancla[];
-  telefono: string;
+  /**
+   * El `BotonLlamada` del panel, ya renderizado por el servidor (Cabecera). Este archivo es
+   * "use client": si importara un valor de `@andrei-leads/core` (o de `lib/formato`, que lo
+   * importa), arrastraría zod y el contrato entero al JavaScript de todas las páginas.
+   */
+  llamada: ReactNode;
 };
 
 /**
@@ -45,7 +49,7 @@ type Props = {
  * Accesible: el disparador lleva aria-expanded (Radix), el foco queda atrapado y vuelve al botón,
  * Esc cierra. El nombre accesible del botón es el texto «Abrir menú» (sr-only), no un aria-label.
  */
-export function MenuMovil({ items, telefono }: Props) {
+export function MenuMovil({ items, llamada }: Props) {
   const pathname = usePathname();
   const [abierto, setAbierto] = useState(false);
   // Si el panel se cierra al navegar, el foco no debe volver al botón del menú.
@@ -89,10 +93,7 @@ export function MenuMovil({ items, telefono }: Props) {
             </Link>
           ))}
         </nav>
-        <BotonLlamada telefono={telefono} className={buttonVariants({ variant: "llamadaMenu" }) + " mt-5 tabular-nums"}>
-          <Phone aria-hidden="true" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="size-6 flex-none" />
-          <span>{telefonoVisible(telefono)}</span>
-        </BotonLlamada>
+        {llamada}
       </SheetContent>
     </Sheet>
   );
