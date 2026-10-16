@@ -22,6 +22,11 @@ import { mensajeServicio } from "@/lib/mensajes";
 const h2Bloque =
   "m-0 text-[clamp(1.625rem,1.2rem+1.78vw,2.5rem)] leading-[1.1] font-bold tracking-[-0.02em] text-balance";
 
+// Un slug que no está en generateStaticParams se genera en la primera visita. Sin esto,
+// partialPrefetching sirve antes el App Shell con 200 y el 404 solo llega a la segunda.
+// Con "navigation", Next espera al resultado completo: 404 desde la primera petición.
+export const ensureStatic = "navigation";
+
 // Con cacheComponents, generateStaticParams no puede devolver [].
 export function generateStaticParams() {
   const params = config.servicios.map((s) => ({ slug: s.slug }));

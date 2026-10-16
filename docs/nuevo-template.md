@@ -146,7 +146,7 @@ pnpm ls -r --depth -1 | grep <paquete>
 ```
 
 - Son los archivos **neutros** (no dependen del diseño). No se copian `node_modules`, `.next`, `tsconfig.tsbuildinfo`, `next-env.d.ts`, ni secciones, `site.config.ts` o imágenes del origen.
-- **A adaptar**, no a copiar tal cual: `components/Foto.tsx`, `components/Migas.tsx`, `components/LecturaLegal.tsx`, las tres legales, `lib/formato.ts`, `lib/mensajes.ts` (y `lib/llegar.ts` si hay «Cómo llegar»). Usan tokens del origen (`bg-piedra`, `rounded-foto`…) y `@/lib/estilos`: Tailwind v4 **descarta en silencio** las clases que no existen, así que el build pasa y la página sale sin estilo.
+- **A adaptar**, no a copiar tal cual: `components/Foto.tsx`, `components/Migas.tsx`, `components/LecturaLegal.tsx`, las tres legales, `app/not-found.tsx`, `lib/formato.ts`, `lib/mensajes.ts` (y `lib/llegar.ts` si hay «Cómo llegar»). Usan tokens del origen (`bg-piedra`, `rounded-foto`…) y `@/lib/estilos`: Tailwind v4 **descarta en silencio** las clases que no existen, así que el build pasa y la página sale sin estilo.
 - `pnpm install` (desde la raíz) enlaza el paquete nuevo en el workspace y **cambia `pnpm-lock.yaml`**: ese cambio va en el mismo commit que el template (paso 8).
 
 #### 6.2 Encargo del orquestador
@@ -171,7 +171,7 @@ FASES
    Pie, BarraMovil, menú móvil, variantes de botón; Foto, Migas, lib/formato.ts y lib/mensajes.ts adaptados.
 2. Inicio: hero y sección estrella; resto de secciones en el orden del encargo.
 3. /servicios, /servicios/[slug] y asistente de WhatsApp.
-4. /trabajos, /trabajos/[slug], /empresa, /contacto y las tres legales.
+4. /trabajos, /trabajos/[slug], /empresa, /contacto, las tres legales y app/not-found.tsx.
 5. site.config.ts (el de Claude Design adaptado al contrato vigente, packages/core/src/site-config.ts)
    e imágenes de relleno en public/ejemplo/ (gris rayado con el nombre del archivo; nombres exactos
    de CREDITOS.md, que también se copia).
@@ -210,6 +210,12 @@ REQUISITOS (todos obligatorios)
   analítica de terceros (la única es `<Analitica>` de core) ni formularios.
 - cacheComponents: generateStaticParams nunca devuelve [] (sin datos: [{ slug: "_" }] que hace
   notFound()); nada de new Date() en el render (el año sale de lib/anio.ts).
+- `export const ensureStatic = "navigation"` en app/servicios/[slug]/page.tsx y
+  app/trabajos/[slug]/page.tsx (si no, un slug inexistente da 200 en la primera visita).
+  dynamicParams no: con cacheComponents rompe el build.
+- app/not-found.tsx con el diseño del template: un <h1>, una frase, enlaces a / /servicios /contacto,
+  BotonLlamada y BotonWhatsApp (solo con whatsapp; MENSAJE_NO_ENCONTRADA de lib/mensajes.ts) y
+  `metadata = { title: "Página no encontrada", robots: null, alternates: { canonical: null } }`.
 - Animaciones: solo CSS (como mucho un IntersectionObserver corto), sin librerías; solo transform y
   opacity; el h1, la foto y el botón de llamada del hero no se animan (LCP); con
   prefers-reduced-motion: reduce, sin desplazamientos ni bucles; sin JS se ve todo (nada empieza
@@ -267,7 +273,7 @@ grep -n -E '"(framer-motion|gsap|aos)"' package.json
 node_modules/.bin/next start -p 3005 & PID=$!
 URL=http://localhost:3005
 curl -s -o /dev/null --retry 30 --retry-connrefused --retry-delay 1 $URL/   # espera a que arranque
-for r in / /servicios /servicios/<slug> /trabajos /trabajos/<slug> /empresa /contacto /aviso-legal /privacidad /cookies /no-existe; do
+for r in / /servicios /servicios/<slug> /trabajos /trabajos/<slug> /empresa /contacto /aviso-legal /privacidad /cookies /no-existe /servicios/no-existe /trabajos/no-existe; do
   echo "$(curl -s -o /dev/null -w '%{http_code}' $URL$r) h1=$(curl -s $URL$r | grep -o '<h1' | wc -l) $r"
 done
 curl -s $URL/ | grep -o '<meta name="robots"[^>]*>'
@@ -279,7 +285,7 @@ grep -n 'analitica' site.config.ts      # sin salida: el template no la activa
 kill $PID; ss -ltnp | grep :3005
 ```
 
-Debe salir: `200` y `h1=1` en todas las rutas, `404` en `/no-existe`; `noindex` (demo, sin `seo.indexar`); canonical de la propia página; `openingHoursSpecification` presente y `aggregateRating` = `0`. En `app/layout.tsx`, `<Analitica config={config} />` aparece una sola vez (en el <body>, junto a `<DatosEstructurados>`), y `site.config.ts` no contiene `analitica`. El último `ss` no debe mostrar nada; si muestra un proceso en el 3005, es el tuyo: para **ese** PID.
+Debe salir: `200` y `h1=1` en todas las rutas; `404` en `/no-existe` (con `h1=1`: la `not-found.tsx` del template) y en `/servicios/no-existe` y `/trabajos/no-existe` **ya en la primera petición** del servidor recién arrancado (ahí `h1=0` es lo esperado: ver «Problemas frecuentes»); `noindex` (demo, sin `seo.indexar`); canonical de la propia página; `openingHoursSpecification` presente y `aggregateRating` = `0`. En `app/layout.tsx`, `<Analitica config={config} />` aparece una sola vez (en el <body>, junto a `<DatosEstructurados>`), y `site.config.ts` no contiene `analitica`. El último `ss` no debe mostrar nada; si muestra un proceso en el 3005, es el tuyo: para **ese** PID.
 
 **Variantes de datos.** El template aún no está en Git, así que el original se guarda fuera:
 
@@ -364,6 +370,8 @@ La demo se crea después con `docs/nuevo-cliente.md`.
 | Componentes copiados del origen salen sin estilo y el build pasa | Clases de tokens del origen que el template nuevo no define | Paso 6.1: adaptar `Foto`, `Migas`, legales… a los tokens nuevos |
 | `ERR_PNPM_…` o el paquete no aparece en `pnpm ls -r --depth -1` | Falta `pnpm install` desde la raíz | Paso 6.1 |
 | El build falla en una `[slug]` con `cacheComponents` | `generateStaticParams` devuelve `[]`, o hay `new Date()` en el render | `[{ slug: "_" }]` + `notFound()`; año desde `lib/anio.ts` |
+| `/servicios/<slug-inexistente>` da `200` la primera vez y `404` después | Falta `ensureStatic = "navigation"` en la página `[slug]` (con `partialPrefetching`, la primera visita recibe el App Shell con 200) | Añadirlo en las dos `[slug]` (`AGENTS.md` §7 y §11) |
+| Un 404 de `notFound()` (`/servicios/x`, `/trabajos` sin datos) sale en blanco sin JavaScript | Limitación de Next 16.4 con `cacheComponents`: guarda ese 404 como «error shell» y lo pinta en el navegador | Esperado (código 404 y `noindex` correctos). `/no-existe` sí sale completa. Propuesta de arreglo en `AGENTS.md` §12 |
 | `EADDRINUSE` al arrancar | Puerto ocupado (el 3000 es de otro servicio) | `-p 3005` (u otro libre) |
 
 ## Qué automatizará un agente
@@ -376,3 +384,4 @@ Objetivo de Ysst: decir «integra este diseño siguiendo `docs/nuevo-template.md
 - 13–14/10/2026: fotos de IA de `-3` (el «antes» de la persiana tuvo que regenerarse con la avería visible).
 - 14/10/2026: `-1` «Medida» (entrega en dos tandas; Specs vacía en la primera) y sus 15 fotos de IA.
 - 15/10/2026: `-2` «Exposición» (variante tienda: «Cómo llegar»). Matriz de variedad añadida al brief. Este documento.
+- 16/10/2026: `app/not-found.tsx` propia en los 6 templates y `ensureStatic = "navigation"` en las `[slug]` (el «falso 404»: 200 en la primera visita).
