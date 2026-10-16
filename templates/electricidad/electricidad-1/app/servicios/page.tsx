@@ -4,7 +4,7 @@ import { metadatosPagina } from "@andrei-leads/core";
 import config from "@/site.config";
 import { CtaFinal } from "@/components/secciones/CtaFinal";
 import { FilaServicio } from "@/components/secciones/FilaServicio";
-import { GuiaCabeceraInterior } from "@/components/secciones/GuiaCabeceraInterior";
+import { CabeceraInterior } from "@/components/secciones/CabeceraInterior";
 import { Resenas } from "@/components/secciones/Resenas";
 import { ServicioDestacado } from "@/components/secciones/ServicioDestacado";
 import { Tarifas } from "@/components/secciones/Tarifas";
@@ -33,7 +33,7 @@ export default function Page() {
 
   return (
     <>
-      <GuiaCabeceraInterior titulo="Servicios" migas={[{ href: "/", texto: "Inicio" }, { texto: "Servicios" }]} />
+      <CabeceraInterior titulo="Servicios" migas={[{ href: "/", texto: "Inicio" }, { texto: "Servicios" }]} />
 
       <section aria-labelledby="titulo-lista-servicios" className="contenedor pt-12 md:pt-[72px]">
         <h2 id="titulo-lista-servicios" className="sr-only">

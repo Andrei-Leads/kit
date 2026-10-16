@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import { metadatosPagina } from "@andrei-leads/core";
 import { notFound } from "next/navigation";
 
-import { Migas } from "@/components/Migas";
+import { CabeceraInterior } from "@/components/secciones/CabeceraInterior";
 import { CtaFinal } from "@/components/secciones/CtaFinal";
 import { FiltroTrabajos } from "@/components/secciones/FiltroTrabajos";
 import { GaleriaTrabajos } from "@/components/secciones/GaleriaTrabajos";
 import { TrabajoTarjeta } from "@/components/secciones/TrabajoTarjeta";
 import config from "@/site.config";
-import { h1Interior } from "@/lib/estilos";
 import { hayTrabajos } from "@/lib/navegacion";
 import { filtroTrabajos, ID_LISTA_TRABAJOS } from "@/lib/trabajos";
 
@@ -26,12 +25,7 @@ export default function Page() {
 
   return (
     <>
-      <header className="border-b border-regla">
-        <div className="contenedor flex flex-col gap-2 pt-1 pb-6 md:pb-11">
-          <Migas items={[{ href: "/", texto: "Inicio" }, { texto: "Trabajos" }]} />
-          <h1 className={h1Interior}>Trabajos</h1>
-        </div>
-      </header>
+      <CabeceraInterior titulo="Trabajos" migas={[{ href: "/", texto: "Inicio" }, { texto: "Trabajos" }]} />
 
       <div className="contenedor pt-7 md:pt-10">
         {trabajos.length === 0 ? (

@@ -39,12 +39,14 @@ export function LlamadaCampo({
   );
 }
 
-/** llamada-linea: «Llamar al» + número en mono, con contorno. Destacado y guías. */
+/** llamada-linea: icono + «Llamar al» + número en mono, con contorno sobre papel blanco. Destacado y guías. */
 export function LlamadaLinea({ telefono, className }: { telefono: string; className?: string }) {
   return (
     <BotonLlamada telefono={telefono} className={cn(buttonVariants({ variant: "llamadaLinea" }), className)}>
-      <span>Llamar al</span>
-      <span className="font-mono">{telefonoVisible(telefono)}</span>
+      <Phone aria-hidden="true" strokeWidth={2} strokeLinejoin="round" className="size-[18px] flex-none" />
+      <span>
+        Llamar al <span className="font-mono">{telefonoVisible(telefono)}</span>
+      </span>
     </BotonLlamada>
   );
 }

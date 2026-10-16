@@ -21,13 +21,16 @@ type Props = {
  * a 32 px con alt="" y nunca sustituye al nombre).
  *   corto  (≤ 20 caracteres): 16 px.
  *   medio  (21–32):           14 px.
- *   largo  (> 32):            13 px y la llamada de la cabecera pasa a solo icono (< 640 px),
+ *   largo  (33–44):           13 px y la llamada de la cabecera pasa a solo icono (< 640 px),
  *                             con «Llamar» como texto para lectores de pantalla.
+ *   muy largo (> 44):         además 12 px y huecos de 8 px en la cabecera móvil, para que un
+ *                             nombre de unos 55 caracteres quepa en 2 líneas junto al logo.
  */
-function claseNombre(nombre: string): { texto: string; largo: boolean } {
-  if (nombre.length <= 20) return { texto: "text-base leading-[1.2]", largo: false };
-  if (nombre.length <= 32) return { texto: "text-sm leading-[1.2]", largo: false };
-  return { texto: "text-[13px] leading-[1.15]", largo: true };
+function claseNombre(nombre: string): { texto: string; largo: boolean; muyLargo: boolean } {
+  if (nombre.length <= 20) return { texto: "text-base leading-[1.2]", largo: false, muyLargo: false };
+  if (nombre.length <= 32) return { texto: "text-sm leading-[1.2]", largo: false, muyLargo: false };
+  if (nombre.length <= 44) return { texto: "text-[13px] leading-[1.15]", largo: true, muyLargo: false };
+  return { texto: "text-[12px] leading-[1.15] tracking-[-0.01em] sm:text-[13px]", largo: true, muyLargo: true };
 }
 
 /**
@@ -36,10 +39,15 @@ function claseNombre(nombre: string): { texto: string; largo: boolean } {
  * nombre + enlaces + número en mono + Llamar.
  */
 export function Cabecera({ nombre, logo, contacto, items }: Props) {
-  const { texto, largo } = claseNombre(nombre);
+  const { texto, largo, muyLargo } = claseNombre(nombre);
   return (
     <header className="sticky top-0 z-30 border-b border-regla bg-papel">
-      <div className="mx-auto flex min-h-[60px] w-full max-w-[1200px] items-center gap-3 px-5 py-2 md:px-12 lg:min-h-[72px]">
+      <div
+        className={cn(
+          "mx-auto flex min-h-[60px] w-full max-w-[1200px] items-center gap-3 px-5 py-2 md:px-12 lg:min-h-[72px]",
+          muyLargo && "max-sm:gap-2"
+        )}
+      >
         <Link href="/" className="flex min-h-11 min-w-0 flex-1 items-center gap-2 text-tinta no-underline">
           {logo && (
             <Image

@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import { metadatosPagina } from "@andrei-leads/core";
 
 import { LlamadaCampo, WhatsApp } from "@/components/BotonesContacto";
-import { Migas } from "@/components/Migas";
+import { CabeceraInterior } from "@/components/secciones/CabeceraInterior";
 import config from "@/site.config";
-import { etiquetaCampo, h1Interior } from "@/lib/estilos";
+import { etiquetaCampo } from "@/lib/estilos";
 import { horarioVisible, urlComoLlegar } from "@/lib/formato";
 import { mensajeGeneral } from "@/lib/mensajes";
 
@@ -38,12 +38,7 @@ export default function Page() {
 
   return (
     <>
-      <header className="border-b border-regla">
-        <div className="contenedor flex flex-col gap-2 pt-1 pb-6 md:pb-11">
-          <Migas items={[{ href: "/", texto: "Inicio" }, { texto: "Contacto" }]} />
-          <h1 className={h1Interior}>Contacto</h1>
-        </div>
-      </header>
+      <CabeceraInterior titulo="Contacto" migas={[{ href: "/", texto: "Inicio" }, { texto: "Contacto" }]} />
 
       <div className="contenedor grid grid-cols-1 gap-10 pt-7 pb-14 md:pt-10 md:pb-[88px] md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-x-14">
         <div className="flex flex-col gap-3">

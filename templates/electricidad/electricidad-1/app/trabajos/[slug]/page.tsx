@@ -5,7 +5,7 @@ import { metadatosTrabajo } from "@andrei-leads/core";
 import { ArrowRight } from "lucide-react";
 
 import { WhatsApp } from "@/components/BotonesContacto";
-import { Migas } from "@/components/Migas";
+import { CabeceraInterior } from "@/components/secciones/CabeceraInterior";
 import { CtaFinal } from "@/components/secciones/CtaFinal";
 import { TrabajoFicha } from "@/components/secciones/TrabajoFicha";
 import { TrabajoFotos } from "@/components/secciones/TrabajoFotos";
@@ -13,7 +13,6 @@ import { TrabajoOtros } from "@/components/secciones/TrabajoOtros";
 import { TrabajoTestimonio } from "@/components/secciones/TrabajoTestimonio";
 import { buttonVariants } from "@/components/ui/button";
 import config from "@/site.config";
-import { h1Interior } from "@/lib/estilos";
 import { mensajeTrabajo } from "@/lib/mensajes";
 
 // Con `cacheComponents` la lista no puede ser []: sin trabajos, un slug de relleno que acaba en 404.
@@ -46,18 +45,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
   return (
     <>
-      <header className="border-b border-regla">
-        <div className="contenedor flex flex-col gap-2 pt-1 pb-6 md:pb-11">
-          <Migas
-            items={[
-              { href: "/", texto: "Inicio" },
-              { href: "/trabajos", texto: "Trabajos" },
-              { texto: trabajo.titulo },
-            ]}
-          />
-          <h1 className={h1Interior}>{trabajo.titulo}</h1>
-        </div>
-      </header>
+      <CabeceraInterior titulo={trabajo.titulo} migas={[{ href: "/", texto: "Inicio" }, { href: "/trabajos", texto: "Trabajos" }, { texto: trabajo.titulo }]} />
 
       <article className="contenedor flex flex-col gap-8 pt-7 md:gap-10 md:pt-10 [&>:first-child]:mt-0">
         <TrabajoFicha trabajo={trabajo} />

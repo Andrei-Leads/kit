@@ -44,8 +44,9 @@ function AccordionTrigger({
           aria-hidden="true"
           className="flex size-7 flex-none items-center justify-center border border-tinta font-mono text-base leading-none font-bold group-hover:bg-papel-2"
         >
-          <span className="group-data-[state=open]:hidden">+</span>
-          <span className="hidden group-data-[state=open]:inline">−</span>
+          {/* Sin JS todas las respuestas están abiertas: se ve «−» en todas. */}
+          <span className="hidden [.js_&]:group-data-[state=closed]:inline">+</span>
+          <span className="[.js_&]:group-data-[state=closed]:hidden">−</span>
         </span>
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
@@ -55,7 +56,8 @@ function AccordionTrigger({
 /**
  * Respuesta. Siempre montada (`forceMount`): cerrada sigue en el HTML para que los buscadores la lean.
  * Con `forceMount`, Radix no pone `hidden` ni deja de pintar los hijos: la oculta el CSS con
- * `data-[state=closed]:hidden` (display: none, así tampoco la lee un lector de pantalla).
+ * `data-[state=closed]:hidden` (display: none, así tampoco la lee un lector de pantalla), y solo
+ * bajo `html.js`: sin JavaScript no se podría abrir, así que todas las respuestas se ven.
  * Sin animación de altura (decisión de Ysst): abre y cierra de golpe.
  */
 function AccordionContent({
@@ -67,7 +69,7 @@ function AccordionContent({
     <AccordionPrimitive.Content
       data-slot="accordion-content"
       forceMount
-      className="data-[state=closed]:hidden"
+      className="[.js_&]:data-[state=closed]:hidden"
       {...props}
     >
       <div className={cn("max-w-[66ch] pr-11 pb-5 text-tinta-cuerpo text-pretty", className)}>

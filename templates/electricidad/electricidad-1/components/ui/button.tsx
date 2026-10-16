@@ -29,8 +29,8 @@ const buttonVariants = cva(base, {
       llamadaCabecera: `${caja} inline-flex min-h-11 flex-none items-center gap-2 px-3.5 md:px-[18px] ${relleno}`,
       /* whatsapp-tramite: destacado y guías, con el mensajeWhatsapp del servicio. */
       whatsappTramite: `${caja} flex min-h-[52px] items-center justify-center gap-2.5 px-[18px] py-3 text-center ${relleno}`,
-      /* llamada-linea: destacado y guías. Contorno; el número va en mono. */
-      llamadaLinea: `${caja} flex min-h-[52px] items-center justify-center gap-2 px-[18px] py-3 text-center ${contorno}`,
+      /* llamada-linea: destacado y guías. Contorno tinta sobre papel blanco (también sobre el tinte del destacado); el número va en mono. */
+      llamadaLinea: `${caja} flex min-h-[52px] items-center justify-center gap-2.5 border-2 border-tinta bg-papel px-[18px] py-3 text-center text-tinta hover:bg-papel-2`,
       /* barra-llamar / barra-whatsapp: barra móvil, 52 px. Llamar relleno | WhatsApp contorno. */
       barraLlamar: `${caja} flex min-h-[52px] flex-1 items-center justify-center gap-2 ${relleno}`,
       barraWhatsapp: `${caja} flex min-h-[52px] flex-1 items-center justify-center gap-2 ${contorno}`,

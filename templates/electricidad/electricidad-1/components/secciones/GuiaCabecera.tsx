@@ -53,7 +53,7 @@ export function GuiaCabecera({ servicio, contacto, ciudad }: Props) {
                 Pide tu {minusculaInicial(servicio.titulo)} por WhatsApp
               </WhatsApp>
             )}
-            <LlamadaLinea telefono={contacto.telefono} className="bg-papel hover:bg-white" />
+            <LlamadaLinea telefono={contacto.telefono} />
           </div>
         </div>
       </div>

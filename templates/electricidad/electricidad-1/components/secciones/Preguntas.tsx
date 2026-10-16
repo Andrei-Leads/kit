@@ -13,7 +13,7 @@ type Props = {
 
 /**
  * Preguntas frecuentes (Specs §2): shadcn Accordion (`single`, `collapsible`) con la primera abierta.
- * Las respuestas cerradas siguen en el HTML (`forceMount` en `AccordionContent`, ocultas por CSS con `data-[state=closed]:hidden`)
+ * Las respuestas cerradas siguen en el HTML (`forceMount` en `AccordionContent`, ocultas por CSS con `data-[state=closed]:hidden` solo con JS)
  * y abrir/cerrar no anima la altura. Es contenido para buscadores. Cada pregunta es un h3.
  */
 export function Preguntas({ numero, preguntas, className }: Props) {

@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { metadatosPagina } from "@andrei-leads/core";
 
 import { Foto } from "@/components/Foto";
-import { Migas } from "@/components/Migas";
+import { CabeceraInterior } from "@/components/secciones/CabeceraInterior";
 import { CtaFinal } from "@/components/secciones/CtaFinal";
 import { EmpresaDatos } from "@/components/secciones/EmpresaDatos";
 import { EmpresaEquipo } from "@/components/secciones/EmpresaEquipo";
 import { EmpresaSello } from "@/components/secciones/EmpresaSello";
 import config from "@/site.config";
-import { etiquetaCampo, h1Interior } from "@/lib/estilos";
+import { etiquetaCampo } from "@/lib/estilos";
 
 export const metadata: Metadata = metadatosPagina(config, { ruta: "/empresa", titulo: "La empresa" });
 
@@ -30,12 +30,7 @@ export default function Page() {
 
   return (
     <>
-      <header className="border-b border-regla">
-        <div className="contenedor flex flex-col gap-2 pt-1 pb-6 md:pb-11">
-          <Migas items={[{ href: "/", texto: "Inicio" }, { texto: "La empresa" }]} />
-          <h1 className={h1Interior}>La empresa</h1>
-        </div>
-      </header>
+      <CabeceraInterior titulo="La empresa" migas={[{ href: "/", texto: "Inicio" }, { texto: "La empresa" }]} />
 
       <div className="contenedor pt-7 md:pt-10">
         {vacia ? (
