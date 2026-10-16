@@ -189,12 +189,15 @@ REQUISITOS (todos obligatorios)
 - Asistente de WhatsApp: componente cliente que solo compone el mensaje. Sin <form>; no guarda ni envía nada.
 - JavaScript mínimo: "use client" solo en la pieza interactiva más pequeña (menú, asistente, acordeón,
   filtro). Un archivo "use client" NUNCA importa valores de `@andrei-leads/core` ni de un archivo que
-  los importe (`lib/formato.ts` importa `formatearHorario`): el barrel de core arrastra zod y el
-  contrato (~290 KB sin comprimir) al JavaScript de todas las páginas. Los `BotonLlamada` /
+  los importe (`lib/formato.ts` importa `formatearHorario`): con core < 0.5.1 el barrel arrastra zod
+  y el contrato (~300 KB sin comprimir) al JavaScript de todas las páginas; desde 0.5.1 (`sideEffects`)
+  solo se lleva el módulo importado, pero la regla se mantiene. Tampoco importa valores de
+  `@/site.config` (ni de un `lib/*` que lo importe): `defineSiteConfig` se ejecuta y mete zod con
+  cualquier versión de core. Los `BotonLlamada` /
   `BotonWhatsApp` con datos fijos (menú móvil, barra, índice) se renderizan en el componente de
   servidor que lo envuelve y se pasan como prop `ReactNode` (`llamada={<BotonLlamada …/>}`). Los tipos
   sí se importan, con `import type`. Única excepción: el `BotonWhatsApp` del asistente (mensaje que
-  cambia con los toques), hasta que core declare `sideEffects`.
+  cambia con los toques); con core ≥ 0.5.1 ya no arrastra zod.
 - Ubicación: dirección en texto + enlace «Cómo llegar» a Google Maps. Nunca mapa incrustado.
 - Horario siempre con formatearHorario(config.contacto.horario); fila de urgencias solo si urgencias24h.
 - SEO de core: `metadata = crearMetadatos(config)` y <DatosEstructurados config={config} /> en el
@@ -284,7 +287,7 @@ grep -rl '"use client"' app components lib | xargs grep -n -E '^import \{[^}]*\}
 curl -s $URL/empresa | grep -o '<script src="[^"]*" async' | cut -d'"' -f2 | while read s; do curl -s $URL$s; done | wc -c
 ```
 
-Referencia (core 0.5.0, Next 16.4; bytes de `wc -c`): unos **560–580 KB** sin comprimir (≈ 175 KB gzip). De ellos, unos 480 KB son el suelo de React + Next. Si sale **~880 KB**, un componente cliente arrastra core. Las páginas **con** asistente de WhatsApp dan ~880 KB hasta que core declare `sideEffects` (esperado, no es un fallo del template). Para ver qué pesa y quién lo importa: `pnpm next analyze` (desde la carpeta del template; busca `zod`).
+Referencia (core 0.5.1, Next 16.4; bytes de `wc -c`): unos **545–575 KB** sin comprimir (≈ 165–175 KB gzip), también en las páginas **con** asistente de WhatsApp (con core 0.5.0 daban ~850–870 KB). De ellos, unos 480 KB son el suelo de React + Next. Si sale **~850–880 KB**, un componente cliente arrastra zod: importa un valor de `@/site.config` (o de un `lib/*` que lo importe), o la web sigue en core < 0.5.1 e importa un valor de core. Para ver qué pesa y quién lo importa: `pnpm next analyze` (desde la carpeta del template; busca `zod`).
 
 **HTML generado.** Desde la carpeta del template, servidor en segundo plano con su PID:
 
@@ -399,7 +402,7 @@ La demo se crea después con `docs/nuevo-cliente.md`.
 | `/servicios/<slug-inexistente>` da `200` la primera vez y `404` después | Falta `ensureStatic = "navigation"` en la página `[slug]` (con `partialPrefetching`, la primera visita recibe el App Shell con 200) | Añadirlo en las dos `[slug]` (`AGENTS.md` §7 y §11) |
 | Un 404 de `notFound()` (`/servicios/x`, `/trabajos` sin datos) sale en blanco sin JavaScript | Limitación de Next 16.4 con `cacheComponents`: guarda ese 404 como «error shell» y lo pinta en el navegador | Esperado (código 404 y `noindex` correctos). `/no-existe` sí sale completa. Propuesta de arreglo en `AGENTS.md` §12 |
 | `EADDRINUSE` al arrancar | Puerto ocupado (el 3000 es de otro servicio) | `-p 3005` (u otro libre) |
-| ~880 KB de JS en una página sin asistente y `zod` en `pnpm next analyze` | Un `"use client"` importa `BotonLlamada` (o `telefonoVisible` de `lib/formato.ts`, que importa core) | El servidor renderiza el botón y lo pasa como prop `ReactNode` (requisito «JavaScript mínimo», 6.2) |
+| ~850–880 KB de JS en una página y `zod` en `pnpm next analyze` | Un `"use client"` importa un valor de `@/site.config` (o de un `lib/*` que lo importe); o, con core < 0.5.1, un valor de core (`BotonLlamada`, `telefonoVisible` de `lib/formato.ts`) | Los datos y los botones llegan como props desde el componente de servidor (requisito «JavaScript mínimo», 6.2); con core < 0.5.1, además, `pnpm up @andrei-leads/core` |
 
 ## Qué automatizará un agente
 
@@ -412,4 +415,5 @@ Objetivo de Ysst: decir «integra este diseño siguiendo `docs/nuevo-template.md
 - 14/10/2026: `-1` «Medida» (entrega en dos tandas; Specs vacía en la primera) y sus 15 fotos de IA.
 - 15/10/2026: `-2` «Exposición» (variante tienda: «Cómo llegar»). Matriz de variedad añadida al brief. Este documento.
 - 16/10/2026: requisito «JavaScript mínimo» y su comprobación. Los botones de core en componentes cliente metían zod en todas las páginas (~880 → ~575 KB al pasarlos como prop desde el servidor).
+- 16/10/2026: core 0.5.1 declara `sideEffects`; las páginas con asistente de WhatsApp de `carpinteria-metalica-1/2` bajan de ~850–870 a ~550–570 KB.
 - 16/10/2026: `app/not-found.tsx` propia en los 6 templates y `ensureStatic = "navigation"` en las `[slug]` (el «falso 404»: 200 en la primera visita).
