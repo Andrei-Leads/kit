@@ -36,10 +36,10 @@ Si se elige mal el tipo y **aún no se ha publicado**, se corrige gratis: edita 
 
 Todos los comandos se ejecutan desde la **raíz de `kit`**.
 
-**1. Haz el cambio en `packages/core` y pruébalo en un template:**
+**1. Haz el cambio en `packages/core` y pruébalo en un template** (por ejemplo, `carpinteria-metalica-2`):
 
 ```bash
-pnpm --filter pergolas dev
+pnpm --filter carpinteria-metalica-2 build && pnpm --filter carpinteria-metalica-2 start -p 3005
 ```
 
 Comprueba que el cambio se ve **en algo que la página renderiza de verdad**.
@@ -226,3 +226,7 @@ En la **organización** y en el **repo** `kit`: Settings → Actions → General
 
 - `0.1.0`: publicada a mano (oct 2026), durante el aprendizaje del flujo.
 - `0.1.1`: publicada por la Action. `BotonLlamada` con `aria-label`. Se versionó en local de forma excepcional.
+- `0.2.0`: frontera core/template (legales, `BotonLlamada` con `className`, `email` obligatorio).
+- `0.3.0` (PR #2): contrato multipágina.
+- `0.4.0` (14/10/2026, PR #3): SEO técnico y horario estructurado (cambio incompatible).
+- `0.5.0` (16/10/2026, PR #4): analítica del plan Básico.
