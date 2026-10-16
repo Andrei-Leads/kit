@@ -31,6 +31,20 @@ export function horarioCorto(horario: LineaHorario[]): string {
   return horario.map((h) => `${h.dias} ${h.horas}`).join(" · ");
 }
 
+/**
+ * Título en minúscula inicial para frases («Pide tu boletín eléctrico por WhatsApp»), salvo
+ * que empiece por siglas («CIE para…», «LED»): si la segunda letra también es mayúscula, se deja igual.
+ */
+export function minusculaInicial(texto: string): string {
+  if (texto.length > 1 && /[A-ZÁÉÍÓÚÑ]/.test(texto[1])) return texto;
+  return texto.charAt(0).toLowerCase() + texto.slice(1);
+}
+
+/** 64 → "64 reseñas en Google"; 1 → "1 reseña en Google". */
+export function totalResenas(total: number): string {
+  return `${total} ${total === 1 ? "reseña" : "reseñas"} en Google`;
+}
+
 /** 4.8 → "4,8". */
 export function mediaVisible(media: number): string {
   return media.toFixed(1).replace(".", ",");

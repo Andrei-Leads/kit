@@ -33,3 +33,12 @@ export const migas = {
   enlace: "inline-flex min-h-11 items-center text-tinta-suave underline underline-offset-4 hover:text-tinta",
   actual: "inline-flex min-h-11 items-center text-tinta",
 } as const;
+
+/**
+ * Sección sin fondo propio: contenedor con padding solo arriba (56 → 96 px). La separación con lo
+ * que sigue la pone la sección siguiente (las de fondo, con su margen superior; el CTA final, con el suyo).
+ */
+export const seccionPlana = "contenedor pt-14 md:pt-24";
+
+/** Título de caja del documento («Qué incluye», «Desde»…): etiqueta de campo con regla inferior. */
+export const cabeceraCaja = "border-b border-regla pb-2.5 " + etiquetaCampo;

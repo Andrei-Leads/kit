@@ -53,8 +53,10 @@ function AccordionTrigger({
 }
 
 /**
- * Respuesta. Siempre montada (`forceMount`): cerrada sigue en el HTML, oculta con `hidden`,
- * para que los buscadores la lean. Sin animación de altura (decisión de Ysst): abre y cierra de golpe.
+ * Respuesta. Siempre montada (`forceMount`): cerrada sigue en el HTML para que los buscadores la lean.
+ * Con `forceMount`, Radix no pone `hidden` ni deja de pintar los hijos: la oculta el CSS con
+ * `data-[state=closed]:hidden` (display: none, así tampoco la lee un lector de pantalla).
+ * Sin animación de altura (decisión de Ysst): abre y cierra de golpe.
  */
 function AccordionContent({
   className,
@@ -65,6 +67,7 @@ function AccordionContent({
     <AccordionPrimitive.Content
       data-slot="accordion-content"
       forceMount
+      className="data-[state=closed]:hidden"
       {...props}
     >
       <div className={cn("max-w-[66ch] pr-11 pb-5 text-tinta-cuerpo text-pretty", className)}>

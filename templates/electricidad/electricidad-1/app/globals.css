@@ -183,6 +183,14 @@
   animation: trazar calc(600ms / var(--n, 5)) linear both;
   animation-delay: calc(var(--i, 0) * 600ms / var(--n, 5));
 }
+/* Escritorio: las reglas son horizontales y se trazan de izquierda a derecha (mismo reparto de tiempo). */
+.js [data-anim="tramite"] [data-tramo="h"] {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.js [data-anim="tramite"].en-vista [data-tramo="h"] {
+  animation-name: dibujar;
+}
 .js [data-anim="tramite"] [data-paso] {
   opacity: 0;
   transform: translateY(12px);
@@ -207,6 +215,22 @@
 .fila-servicio:hover .fila-flecha,
 .fila-servicio:focus-visible .fila-flecha {
   transform: translateX(4px);
+}
+
+/* Reseñas largas: el recorte a 5 líneas y el botón «Leer más» solo existen con JavaScript
+   (sin él, la reseña se lee entera). */
+.resena-mas {
+  display: none;
+}
+.js .resena-mas {
+  display: inline-flex;
+}
+.js .resena-texto[data-largo="true"][data-abierta="false"] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
 }
 
 /* Sin movimiento si el usuario lo pide: todo ya en su sitio, sin transiciones. */

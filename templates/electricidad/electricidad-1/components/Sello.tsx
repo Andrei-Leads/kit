@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -13,6 +15,9 @@ type Props = {
  * pinta si hay `acreditaciones`; esa decisión es del llamador.
  */
 export function Sello({ className, animar }: Props) {
+  // Id único por instancia: el hero pinta dos sellos (móvil y escritorio) y un id repetido haría que
+  // el texto curvo del oculto apuntara al arco de otro svg.
+  const arco = useId();
   return (
     <svg
       viewBox="0 0 100 100"
@@ -23,7 +28,7 @@ export function Sello({ className, animar }: Props) {
       className={cn("size-[72px] flex-none text-primario md:size-[104px]", className)}
     >
       <defs>
-        <path id="sello-arco" d="M50 50m-35 0a35 35 0 1 1 70 0a35 35 0 1 1-70 0" />
+        <path id={arco} d="M50 50m-35 0a35 35 0 1 1 70 0a35 35 0 1 1-70 0" />
       </defs>
       <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="2.5" />
       <circle cx="50" cy="50" r="44.5" fill="none" stroke="currentColor" strokeWidth="1" />
@@ -32,7 +37,7 @@ export function Sello({ className, animar }: Props) {
         fill="currentColor"
         style={{ fontFamily: "var(--font-mono)", fontSize: "8.4px", fontWeight: 700, letterSpacing: "0.9px" }}
       >
-        <textPath href="#sello-arco">EMPRESA INSTALADORA HABILITADA ·</textPath>
+        <textPath href={`#${arco}`}>EMPRESA INSTALADORA HABILITADA ·</textPath>
       </text>
       <path d="M39 50l7.5 7.5L62 42" fill="none" stroke="currentColor" strokeWidth="4.5" strokeLinecap="square" />
     </svg>
