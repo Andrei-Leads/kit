@@ -22,7 +22,11 @@ type Props = {
    * costará?», sin «Precios por servicio» ni garantías. Si no hay tarifas, no pinta nada.
    */
   solo?: "tablero";
-  /** /servicios (decisión 6 de Ysst): sin el subbloque «Precios por servicio», que repetiría la rejilla. */
+  /**
+   * /servicios (decisión 6 de Ysst): sin el subbloque «Precios por servicio», que repetiría la rejilla de
+   * servicios de arriba. Con `tarifas` solo se omite ese subbloque; sin `tarifas` (solo `precioDesde`) la
+   * rejilla de precios tampoco sale y el bloque pasa al modo «¿Cuánto me costará?».
+   */
   sinPrecioPorServicio?: boolean;
   /** Id de la sección (índice lateral). Por defecto `precios`. */
   id?: string;
@@ -74,7 +78,8 @@ function TarjetaPrecio({ servicio, grande }: { servicio: ServicioConPrecio; gran
  * `data-pastilla` (PastillaPrecio `indice`), con `--i` = índice de fila.
  */
 export function Precios({ tarifas, servicios, garantias, contacto, solo, sinPrecioPorServicio, id = "precios", className }: Props) {
-  const modo = modoPrecios(tarifas, servicios);
+  const modoDatos = modoPrecios(tarifas, servicios);
+  const modo: Modo = sinPrecioPorServicio && modoDatos === "servicios" ? "cuanto" : modoDatos;
   if (solo === "tablero" && modo !== "tablero") return null;
 
   const conPrecio: ServicioConPrecio[] = servicios.flatMap((s) =>
@@ -91,7 +96,9 @@ export function Precios({ tarifas, servicios, garantias, contacto, solo, sinPrec
       <Mancha
         forma="a"
         animada
-        className="-top-[34px] -right-[70px] h-[210px] w-[260px] lg:h-[320px] lg:w-[420px]"
+        // -z-10: la mancha sube 34 px sobre la sección anterior (p. ej. la rejilla de /servicios); detrás de ella,
+        // nunca encima de sus tarjetas.
+        className="-top-[34px] -right-[70px] -z-10 h-[210px] w-[260px] lg:h-[320px] lg:w-[420px]"
       />
       <h2 id={idTitulo} className={cn(h2, "relative z-10 mb-4")}>
         {titulo}
