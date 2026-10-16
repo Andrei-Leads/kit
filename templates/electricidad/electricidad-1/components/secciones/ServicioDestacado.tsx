@@ -75,7 +75,7 @@ export function ServicioDestacado({ servicio, contacto, className }: Props) {
           <div className="flex flex-col gap-2.5 md:flex-row md:flex-wrap">
             {contacto.whatsapp && (
               <WhatsApp numero={contacto.whatsapp} mensaje={mensajeServicio(servicio)} variante="tramite">
-                Pide tu {minusculaInicial(servicio.titulo)} por WhatsApp
+                Pide presupuesto de {minusculaInicial(servicio.titulo)} por WhatsApp
               </WhatsApp>
             )}
             <LlamadaLinea telefono={contacto.telefono} />

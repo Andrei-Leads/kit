@@ -32,7 +32,7 @@ export function horarioCorto(horario: LineaHorario[]): string {
 }
 
 /**
- * Título en minúscula inicial para frases («Pide tu boletín eléctrico por WhatsApp»), salvo
+ * Título en minúscula inicial para frases («Pide presupuesto de boletín eléctrico por WhatsApp»), salvo
  * que empiece por siglas («CIE para…», «LED»): si la segunda letra también es mayúscula, se deja igual.
  */
 export function minusculaInicial(texto: string): string {

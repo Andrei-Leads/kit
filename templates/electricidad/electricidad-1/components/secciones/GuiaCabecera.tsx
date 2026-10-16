@@ -50,7 +50,7 @@ export function GuiaCabecera({ servicio, contacto, ciudad }: Props) {
           <div className="mt-1 flex flex-col gap-2.5 md:flex-row md:items-center">
             {contacto.whatsapp && (
               <WhatsApp numero={contacto.whatsapp} mensaje={mensajeServicio(servicio)} variante="tramite">
-                Pide tu {minusculaInicial(servicio.titulo)} por WhatsApp
+                Pide presupuesto de {minusculaInicial(servicio.titulo)} por WhatsApp
               </WhatsApp>
             )}
             <LlamadaLinea telefono={contacto.telefono} />

@@ -433,7 +433,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 8. **Escalar:** 3 templates por nicho, empezando por urgencias y proyecto; obra técnica después; recurrente al final.
 9. ~~**Analítica del plan Básico**~~ **Publicada en core 0.5.0 (16/10/2026, PR #4 «Version Packages»)**: `analitica.vercel`, componente `Analitica`, apartado en la política de privacidad y clics de contacto como eventos; conectada en `carpinteria-metalica-1/2/3`. El Pro (GA4/Meta con consentimiento) queda para 0.6.0 (`docs/cambio-de-plan.md`).
 
-**Más adelante:** Turborepo (con 3 o 4 templates); script `create-site` (automatiza los pasos 1–4 de `docs/nuevo-cliente.md`); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
+**Más adelante:** `app/not-found.tsx` propio, en español y con el diseño de cada template, en todos los templates (PR aparte; hoy sale el 404 de Next en inglés y, en una ruta sin datos como `/trabajos`, en blanco sin JavaScript); Turborepo (con 3 o 4 templates); script `create-site` (automatiza los pasos 1–4 de `docs/nuevo-cliente.md`); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
 
 **Avisos con fecha:**
 
