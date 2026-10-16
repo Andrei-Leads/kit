@@ -335,6 +335,13 @@ Y en `AGENTS.md`: §4 (mapa), §7 y §12 (estado).
    - Pareja antes/después: primero el «después» y, **en la misma conversación**, el «antes», con el daño descrito **de forma muy explícita**.
    - **Nada de caras**: de espaldas, manos o fuera de cuadro.
    - ChatGPT entrega PNG de **1448×1086** o **1254×1254**. Si una pareja sale en una sola imagen, mejor regenerarla por separado.
+   - **Dos registros de foto** (decisión de Ysst, 16/10/2026). Cada ficha dice en una frase **quién hace la foto y por qué**:
+     - **Foto de móvil del trabajo** (servicios, trabajos, antes/después): la hace con su iPhone el propio trabajador para mandársela al cliente o subirla a «trabajos hechos» (si sale el trabajador, la hace el dueño o el cliente). Modo foto estándar, casi todo enfocado, luz real del sitio (ventana, LED, flash), encuadre natural algo imperfecto y cosas del cliente alrededor.
+     - **Foto profesional** (hero, furgoneta, equipo, taller o local): la de un fotógrafo contratado por la empresa. Cámara buena, luz natural cuidada, composición limpia y ordenada, pero lugares y personas reales: nada de banco de imágenes.
+     - En los dos, **nada de aspecto de cine**: luz dramática, hora azul, contraluces, velas, niebla, bokeh exagerado o gradación de color.
+   - **Variedad:** cada ficha con su plano, espacio, momento y luz; el bloque común solo fija paleta, registro y prohibiciones (una vez). Si no, ChatGPT repite la misma escena (pasó con `electricidad-1`).
+   - **Hero:** medir antes cuánto recorta el template la foto en móvil (375 px) y en escritorio (1280–1440 px) y pedir el motivo entero dentro de la **zona segura** que se ve en todos los tamaños (pasó con `electricidad-2`: en escritorio solo salían torso y piernas).
+   - Sin apartados «Comprobar al recibirla», «Errores típicos» ni «Revisión rápida»: la revisión la hace Claude (punto 4).
 3. Ysst genera cada foto y la guarda como `mis_datos/fotos-ejemplo/<paquete>/<n>.<m>.png`.
 4. Claude las revisa en una **hoja de contactos** (sin texto, logos ni caras; manos y herrajes posibles; el «antes» con el daño visible) y, con Pillow (`python3 -I`), las convierte a **JPG**: calidad ~82, recortadas a la proporción de `CREDITOS.md`, lado largo ≤ 1600 px **sin ampliar**, con el **nombre exacto** en `public/ejemplo/`.
 5. Actualiza `CREDITOS.md` (origen «Generada con IA (ChatGPT, OpenAI)») y revisa que cada `alt` de `site.config.ts` describe **lo que se ve**.
