@@ -18,7 +18,7 @@ Versión simple: fotocopias la maqueta, le pones los datos del cliente y la mand
 
 - [ ] **Token personal** en `~/.npmrc` (para instalar core en local). Comprobación: `npm whoami --registry=https://npm.pkg.github.com` debe devolver tu usuario. Si falla, ver `docs/publicar-core.md` → «Llave».
 - [ ] Acceso a **Bitwarden** (token de Vercel «Vercel — leer @andrei-leads/core»).
-- [ ] **Template elegido** (`kit/templates/<nicho>/<nicho>-<n>`) y versión publicada de core que usa (hoy, `0.4.0`).
+- [ ] **Template elegido** (`kit/templates/<nicho>/<nicho>-<n>`) y versión publicada de core que usa (hoy, `0.5.0`).
 - [ ] **Datos del cliente** (o ficticios, si es una prueba) y **fotos** (reales del cliente, o las de ejemplo del template para una demo).
 - [ ] Nombre de la web: `web-<cliente>` (minúsculas y guiones).
 
@@ -49,7 +49,7 @@ grep -n -E '"name"|andrei-leads' package.json
 echo "@andrei-leads:registry=https://npm.pkg.github.com" > .npmrc
 ```
 
-- El `grep` debe mostrar `"name": "web-<cliente>"` y `"@andrei-leads/core": "^0.N.0"` (`0.N.0` = la versión publicada actual, hoy `0.4.0`: `sed` con el número real, no con `N`).
+- El `grep` debe mostrar `"name": "web-<cliente>"` y `"@andrei-leads/core": "^0.N.0"` (`0.N.0` = la versión publicada actual, hoy `0.5.0`: `sed` con el número real, no con `N`).
 - El `.npmrc` lleva **solo la dirección del registro**, nunca el token (el token está en `~/.npmrc`). Si llevara `${NPM_TOKEN}`, en local tendría prioridad sobre `~/.npmrc` y daría 401.
 
 ### 3. Instalar core desde GitHub Packages

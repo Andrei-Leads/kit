@@ -2,7 +2,7 @@
 
 > **Agente:** este documento es un procedimiento operativo para ti. Ysst abrirá una sesión y te dirá algo como «pasa a `web-<cliente>` al plan Pro». Sigue los pasos en orden, **pregunta antes los datos de §3** y no inventes ninguno. Antes de empezar, lee `AGENTS.md` (sobre todo §2, la forma de trabajar con Ysst, y §7, las reglas sobre terceros).
 >
-> **Estado (15/10/2026): el Básico está implementado en core 0.5.0** (rama `feat/analitica-vercel`, pendiente de revisión y publicación; hasta que se publique, no está en ninguna web). **El Pro sigue siendo un diseño PROVISIONAL** (core 0.6.0): sus nombres de campos (`ga4`, `metaPixel`, `googleAds`) son la propuesta. Antes de seguir, comprueba en `packages/core/src/site-config.ts` que existen los campos que vas a usar. **Si no existen, para y díselo a Ysst:** ese cambio de plan todavía no se puede hacer.
+> **Estado (16/10/2026): el Básico está publicado en core 0.5.0** (PR #4 «Version Packages»). Las webs ya entregadas no lo tienen hasta que se actualizan a 0.5.0 (`docs/actualizar-cliente.md`). **El Pro sigue siendo un diseño PROVISIONAL** (core 0.6.0): sus nombres de campos (`ga4`, `metaPixel`, `googleAds`) son la propuesta. Antes de seguir, comprueba en `packages/core/src/site-config.ts` que existen los campos que vas a usar. **Si no existen, para y díselo a Ysst:** ese cambio de plan todavía no se puede hacer.
 
 ---
 
@@ -48,7 +48,7 @@ Sirve también en demos: así se sabe si el prospecto abrió su demo. Sin cookie
 ## 2. Comprobaciones previas (hazlas tú, sin preguntar)
 
 1. **Proyecto:** localiza la carpeta `mis_datos/web-<cliente>` y su repo `Andrei-Leads/web-<cliente>`. Si no existe o no está claro cuál es, pregunta.
-2. **Versión de core:** `grep andrei-leads package.json`. Para el Básico hace falta core ≥ 0.5.0 y para el Pro, ≥ 0.6.0 (previsto): comprueba en `packages/core/CHANGELOG.md` en qué versión llegó cada cosa. Si la web está por debajo, primero hay que actualizar core, siguiendo `docs/publicar-core.md` (sección «Migraciones con cambios incompatibles») y, cuando exista, `docs/actualizar-cliente.md`. Díselo a Ysst antes de seguir.
+2. **Versión de core:** `grep andrei-leads package.json`. Para el Básico hace falta core ≥ 0.5.0 y para el Pro, ≥ 0.6.0 (previsto): comprueba en `packages/core/CHANGELOG.md` en qué versión llegó cada cosa. Si la web está por debajo, primero hay que actualizar core, siguiendo `docs/publicar-core.md` (sección «Migraciones con cambios incompatibles») y `docs/actualizar-cliente.md`. Díselo a Ysst antes de seguir.
 3. **`<Analitica>` en el layout:** `grep -n Analitica app/layout.tsx` en la web. Las webs creadas desde un template anterior a 0.5.0 no lo llevan: sin él no se mide nada, aunque `/privacidad` diga que sí. Si no sale nada, añade `Analitica` al import de `@andrei-leads/core` y `<Analitica config={config} />` una vez en el `<body>`, justo después de `<DatosEstructurados config={config} />`. Es el único cambio de código, y solo en esas webs.
 4. **Estado actual:** lee `site.config.ts` (bloques `seo` y `analitica`) y di a Ysst en qué plan está la web ahora y qué va a cambiar.
 5. **Cliente real:** `seo.url` debe ser el dominio definitivo y `seo.indexar: true`. Si no lo es, pregunta. Nunca actives el Pro en una demo con datos ficticios.
@@ -140,5 +140,4 @@ Puerto 3005: el 3000 lo usa otro servicio de Ysst. Para el servidor con Ctrl+C, 
 ## 8. Pendiente (actualiza este documento al implementarlo)
 
 - Pro (core 0.6.0): GA4, píxel de Meta y Google Ads con banner de consentimiento; confirmar los nombres finales de los campos.
-- Publicar core 0.5.0 (revisar y fusionar la rama `feat/analitica-vercel`).
 - Mejora del Básico: agrupar en el panel las rutas dinámicas (`/servicios/[slug]`, `/trabajos/[slug]`). Hoy cada URL sale por separado porque core no pasa la `route` a Vercel (lo hace `@vercel/analytics/next`, que core no usa para no depender de `next`).
