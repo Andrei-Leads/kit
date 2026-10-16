@@ -414,6 +414,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | `pnpm start`: «Could not find a production build» | Se lanzó mientras `pnpm build` compilaba | Esperar a que termine el build |
 | Build: `site.config inválido: Inválido URL → at seo.url` | `seo.url` sin `https://`, o se copió la URL de un despliegue concreto (`web-x-ab12cd-…vercel.app`) | `url: "https://web-<cliente>.vercel.app"` (dominio fijo del proyecto) o el dominio del cliente |
 | Se pega JSON en la terminal | Confusión entre comando y archivo | Decir siempre "esto va en el archivo X" |
+| ~880 KB de JS en páginas sin asistente de WhatsApp (zod en el navegador) | Un componente `"use client"` importa un valor de `@andrei-leads/core` (`BotonLlamada`, o `telefonoVisible` de `lib/formato.ts`, que importa core): el barrel de core no declara `sideEffects` y arrastra zod y el contrato (~290 KB) | El componente de servidor renderiza el botón y lo pasa como prop `ReactNode`; en cliente, solo `import type`. Regla y comprobación en `docs/nuevo-template.md` (6.2 y 7) |
 
 ---
 

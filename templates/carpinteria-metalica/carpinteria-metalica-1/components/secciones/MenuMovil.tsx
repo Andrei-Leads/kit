@@ -1,9 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { BotonLlamada } from "@andrei-leads/core";
-import { ArrowRight, Menu, Phone } from "lucide-react";
+import { ArrowRight, Menu } from "lucide-react";
 
 import { EnlacePresupuesto } from "@/components/EnlacePresupuesto";
 import { buttonVariants } from "@/components/ui/button";
@@ -14,17 +13,22 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { telefonoVisible, type Ancla } from "@/lib/formato";
+import type { Ancla } from "@/lib/formato";
 import { cn } from "@/lib/utils";
 
 type Props = {
   items: Ancla[];
-  telefono: string;
   whatsapp?: string;
+  /**
+   * El `BotonLlamada` del panel, ya renderizado por el servidor (Cabecera). Este archivo es
+   * "use client": si importara un valor de `@andrei-leads/core` (o de `lib/formato`, que lo
+   * importa), arrastraría zod y el contrato entero al JavaScript de todas las páginas.
+   */
+  llamada: ReactNode;
 };
 
 /** Menú móvil (hasta 1023 px): botón + panel derecho con enlaces y, abajo, presupuesto y llamada. */
-export function MenuMovil({ items, telefono, whatsapp }: Props) {
+export function MenuMovil({ items, whatsapp, llamada }: Props) {
   const [abierto, setAbierto] = useState(false);
   // Si el panel se cierra al navegar, el foco no debe volver al botón del menú.
   const navegando = useRef(false);
@@ -79,13 +83,7 @@ export function MenuMovil({ items, telefono, whatsapp }: Props) {
               Pedir presupuesto
             </EnlacePresupuesto>
           )}
-          <BotonLlamada
-            telefono={telefono}
-            className={cn(buttonVariants({ variant: "llamadaSecundaria" }), "min-h-13 font-semibold")}
-          >
-            <Phone aria-hidden="true" strokeWidth={1.5} className="size-[18px] flex-none" />
-            <span>{telefonoVisible(telefono)}</span>
-          </BotonLlamada>
+          {llamada}
         </div>
       </SheetContent>
     </Sheet>

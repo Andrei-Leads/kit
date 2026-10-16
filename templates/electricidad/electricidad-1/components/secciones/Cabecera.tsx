@@ -79,7 +79,17 @@ export function Cabecera({ nombre, logo, contacto, items }: Props) {
           <span className={largo ? "sr-only sm:not-sr-only" : undefined}>Llamar</span>
         </BotonLlamada>
 
-        <MenuMovil items={items} telefono={contacto.telefono} />
+        <MenuMovil
+          items={items}
+          llamada={
+            <BotonLlamada
+              telefono={contacto.telefono}
+              className="flex min-h-11 items-center font-mono text-[22px] font-bold text-tinta no-underline"
+            >
+              {telefonoVisible(contacto.telefono)}
+            </BotonLlamada>
+          }
+        />
       </div>
     </header>
   );

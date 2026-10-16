@@ -187,6 +187,14 @@ REQUISITOS (todos obligatorios)
   className (variantes con nombre). Sin aria-label: el nombre accesible es el texto visible.
   Nunca tel: ni wa.me a mano. Mensaje precargado por página (brief §7) desde lib/mensajes.ts.
 - Asistente de WhatsApp: componente cliente que solo compone el mensaje. Sin <form>; no guarda ni envía nada.
+- JavaScript mínimo: "use client" solo en la pieza interactiva más pequeña (menú, asistente, acordeón,
+  filtro). Un archivo "use client" NUNCA importa valores de `@andrei-leads/core` ni de un archivo que
+  los importe (`lib/formato.ts` importa `formatearHorario`): el barrel de core arrastra zod y el
+  contrato (~290 KB sin comprimir) al JavaScript de todas las páginas. Los `BotonLlamada` /
+  `BotonWhatsApp` con datos fijos (menú móvil, barra, índice) se renderizan en el componente de
+  servidor que lo envuelve y se pasan como prop `ReactNode` (`llamada={<BotonLlamada …/>}`). Los tipos
+  sí se importan, con `import type`. Única excepción: el `BotonWhatsApp` del asistente (mensaje que
+  cambia con los toques), hasta que core declare `sideEffects`.
 - Ubicación: dirección en texto + enlace «Cómo llegar» a Google Maps. Nunca mapa incrustado.
 - Horario siempre con formatearHorario(config.contacto.horario); fila de urgencias solo si urgencias24h.
 - SEO de core: `metadata = crearMetadatos(config)` y <DatosEstructurados config={config} /> en el
@@ -259,7 +267,18 @@ grep -rn -E '"tel:|wa\.me' app components lib
 grep -rn -A4 -E '<Boton(Llamada|WhatsApp)' app components | grep aria-label
 grep -rn 'new Date' app components lib                 # solo lib/anio.ts
 grep -n -E '"(framer-motion|gsap|aos)"' package.json
+# pista (no detecta los archivos sin "use client" que importa un componente cliente): componentes
+# cliente que importan valores de core; solo debe salir el asistente de WhatsApp
+grep -rl '"use client"' app components lib | xargs grep -n -E '^import \{[^}]*\} from "(@andrei-leads/core|@/lib/formato|@/site.config)"'
 ```
+
+**JavaScript por página** (esta medición es la comprobación que manda; el grep anterior solo es una pista). Con el servidor del bloque siguiente en marcha, suma los `<script src>` del HTML (sin el `noModule`, que un navegador moderno no descarga). Mide una página **sin** asistente de WhatsApp (`/empresa` o una legal):
+
+```bash
+curl -s $URL/empresa | grep -o '<script src="[^"]*" async' | cut -d'"' -f2 | while read s; do curl -s $URL$s; done | wc -c
+```
+
+Referencia (core 0.5.0, Next 16.4; bytes de `wc -c`): unos **560–580 KB** sin comprimir (≈ 175 KB gzip). De ellos, unos 480 KB son el suelo de React + Next. Si sale **~880 KB**, un componente cliente arrastra core. Las páginas **con** asistente de WhatsApp dan ~880 KB hasta que core declare `sideEffects` (esperado, no es un fallo del template). Para ver qué pesa y quién lo importa: `pnpm next analyze` (desde la carpeta del template; busca `zod`).
 
 **HTML generado.** Desde la carpeta del template, servidor en segundo plano con su PID:
 
@@ -365,6 +384,7 @@ La demo se crea después con `docs/nuevo-cliente.md`.
 | `ERR_PNPM_…` o el paquete no aparece en `pnpm ls -r --depth -1` | Falta `pnpm install` desde la raíz | Paso 6.1 |
 | El build falla en una `[slug]` con `cacheComponents` | `generateStaticParams` devuelve `[]`, o hay `new Date()` en el render | `[{ slug: "_" }]` + `notFound()`; año desde `lib/anio.ts` |
 | `EADDRINUSE` al arrancar | Puerto ocupado (el 3000 es de otro servicio) | `-p 3005` (u otro libre) |
+| ~880 KB de JS en una página sin asistente y `zod` en `pnpm next analyze` | Un `"use client"` importa `BotonLlamada` (o `telefonoVisible` de `lib/formato.ts`, que importa core) | El servidor renderiza el botón y lo pasa como prop `ReactNode` (requisito «JavaScript mínimo», 6.2) |
 
 ## Qué automatizará un agente
 
@@ -376,3 +396,4 @@ Objetivo de Ysst: decir «integra este diseño siguiendo `docs/nuevo-template.md
 - 13–14/10/2026: fotos de IA de `-3` (el «antes» de la persiana tuvo que regenerarse con la avería visible).
 - 14/10/2026: `-1` «Medida» (entrega en dos tandas; Specs vacía en la primera) y sus 15 fotos de IA.
 - 15/10/2026: `-2` «Exposición» (variante tienda: «Cómo llegar»). Matriz de variedad añadida al brief. Este documento.
+- 16/10/2026: requisito «JavaScript mínimo» y su comprobación. Los botones de core en componentes cliente metían zod en todas las páginas (~880 → ~575 KB al pasarlos como prop desde el servidor).
