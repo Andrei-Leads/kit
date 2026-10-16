@@ -2,7 +2,7 @@
 
 **Cómo usarlo:** abre una conversación nueva en ChatGPT por foto (la única excepción es la pareja antes/después, ficha 2.6 y 2.7, que va en la misma conversación). En cada conversación pega primero el **bloque de estilo común** (§2) y, a continuación, el prompt de la **ficha** (§3). Guarda cada resultado como `2.<m>.png` (por ejemplo `2.1.png`) en `mis_datos/fotos-ejemplo/electricidad-2/`. Después pásaselas a Claude, que las convierte (ver §4).
 
-Concepto del template: «el electricista de confianza del barrio» (tipo urgencias). Paleta: piedra clara `#fafaf9`, tinta casi negra `#1c1917` y frambuesa `#be185d` como acento. Las fotos tienen que sentirse cercanas y vividas, como las haría alguien del barrio con un buen móvil: casas, escaleras, bares y calles corrientes, luz natural de horas distintas, materiales cálidos (piedra, madera, terrazo, cal) y un único toque frambuesa o rosa oscuro que ya estaba allí.
+Concepto del template: «el electricista de confianza del barrio» (tipo urgencias). Paleta: piedra clara `#fafaf9`, tinta casi negra `#1c1917` y frambuesa `#be185d` como acento. Las fotos tienen que sentirse cercanas y vividas, y van en dos registros: las de servicios y trabajos, como las haría el propio electricista con su iPhone; la portada (hero), la furgoneta y el equipo, como las de un fotógrafo que la empresa ha contratado para su web. En las dos: casas, escaleras, bares y calles corrientes, luz natural de horas distintas, materiales cálidos (piedra, madera, terrazo, cal) y un único toque frambuesa o rosa oscuro que ya estaba allí.
 
 Todas las fotos llevarán la etiqueta «Foto de ejemplo» en la web, **arriba a la derecha**: por eso cada prompt deja libre la esquina superior derecha.
 
@@ -14,7 +14,7 @@ Cada ficha cambia a propósito de plano, hora, luz y espacio, para que la serie 
 
 | Ficha | Archivo final | Qué se ve | Proporción |
 |---|---|---|---|
-| 2.1 | `hero.jpg` | Plano general desde el fondo del pasillo de un piso de los 60: electricista de espaldas, ropa gris, ante el cuadro junto a la puerta de entrada; sol de tarde en el suelo | 4:5 (recorte a 16:9 en escritorio) |
+| 2.1 | `hero.jpg` | Foto profesional desde la puerta del salón: electricista de espaldas, ropa gris, subido a una escalera de dos peldaños ante el cuadro abierto encima de la puerta de entrada; luz de día de una habitación y plafón | 4:3 (cabeza y cuadro entre el 20 y el 32 % del alto, en la mitad derecha) |
 | 2.2 | `servicio-averia.jpg` | A ras de suelo: mano con comprobador en un enchufe tras un sofá apartado, rayas de luz de persiana de mañana | 3:2 |
 | 2.3 | `servicio-cuadro.jpg` | Cuadro con diferenciales nuevos dentro de un armario empotrado, en 3/4, abrigo frambuesa desenfocado delante y los diferenciales viejos en una caja | 3:2 |
 | 2.4 | `servicio-iluminacion.jpg` | A la altura del techo: manos colgando una lámpara de mimbre bajo un florón de escayola, luz de mediodía tamizada por visillos | 3:2 |
@@ -23,8 +23,8 @@ Cada ficha cambia a propósito de plano, hora, luz y espacio, para que la serie 
 | 2.7 | `trabajo-enchufe-antes.jpg` | La misma cocina antes: enchufe y regleta derretidos y negros, abanico de hollín en la pared (antes) | 4:3 |
 | 2.8 | `trabajo-cuadro.jpg` | A través de la puerta de la trastienda de un bar cerrado por la mañana: cuadro renovado con canaleta, sillas apiladas | 4:3 |
 | 2.9 | `trabajo-iluminacion.jpg` | Contrapicado desde la escalera de una finca antigua: rellano con apliques LED encendidos y barandilla de hierro, tarde nublada | 4:3 |
-| 2.10 | `empresa-furgoneta.jpg` | Desde la acera de enfrente entre ramas de naranjo: furgoneta blanca con la puerta lateral abierta, acera recién baldeada a primera hora | 4:3 |
-| 2.11 | `empresa-equipo.jpg` | Picado desde un balcón: dos técnicos de espaldas cruzando hacia un portal, uno con la caja y otro con una escalera, sol de mediodía | 4:3 |
+| 2.10 | `empresa-furgoneta.jpg` | Foto profesional desde la acera de enfrente, junto a un naranjo: furgoneta blanca con la puerta lateral abierta, acera recién baldeada, media mañana de sol suave | 4:3 |
+| 2.11 | `empresa-equipo.jpg` | Foto profesional en picado desde un balcón: dos técnicos de espaldas cruzando hacia un portal, uno con la caja y otro con una escalera, mañana de cielo velado | 4:3 |
 
 ---
 
@@ -33,11 +33,17 @@ Cada ficha cambia a propósito de plano, hora, luz y espacio, para que la serie 
 Pégalo al principio de **cada** conversación, antes del prompt de la ficha (copia todo el bloque).
 
 ```
-Voy a pedirte una fotografía para la web de ejemplo de un electricista de barrio en España. Estas reglas valen para toda la serie. La escena concreta (plano, hora, luz, espacio y objetos) te la doy en el siguiente mensaje y manda sobre cualquier costumbre: síguela al pie de la letra aunque no sea la típica foto de electricista con una herramienta delante de una pared.
+Voy a pedirte una fotografía para la web de ejemplo de un electricista de barrio en España. Estas reglas valen para toda la serie. La escena concreta (quién hace la foto, plano, hora, luz, espacio y objetos) te la doy en el siguiente mensaje y manda sobre cualquier costumbre: síguela al pie de la letra aunque no sea la típica foto de electricista con una herramienta delante de una pared.
 
-REALISMO
-- Que parezca una foto hecha de verdad con un buen móvil por alguien que estaba allí, no de banco de imágenes ni un render 3D: encuadre un poco imperfecto (algo cortado en un borde, una ligera inclinación), grano suave, profundidad de campo de móvil y el color de la luz real de la escena (la tarde es dorada, un día nublado es gris, un fluorescente es frío). Sin filtros ni HDR.
-- Espacios vividos: marcas de uso, polvo, un roce en la pintura, juntas sucias, cables de la vida real, cosas del cliente. Solo está nuevo lo que acaba de instalar el electricista.
+DOS TIPOS DE FOTO (la escena dice cuál es y quién la hace; si no lo dice, es FOTO DE MÓVIL DEL TRABAJO)
+- FOTO DE MÓVIL DEL TRABAJO (servicios, trabajos, antes y después): la hace con su iPhone (16, 17 o 18) el propio electricista para mandársela al cliente o subirla a su web de «trabajos hechos»; si sale el electricista, la hace el dueño de la empresa o el cliente. Modo foto estándar, sin modos creativos: procesado normal de móvil, casi todo enfocado, exposición automática y la luz que haya en el sitio (ventana, plafón, fluorescente, flash). Encuadre natural de móvil, un poco imperfecto (algo cortado en un borde, una ligera inclinación).
+- FOTO PROFESIONAL (portada de la web, furgoneta, equipo): la hace el fotógrafo que la empresa ha contratado para su web. Cámara buena, luz natural cuidada (la del sitio, bien aprovechada), exposición correcta, verticales rectas, composición limpia y ordenada, motivo nítido y fondo reconocible. Pero lugares y personas reales del barrio, con sus marcas de uso: nada de banco de imágenes, posados ni decorados.
+
+NADA DE ASPECTO DE CINE (en los dos tipos)
+- Prohibido: luz dramática que deja todo en penumbra menos el motivo, hora azul, contraluces, rayos de sol o haces de luz, velas, niebla, humo o polvo flotando, bokeh exagerado, viñeteado, gradación de color (verdeazulados y naranjas), filtros, HDR exagerado, aspecto de render 3D.
+
+ESPACIOS VIVIDOS
+- Marcas de uso: polvo, un roce en la pintura, juntas sucias, cables de la vida real, cosas del cliente. Solo está nuevo lo que acaba de instalar el electricista.
 - Pocos objetos y con sentido: solo los que pida la escena. Nada de bodegón.
 
 PALETA
@@ -63,20 +69,29 @@ Cuando lo hayas entendido, espera mi siguiente mensaje con la escena concreta.
 
 ### Ficha 2.1 · `hero.jpg`
 
-**Dónde sale:** foto a sangre en el hero de la home, con una capa oscura en la parte baja y el texto encima. Tiene que transmitir «alguien de confianza que ya está en tu casa». Se pide **vertical 4:5**; en escritorio se recorta a 16:9 (la banda central, menos de la mitad del alto), así que técnico y cuadro van en la **franja central** y el tercio inferior queda tranquilo.
+**Dónde sale:** foto a sangre que ocupa todo el hero de la home, con una capa oscura que crece hacia abajo y el texto encima (en escritorio, abajo a la izquierda; en móvil, del 31 % del alto hacia abajo y a todo el ancho). Tiene que transmitir «el electricista de siempre ya está en tu casa». Se pide **horizontal 4:3**. La web la recorta de dos maneras: en escritorio enseña todo el ancho y solo la franja central del alto (del 17 % al 83 % a 1280 px; del 20 % al 80 % a 1440 px), y en móvil, todo el alto y solo la columna central del ancho (del 23 % al 77 %). **Zona segura:** la cabeza del técnico y el cuadro van juntos entre el 20 % y el 32 % del alto y entre el 50 % y el 70 % del ancho (así salen enteros en escritorio y, en móvil, por encima del texto); su cuerpo puede bajar por la mitad derecha hasta un 70 %, porque en móvil queda bajo el texto oscurecido. El 20 % de arriba y la mitad izquierda, tranquilos; la etiqueta «Foto de ejemplo» cae en esa franja de arriba en móvil y en el borde derecho (hacia el 20 % del alto) en escritorio.
 
 ```
-Fotografía VERTICAL 4:5.
+Fotografía HORIZONTAL 4:3, una única imagen.
 
-PLANO: plano general tomado desde el fondo del pasillo de un piso, a la altura de los ojos, con unos cuatro metros de pasillo por delante. Al final del pasillo, junto a la puerta de entrada, un electricista de pie, DE ESPALDAS a la cámara, con pantalón y chaqueta de trabajo gris lisos, mirando un cuadro eléctrico empotrado en la pared con la tapa abierta. Una mano levantada sobre la tapa; la cabeza girada hacia el cuadro, sin perfil visible.
+TIPO: FOTO PROFESIONAL. QUIÉN Y POR QUÉ: la hace el fotógrafo que la empresa ha contratado para la portada de su web, durante una visita real en casa de un cliente de toda la vida del barrio, que le ha dejado hacer la foto. Quiere enseñar «el electricista de siempre ya está en tu casa», sin posados.
 
-ESPACIO: piso de los años 60: puerta de entrada de madera maciza oscura con mirilla, suelo de terrazo gris claro con algún desgaste, paredes de pintura crema con roces a la altura de los hombros, un perchero de pared con una chaqueta del dueño y un paragüero con un paraguas frambuesa cerrado.
+CÓMO ES LA FOTO: cámara buena con un objetivo normal, desde la puerta del salón, a la altura del pecho y con las verticales rectas (marcos de puertas y esquinas sin inclinar). Exposición correcta en todo el recibidor, colores naturales, todo nítido de delante atrás. Ni luces de flash a la vista ni efectos: solo la luz de la casa bien aprovechada.
 
-LUZ: última hora de la tarde. El sol entra por el salón, detrás de la cámara, y dibuja en el suelo y en la pared un rectángulo de luz dorada alargado que llega hasta los pies del técnico. El resto del pasillo, en sombra cálida.
+PLANO: plano general a lo largo del recibidor de un piso de los años 60, desde unos cuatro metros. Al fondo, la puerta de entrada; el cuadro eléctrico está empotrado en la pared ENCIMA de la puerta, cerca del techo, como en muchos pisos de esa época. Por eso el electricista está subido a una escalera pequeña de dos peldaños, de pie, DE ESPALDAS a la cámara, con la cabeza a la altura del cuadro: lo mira con una mano levantada sujetando la tapa abierta. Ropa de trabajo gris lisa. No se le ve la cara ni el perfil.
 
-LO QUE CUENTA LA HISTORIA: su mochila de herramientas gris oscura, cerrada, apoyada en el banco del recibidor; el cuadro con una fila de automáticos blancos y la luz del rellano entrando por la rendija de la puerta entreabierta.
+ESPACIO: puerta de entrada de madera oscura con mirilla, suelo de terrazo gris claro con algo de desgaste, paredes de pintura crema con roces a la altura de los hombros. En la pared de la izquierda, un perchero de pared con un abrigo del dueño. A los pies de la escalera, su mochila de herramientas gris oscura, cerrada, y junto a la puerta un paragüero con un paraguas frambuesa: el único toque de color.
 
-COMPOSICIÓN: técnico y cuadro centrados en horizontal y dentro de la franja central de la altura (entre el 30 % y el 70 %), para que un recorte apaisado 16:9 los conserve. El tercio inferior es suelo de terrazo con la mancha de sol, sin objetos. La esquina superior derecha, techo liso en sombra.
+LUZ: media mañana. Entra luz de día suave por la puerta abierta de una habitación del lado derecho y el plafón del recibidor está encendido (bombilla cálida corriente, fuera de cuadro por encima). Luz pareja y limpia, sin sombras duras ni manchas de sol.
+
+COMPOSICIÓN (la web recorta esta foto de formas distintas en móvil y en ordenador; respeta estas posiciones):
+- La cabeza del electricista y el cuadro abierto, juntos y bien visibles, en la parte alta de la imagen: entre el 20 % y el 32 % de la altura (contando desde arriba) y entre el 50 % y el 70 % del ancho (contando desde la izquierda). La puerta de entrada, justo debajo del cuadro.
+- Su espalda, sus piernas y la escalera bajan desde ahí por la mitad derecha; los pies y la mochila, hacia el 65-70 % de la altura.
+- El 20 % de arriba de la imagen: techo y parte alta de la pared, lisos.
+- Toda la mitad izquierda: pared del pasillo, perchero y suelo, tranquilos y sin nada importante.
+- El 15 % del borde derecho y la esquina superior derecha: pared lisa, sin detalle.
+- Por debajo del 70 % de la altura, solo suelo de terrazo.
+El técnico se ve más bien pequeño, con aire alrededor: es un plano general, ordenado y limpio, no un retrato.
 ```
 
 ---
@@ -245,47 +260,52 @@ COMPOSICIÓN: rellano y apliques en el centro, la barandilla en diagonal a la iz
 
 ### Ficha 2.10 · `empresa-furgoneta.jpg`
 
-**Dónde sale:** `/empresa`. La furgoneta que aparca en tu calle.
+**Dónde sale:** `/empresa`. La furgoneta que aparca en tu calle. Foto profesional.
 
 ```
 Fotografía horizontal 4:3.
 
-PLANO: plano general desde la acera de enfrente, a la altura de los ojos, con ramas y hojas de un naranjo muy cerca de la cámara, desenfocadas, enmarcando el borde izquierdo y la parte de arriba a la izquierda.
+TIPO: FOTO PROFESIONAL. QUIÉN Y POR QUÉ: la hace el fotógrafo que la empresa ha contratado para su web, en la calle del barrio donde trabajan, para presentar la furgoneta con la que llegan a las casas.
+
+PLANO: plano general desde la acera de enfrente, a la altura de los ojos, con cámara buena y las verticales de los edificios rectas. A la izquierda, el tronco y parte de la copa de un naranjo del alcorque, nítido, que enmarca la escena sin taparla.
 
 ESPACIO: calle tranquila de un barrio mediterráneo: naranjos con naranjas en los alcorques, edificios de cuatro plantas con fachadas de color piedra y crema, balcones con persianas de lamas enrolladas y alguna maceta. Sin carteles ni comercios con rótulo.
 
-LO QUE CUENTA LA HISTORIA: una furgoneta blanca de tamaño medio, de lado, aparcada junto a la acera, con la carrocería lisa, sin rótulos, sin logos y con la matrícula fuera de la vista. Su puerta lateral corredera está abierta: dentro, estanterías metálicas con cajas lisas y un rollo de cable. Sobre la baca, una escalera de aluminio atada. La acera, recién baldeada, todavía mojada y brillante.
+LO QUE CUENTA LA HISTORIA: una furgoneta blanca de tamaño medio, de lado, aparcada junto a la acera, con la carrocería lisa, limpia, sin rótulos, sin logos y con la matrícula fuera de la vista. Su puerta lateral corredera está abierta: dentro, estanterías metálicas ordenadas con cajas lisas y un rollo de cable. Sobre la baca, una escalera de aluminio atada. La acera, recién baldeada, todavía húmeda.
 
-LUZ: primera hora de la mañana, sol bajo y cálido que entra de lado por la calle, sombras largas de los troncos sobre la acera mojada. Detalle frambuesa: una buganvilla en un balcón del fondo, desenfocada.
+LUZ: media mañana de sol suave, que entra de lado por la calle; sombras cortas y suaves, la carrocería blanca con detalle, sin quemarse. Detalle frambuesa: una buganvilla en un balcón del fondo.
 
-COMPOSICIÓN: furgoneta en el centro. Nadie a la vista. La esquina superior derecha, cielo claro o fachada desenfocada, sin nada.
+COMPOSICIÓN: furgoneta en el centro, ordenada y limpia. Nadie a la vista. La esquina superior derecha, cielo claro o fachada lisa, sin nada.
 ```
 
 ---
 
 ### Ficha 2.11 · `empresa-equipo.jpg`
 
-**Dónde sale:** `/empresa`, bloque de equipo. Picado desde arriba: es la manera más segura de que no salga ninguna cara.
+**Dónde sale:** `/empresa`, bloque de equipo. Foto profesional en picado desde arriba: es la manera más segura de que no salga ninguna cara.
 
 ```
 Fotografía horizontal 4:3.
 
-PLANO: PICADO desde el balcón de un primer piso, en la acera de enfrente: la cámara mira hacia abajo y hacia delante, con un trozo desenfocado de barandilla de hierro en el borde inferior izquierdo.
+TIPO: FOTO PROFESIONAL. QUIÉN Y POR QUÉ: la hace el fotógrafo que la empresa ha contratado para su web, desde el balcón de un vecino que les ha dejado subir, para enseñar al equipo de camino a un aviso, sin posar.
+
+PLANO: PICADO desde el balcón de un primer piso, en la acera de enfrente: la cámara mira hacia abajo y hacia delante. El borde de la barandilla de hierro asoma en la esquina inferior izquierda, pequeño.
 
 ACCIÓN: dos técnicos electricistas cruzan un paso de cebra DE ESPALDAS a la cámara, alejándose hacia el portal de un edificio. Desde arriba se ven sus hombros, sus espaldas y la coronilla; ninguna cara. Ropa de trabajo gris lisa. Uno lleva en la mano una caja de herramientas de plástico gris y negro; el otro, una escalera de aluminio plegada al hombro y una mochila con una correa frambuesa.
 
 ESPACIO: el portal, de madera oscura con marco de piedra clara, entreabierto, sin placas ni números; en el bajo de al lado, un toldo verde liso; acera de baldosa gris con dibujo de cuadros.
 
-LUZ: mediodía, sol fuerte y alto: sombras cortas y nítidas de los dos técnicos sobre las rayas blancas del paso de cebra y franjas de sombra de los toldos sobre la acera.
+LUZ: mañana de cielo velado: luz natural pareja y luminosa, sombras suaves de los dos técnicos sobre las rayas blancas del paso de cebra. Colores naturales y exposición correcta.
 
-COMPOSICIÓN: los dos técnicos en el centro, el portal arriba a la izquierda. La esquina superior derecha, asfalto o acera lisos, sin nada.
+COMPOSICIÓN: los dos técnicos en el centro, el portal arriba a la izquierda, encuadre limpio y ordenado. La esquina superior derecha, asfalto o acera lisos, sin nada.
 ```
 
 ---
 
 ## 4. Nota final: formato y conversión
 
-- ChatGPT entrega **PNG de 1448×1086 o de 1254×1254**. Las de 1254×1254 se **recortan** al convertir: a **4:3** las apaisadas de trabajos y empresa, a **3:2** las de servicio y a **4:5** el hero. El recorte conserva el centro, así que no pongas nada importante en los bordes. El hero, además, se recorta a 16:9 en escritorio: por eso técnico y cuadro van en la franja central.
+- ChatGPT entrega **PNG de 1448×1086 o de 1254×1254**. Las de 1254×1254 se **recortan** al convertir: a **4:3** las apaisadas de trabajos y empresa y a **3:2** las de servicio. El recorte conserva el centro, así que no pongas nada importante en los bordes.
+- **El hero (2.1) se queda en 4:3.** Si llega 1448×1086, no se recorta. Si llega en otra proporción horizontal (por ejemplo, 1536×1024, 3:2), Claude lo **normaliza a 4:3 recortando solo por los lados** (conserva todo el alto). Si llega cuadrado o vertical, se vuelve a pedir: recortándolo, la zona segura no queda en su sitio. La web hace sola sus recortes con CSS: en escritorio, la franja central del alto (de ~2:1 a 1280 px a ~2,25:1 a 1440 px); en móvil, la columna central del ancho (~0,72:1).
 - Claude las revisa en una hoja de contactos y las convierte a **JPG** (calidad ~82, lado largo ≤ 1600 px, **sin ampliar**) con el **nombre exacto** de la tabla de §1, en `public/ejemplo/` del template.
 - Después actualiza `CREDITOS.md` (origen «Generada con IA (ChatGPT, OpenAI)») y comprueba que cada `alt` de `site.config.ts` describe lo que se ve.
 - La etiqueta «Foto de ejemplo» se muestra arriba a la derecha mientras el `src` esté en `/ejemplo/`.

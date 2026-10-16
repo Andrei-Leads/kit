@@ -12,7 +12,7 @@ Las genera Ysst con ChatGPT a partir de esta lista. Todas son **ficticias** y ll
 
 | Archivo | Qué debe verse | Proporción | Origen | Licencia |
 |---|---|---|---|---|
-| `hero.jpg` | Electricista de espaldas con linterna frontal sujetando abierto el cuadro eléctrico de un recibidor a media luz; puerta de la escalera entreabierta a la derecha | 16:9 (y que admita recorte 4:5 centrado) | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |
+| `hero.jpg` | Electricista de espaldas con linterna frontal sujetando abierto el cuadro eléctrico de un recibidor a media luz; puerta de la escalera entreabierta a la derecha | 4:3 (la web recorta a 2:1–16:9 en móvil y 4:5 en escritorio; motivo en el centro) | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |
 | `servicio-averia.jpg` | Mano con linterna iluminando el cuadro eléctrico sobre el marco de la puerta de una cocina; nevera con imanes al lado | 4:3 | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |
 | `servicio-diferencial.jpg` | Detalle de un diferencial nuevo junto al antiguo, amarillento, en un cuadro abierto | 1:1 | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |
 | `servicio-enchufe.jpg` | Manos colocando un enchufe nuevo con un destornillador junto a una mesilla; el viejo, sobre un trapo en el suelo | 1:1 | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |
