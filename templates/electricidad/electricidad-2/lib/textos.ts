@@ -22,6 +22,9 @@ export const textos = {
   leerMas: "Leer más",
   leerMenos: "Leer menos",
 
+  // Franja de confianza (nombre accesible de la lista)
+  confianza: "Confianza",
+
   // Sin reseñas
   porQueFiarte: "Por qué fiarte",
   enElBarrio: "en el barrio",

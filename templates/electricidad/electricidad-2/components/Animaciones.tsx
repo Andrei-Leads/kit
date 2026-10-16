@@ -25,24 +25,32 @@ export function Animaciones() {
       return;
     }
 
-    // Un observador por umbral distinto.
-    const porUmbral = new Map<number, HTMLElement[]>();
+    // Las estrellas del resumen empiezan desplazadas -100 % dentro de un contenedor que recorta: desde
+    // fuera no se ven y un IntersectionObserver nunca las daría por visibles. Se observa su contenedor
+    // y la clase se pone en la capa animada.
+    const objetivos = new Map<Element, HTMLElement>();
     for (const el of elementos) {
+      objetivos.set(el.dataset.anim === "estrellas" ? (el.parentElement ?? el) : el, el);
+    }
+
+    // Un observador por umbral distinto.
+    const porUmbral = new Map<number, Element[]>();
+    for (const [objetivo, el] of objetivos) {
       const umbral = Number(el.dataset.umbral) || 0.2;
-      porUmbral.set(umbral, [...(porUmbral.get(umbral) ?? []), el]);
+      porUmbral.set(umbral, [...(porUmbral.get(umbral) ?? []), objetivo]);
     }
     const observadores = Array.from(porUmbral, ([umbral, lista]) => {
       const observador = new IntersectionObserver(
         (entradas) => {
           for (const entrada of entradas) {
             if (!entrada.isIntersecting) continue;
-            entrada.target.classList.add("en-vista");
+            objetivos.get(entrada.target)?.classList.add("en-vista");
             observador.unobserve(entrada.target);
           }
         },
         { threshold: umbral }
       );
-      lista.forEach((el) => observador.observe(el));
+      lista.forEach((objetivo) => observador.observe(objetivo));
       return observador;
     });
 

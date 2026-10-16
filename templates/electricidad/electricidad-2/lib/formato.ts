@@ -40,6 +40,11 @@ export function totalResenas(total: number): string {
   return `${total} ${total === 1 ? "reseña" : "reseñas"} en Google`;
 }
 
+/** 112 → "reseñas en Google"; 1 → "reseña en Google" (sin la cifra: la pinta el contador). */
+export function palabraResenas(total: number): string {
+  return `${total === 1 ? "reseña" : "reseñas"} en Google`;
+}
+
 /** 4.9 → "4,9". */
 export function mediaVisible(media: number): string {
   return media.toFixed(1).replace(".", ",");
