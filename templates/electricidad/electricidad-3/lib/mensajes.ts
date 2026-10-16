@@ -4,6 +4,9 @@ import { minusculaInicial } from "./formato";
 
 export const MENSAJE_GENERICO = "Hola, os escribo desde vuestra web.";
 
+/** Página 404 (app/not-found.tsx). */
+export const MENSAJE_NO_ENCONTRADA = "Hola, buscaba una página en vuestra web y no la encontré.";
+
 /**
  * Mensaje general: barra móvil (todas las páginas, brief §7), cabecera, pie, hero, CTA final y
  * /contacto. El del cliente o el genérico.

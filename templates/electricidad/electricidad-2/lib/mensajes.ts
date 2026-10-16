@@ -4,6 +4,9 @@ import { minusculaInicial } from "./formato";
 
 export const MENSAJE_GENERICO = "Hola, os escribo desde vuestra web.";
 
+/** Página 404 (app/not-found.tsx). */
+export const MENSAJE_NO_ENCONTRADA = "Hola, buscaba una página en vuestra web y no la encontré.";
+
 /**
  * Mensaje general: inicio, hero («Envíanos una foto de la avería»), CTA final, cabecera, hoja del menú,
  * pie, contacto y BARRA MÓVIL (decisión 5 de Ysst: la barra lleva el mensaje general en todas las
