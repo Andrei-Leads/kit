@@ -73,7 +73,7 @@ export default defineSiteConfig({
     {
       titulo: "Averías y urgencias",
       descripcion: "Te quedas sin luz, salta el diferencial o huele a quemado: vamos a buscar el fallo.",
-      imagenes: [{ src: "/ejemplo/servicio-averia.jpg", alt: "Técnico revisando un enchufe con una linterna frontal" }],
+      imagenes: [{ src: "/ejemplo/servicio-averia.jpg", alt: "Mano con un detector de tensión revisando un enchufe ennegrecido a la luz de una linterna frontal" }],
     },
     {
       titulo: "Cuadros eléctricos",

@@ -202,7 +202,7 @@ Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren co
 Requiere core ≥ 0.5.0 en la web. Sin este paso la web no mide nada. Sirve también en demos (así se sabe si el prospecto abrió su demo).
 
 1. Desde `web-<cliente>/` (comando de terminal): `grep -n Analitica app/layout.tsx`. Debe salir el import y un `<Analitica config={config} />`. Si no sale nada (web creada desde un template anterior a 0.5.0), añade `Analitica` al import de `@andrei-leads/core` y `<Analitica config={config} />` una vez en el `<body>`, justo después de `<DatosEstructurados config={config} />`.
-2. En el **navegador**: dashboard de Vercel → el proyecto → **Analytics** → *Enable*.
+2. En el **navegador**: dashboard de Vercel → el proyecto → **Analytics** → *Enable*. **Antes** del push del paso 4: la ruta del script se mete en el JavaScript durante el build, así que un despliegue anterior al *Enable* pide un `script.js` que da **404** (pasó con 5 demos el 16/10/2026).
 3. En `web-<cliente>/site.config.ts` (**contenido de archivo**, no comando; es el de la web, no el del template), añade:
 
    ```ts
@@ -212,10 +212,11 @@ Requiere core ≥ 0.5.0 en la web. Sin este paso la web no mide nada. Sirve tamb
    ```
 
 4. Desde `web-<cliente>/` (comandos de terminal): `pnpm build`, `git add -A` y `git commit -m "Analítica: Vercel Web Analytics"`. El `git push` lo ejecuta Ysst; Vercel redespliega solo.
+5. Si *Enable* se pulsó **después** del último despliegue (o ya estaba `vercel: true` y no hay nada que subir): Deployments → el último → **⋯** → **Redeploy**, **desmarcando «Use existing Build Cache»**.
 
 Comprobación con la web desplegada (en el **navegador**, DevTools):
 
-- Red: se carga un `script.js` del propio dominio (`/_vercel/insights/script.js` u otra ruta propia del proyecto) y, al navegar entre páginas, hay envíos al mismo dominio. El script lo inyecta el navegador: no sale en «ver código fuente».
+- Red: se carga un `script.js` del propio dominio (`/_vercel/insights/script.js` u otra ruta propia del proyecto) y, al navegar entre páginas, hay envíos al mismo dominio. El script lo inyecta el navegador: no sale en «ver código fuente». Debe dar **200**; un **404** = desplegado antes del *Enable* (paso 5).
 - Aplicación → Cookies: vacío. Almacenamiento local: vacío.
 - `/privacidad` muestra «Estadísticas de visitas»; `/cookies` no cambia.
 
@@ -243,6 +244,7 @@ Qué se ve en el panel y los límites por plan de Vercel: `docs/cambio-de-plan.m
 | En local se ven fotos antiguas o de otra web | Next cachea `/_next/image` ~4 h y otra web se abrió antes en el mismo puerto | DevTools → Red → **Disable cache** y recargar, o otro puerto (`docs/actualizar-cliente.md` → Problemas frecuentes) |
 | `pnpm start` dice «Could not find a production build» | Se lanzó mientras `pnpm build` aún compilaba | Esperar a que termine el build |
 | Al compartir la demo por WhatsApp la vista previa sale sin foto | `seo.url` sigue en `https://ejemplo.com` | Poner la URL de Vercel (paso 5 y paso 12) |
+| Analytics activado, pero el `script.js` de la ruta propia (`/<16 caracteres>/script.js`) da `404` y el panel no recibe visitas | Se desplegó antes del *Enable*: la ruta va dentro del JavaScript del build | Redeploy sin «Use existing Build Cache», o un `git push` (paso 13.5) |
 | Se pega el contenido de `NPM_RC` en la terminal | Confusión entre comando y contenido | Va en el campo *Value* de Vercel, no en la terminal |
 
 ## Antes de un cliente real

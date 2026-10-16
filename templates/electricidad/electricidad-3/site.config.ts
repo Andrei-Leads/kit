@@ -40,7 +40,7 @@ export default defineSiteConfig({
         "Por teléfono te decimos el desplazamiento y la hora. Si es de noche o festivo, también el recargo.",
       ],
       incluye: ["Desplazamiento y diagnóstico", "Reparación en el momento si es posible", "Factura con IVA"],
-      imagenes: [{ src: "/ejemplo/servicio-averia.jpg", alt: "Mano con linterna revisando un cuadro con un diferencial bajado" }],
+      imagenes: [{ src: "/ejemplo/servicio-averia.jpg", alt: "Mano con linterna iluminando un cuadro eléctrico sobre el marco de una puerta" }],
       preguntas: [
         { pregunta: "¿Cuánto tardáis en llegar?", respuesta: "Normalmente menos de una hora en Sevilla capital. Te decimos la hora al salir." },
       ],
@@ -50,13 +50,13 @@ export default defineSiteConfig({
     {
       titulo: "Diferencial que salta",
       descripcion: "Buscamos qué lo hace saltar: un aparato, un enchufe con humedad o un cable dañado.",
-      imagenes: [{ src: "/ejemplo/servicio-diferencial.jpg", alt: "Diferencial nuevo en un cuadro eléctrico" }],
+      imagenes: [{ src: "/ejemplo/servicio-diferencial.jpg", alt: "Diferencial nuevo junto al antiguo, amarillento, en un cuadro eléctrico" }],
       precioDesde: "desde 60 €", // PRECIO FICTICIO: borrar en la web del cliente
     },
     {
       titulo: "Enchufes e interruptores",
       descripcion: "Cambiamos enchufes quemados o flojos e instalamos enchufes nuevos.",
-      imagenes: [{ src: "/ejemplo/servicio-enchufe.jpg", alt: "Manos cambiando un enchufe con un destornillador" }],
+      imagenes: [{ src: "/ejemplo/servicio-enchufe.jpg", alt: "Manos colocando un enchufe nuevo con un destornillador junto a una mesilla" }],
       precioDesde: "desde 30 €", // PRECIO FICTICIO: borrar en la web del cliente
     },
     {
@@ -84,7 +84,7 @@ export default defineSiteConfig({
       duracion: "4 horas",
       precio: "unos 420 €", // PRECIO FICTICIO: borrar en la web del cliente
       imagenes: [{ src: "/ejemplo/trabajo-cuadro.jpg", alt: "Cuadro eléctrico nuevo con los automáticos alineados" }],
-      antes: { src: "/ejemplo/trabajo-cuadro-antes.jpg", alt: "El cuadro antes, chamuscado y con cables derretidos" },
+      antes: { src: "/ejemplo/trabajo-cuadro-antes.jpg", alt: "El cuadro antes, chamuscado, con cables derretidos y hollín en la pared" },
       testimonio: { autor: "Juan Antonio R.", texto: "Me dijeron el precio por teléfono y fue exactamente ese. A la una de la madrugada." },
     },
     {
@@ -102,7 +102,7 @@ export default defineSiteConfig({
       ubicacion: "Sevilla (Triana)",
       anio: 2025,
       servicio: "diferencial-que-salta",
-      imagenes: [{ src: "/ejemplo/trabajo-diferencial.jpg", alt: "Caja de registro con un empalme nuevo y bien aislado" }],
+      imagenes: [{ src: "/ejemplo/trabajo-diferencial.jpg", alt: "Caja de registro abierta con empalmes nuevos junto a una mancha de humedad" }],
     },
   ],
   resenas: [
@@ -134,7 +134,7 @@ export default defineSiteConfig({
     historia: [
       "Empezamos en 2015 con una furgoneta y un teléfono que siempre se coge. Hoy somos cuatro electricistas en Sevilla y el Aljarafe.",
     ],
-    imagenes: [{ src: "/ejemplo/empresa-furgoneta.jpg", alt: "Furgoneta blanca aparcada de noche bajo una farola" }],
+    imagenes: [{ src: "/ejemplo/empresa-furgoneta.jpg", alt: "Furgoneta blanca aparcada de noche con las puertas traseras abiertas" }],
   },
   preguntas: [
     { pregunta: "¿Cuánto cuesta una urgencia de noche?", respuesta: "El desplazamiento y la hora, más el recargo de noche. Te lo decimos por teléfono antes de salir." },

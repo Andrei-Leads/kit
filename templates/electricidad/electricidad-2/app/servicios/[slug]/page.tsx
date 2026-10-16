@@ -16,6 +16,11 @@ import { etiquetaWhatsappServicio, mensajeServicio } from "@/lib/mensajes";
 import { resenasRecientes } from "@/lib/resenas";
 import { otrosServicios, tituloFicha, trabajosDelServicio } from "@/lib/servicios";
 
+// Un slug que no está en generateStaticParams se genera en la primera visita. Sin esto,
+// partialPrefetching sirve antes el App Shell con 200 y el 404 solo llega a la segunda.
+// Con "navigation", Next espera al resultado completo: 404 desde la primera petición.
+export const ensureStatic = "navigation";
+
 // Con cacheComponents, generateStaticParams no puede devolver [].
 export function generateStaticParams() {
   const params = config.servicios.map((s) => ({ slug: s.slug }));

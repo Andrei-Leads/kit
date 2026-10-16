@@ -87,7 +87,7 @@ export default defineSiteConfig({
       anio: 2025,
       servicio: "cuadros-y-diferenciales",
       duracion: "1 día",
-      imagenes: [{ src: "/ejemplo/trabajo-cuadro.jpg", alt: "Cuadro eléctrico renovado con el cableado ordenado" }],
+      imagenes: [{ src: "/ejemplo/trabajo-cuadro.jpg", alt: "Cuadro eléctrico renovado en la trastienda de un local, con los cables en canaleta" }],
     },
     {
       titulo: "Luces LED en la escalera de una comunidad",
@@ -95,7 +95,7 @@ export default defineSiteConfig({
       ubicacion: "Valencia (Campanar)",
       anio: 2025,
       servicio: "enchufes-e-iluminacion",
-      imagenes: [{ src: "/ejemplo/trabajo-iluminacion.jpg", alt: "Pasillo de comunidad con apliques LED encendidos" }],
+      imagenes: [{ src: "/ejemplo/trabajo-iluminacion.jpg", alt: "Rellano de la escalera de una comunidad con apliques LED encendidos" }],
     },
   ],
   resenas: [
