@@ -40,15 +40,23 @@ function AccordionTrigger({
         {...props}
       >
         <span>{children}</span>
+        {/* Sin JS todas las respuestas están abiertas: la flecha apunta hacia arriba en todas. */}
         <ChevronDown
           aria-hidden="true"
-          className="size-5 flex-none transition-transform group-data-[state=open]:rotate-180"
+          className="size-5 flex-none rotate-180 transition-transform [.js_&]:group-data-[state=closed]:rotate-0"
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
 }
 
+/**
+ * Respuesta. Siempre montada (`forceMount`): cerrada sigue en el HTML para que los buscadores la lean.
+ * Con `forceMount`, Radix no pone `hidden` ni deja de pintar los hijos: la oculta el CSS con
+ * `data-[state=closed]:hidden` (display: none, así tampoco la lee un lector de pantalla), y solo
+ * bajo `html.js` (script del layout): sin JavaScript no se podría abrir, así que todas las respuestas se ven.
+ * Sin animación de altura (decisión de Ysst): abre y cierra de golpe.
+ */
 function AccordionContent({
   className,
   children,
@@ -57,7 +65,8 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="overflow-hidden motion-safe:data-[state=closed]:animate-acordeon-cerrar motion-safe:data-[state=open]:animate-acordeon-abrir"
+      forceMount
+      className="[.js_&]:data-[state=closed]:hidden"
       {...props}
     >
       <div className={cn("max-w-[64ch] pb-4 text-tinta-suave", className)}>{children}</div>

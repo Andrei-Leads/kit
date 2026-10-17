@@ -325,7 +325,7 @@ Variantes: datos **mínimos** con y sin WhatsApp (sin WhatsApp no queda ningún 
 - Desactivar JavaScript y recargar: se ve todo el contenido.
 - Si están disponibles: Lighthouse (móvil) y Playwright a 375×667. Opcionales.
 
-El acordeón de shadcn anima `height` (heredado en `-1/-2/-3`); si se mantiene o se cambia, lo decide Ysst.
+El acordeón de preguntas va con `forceMount` y sin animar `height` en los 6 templates (respuestas en el HTML sin JavaScript; las cerradas se ocultan solo con la clase `js` en `<html>`). Comprobación: buscar cada respuesta en el HTML **después de quitar los `<script>`** (si no, aparecen en los datos de Next y el `curl` engaña).
 
 ### 8. Revisión de Ysst y commit
 

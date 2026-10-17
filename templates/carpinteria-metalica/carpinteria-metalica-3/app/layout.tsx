@@ -18,14 +18,25 @@ const barlow = Barlow({
 
 export const metadata: Metadata = crearMetadatos(config);
 
+/**
+ * Pone la clase `js` en <html> antes del primer pintado. El acordeón de preguntas
+ * (components/ui/accordion.tsx) solo oculta las respuestas cerradas bajo `.js`: sin JavaScript se ven todas.
+ */
+const SCRIPT_JS = "document.documentElement.classList.add('js')";
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   const items = menu(config);
   return (
     <html
       lang="es"
+      // El script de abajo añade `js` antes de hidratar: la clase difiere a propósito del HTML del servidor.
+      suppressHydrationWarning
       style={{ "--color-primario": config.marca.colorPrimario } as React.CSSProperties}
       className={`${barlow.variable} antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_JS }} />
+      </head>
       <body className="min-h-full font-sans">
         <DatosEstructurados config={config} />
         <Analitica config={config} />
