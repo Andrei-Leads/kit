@@ -1,6 +1,6 @@
 # Prompts de ChatGPT · fotos de ejemplo de `electricidad-1` «Boletín»
 
-**Cómo usarlo:** abre una conversación nueva en ChatGPT por foto (la única excepción es la pareja antes/después, ficha 1.6 y 1.7, que va en la misma conversación). En cada conversación pega primero el **bloque de estilo común** (§2) y, a continuación, el prompt de la **ficha** (§3). Guarda cada resultado como `<n>.<m>.png` (por ejemplo `1.1.png`) en `mis_datos/fotos-ejemplo/electricidad-1/`. Después pásaselas a Claude, que las revisa y las convierte (ver §5).
+**Cómo usarlo:** abre una conversación nueva en ChatGPT por foto (la única excepción es la pareja antes/después, ficha 1.6 y 1.7, que va en la misma conversación). En cada conversación pega primero el **bloque de estilo común** (§2) y, a continuación, el prompt de la **ficha** (§3). Guarda cada resultado como `<n>.<m>.png` (por ejemplo `1.1.png`) en `andrei-leads-tech/material/fotos-ejemplo/electricidad-1/`. Después pásaselas a Claude, que las revisa y las convierte (ver §5).
 
 Concepto del template: «documento técnico» (papel blanco, tinta casi negra `#18181b`, ámbar oscuro `#854d0e` como color primario y amarillo de aviso `#facc15` solo como detalle). Las fotos tienen que sentirse sobrias y limpias, como fotos de un informe: blancos, grises, algún toque ámbar o amarillo que aparezca de forma natural.
 

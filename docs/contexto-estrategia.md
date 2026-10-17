@@ -5,7 +5,7 @@
 > 1. Lee `AGENTS.md` entero (sobre todo §2, cómo trabajar con Ysst, §10 decisiones y §12 estado) y después este documento.
 > 2. No escribas código ni abras PRs salvo que Ysst lo pida. El resultado esperado es un **plan priorizado**. Si Ysst lo aprueba, se guarda en `docs/plan-estrategico.md` en una rama y PR (ver `docs/sesion-web.md` §1).
 > 3. Estilo: español, breve (Pareto), una recomendación clara antes que un menú, y explicación simple («para un niño de 12 años») de cada concepto nuevo. Ysst decide la arquitectura: tú propones y esperas.
-> 4. Lo que está fuera de este repo (otros repos y la carpeta local `mis_datos/`) **no lo puedes ver**. Aquí tienes un resumen; si necesitas más detalle, pídeselo a Ysst.
+> 4. Lo que está fuera de este repo (otros repos y la carpeta local `andrei-leads-tech/`) **no lo puedes ver**. Aquí tienes un resumen; si necesitas más detalle, pídeselo a Ysst.
 
 ---
 

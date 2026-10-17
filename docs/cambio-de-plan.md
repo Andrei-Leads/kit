@@ -47,7 +47,7 @@ Sirve también en demos: así se sabe si el prospecto abrió su demo. Sin cookie
 
 ## 2. Comprobaciones previas (hazlas tú, sin preguntar)
 
-1. **Proyecto:** localiza la carpeta `mis_datos/web-<cliente>` y su repo `Andrei-Leads/web-<cliente>`. Si no existe o no está claro cuál es, pregunta.
+1. **Proyecto:** localiza la carpeta `andrei-leads-tech/webs/clientes/web-<cliente>` (o `webs/demos/…`) y su repo `Andrei-Leads/web-<cliente>`. Si no existe o no está claro cuál es, pregunta.
 2. **Versión de core:** `grep andrei-leads package.json`. Para el Básico hace falta core ≥ 0.5.0 y para el Pro, ≥ 0.6.0 (previsto): comprueba en `packages/core/CHANGELOG.md` en qué versión llegó cada cosa. Si la web está por debajo, primero hay que actualizar core, siguiendo `docs/publicar-core.md` (sección «Migraciones con cambios incompatibles») y `docs/actualizar-cliente.md`. Díselo a Ysst antes de seguir.
 3. **`<Analitica>` en el layout:** `grep -n Analitica app/layout.tsx` en la web. Las webs creadas desde un template anterior a 0.5.0 no lo llevan: sin él no se mide nada, aunque `/privacidad` diga que sí. Si no sale nada, añade `Analitica` al import de `@andrei-leads/core` y `<Analitica config={config} />` una vez en el `<body>`, justo después de `<DatosEstructurados config={config} />`. Es el único cambio de código, y solo en esas webs.
 4. **Estado actual:** lee `site.config.ts` (bloques `seo` y `analitica`) y di a Ysst en qué plan está la web ahora y qué va a cambiar.
@@ -98,7 +98,7 @@ Antes de escribir, enseña a Ysst el diff del bloque. Es un cambio de un archivo
 
 ## 5. Comprobación en local
 
-Desde `mis_datos/web-<cliente>/` (comando de terminal):
+Desde `andrei-leads-tech/webs/clientes/web-<cliente>/` (o `webs/demos/…`) (comando de terminal):
 
 ```bash
 pnpm install

@@ -49,10 +49,10 @@ Lee desde la versión de la web hasta la nueva (p. ej. `0.3.0` → `0.4.0`: toda
 
 ### 1. Comprobar si la web tiene código propio
 
-Desde **`mis_datos/`** (la carpeta que contiene a `kit` y a `web-<cliente>`):
+Desde **`andrei-leads-tech/`** (la carpeta que contiene a `kit` y a `webs/`; en una demo, cambia `webs/clientes/` por `webs/demos/`):
 
 ```bash
-diff -rq --exclude=node_modules --exclude=.next --exclude=.git --exclude=tsconfig.tsbuildinfo --exclude=next-env.d.ts kit/templates/<nicho>/<template> web-<cliente>
+diff -rq --exclude=node_modules --exclude=.next --exclude=.git --exclude=tsconfig.tsbuildinfo --exclude=next-env.d.ts kit/templates/<nicho>/<template> webs/clientes/web-<cliente>
 ```
 
 - **Solo difieren** `site.config.ts`, `public/`, `package.json`, `.npmrc`, `pnpm-lock.yaml` y los archivos que el template cambió en `kit` → la web no tiene código propio: **se puede copiar el código** del template (paso 2).
@@ -60,11 +60,11 @@ diff -rq --exclude=node_modules --exclude=.next --exclude=.git --exclude=tsconfi
 
 ### 2. Copiar el código del template
 
-Desde **`mis_datos/`**:
+Desde **`andrei-leads-tech/`**:
 
 ```bash
-cp -r kit/templates/<nicho>/<template>/app kit/templates/<nicho>/<template>/components kit/templates/<nicho>/<template>/lib web-<cliente>/
-cd web-<cliente>
+cp -r kit/templates/<nicho>/<template>/app kit/templates/<nicho>/<template>/components kit/templates/<nicho>/<template>/lib webs/clientes/web-<cliente>/
+cd webs/clientes/web-<cliente>
 git status --short
 ```
 

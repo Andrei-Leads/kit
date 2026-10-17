@@ -28,10 +28,10 @@ En los ejemplos: `<template>` = carpeta del template (p. ej. `carpinteria-metali
 
 ### 1. Copiar el template
 
-Desde **`mis_datos/`** (la carpeta que contiene a `kit`; la web debe quedar **fuera** de `kit`):
+Desde **`andrei-leads-tech/`** (la carpeta que contiene a `kit`; la web debe quedar **fuera** de `kit`, en `webs/clientes/` o, si es una demo, en `webs/demos/`):
 
 ```bash
-cp -r kit/templates/<nicho>/<template> web-<cliente>
+cp -r kit/templates/<nicho>/<template> webs/clientes/web-<cliente>
 cd web-<cliente>
 rm -rf node_modules .next
 ```
@@ -96,7 +96,7 @@ Si un dato tiene mal formato, `pnpm build` falla con un mensaje en español que 
 ### 6. Fotos
 
 - **Demo o prueba:** se usan las de ejemplo del template (`public/ejemplo/`, llevan la etiqueta «Foto de ejemplo»). Si `public/ejemplo/CREDITOS.md` marca alguna como `PENDIENTE`:
-  1. Genérala con ChatGPT con su prompt de `mis_datos/fotos-ejemplo/<nicho>-<n>/prompts-chatgpt.md`, y guarda el original en `mis_datos/fotos-ejemplo/<nicho>-<n>/`.
+  1. Genérala con ChatGPT con su prompt de `andrei-leads-tech/material/fotos-ejemplo/<nicho>-<n>/prompts-chatgpt.md`, y guarda el original en `andrei-leads-tech/material/fotos-ejemplo/<nicho>-<n>/`.
   2. Conviértela a JPG: calidad ~82, lado largo ≤ 1600 px (sin ampliar), recortada a la proporción de `CREDITOS.md`, con el **nombre exacto** del hueco.
   3. Actualiza `CREDITOS.md` (origen «Generada con IA (ChatGPT, OpenAI)»).
   4. Revisa que el `alt` en `site.config.ts` describe **lo que se ve en la foto real**, no lo que pedía la ficha.
