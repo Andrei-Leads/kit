@@ -4,7 +4,7 @@ Generar con ChatGPT. Reglas para todas: fotos reales y sobrias, **sin caras** (d
 
 | Archivo | Qué debe verse | Proporción | Origen | Licencia |
 |---|---|---|---|---|
-| `hero.jpg` | Electricista de espaldas, ropa de trabajo gris, revisando un cuadro eléctrico abierto en el recibidor de un piso. Luz cálida. Dejar aire en la mitad inferior (ahí va el texto) | 4:3 (cabeza y cuadro entre el 20 y el 32 % del alto, mitad derecha; la web recorta a ~2:1 en escritorio y ~0,72:1 en móvil) | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |
+| `hero.jpg` | Electricista de espaldas, en camiseta gris, subido a una escalera pequeña revisando el cuadro eléctrico sobre la puerta de entrada de un pasillo con suelo de terrazo; perchero con chaqueta y mochila en el suelo. Luz de día suave | 16:10 (1448×905: el PNG 4:3 recortado por abajo, solo suelo, para que cabeza y cuadro salgan enteros a 1280 y 1440 px; la web recorta a ~2:1–2,25:1 en escritorio y ~0,72:1 en móvil) | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |
 | `servicio-averia.jpg` | Mano con un comprobador de tensión en un enchufe | 3:2 | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |
 | `servicio-cuadro.jpg` | Cuadro eléctrico doméstico con diferenciales nuevos | 3:2 | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |
 | `servicio-iluminacion.jpg` | Manos instalando una lámpara de techo en un salón, sin cara | 3:2 | Generada con IA (ChatGPT, OpenAI) | Uso permitido por los términos de OpenAI |

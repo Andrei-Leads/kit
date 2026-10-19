@@ -29,7 +29,7 @@ export default defineSiteConfig({
   zonas: ["Valencia", "Benimaclet", "Campanar", "Russafa", "Algirós", "Alboraia", "Burjassot", "Mislata", "Paterna", "Tavernes Blanques"],
   valoracion: { media: 4.9, total: 112 },
   imagenesHero: [
-    { src: "/ejemplo/hero.jpg", alt: "Electricista de espaldas revisando un cuadro eléctrico en el recibidor de un piso" },
+    { src: "/ejemplo/hero.jpg", alt: "Electricista de espaldas, en camiseta gris, subido a una escalera pequeña revisando el cuadro eléctrico sobre la puerta de entrada de un pasillo con suelo de terrazo; perchero con chaqueta y mochila en el suelo" },
   ],
   servicios: [
     {

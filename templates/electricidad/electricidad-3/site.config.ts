@@ -29,7 +29,7 @@ export default defineSiteConfig({
   zonas: ["Sevilla", "Nervión", "Triana", "Los Remedios", "Macarena", "Dos Hermanas", "Camas", "Tomares", "Mairena del Aljarafe", "San Juan de Aznalfarache"],
   valoracion: { media: 4.6, total: 58 },
   imagenesHero: [
-    { src: "/ejemplo/hero.jpg", alt: "Electricista de espaldas con linterna abriendo un cuadro eléctrico" },
+    { src: "/ejemplo/hero.jpg", alt: "Electricista de espaldas, con chaqueta de trabajo gris oscura, comprobando con un destornillador comprobador el cuadro eléctrico abierto de un recibidor, junto a un perchero con una chaqueta granate" },
   ],
   servicios: [
     {

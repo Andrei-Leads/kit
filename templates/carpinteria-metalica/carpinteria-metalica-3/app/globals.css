@@ -23,26 +23,6 @@
   --shadow-placa-lg: 6px 6px 0 rgb(23 24 26 / 0.12); /* tarjeta del hero (escritorio) */
   --shadow-boton: 3px 3px 0 rgb(23 24 26 / 0.18); /* llamada-hero */
   --shadow-barra: 0 -6px 18px rgb(23 24 26 / 0.14); /* barra móvil */
-
-  --animate-acordeon-abrir: acordeon-abrir 0.18s ease-out;
-  --animate-acordeon-cerrar: acordeon-cerrar 0.18s ease-out;
-
-  @keyframes acordeon-abrir {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes acordeon-cerrar {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
 }
 
 /* Borde de chapa: 2px en tinta. En clases: border-2 border-tinta. */
