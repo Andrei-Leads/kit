@@ -12,11 +12,11 @@ Un **template**: el diseño reutilizable de una **web completa de varias página
 
 **Objetivo:** que el visitante **llame o escriba por WhatsApp**. Cuál de los dos manda depende del tipo de negocio (§6).
 
-**Quién la visita:** particulares, comunidades de vecinos y administradores de fincas de la provincia de Valencia. Buscan en el **móvil**, casi siempre desde Google.
+**Quién la visita:** particulares, comunidades de vecinos y administradores de fincas de su ciudad: hoy, Valencia, Barcelona, Sevilla y Madrid, con sus áreas metropolitanas. Buscan en el **móvil**, casi siempre desde Google.
 
 **Quién la compra:** el dueño del negocio. Es de oficio, no de tecnología. Valora que se vea profesional, cercana y clara, no "de agencia".
 
-**Cada nicho tendrá 3 templates** distintos, con datos y fotos de ejemplo de su sector. El tipo de negocio del nicho (§6) marca las reglas de conversión; tu diseño marca la identidad.
+**Cada nicho tendrá 3 templates por tanda** (carpintería metálica, dos tandas: 6), distintos, con datos y fotos de ejemplo de su sector. El tipo de negocio del nicho (§6) marca las reglas de conversión; tu diseño marca la identidad.
 
 ---
 
@@ -26,7 +26,7 @@ Un **template**: el diseño reutilizable de una **web completa de varias página
 - **Multipágina** (§3). Cabecera, pie y barra móvil están en `app/layout.tsx` y aparecen en **todas** las páginas, legales incluidas.
 - **Móvil primero:** diseña a 375 px de ancho (375×667 como pantalla de referencia) y después adapta a escritorio a 1280 px.
 - **Español de España** en todos los textos.
-- **Ningún dato del negocio escrito a mano.** Nombres, teléfonos, servicios, fotos, precios y textos salen del contrato de datos (§4). Los textos genéricos de la interfaz sí pueden ser fijos ("Nuestros servicios", "Llamar ahora", los pasos por defecto de "Cómo trabajamos").
+- **Ningún dato del negocio escrito a mano.** Nombres, teléfonos, servicios, fotos, precios y textos salen del contrato de datos (§4). Tampoco la ciudad: el mismo template sirve en Valencia, Barcelona, Sevilla o Madrid. Los textos genéricos de la interfaz sí pueden ser fijos ("Nuestros servicios", "Llamar ahora", los pasos por defecto de "Cómo trabajamos").
 - **Sin formularios** ni nada que envíe o guarde datos. El contacto es por llamada, WhatsApp o email.
 
 ---
@@ -45,6 +45,7 @@ Un **template**: el diseño reutilizable de una **web completa de varias página
 | `/empresa` | Quiénes somos | Siempre. Se compone con lo que haya (historia, equipo, fotos, años, acreditaciones, garantías); cada bloque vacío se oculta |
 | `/contacto` | Contacto | Siempre |
 | `/comunidades` | Para comunidades de vecinos | Solo si existe el bloque `comunidades` (tipo obra técnica) |
+| Cualquier URL que no exista | Página no encontrada (404) | Siempre, con tu diseño: un `h1` («No encontramos esta página»), una frase, enlaces a `/`, `/servicios` y `/contacto`, `BotonLlamada` y `BotonWhatsApp` (si hay WhatsApp) |
 | `/aviso-legal`, `/privacidad`, `/cookies` | Legales | Siempre. **El texto lo pone core**; tú solo decides cómo se ven dentro de tu layout (cabecera, pie, ancho, tipografía) |
 
 La **etiqueta** del menú la decides tú ("Trabajos", "Proyectos", "Obras"), pero la ruta no cambia. No hay páginas por municipio: las zonas son solo una lista.
@@ -57,6 +58,7 @@ templates/<nicho>/<nicho>-<n>/          p. ej. templates/fontaneria/fontaneria-1
 │  ├─ layout.tsx          # tipografías (next/font), color primario, Cabecera, Pie y BarraMovil
 │  ├─ page.tsx            # inicio: compone las secciones en el orden del tipo (§6)
 │  ├─ globals.css         # Tailwind + estilos de core + @theme con TUS tokens
+│  ├─ not-found.tsx       # página 404, con tu diseño
 │  ├─ servicios/
 │  │  ├─ page.tsx
 │  │  └─ [slug]/page.tsx
@@ -82,32 +84,46 @@ Cada sección es un componente que recibe **solo su parte** de los datos. Por ej
 
 ---
 
-## 4. Contrato de datos (`site.config`, core 0.4.0)
+## 4. Contrato de datos (`site.config`, core 0.5.1)
 
-`?` = opcional. "Lista" = puede llegar vacía salvo que se diga otra cosa. **Imagen** = `{ src, alt }`, siempre con `alt`. **Párrafos** = lista de textos, uno por párrafo.
+Es el contrato de core 0.5.0; la 0.5.1 no cambió ningún campo. **Core lo valida al compilar: si un dato no cumple su formato, la web no compila.** Los datos de ejemplo que entregues (§9) tienen que cumplir todo lo de esta tabla. Un campo que no esté aquí no existe: no lo inventes; si tu diseño lo necesita, proponlo aparte.
+
+`?` = opcional. "Lista" = puede llegar vacía salvo que se diga otra cosa. **Imagen** = `{ src, alt }`: `src` es una ruta (`"/ejemplo/hero.jpg"`) y `alt` es obligatorio y no puede estar vacío. **Párrafos** = lista de textos, uno por párrafo (sin Markdown ni HTML). Los máximos son en caracteres.
 
 | Bloque | Campos |
 |---|---|
-| `negocio` | `nombre`, `nombreLegal`, `nif`, `sector`, `descripcionCorta` (≤ 160), `logo?` (imagen), `anioFundacion?`, `registroMercantil?`, `tipoSchema` (tipo para Google; tiene valor por defecto) |
-| `contacto` | `telefono`, `whatsapp?`, `email`, `direccion` {`calle`, `cp`, `ciudad`, `provincia`}, `horario` (franjas `{dias, abre, cierra}`; el template lo pinta con `formatearHorario`, que da filas `{dias, horas}`: «Lunes a viernes» · «8:00–19:00»), `coordenadas?`, `mensajeWhatsapp?` (mensaje por defecto), `urgencias24h` (sí/no), `tiempoLlegada?` ("45 min"), `fichaGoogle?` (enlace a la ficha de Google) |
+| `negocio` | `nombre`, `nombreLegal`, `nif` (9 caracteres, mayúsculas y números: `"B12345678"`), `sector`, `descripcionCorta` (≤ 160), `logo?` (imagen), `anioFundacion?` (número, 1900–2100), `registroMercantil?` (solo sociedades), `tipoSchema` (tipo para Google: lista con uno o más de `Plumber`, `Electrician`, `Locksmith`, `RoofingContractor`, `HVACBusiness`, `HousePainter`, `GeneralContractor`, `HomeAndConstructionBusiness`, `Store`; por defecto `["HomeAndConstructionBusiness"]`) |
+| `contacto` | `telefono` y `whatsapp?` (`+34` y 9 dígitos, sin espacios: `"+34600000000"`), `email` (obligatorio), `direccion` {`calle`, `cp` (5 dígitos, como texto: `"46001"`), `ciudad`, `provincia`}, `horario` (mínimo 1 franja; formato debajo), `coordenadas?` {`lat`, `lng`} (números), `mensajeWhatsapp?` (mensaje por defecto, ≤ 200), `urgencias24h` (`true`/`false`; por defecto `false`), `tiempoLlegada?` (≤ 20: `"45 min"`), `fichaGoogle?` (enlace a la ficha de Google, con `https://`) |
 | `zonas` | lista de municipios |
-| `servicios` | lista, **mínimo 1**, de {`titulo`, `descripcion` (corta), `slug?` (si falta, se genera del título), `contenido` (párrafos), `incluye` (lista), `imagenes` (lista de imagen), `preguntas` (lista), `mensajeWhatsapp?`, `precioDesde?` ("desde 60 €")} |
-| `trabajos` | lista de {`titulo`, `slug?` (si falta, se genera del título), `descripcion` (≤ 300), `ubicacion?`, `anio?`, `servicio?` (slug de un servicio), `superficie?` ("5 m²"), `duracion?` ("10 días"), `precio?` (rango aproximado), `contenido` (párrafos), `imagenes` (**mínimo 1**; la primera es el "después"), `antes?` (imagen), `testimonio?` {`autor`, `texto`}} |
-| `valoracion` | `{ media, total }` de Google, opcional ("4,8 · 127 reseñas") |
-| `resenas` | lista de {`autor`, `texto`, `puntuacion` 1–5, `fecha?` ("2026-09"), `fuente?` (google, web, otra)} |
+| `servicios` | lista, **mínimo 1**, de {`titulo`, `descripcion` (corta), `slug?` (si falta, se genera del título), `contenido` (párrafos), `incluye` (lista), `imagenes` (lista de imagen), `preguntas` (lista de {`pregunta`, `respuesta`}), `mensajeWhatsapp?` (≤ 200), `precioDesde?` (≤ 40: `"desde 60 €"`)} |
+| `trabajos` | lista de {`titulo`, `slug?` (si falta, se genera del título), `descripcion` (≤ 300), `ubicacion?`, `anio?` (número), `servicio?` (el `slug` de un servicio que exista), `superficie?` (≤ 20: `"5 m²"`), `duracion?` (≤ 20: `"10 días"`), `precio?` (≤ 40, rango aproximado), `contenido` (párrafos), `imagenes` (**mínimo 1**; la primera es el "después"), `antes?` (imagen), `testimonio?` {`autor`, `texto`}} |
+| `valoracion` | opcional: {`media` (1–5), `total` (entero)} de Google ("4,8 · 127 reseñas") |
+| `resenas` | lista de {`autor`, `texto`, `puntuacion` (1–5), `fecha?` (`"2026-09"` o `"2026-09-14"`), `fuente?` (`"google"`, `"web"` u `"otra"`)} |
 | `proceso` | lista (máx. 6) de {`titulo`, `texto`} |
 | `acreditaciones` | lista de {`nombre`, `numero?`} ("Empresa instaladora RII", "n.º 46/12345") |
-| `garantias` | lista (máx. 6) de textos cortos ("Presupuesto cerrado antes de empezar") |
+| `garantias` | lista (máx. 6) de textos de ≤ 80 ("Presupuesto cerrado antes de empezar") |
 | `marcas` | lista de nombres ("Cortizo", "Daikin") |
-| `tarifas` | opcional: {`items` [{`concepto`, `precio`}] (mínimo 1), `nota?`} |
-| `empresa` | {`historia` (párrafos), `imagenes` (lista), `equipo` [{`nombre`, `cargo?`, `foto?`}]} |
-| `comunidades` | opcional: {`texto` (párrafos), `puntos` (lista), `ieev` (sí/no)} |
+| `tarifas` | opcional: {`items` [{`concepto`, `precio` (≤ 40)}] (mínimo 1), `nota?`} |
+| `empresa` | {`historia` (párrafos), `imagenes` (lista), `equipo` [{`nombre`, `cargo?`, `foto?` (imagen)}]}; todo vacío por defecto |
+| `comunidades` | opcional: {`texto` (párrafos, mínimo 1), `puntos` (lista), `ieev` (`true`/`false`; por defecto `false`)} |
 | `imagenesHero` | lista de imagen (fotos reales para el hero) |
 | `galeria` | lista de imagen con `titulo?` |
 | `preguntas` | lista de {`pregunta`, `respuesta`} |
-| `marca` | `colorPrimario?`: color de marca del cliente (§8, regla 3) |
-| `seo` | `titulo` (≤ 60), `descripcion` (≤ 160), `url` |
-| `redes` | `instagram?`, `facebook?` |
+| `marca` | `colorPrimario?`: color de marca del cliente en hex `#rrggbb` (`"#1e40af"`; §8, regla 3) |
+| `seo` | `titulo` (≤ 60), `descripcion` (≤ 160), `url` (con `https://`: `"https://web-ejemplo.vercel.app"`), `indexar?` (`true`/`false`; por defecto `false`, que pone `noindex` en toda la web) |
+| `analitica` | `vercel?` (`true`/`false`; por defecto `false`). Lo activa cada web, no el template; no diseñes nada para ello (§8, regla 5) |
+| `redes` | `instagram?`, `facebook?` (enlaces con `https://`) |
+
+**Horario:** lista de franjas `{ dias, abre, cierra }`.
+- `dias`: lista de `"lunes"`, `"martes"`, `"miercoles"`, `"jueves"`, `"viernes"`, `"sabado"`, `"domingo"`, en minúsculas, **sin tildes** y sin repetir.
+- `abre` y `cierra`: `"HH:MM"` (`"08:00"`, no `"8:00"`), y `cierra` posterior a `abre`. Si cierra a medianoche, `"23:59"`.
+- Jornada partida = dos franjas con los mismos días: `{ dias: ["lunes", "martes", "miercoles", "jueves", "viernes"], abre: "08:00", cierra: "14:00" }` y otra igual de `"16:00"` a `"19:00"`.
+- Las urgencias no van en el horario: solo `urgencias24h`.
+- El template no lee las franjas: las pinta con `formatearHorario` de core, que da filas `{ dias, horas }` («Lunes a viernes» · «8:00–14:00 y 16:00–19:00»).
+
+**Slugs:** solo minúsculas sin acentos, números y guiones (`"reformas-de-bano"`). Si falta, se genera del título. No se puede repetir dentro de `servicios` ni dentro de `trabajos`.
+
+**En los datos de ejemplo no pongas `seo.indexar` ni `analitica`:** los activa cada web, nunca el template.
 
 **Datos mínimos reales.** La demo se hace con lo que da Google Maps: nombre, sector, contacto, horario, zonas, reseñas, valoración y alguna red. Todo lo demás puede faltar. **El diseño tiene que verse completo solo con el núcleo** (`negocio`, `contacto`, `zonas`, `servicios` con título y descripción, `resenas`, `valoracion`, `seo`).
 
@@ -124,7 +140,7 @@ Tú eliges cuáles usar en cada página, respetando el orden del tipo (§6). **S
 | Sección | Campos que usa | Sin datos |
 |---|---|---|
 | Cabecera | `negocio.nombre`, `negocio.logo?`, `contacto.telefono`, rutas | Siempre. Con el **botón de llamada visible siempre**, también en móvil. Sin `/trabajos` si no hay trabajos ni galería; sin `/comunidades` si no hay `comunidades` |
-| Barra móvil | `contacto.telefono`, `contacto.whatsapp?` | Siempre en móvil, fija abajo, en todas las páginas. Sin WhatsApp, solo "Llamar" a todo el ancho |
+| Barra móvil | `contacto.telefono`, `contacto.whatsapp?` | Siempre en móvil, fija abajo, en todas las páginas. Dos botones en el orden de su tipo (§6); en urgencias se admite la barra combinada de tres. Sin WhatsApp, solo "Llamar" a todo el ancho (o [Menú] + Llamar) |
 | Hero | `negocio`, `zonas`, `imagenesHero`, `valoracion?`, `contacto.urgencias24h`, `contacto.tiempoLlegada?` | Siempre. Sin fotos, hero tipográfico. Sin `valoracion`, sin estrellas. Chips "24 h" y "Llegamos en X" solo si hay dato |
 | Franja de confianza | `negocio.anioFundacion?`, `acreditaciones`, `garantias`, `valoracion?` | Se recompone con lo que haya; si no hay nada, se oculta |
 | Cómo trabajamos | `proceso` | Sin datos, usa los pasos por defecto del tipo (§6), escritos en el template |
@@ -136,7 +152,7 @@ Tú eliges cuáles usar en cada página, respetando el orden del tipo (§6). **S
 | Marcas | `marcas` | Se oculta |
 | Comunidades (bloque de inicio) | `comunidades` | Se oculta |
 | Zonas | `zonas` | Se oculta. Siempre como lista, nunca como enlaces a páginas |
-| Preguntas frecuentes | `preguntas` (acordeón) | Se oculta |
+| Preguntas frecuentes | `preguntas` (acordeón) | Se oculta. Las respuestas cerradas siguen en el HTML (se leen sin JavaScript y Google las ve) y el desplegable no anima la altura |
 | CTA final | `contacto` | Siempre |
 | Contacto | `contacto`: teléfono, WhatsApp, email, dirección, horario | Siempre. La ubicación es texto + enlace "Cómo llegar" (nunca un mapa incrustado) |
 | Pie | `negocio.nombre`, rutas, `enlacesLegales`, `redes` | Siempre |
@@ -179,7 +195,7 @@ El **tipo** no es el nombre de la carpeta: es la guía de diseño que sigue cada
   7. Zonas.
   8. Preguntas frecuentes.
   9. CTA final de llamada.
-- **CTA:** llamada principal en todas partes; WhatsApp secundario. Barra móvil: **Llamar | WhatsApp**.
+- **CTA:** llamada principal en todas partes; WhatsApp secundario. Barra móvil: **Llamar | WhatsApp**, o la **barra combinada [Menú] [Llamar] [WhatsApp]** (solo en urgencias, por debajo de 1024 px): «Menú» abre la navegación en una hoja inferior y sustituye al menú de la cabecera en móvil. Sin WhatsApp: [Menú] + Llamar a todo el ancho restante.
 - **Confianza:** reseñas que hablan de rapidez, acreditaciones con número, fotos reales de furgoneta y técnico.
 - **Imágenes:** pocas y reales. Una foto en el hero como máximo, o ninguna (hero tipográfico con el teléfono).
 - **No debe llevar:** sliders ni carruseles en el hero, "quiénes somos" largo, fotos de banco con técnicos sonrientes, pop-ups, vídeo, animaciones pesadas (se carga en 4G).
@@ -188,7 +204,7 @@ El **tipo** no es el nombre de la carpeta: es la guía de diseño que sigue cada
 
 - **Páginas:** Inicio › Trabajos › Servicios › Empresa (taller, proceso, equipo) › Contacto.
 - **Inicio, en orden:**
-  1. Hero: la mejor foto real (`imagenesHero`) + titular de resultado ("Reformas de baño en Valencia en 10 días") + `BotonWhatsApp` "Pide presupuesto" + valoración.
+  1. Hero: la mejor foto real (`imagenesHero`) + titular de resultado ("Reformas de baño en {ciudad} en 10 días") + `BotonWhatsApp` "Pide presupuesto" + valoración.
   2. Trabajos o antes/después **con contexto**: ubicación, superficie, plazo (y precio si existe).
   3. Servicios, con "desde" si hay precio.
   4. Cómo trabajamos (por defecto: visita → presupuesto → contrato con fecha → obra → limpieza → garantía).
@@ -205,7 +221,7 @@ El **tipo** no es el nombre de la carpeta: es la guía de diseño que sigue cada
 
 - **Páginas:** Inicio › Servicios (redactados como problemas) › Trabajos (casos con proceso) › Comunidades › Empresa (solvencia) › Contacto.
 - **Inicio, en orden:**
-  1. Hero: síntoma + solución ("Goteras y humedades en Valencia · Diagnóstico y reparación") + `BotonLlamada` "Pide visita técnica" + `BotonWhatsApp` "Envía fotos del problema".
+  1. Hero: síntoma + solución ("Goteras y humedades en {ciudad} · Diagnóstico y reparación") + `BotonLlamada` "Pide visita técnica" + `BotonWhatsApp` "Envía fotos del problema".
   2. Problemas que resolvemos (son los `servicios`, con títulos de síntoma).
   3. Casos con fotos de proceso (andamio, antes/después).
   4. Bloque comunidades (si hay): presupuesto para junta, seguro con importe y "¿Tu edificio tiene más de 50 años?" si `ieev`.
@@ -221,11 +237,11 @@ El **tipo** no es el nombre de la carpeta: es la guía de diseño que sigue cada
 - **Reseñas en la mitad superior del inicio** (o al menos la valoración en el hero).
 - **El CTA principal se ve sin hacer scroll** a 375×667.
 
-### Qué debe variar entre los 3 templates de un nicho
+### Qué debe variar entre los 3 templates de una tanda
 
-Cada template debe diferir de los otros dos en **al menos 4** de estos ejes: composición del hero (número de fotos o ninguna), orden de las secciones del inicio (dentro de lo que permite el tipo), sección "estrella", forma de trabajos/galería, estilo de navegación, estilo de los botones por sección, tipografía y densidad. **No vale cambiar solo el color.**
+Cada template debe diferir de los otros dos de su tanda en **al menos 4** de estos ejes: composición del hero (número de fotos o ninguna), orden de las secciones del inicio (dentro de lo que permite el tipo), sección "estrella", forma de trabajos/galería, estilo de navegación, estilo de los botones por sección, tipografía y densidad. **No vale cambiar solo el color.**
 
-**Los 3 templates de un nicho tienen que parecer de estudios distintos**, no variaciones de uno solo: distinta estructura, distinto diseño, distintas formas y distintas fuentes. Para conseguirlo, antes de escribir los encargos de un nicho se rellena una **matriz de variedad**. Cada eje tiene varias opciones, a cada template le toca una combinación **al azar** y **ninguna opción se repite entre los 3**:
+**Los 3 templates de una tanda tienen que parecer de estudios distintos**, no variaciones de uno solo: distinta estructura, distinto diseño, distintas formas y distintas fuentes. Para conseguirlo, antes de escribir los encargos de un nicho se rellena una **matriz de variedad**. Cada eje tiene varias opciones, a cada template le toca una combinación **al azar** y **ninguna opción se repite entre los 3 de la tanda**. Una segunda tanda del mismo nicho (carpintería metálica 4–6) tampoco puede parecerse a la primera: no repite la combinación de hero, tipografía y paleta de ningún template anterior del nicho:
 
 | Eje | Opciones (ejemplos) |
 |---|---|
@@ -273,10 +289,10 @@ Sustituye al formulario o a la calculadora de presupuesto. Son 2–3 preguntas c
 ## 8. Reglas fijas
 
 1. **Botones:** los de §7. El de llamada aparece como mínimo en la cabecera, el hero, la barra móvil y contacto.
-2. **Barra móvil fija** con dos botones en todas las páginas. No debe tapar contenido: deja espacio al final de la página.
+2. **Barra móvil fija** en todas las páginas: dos botones en el orden de su tipo o, solo en urgencias, la barra combinada de tres (§6). No debe tapar contenido: deja espacio al final de la página.
 3. **Color:** define tus propios tokens en `@theme` (colores, radios, sombras). `--color-primario` es el acento principal **y el cliente puede sustituirlo por su color de marca**. Úsalo donde funcione con cualquier color medio u oscuro con texto blanco encima. El diseño no puede depender de un tono concreto de primario.
 4. **Tipografías:** siempre con `next/font` (autoalojadas). Máximo dos familias.
-5. **Nada de terceros:** ni iframes (Google Maps, YouTube), ni scripts externos, ni fuentes de servidores de Google, ni píxeles ni analítica. La política de cookies declara que no hay cookies de terceros. Ubicación = dirección en texto + **enlace** "Cómo llegar"; vídeo = miniatura con enlace.
+5. **Nada de terceros:** ni iframes (Google Maps, YouTube), ni scripts externos, ni fuentes de servidores de Google, ni píxeles ni analítica de terceros. La única analítica la pone core (Vercel Web Analytics, sin cookies, cuando la web la activa): no diseñes nada para ella, ni banner ni aviso. La política de cookies declara que no hay cookies de terceros. Ubicación = dirección en texto + **enlace** "Cómo llegar"; vídeo = miniatura con enlace.
 6. **Imágenes:** con `next/image`, y el `alt` sale de los datos. Las de ejemplo son **neutras** (sin logos ni caras reconocibles) y están en `public/ejemplo/`. Aguantan fotos reales hechas con el móvil del cliente: proporciones fijas con recorte (`object-cover`) y nunca texto sobre una foto sin una capa oscura debajo.
 7. **Accesibilidad:** contraste WCAG AA, un solo `h1` por página, jerarquía de títulos sin saltos, foco visible, zonas táctiles de al menos 44 px, navegación móvil usable con teclado y lector de pantalla.
 8. **Legal:** el pie enlaza a `/aviso-legal`, `/privacidad` y `/cookies` (lista `enlacesLegales` de core). Esas páginas usan el layout del template.
@@ -292,7 +308,7 @@ Todo template lleva **animaciones básicas que llamen la atención**, pensadas p
 - **Solo se animan `transform` y `opacity`**. Nunca `width`, `height`, `top`, `margin` ni sombras grandes, porque obligan a recalcular la página.
 - **Lo primero que se ve no se anima:** el `h1`, la foto del hero y el botón de llamada del hero están visibles desde el primer pintado. Si se anima el elemento más grande de la primera pantalla (LCP), la web «tarda» más para Google.
 - **`prefers-reduced-motion: reduce`:** sin desplazamientos ni bucles; el contenido aparece directamente.
-- **Sin JavaScript** el contenido se ve entero: nada empieza oculto si depende de un script para aparecer.
+- **Sin JavaScript** el contenido se ve entero: nada empieza oculto si depende de un script para aparecer (tampoco las respuestas de las preguntas frecuentes).
 - **Tipos recomendados:** aparecer al hacer scroll (fundido + desplazamiento corto, 200–400 ms, escalonado en listas), respuesta al tocar o pasar por encima en botones y tarjetas, subrayados o cotas que se dibujan, contadores en cifras clave y la barra móvil que entra al cargar.
 - **Prohibido:** parallax pesado, vídeo de fondo, carruseles automáticos que se mueven solos, animaciones en bucle que distraigan del botón de llamada, y cualquier cosa que mueva el contenido mientras se lee.
 - En la entrega, describe cada animación: qué elemento, qué propiedad, cuánto dura y qué pasa con «reducir movimiento».
@@ -301,12 +317,12 @@ Todo template lleva **animaciones básicas que llamen la atención**, pensadas p
 
 ## 9. Qué entregar
 
-1. **Inicio, una página de servicio, `/trabajos`, un trabajo, `/empresa` y `/contacto`** a **375 px** y a **1280 px**, con los datos de ejemplo completos del encargo. Más una página legal para ver cómo la envuelve tu layout.
+1. **Inicio, una página de servicio, `/trabajos`, un trabajo, `/empresa` y `/contacto`** a **375 px** y a **1280 px**, con los datos de ejemplo completos del encargo. Más una página legal para ver cómo la envuelve tu layout y la **página 404**.
 2. **El inicio con datos mínimos** (solo el núcleo de §4: sin trabajos, sin fotos, sin acreditaciones, sin precios), para comprobar que los estados vacíos funcionan.
 3. **El inicio con otro primario** (por ejemplo, `#1e40af`), para comprobar que el diseño aguanta el cambio de color.
 4. Los **tokens**: colores en hex, tipografías, radios y sombras.
 5. Las **variantes de botón** por sección (§7) con su nombre.
 6. Por cada sección y página: el **nombre del componente**, los **campos** que usa y cómo se comporta cuando falta algo (servicio sin foto, reseña muy larga, sin WhatsApp, sin trabajos).
-7. Los **datos de ejemplo** del nicho en formato `site.config.ts`, ficticios y realistas de la provincia de Valencia. Si llevan precios, cada uno con el comentario `// PRECIO FICTICIO: borrar en la web del cliente`.
+7. Los **datos de ejemplo** del nicho en formato `site.config.ts`, ficticios y realistas de la ciudad que diga el encargo (Valencia, Barcelona, Sevilla o Madrid), y que cumplan los formatos de §4. Si llevan precios, cada uno con el comentario `// PRECIO FICTICIO: borrar en la web del cliente`.
 8. La lista de **componentes shadcn** usados.
 9. Un **nombre y una frase** que definan el concepto, y en qué ejes (§6) difiere de los otros templates de su nicho.

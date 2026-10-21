@@ -14,7 +14,7 @@ Proceso real de `carpinteria-metalica-3` «Reparaciones», `-1` «Medida» y `-2
 
 | Fase | Quién | Resultado |
 |---|---|---|
-| 1. Matriz de variedad | Claude + Ysst | Combinación de ejes de cada uno de los 3 templates del nicho |
+| 1. Matriz de variedad | Claude + Ysst | Combinación de ejes de cada uno de los 3 templates de la tanda |
 | 2. Encargos | Claude | `andrei-leads-tech/material/encargos-claude-design/<nicho>-<n>.md` |
 | 3. Diseño | Ysst en Claude Design | Zip en `andrei-leads-tech/material/designs/<nicho>/<n>/` |
 | 4. Revisión | Subagente (Opus) | Checklist + mensaje para Claude Design con lo que falte |
@@ -31,18 +31,18 @@ Proceso real de `carpinteria-metalica-3` «Reparaciones», `-1` «Medida» y `-2
 
 - [ ] Nicho y **tipo** decididos (`AGENTS.md` §7; reglas en `docs/brief-claude-design.md` §6 y su porqué en `docs/investigacion-nichos.md`).
 - [ ] Brief al día con el **contrato vigente** (`packages/core/src/site-config.ts` manda sobre cualquier tabla).
-- [ ] Template integrado más reciente como **origen del esqueleto** (hoy `templates/carpinteria-metalica/carpinteria-metalica-2`).
+- [ ] **Origen del esqueleto:** un template con `app/not-found.tsx`, `ensureStatic` en las dos `[slug]` y el acordeón de preguntas con `forceMount` (hoy los 6 lo tienen). Por defecto, `templates/carpinteria-metalica/carpinteria-metalica-1`.
 - [ ] `git status --short` limpio en `kit` (o solo con cambios conocidos de Ysst).
 
-Notación: `<nicho>` = carpeta del nicho en minúsculas con guiones (`fontaneria`), `<n>` = 1–3, `<paquete>` = `<nicho>-<n>`, `<Nombre>` = nombre del concepto («Exposición»), `<origen>` = ruta del template de origen dentro de `templates/`.
+Notación: `<nicho>` = carpeta del nicho en minúsculas con guiones (`fontaneria`), `<n>` = 1–3 por tanda (carpintería metálica: 1–6), `<paquete>` = `<nicho>-<n>`, `<Nombre>` = nombre del concepto («Exposición»), `<origen>` = ruta del template de origen dentro de `templates/`.
 
 ## Procedimiento
 
-### 1. Matriz de variedad del nicho
+### 1. Matriz de variedad de la tanda
 
 Antes de escribir ningún encargo, se rellena la matriz del brief §6 («Qué debe variar»). Reglas (decisión de Ysst, 15/10/2026):
 
-- A cada template le toca **una combinación al azar**; **ninguna opción se repite** entre los 3.
+- A cada template le toca **una combinación al azar**; **ninguna opción se repite** entre los 3 de la tanda. En una segunda tanda del mismo nicho, además, ninguno repite la combinación de hero, tipografía y paleta de los templates anteriores del nicho (decisión de Ysst, 21/10/2026).
 - Cada template sirve a un **objetivo de negocio distinto** (urgencia, confianza, contenido/SEO, tienda).
 - Si una opción choca con las reglas del tipo, el choque se anota como **desviación intencionada** en el §2 del encargo (como «Cómo llegar» en `-2` o las reglas de urgencias en `-3`, que es de nicho proyecto). Si el sorteo choca con las «Variantes de referencia por tipo» del brief, **decide Ysst**.
 
@@ -211,8 +211,12 @@ REQUISITOS (todos obligatorios)
   Un solo <h1> por página en todo el sitio y títulos sin saltos.
 - Accesibilidad: zonas táctiles ≥ 44 px, foco visible, contraste AA, chips que no son enlace = <span>,
   menú móvil usable con teclado y lector de pantalla.
-- Logo negocio.logo {src, alt} a la izquierda del nombre escrito, con alt="". Nombre largo sin romper
-  la cabecera a 375 px.
+- Logo negocio.logo {src, alt} a 32 px a la izquierda del nombre escrito, con alt="". El nombre se ve
+  siempre, en 2 líneas como máximo y nunca cortado con «…», sin romper la cabecera a 375 px. Sin
+  variante «solo logo».
+- Precio: la etiqueta «DESDE» solo si precioDesde empieza por «desde»; si no, el texto tal cual.
+- WhatsApp de servicio: «Pide presupuesto de {servicio} por WhatsApp» (nunca «Pide tu…»). El de la
+  barra móvil lleva el mensaje general en todas las páginas.
 - Imágenes con next/image a través de Foto: alt de los datos, etiqueta «Foto de ejemplo» si src empieza
   por /ejemplo/, proporción fija con object-cover, texto sobre foto solo con capa oscura.
 - Tokens propios en @theme; --color-primario sobrescribible desde marca.colorPrimario (style del <html>);
@@ -358,7 +362,7 @@ Y en `AGENTS.md`: §4 (mapa), §7 y §12 (estado).
 
 ### 9. Fotos de ejemplo
 
-1. (Ya hecho al dar por buena la entrega; ver el final del paso 4.) Un subagente escribe `docs/fotos-ejemplo/<paquete>/prompts-chatgpt.md` (en `kit`, nunca en `public/`) a partir de `public/ejemplo/CREDITOS.md` (modelo: `fotos-ejemplo/carpinteria-metalica-2/prompts-chatgpt.md`): tabla resumen (ficha `<n>.<m>`, archivo final, qué se ve, proporción), **bloque de estilo común** con la paleta de la Specs y **una ficha por foto** con su prompt completo. La esquina que cada prompt deja libre es la de la etiqueta en el `Foto.tsx` **del template nuevo** (no la de otro template).
+1. (Ya hecho al dar por buena la entrega; ver el final del paso 4.) Un subagente escribe `docs/fotos-ejemplo/<paquete>/prompts-chatgpt.md` (en `kit`, nunca en `public/`) a partir de `public/ejemplo/CREDITOS.md` (modelo: `docs/fotos-ejemplo/carpinteria-metalica-2/prompts-chatgpt.md`): tabla resumen (ficha `<n>.<m>`, archivo final, qué se ve, proporción), **bloque de estilo común** con la paleta de la Specs y **una ficha por foto** con su prompt completo. La esquina que cada prompt deja libre es la de la etiqueta en el `Foto.tsx` **del template nuevo** (no la de otro template).
 2. Lecciones que van en el documento:
    - Pareja antes/después: primero el «después» y, **en la misma conversación**, el «antes», con el daño descrito **de forma muy explícita**.
    - **Nada de caras**: de espaldas, manos o fuera de cuadro.

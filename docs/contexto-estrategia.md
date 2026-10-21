@@ -1,5 +1,7 @@
 # Contexto para una sesión de estrategia (15/10/2026)
 
+> **Foto del 15/10/2026.** Desde entonces: core 0.5.1 publicada (analítica del plan Básico en 0.5.0), 6 templates (carpintería metálica y electricidad) y 6 demos desplegadas. El estado actual está en `AGENTS.md` §12; si algo de aquí lo contradice, manda `AGENTS.md`.
+
 > **Agente (Opus 5.5, sesión web):** esta sesión es **una conversación estratégica, no de implementación**. Ysst quiere decidir qué piezas le faltan al `kit` para gestionar muchas webs de clientes con el mínimo mantenimiento, cómo enfocar el SEO y qué llevar a sus webs ya existentes (Pavimentos Albufera y Pavivasa).
 >
 > 1. Lee `AGENTS.md` entero (sobre todo §2, cómo trabajar con Ysst, §10 decisiones y §12 estado) y después este documento.

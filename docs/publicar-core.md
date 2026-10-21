@@ -124,6 +124,7 @@ En el código de la web, todo lo que leía `h.dias` / `h.horas` de `config.conta
 - [ ] Todo lo nuevo se exporta desde `src/index.ts`. Si es un archivo nuevo fuera de `src/`, añádelo a `exports` y a `files` en `packages/core/package.json`.
 - [ ] Las clases de Tailwind de core están dentro de `src/`, porque `styles.css` solo lee `./src`.
 - [ ] No añadas `react` como dependencia normal: es `peerDependency`.
+- [ ] **Si cambia el contrato** (`src/site-config.ts`): actualiza en el mismo PR `docs/brief-claude-design.md` §4 (campo, formato y límites) y `AGENTS.md` §6. Si no, Claude Design entrega datos que no compilan (pasó con el horario de 0.4.0).
 - [ ] Opcional, para ver qué entraría en el paquete: `cd packages/core && pnpm pack && tar -tzf andrei-leads-core-*.tgz`, y **borra el `.tgz`** después.
 
 ## Configuración única (ya hecha): por si hay que rehacerla
@@ -230,3 +231,4 @@ En la **organización** y en el **repo** `kit`: Settings → Actions → General
 - `0.3.0` (PR #2): contrato multipágina.
 - `0.4.0` (14/10/2026, PR #3): SEO técnico y horario estructurado (cambio incompatible).
 - `0.5.0` (16/10/2026, PR #4): analítica del plan Básico.
+- `0.5.1` (19/10/2026, PR #7 y #8): `sideEffects` en `package.json` (zod fuera del JavaScript del navegador). Sin cambios en el contrato.
