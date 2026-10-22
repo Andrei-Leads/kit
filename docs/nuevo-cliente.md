@@ -83,6 +83,7 @@ Se edita **`web-<cliente>/site.config.ts`**, **nunca** el del template en `kit` 
 - **Cliente real:** sus datos (contrato en `AGENTS.md` §6). Borra todo lo ficticio del ejemplo: precios marcados `PRECIO FICTICIO`, `registroMercantil`, `fichaGoogle`, `valoracion`, reseñas, trabajos y textos que no sean suyos. Precios solo con cifras validadas por el cliente.
 - **Demo:** `seo.url` = la URL de Vercel del proyecto (`https://web-<cliente>.vercel.app`), porque de ahí salen el canonical y la imagen de la vista previa al compartir por WhatsApp; con `https://ejemplo.com` la vista previa sale sin foto. Esa URL no se conoce hasta el primer despliegue: pon un valor provisional ahora y corrígelo tras el paso 11 (ver «Corregir `seo.url`» en el paso 12). **Cliente real:** su dominio.
 - **Prueba o demo:** en `contacto.telefono` y `contacto.whatsapp`, un número tuyo (formato `+34` + 9 dígitos, sin espacios), para que los botones funcionen sin llamar a un desconocido.
+- **Demo para un lead** (SOP de Notion «Lead interesado → web demo»): al revés, los **números reales del negocio**; en el Meet no se pulsan los botones.
 
 Comprobación, desde **`web-<cliente>/`** (no debe salir nada):
 
@@ -193,7 +194,7 @@ Debe salir:
 - `1` (un solo `<h1>`).
 - `tel:` y `wa.me/` con el número correcto.
 
-**Corregir `seo.url` (solo demos):** con la URL real de Vercel a la vista, edita `web-<cliente>/site.config.ts` (`seo.url: "https://web-<cliente>.vercel.app"`), `pnpm build`, commit y `git push` (lo ejecuta Ysst); Vercel redespliega solo. Comprueba con `curl -s "$URL/" | grep -o '<link rel="canonical"[^>]*>'` que sale esa URL.
+**Corregir `seo.url` (solo demos):** la URL sale del nombre del **proyecto de Vercel** (el del repo), que puede no coincidir con la carpeta local (pasó: carpeta `web-talleres-martin-valencia-s-l`, repo y URL `web-talleres-martin-valencia-sl`). Con la URL real a la vista, edita `web-<cliente>/site.config.ts` (`seo.url: "https://web-<cliente>.vercel.app"`), `pnpm build`, commit y `git push` (lo ejecuta Ysst); Vercel redespliega solo. Comprueba con `curl -s "$URL/" | grep -o '<link rel="canonical"[^>]*>'` que sale esa URL.
 
 Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren con el número y el mensaje precargado.
 
@@ -245,6 +246,8 @@ Qué se ve en el panel y los límites por plan de Vercel: `docs/cambio-de-plan.m
 | `pnpm start` dice «Could not find a production build» | Se lanzó mientras `pnpm build` aún compilaba | Esperar a que termine el build |
 | Al compartir la demo por WhatsApp la vista previa sale sin foto | `seo.url` sigue en `https://ejemplo.com` | Poner la URL de Vercel (paso 5 y paso 12) |
 | Analytics activado, pero el `script.js` de la ruta propia (`/<16 caracteres>/script.js`) da `404` y el panel no recibe visitas | Se desplegó antes del *Enable*: la ruta va dentro del JavaScript del build | Redeploy sin «Use existing Build Cache», o un `git push` (paso 13.5) |
+| `pnpm build` acaba con `SecurityFatalError: Your version of Next.js is affected by a known security vulnerability` | Aviso de Next 16.4.0 (a 22/10/2026); sale una vez y para el build | Repetir `pnpm build` (pasa). En Vercel no apareció. La subida de `next` está pendiente de decidir (`PENDIENTES.md`) |
+| `pnpm build` falla con «useContext null» | `NODE_ENV=development` en el shell | `NODE_ENV=production pnpm build` |
 | Se pega el contenido de `NPM_RC` en la terminal | Confusión entre comando y contenido | Va en el campo *Value* de Vercel, no en la terminal |
 
 ## Antes de un cliente real
@@ -263,3 +266,4 @@ Pasos 1 a 4: copiar el template fuera de `kit`, borrar `node_modules` y `.next`,
 
 - `web-prueba` (oct 2026): primera prueba de despliegue en Vercel (proceso provisional).
 - `web-metalicas-ejemplo` (13/10/2026): proceso completo con `carpinteria-metalica-3` y core `0.3.0` (hoy `0.4.0`); repo público y Vercel Hobby. Trampa encontrada: `NPM_RC` con otro campo de Bitwarden (401).
+- `web-talleres-martin-valencia-sl` (22/10/2026): primera demo de un **lead real** con este documento (`carpinteria-metalica-1`, core `0.5.1`). Pasos 9-12 sin problemas; Deployment Protection por defecto no bloquea el dominio de producción `.vercel.app` (rutas 200 desde fuera). Hallazgos: el nombre del repo cambió respecto a la carpeta (corregir `seo.url`), aviso de seguridad de Next en el build local y números reales del negocio en vez de los de Ysst.
