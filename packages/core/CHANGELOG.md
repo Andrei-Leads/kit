@@ -1,5 +1,24 @@
 # @andrei-leads/core
 
+## 0.6.0
+
+### Minor Changes
+
+- 58b3dd2: Lógica común de los templates en core (todo nuevo, nada cambia en lo que ya existía):
+  
+  - **Formato:** `telefonoVisible`, `listaY`, `mediaVisible`, `direccionLinea` (con `{ provincia: true }` opcional), `urlComoLlegar`, `listaRedes`, `horarioVisible` (fila de urgencias con texto opcional), `iniciales`, `minusculaInicial`, `MESES`, `fechaResena` y `precioDesde`. Tipo `Ancla`.
+  - **Mensajes de WhatsApp:** `MENSAJE_GENERICO`, `MENSAJE_NO_ENCONTRADA`, `mensajeGeneral`, `mensajeServicio` y `mensajeTrabajo`. Cada uno acepta el texto por defecto del template.
+  - **Rutas y contenido:** `hayTrabajos`, `parametrosServicios` y `parametrosTrabajos` (con el slug de relleno `"_"`, `SLUG_RELLENO`), `buscarServicio`, `buscarTrabajo`, `otrosServicios`, `trabajosDelServicio`, `otrosTrabajos`, `servicioDelTrabajo`, `PASOS_POR_DEFECTO` (urgencias, proyecto y obra técnica) y `pasosProceso`. Tipos `Paso` y `TipoNegocio`.
+  
+  Una web que no los use no cambia. Para usarlos: importarlos de `@andrei-leads/core` y borrar la copia de `lib/`.
+- 2a98eab: Novedades del contrato y de marca (todo opcional; una web que no las use no cambia):
+  
+  - **`origen?` en toda imagen:** `"cliente"`, `"ficha-google"`, `"ia"` o `"stock"`. `etiquetaOrigen(imagen)` devuelve la etiqueta que hay que pintar: «Imagen generada con IA» (AI Act, art. 50.4) o «Foto de tu ficha de Google». Tipo `OrigenImagen`.
+  - **`videoHero?`:** `{ src, srcAv1?, poster }`, con el póster obligatorio. Solo tipo proyecto. El póster entra como imagen de Open Graph después de `imagenesHero[0]`. Tipo `VideoHero`.
+  - **`--color-sobre-primario`:** `estiloMarca(config)` devuelve el `style` del `<html>`, con `--color-primario` y el texto que va encima (blanco o `#111111`, el que más contraste dé). Si ninguno llega a 4,5:1, `defineSiteConfig` avisa en la consola sin romper el build. `styles.css` pone `--color-sobre-primario: #ffffff` por defecto. Funciones `colorSobre` y `contraste`.
+  
+  Para usar el color calculado: en `app/layout.tsx`, `<html lang="es" style={estiloMarca(config)}>`, y en el CSS, el texto sobre el primario con `text-sobre-primario`.
+
 ## 0.5.1
 
 ### Patch Changes
