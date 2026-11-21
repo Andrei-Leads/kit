@@ -80,6 +80,8 @@ kit/
 ├─ .vscode/settings.json     # *.css → tailwindcss
 ├─ .changeset/               # config.json + notas de cambios pendientes
 ├─ .github/workflows/release.yml   # Action de versionado y publicación
+├─ turbo.json                # Turborepo local (sin caché remota): `pnpm comprobar` = typecheck + lint + build de todo
+├─ registry/                 # piezas base que se COPIAN a components/base/ de cada template (registry/README.md)
 ├─ docs/                     # procesos paso a paso (ver §9)
 ├─ packages/
 │  └─ core/                  # @andrei-leads/core
@@ -105,7 +107,10 @@ kit/
 │     ├─ electricidad-1/           # «Boletín» (urgencias, contenido/SEO: trámite paso a paso y guías por servicio; fotos de relleno)
 │     ├─ electricidad-2/           # «Del barrio» (urgencias, confianza: foto a sangre, reseñas como estrella, barra combinada; fotos de relleno)
 │     └─ electricidad-3/           # «Sin sorpresas» (urgencias, paleta oscura: «Lo que cuesta» con tarifas, índice lateral; fotos de relleno)
-└─ apps/                     # vacío por ahora (reservado, p. ej. playground)
+│  └─ tienda/
+│     └─ tienda-1/                 # «Almacén» (tienda: carrusel en el hero)
+└─ apps/
+   └─ playground/            # banco de pruebas del registro: copia registry/ en cada build y lo pinta con tokens neutros
 ```
 
 `pnpm-workspace.yaml`:
@@ -268,7 +273,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; 
   <html lang="es" style={{ "--color-primario": config.marca.colorPrimario } as React.CSSProperties}>
   ```
 
-  Si el campo no existe, React omite el estilo y se usa el color del template.
+  Si el campo no existe, React omite el estilo y se usa el color del template. **Desde core 0.6.0**, mejor `<html lang="es" style={estiloMarca(config)}>`: pone además `--color-sobre-primario` (texto blanco o `#111111` sobre el primario del cliente) y, sin `colorPrimario`, devuelve `{}`.
 
 **Datos que vendrán del scraper de leads** (gosom/google-maps-scraper → DuckDB → Postgres): nombre, sector, la mayor parte de `contacto` (y `fichaGoogle`), parte de `zonas`, `resenas`, `valoracion` y a veces `redes`. La demo debe verse completa solo con eso; todo lo demás es opcional. Esto es la base de un futuro generador de `site.config` (§12).
 
@@ -356,7 +361,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; 
 | `docs/publicar-core.md` | Listo | Se cambia algo en `packages/core` que debe llegar a las webs |
 | `docs/sesion-web.md` | Listo (lo que cambia en la web: al día; su estado es una foto del 16/10/2026, el actual está en §12) | Se trabaja desde Claude Code en la web: qué cambia respecto a local, estado actual y tareas pendientes en orden |
 | `docs/contexto-estrategia.md` | Foto del 15/10/2026 (el estado actual está en §12) | Sesión de estrategia: qué le falta a `kit` para mantener muchas webs, SEO, relación con Pavimentos Albufera, Pavivasa y `monorepo_root` |
-| `docs/brief-claude-design.md` | Listo (contrato de core 0.5.1 con formatos, multipágina, reglas por tipo, 404; 21/10/2026) | Se va a pedir un diseño a Claude Design. Es genérico: el encargo concreto de cada template se escribe aparte |
+| `docs/brief-claude-design.md` | v2 (20/11/2026): nueva generación, contrato de core 0.6.0, huesos en 3 capas, tokens comunes, piezas base | Se va a pedir un diseño a Claude Design. Es genérico: el encargo concreto de cada template se escribe aparte |
 | `docs/investigacion-nichos.md` | Referencia («investigación por nichos») | Se quiere el porqué de las reglas por tipo (estructura que más convierte por nicho) |
 | `docs/nuevo-template.md` | Listo (a partir de `carpinteria-metalica-1/2/3`, 15/10/2026) | Se convierte un diseño en `templates/<nicho>/<nicho>-<n>` |
 | `docs/nuevo-cliente.md` | Listo (probado con `web-metalicas-ejemplo`, 13/10/2026) | Se crea la web de un cliente a partir de un template y se despliega |
@@ -393,7 +398,13 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | **Tokens de diseño en cada template; solo `--color-primario` sobrescribible desde `site.config`** | El diseño es del template; el cliente solo personaliza su color de marca. |
 | **Imágenes de ejemplo neutras en `public/ejemplo/`; fotos del cliente en `public/`** | El template se ve completo sin datos reales, y las fotos del cliente no se mezclan con las de ejemplo. |
 | **Tipografías siempre con `next/font`** | Rendimiento y sin peticiones a terceros. |
-| **Turborepo aplazado** | Con un solo template no aporta nada; se añade con 3 o 4 templates. |
+| **Turborepo local, sin caché remota** (21/11/2026, `pnpm comprobar`) | Con 7 templates, un cambio en core se valida contra todos con un comando, y lo que no cambió sale de caché. |
+| **Tres capas: core (lógica, se importa), `registry/` (piezas base, se copian), template (lo que vende)** (21/11/2026) | Lógica repetida 7 veces pasa a core sin tocar el diseño de nadie; las piezas compartidas se copian para que una mejora no cambie webs ya entregadas. |
+| **16 tokens comunes con nombre fijo** (`fondo`, `superficie`, `alterna`, `texto`, `texto-suave`, `borde`, `primario`, `sobre-primario`, `acento`, `foco`, `font-titulo`, `font-texto`, `radius-boton/tarjeta/foto`, `text-display`) | Sin ese vocabulario ninguna pieza se puede compartir. El template les da valor y puede añadir los suyos, nunca renombrarlos. |
+| **`--color-sobre-primario` calculado en core (`estiloMarca`), aviso sin romper el build** | Un amarillo de furgoneta real no debe romper la web del cliente. |
+| **Menú con `popover` y preguntas con `<details name>` (piezas del registro), en lugar de `sheet`/`accordion`** | Funcionan sin JS y con menos islas de cliente. Se estrenan en los templates nuevos; los 7 actuales se migran cuando se toquen. |
+| **`imagen.origen` y etiqueta «Imagen generada con IA»** | AI Act, art. 50.4 (desde el 2/8/2026). Nada de IA en `/trabajos` de un cliente real. |
+| **`videoHero` aparte con póster obligatorio, solo tipo proyecto** | `imagenesHero[0]` es la imagen de Open Graph (vista previa de WhatsApp) y se pinta con `next/image`. |
 | **Organización como "My personal account"** | Autónomo = persona física. |
 | **Webs multipágina con rutas fijas** (página por servicio y por trabajo; sin páginas por municipio) | La página por servicio es el primer factor de SEO local; las páginas por zona son contenido duplicado ("doorway"). Rutas fijas = mismo `create-site` y mismos enlaces en todos los templates (investigación por nichos) |
 | **Carpetas por nicho (`templates/<nicho>/<nicho>-<n>`), 3 por nicho y tanda** (carpintería metálica, 6) | La demo debe parecer del oficio del cliente, con datos y fotos de su sector |
@@ -470,6 +481,8 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 **Hecho (16/10/2026, rama `feat/not-found`):** `app/not-found.tsx` propio en los 6 templates y «falso 404» corregido con `ensureStatic = "navigation"` (§7, §11). Son archivos del template: una web creada antes no los tiene hasta copiarlos a mano (`app/not-found.tsx`, `MENSAJE_NO_ENCONTRADA` y la línea de `ensureStatic` en las dos `[slug]`), y necesita `next` ≥ 16.4.
 
 **Hecho (17–19/10/2026):** las 6 demos (`webs/demos/`) llevan la 404, el «falso 404» corregido, el JavaScript reducido, core 0.5.1 y Analytics activado (script 200), comprobado en producción; las de carpintería, además, las preguntas frecuentes sin JavaScript. Las tareas sueltas de Ysst están en `andrei-leads-tech/PENDIENTES.md`.
+
+**Hecho (21/11/2026, nueva generación, rama `claude/project-thread-pimpae`):** `next` 16.4.6 y React 19.3.1 en los 7 templates (PR #12); `preload` en lugar de `priority` y AVIF; core 0.6.0 (lógica común, `origen`, `videoHero`, `estiloMarca`), conectado solo en `electricidad-2`; `registry/` con 8 piezas base; `apps/playground`; Turborepo local. Las demos de `webs/demos/` siguen en `next` 16.4.0 hasta que Ysst las suba en local. Contexto y decisiones del debate: carpeta del proyecto `nueva-generacion/`.
 
 **Más adelante:** 404 sin JavaScript (§11), **descartado por ahora** (Ysst, 16/10/2026). Si se retoma: un `proxy.ts` por template con `matcher` solo en `/servicios/:path*` y `/trabajos/:path*` que, si el slug no está en `site.config` (o no hay trabajos ni galería), reescribe a una ruta inexistente (`NextResponse.rewrite(new URL("/__no-encontrada", request.url))`): Next sirve entonces la `not-found.tsx` prerenderizada, completa y con 404. Probado en `carpinteria-metalica-3` (sin commitear): 404 y `h1=1` desde la primera petición. Coste: una función por petición en esas rutas (también en las páginas válidas; latencia y facturación de middleware en Vercel) y el proxy importa `site.config` (la documentación de Next desaconseja módulos compartidos en el proxy). Alternativa sin función, sin probar: `rewrites` en `next.config.ts` generadas desde `site.config`. Turborepo (con 3 o 4 templates); script `create-site` (automatiza los pasos 1–4 de `docs/nuevo-cliente.md`); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
 
