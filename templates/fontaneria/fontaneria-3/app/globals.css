@@ -1,0 +1,340 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «La furgoneta» (fontaneria-3). Valores de la entrega de Claude Design
+ * («Entrega fontaneria-3.md», §2: paleta arena suavizada en la revisión).
+ * Solo --color-primario (y --color-sobre-primario, que calcula core) se sobrescriben
+ * desde site.config: estilo del <html> en app/layout.tsx.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #f3ece0; /* arena: fondo de toda la página, fijo */
+  --color-superficie: #fdfbf7; /* piedras */
+  --color-alterna: #ebe3d5; /* piedras de garantías */
+  --color-texto: #2a2420; /* 13:1 sobre el fondo */
+  --color-texto-suave: #5e554c; /* 6,2:1 */
+  --color-borde: #cfc3ae;
+  --color-primario: #1f3a6b; /* azul marino de azulejo; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #9a4a3a; /* terracota: estrellas */
+  --color-foco: #2a2420;
+
+  --font-titulo: var(--font-fraunces), Georgia, serif;
+  --font-texto: var(--font-figtree), system-ui, sans-serif;
+
+  --radius-boton: 1.25rem 2rem 1.5rem 2.25rem;
+  --radius-tarjeta: 2.5rem 3.5rem 2rem 4rem;
+  --radius-foto: 10rem 10rem 1.5rem 1.5rem; /* arco */
+
+  --text-display: clamp(2.75rem, 1.5rem + 5vw, 6.5rem);
+  --text-display--line-height: 0.98;
+
+  /* Propios */
+  --color-tinta: #23211e; /* CTA final y pie */
+  --color-sobre-tinta: #efe8dc;
+  /* Tintes del primario: siguen al color del cliente. */
+  --color-primario-suave: color-mix(in oklch, var(--color-primario) 18%, #fdfbf7);
+  --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.07) c h);
+  --color-secundario-hover: oklch(from var(--color-primario) 0.93 calc(c * 0.25) h);
+  /* Números, capitulares, iniciales y ciudad en cursiva. Con un primario claro
+     (core da texto oscuro encima), el layout lo oscurece: lib/marca.ts. */
+  --color-primario-texto: var(--color-primario);
+
+  /* Piedras: radios asimétricos */
+  --radius-piedra-1: 3rem 2rem 3.5rem 2.25rem;
+  --radius-piedra-2: 2rem 3.5rem 2.25rem 4rem;
+  --radius-piedra-3: 4rem 2.5rem 3rem 1.75rem;
+  --radius-piedra-4: 2.25rem 3rem 4rem 2.5rem;
+  --radius-barra-wa: 2rem 1.25rem 2.25rem 1.5rem;
+
+  --text-h2: clamp(1.875rem, 1.3rem + 2.4vw, 3.25rem);
+  --text-h2--line-height: 1.05;
+  --text-cita: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+  --text-cita--line-height: 1.2;
+  --text-entrada: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+  --text-entrada--line-height: 1.5;
+
+  --container-contenido: 1328px;
+}
+
+@utility contenedor {
+  width: 100%;
+  max-width: var(--container-contenido);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 0.6rem + 3.2vw, 4rem);
+}
+
+/* Bloque de sección estándar (aireada). */
+@utility seccion {
+  padding-block: clamp(2rem, 1.5rem + 2vw, 4rem) clamp(4rem, 3rem + 4vw, 7.5rem);
+}
+
+@utility titulo-seccion {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: var(--text-h2);
+  line-height: var(--text-h2--line-height);
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+/* Separador ondulado fino (6 px) en el color del borde. */
+@utility onda-fina {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 6px;
+    background-color: var(--color-borde);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 6'%3E%3Cpath d='M0 3C10 0 20 0 30 3S50 6 60 3' fill='none' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E")
+      left top / 60px 6px repeat-x;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+    line-height: 1.65;
+    /* Fraunces con terminales blandos (SOFT 100); Figtree ignora el eje. */
+    font-variation-settings: "SOFT" 100;
+    overflow-x: clip;
+  }
+  a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  /* Foco: 3 px en --color-foco, separado 2 px, con el hueco en blanco. */
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #ffffff;
+  }
+  .sobre-tinta :focus-visible {
+    outline-color: var(--color-sobre-tinta);
+    box-shadow: 0 0 0 2px var(--color-tinta);
+  }
+}
+
+/* ── Cabecera ─────────────────────────────────────────────────────────────
+   Sólida sobre la arena (relative en móvil, sticky en escritorio). Si la
+   página empieza con una foto a sangre (`data-cabecera-sobre-foto`), queda
+   transparente encima, con texto blanco. En escritorio va fija y se vuelve
+   sólida al bajar con animation-timeline: scroll() (solo CSS); sin soporte,
+   sale sólida desde el principio. */
+.cabecera {
+  position: relative;
+  z-index: 30;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+@media (min-width: 768px) {
+  .cabecera {
+    position: sticky;
+    top: 0;
+    box-shadow: 0 1px 0 var(--color-borde);
+  }
+}
+body:has([data-cabecera-sobre-foto]) .cabecera {
+  position: absolute;
+  inset: 0 0 auto;
+  background-color: transparent;
+  color: #ffffff;
+  box-shadow: none;
+}
+/* Velo de tinta bajo el texto blanco de la cabecera: 0,66 en toda su altura
+   (sea cual sea: nombre en dos líneas, logo…) y se desvanece 80 px por debajo.
+   Va en la cabecera, no en la foto, para que la acompañe también cuando es fija.
+   Con 0,66 de tinta, el blanco da ≥ 5:1 aunque la foto sea blanca. */
+body:has([data-cabecera-sobre-foto]) .cabecera::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: calc(100% + 80px);
+  background: linear-gradient(to bottom, rgb(35 33 30 / 0.66) 0, rgb(35 33 30 / 0.66) calc(100% - 80px), rgb(35 33 30 / 0));
+  pointer-events: none;
+}
+/* Cambio de transparente a sólida de golpe a mitad del recorrido: sin estados
+   intermedios con texto a medio color sobre un fondo a medio pintar. */
+@keyframes cabecera-solida {
+  0%,
+  49.9% {
+    background-color: transparent;
+    color: #ffffff;
+    box-shadow: none;
+  }
+  50%,
+  100% {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    box-shadow: 0 1px 0 var(--color-borde);
+  }
+}
+@keyframes velo-fuera {
+  0%,
+  49.9% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@media (min-width: 1024px) {
+  body:has([data-cabecera-sobre-foto]) .cabecera {
+    position: fixed;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    box-shadow: 0 1px 0 var(--color-borde);
+  }
+  /* Sin animation-timeline la cabecera es sólida desde el principio: sin velo. */
+  body:has([data-cabecera-sobre-foto]) .cabecera::before {
+    display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    body:has([data-cabecera-sobre-foto]) .cabecera {
+      background-color: transparent;
+      color: #ffffff;
+      box-shadow: none;
+      animation: cabecera-solida linear both;
+      animation-timeline: scroll();
+      animation-range: 0 240px;
+    }
+    body:has([data-cabecera-sobre-foto]) .cabecera::before {
+      display: block;
+      animation: velo-fuera linear both;
+      animation-timeline: scroll();
+      animation-range: 0 240px;
+    }
+  }
+}
+
+/* ── Menú a pantalla completa (popover nativo) ─────────────────────────── */
+.menu-pantalla {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  overflow: auto;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+.menu-pantalla:popover-open {
+  display: flex;
+  flex-direction: column;
+  animation: entra-menu 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.menu-pantalla:popover-open .menu-enlace {
+  animation: entra-menu 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(60ms + var(--i, 0) * 40ms);
+}
+@keyframes entra-menu {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+}
+@keyframes entra-menu-quieto {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-pantalla:popover-open,
+  .menu-pantalla:popover-open .menu-enlace {
+    animation-name: entra-menu-quieto;
+  }
+}
+/* Página actual en cursiva (cada página lleva un marcador `data-pagina`). */
+body:has([data-pagina="inicio"]) [data-ruta="/"],
+body:has([data-pagina="servicios"]) [data-ruta="/servicios"],
+body:has([data-pagina="contacto"]) [data-ruta="/contacto"],
+body:has([data-pagina="trabajos"]) [data-ruta="/trabajos"],
+body:has([data-pagina="empresa"]) [data-ruta="/empresa"] {
+  font-style: italic;
+}
+
+/* ── Piedras: aparición al hacer scroll (solo CSS, como aparecer.css) ───── */
+@keyframes piedra {
+  from {
+    opacity: 0;
+    scale: 0.96;
+    rotate: -1deg;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-piedra] {
+      animation: piedra linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .piedra-hover {
+    transition: scale 180ms ease;
+  }
+  @media (hover: hover) {
+    .piedra-hover:hover {
+      scale: 1.02;
+    }
+  }
+}
+
+/* Botones: pulsado (solo transform). */
+@media (prefers-reduced-motion: no-preference) {
+  .boton {
+    transition:
+      background-color 160ms ease,
+      transform 120ms ease;
+  }
+  .boton:active {
+    transform: translateY(1px) scale(0.97);
+  }
+}
+
+/* ── Legales: el texto y el <h1> los pone core; aquí solo el aspecto ───── */
+.lectura-legal article {
+  max-width: 66ch;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 1.5rem 0 0;
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  line-height: 1.15;
+}
+.lectura-legal a {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
