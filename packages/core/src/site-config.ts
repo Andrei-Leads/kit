@@ -1,4 +1,6 @@
 import { z } from "zod";
+
+import { avisarContraste } from "./marca";
 import { DIAS } from "./horario";
 
 /* ─────────────────────────── Piezas reutilizables ─────────────────────────── */
@@ -9,10 +11,14 @@ const telefonoES = z
 
 const anio = z.number().int().min(1900).max(2100);
 
+/** De dónde sale una foto (desde 0.6.0). Decide la etiqueta que pinta el template (`etiquetaOrigen`). */
+const origenImagen = z.enum(["cliente", "ficha-google", "ia", "stock"]);
+
 /** Único tipo de imagen del contrato. `alt` es obligatorio (accesibilidad). */
 const imagen = z.object({
   src: z.string().min(1),
   alt: z.string().min(1, "Texto alternativo obligatorio"),
+  origen: origenImagen.optional(),
 });
 
 /** Texto largo: lista de párrafos. */
@@ -283,6 +289,18 @@ export const siteConfigSchema = z
       })
       .optional(),
     imagenesHero: z.array(imagen).default([]),
+    /**
+     * Vídeo corto del hero, en bucle y sin sonido (desde 0.6.0; solo tipo proyecto).
+     * El póster es obligatorio: es el LCP, lo que se ve con «reducir movimiento» y la
+     * imagen de Open Graph si no hay `imagenesHero`.
+     */
+    videoHero: z
+      .object({
+        src: z.string().min(1), // H.264 en .mp4
+        srcAv1: z.string().min(1).optional(),
+        poster: imagen,
+      })
+      .optional(),
     galeria: z
       .array(imagen.extend({ titulo: z.string().optional() }))
       .default([]),
@@ -343,6 +361,8 @@ export type SiteConfigInput = z.input<typeof siteConfigSchema>;
 export type SiteConfig = z.output<typeof siteConfigSchema>;
 
 export type Imagen = z.output<typeof imagen>;
+export type OrigenImagen = z.output<typeof origenImagen>;
+export type VideoHero = NonNullable<SiteConfig["videoHero"]>;
 export type Servicio = SiteConfig["servicios"][number];
 export type Trabajo = SiteConfig["trabajos"][number];
 export type Resena = SiteConfig["resenas"][number];
@@ -362,5 +382,6 @@ export function defineSiteConfig(config: SiteConfigInput): SiteConfig {
       "site.config inválido:\n" + z.prettifyError(resultado.error)
     );
   }
+  avisarContraste(resultado.data.marca.colorPrimario);
   return resultado.data;
 }

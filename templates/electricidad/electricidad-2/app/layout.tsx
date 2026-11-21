@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
-import { Analitica, crearMetadatos, DatosEstructurados, horarioVisible, mensajeGeneral } from "@andrei-leads/core";
+import { Analitica, crearMetadatos, DatosEstructurados, estiloMarca, horarioVisible, mensajeGeneral } from "@andrei-leads/core";
 import "./globals.css";
 import config from "@/site.config";
 import { menu } from "@/lib/navegacion";
@@ -43,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="es"
       // El script de arriba añade `js` antes de hidratar: la clase difiere a propósito del HTML del servidor.
       suppressHydrationWarning
-      style={{ "--color-primario": config.marca.colorPrimario } as React.CSSProperties}
+      style={estiloMarca(config)}
       className={`${serif.variable} ${sans.variable}`}
     >
       <head>

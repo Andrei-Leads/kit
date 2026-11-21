@@ -65,3 +65,6 @@ export {
 } from "./contenido";
 export type { Paso, TipoNegocio } from "./contenido";
 export { MENSAJE_GENERICO, MENSAJE_NO_ENCONTRADA, mensajeGeneral, mensajeServicio, mensajeTrabajo } from "./mensajes";
+export type { OrigenImagen, VideoHero } from "./site-config";
+export { etiquetaOrigen } from "./imagen";
+export { estiloMarca, colorSobre, contraste, TEXTO_CLARO, TEXTO_OSCURO } from "./marca";

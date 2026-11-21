@@ -180,6 +180,7 @@ Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <
 | **Formato** (0.6.0): `telefonoVisible`, `listaY`, `mediaVisible`, `direccionLinea`, `urlComoLlegar`, `listaRedes`, `horarioVisible`, `iniciales`, `minusculaInicial`, `MESES`, `fechaResena`, `precioDesde`; tipo `Ancla` | Lógica pura para pintar datos (antes copiada en el `lib/formato.ts` de cada template) | El template no la reescribe en `lib/`: la importa |
 | **Mensajes de WhatsApp** (0.6.0): `MENSAJE_GENERICO`, `MENSAJE_NO_ENCONTRADA`, `mensajeGeneral`, `mensajeServicio`, `mensajeTrabajo` | El mensaje de los datos o uno por defecto | Cada uno acepta el texto por defecto del template (`mensajeServicio(s, (t) => `Precio de ${t}`)`), para que cada diseño lleve el suyo |
 | **Rutas y contenido** (0.6.0): `hayTrabajos`, `parametrosServicios`, `parametrosTrabajos` (relleno `SLUG_RELLENO = "_"`), `buscarServicio`, `buscarTrabajo`, `otrosServicios`, `trabajosDelServicio`, `otrosTrabajos`, `servicioDelTrabajo`, `PASOS_POR_DEFECTO`, `pasosProceso(proceso, tipo \| pasos)`; tipos `Paso`, `TipoNegocio` | `generateStaticParams` en una línea y búsqueda del slug | `ensureStatic` y `notFound()` siguen en el template (API de Next). `lib/anio.ts` también se queda en el template: usa `next/cache` |
+| **Marca y fotos** (0.6.0): `estiloMarca(config)`, `colorSobre`, `contraste`, `etiquetaOrigen(imagen)`; tipos `OrigenImagen`, `VideoHero` | `estiloMarca`: el `style` del `<html>` con `--color-primario` y `--color-sobre-primario` calculado (blanco o `#111111`; aviso en el build si no llega a 4,5:1). `etiquetaOrigen`: «Imagen generada con IA» / «Foto de tu ficha de Google» según `imagen.origen` | `<html lang="es" style={estiloMarca(config)}>` sustituye al `style` a mano de §6 |
 
 `saludo` se eliminó en 0.2.0. `AvisoLegal` muestra `negocio.registroMercantil` si existe (desde 0.3.0).
 
@@ -208,7 +209,7 @@ Consecuencia: **toda clase de Tailwind usada por core tiene que estar dentro de 
 
 Cada template (y cada web de cliente) tiene un `site.config.ts` en la raíz con `export default defineSiteConfig({...})`. **Los templates no contienen ningún dato del negocio escrito a mano: todo sale de `config`.** Crear una web nueva consiste en rellenar ese archivo.
 
-Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; + `analitica` en 0.5.0). *Imagen* = `{src, alt}` (alt obligatorio). *Párrafos* = `string[]`. Las listas sin "mínimo" son `[]` por defecto.
+Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; + `analitica` en 0.5.0). *Imagen* = `{src, alt, origen?}` (alt obligatorio; `origen` desde 0.6.0: `cliente`, `ficha-google`, `ia` o `stock`). *Párrafos* = `string[]`. Las listas sin "mínimo" son `[]` por defecto.
 
 | Bloque | Campos (`?` = opcional) | Sin datos |
 |---|---|---|
@@ -227,6 +228,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; 
 | `empresa` | {`historia` (párrafos), `imagenes` (imagen[]), `equipo` [{`nombre`, `cargo?`, `foto?` (imagen)}]}; por defecto, todo vacío | `/empresa` existe siempre; cada bloque vacío se oculta |
 | `comunidades` | opcional: {`texto` (párrafos, mínimo 1), `puntos`, `ieev` (por defecto `false`)} | Sin bloque ni `/comunidades` |
 | `imagenesHero` | imagen[] | Hero sin foto (o con la que elija el template) |
+| `videoHero` | opcional (0.6.0): {`src` (.mp4 H.264), `srcAv1?`, `poster` (imagen, obligatorio)}. Solo tipo proyecto | Sin vídeo |
 | `galeria` | imagen[] con `titulo?` | Se oculta |
 | `preguntas` | {`pregunta`, `respuesta`} | Se oculta |
 | `marca` | `colorPrimario?` (hex `#rrggbb`); por defecto `{}` | Color del template |
