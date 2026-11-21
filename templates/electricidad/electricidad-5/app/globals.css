@@ -1,0 +1,415 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Casa al día» (electricidad-5). Valores del encargo (§8) y de la
+ * especificación de Claude Design. Solo --color-primario (y --color-sobre-primario,
+ * que calcula core) se sobrescriben desde site.config: estilo del <html> en
+ * app/layout.tsx. Fondo, alterna y primario-suave se derivan del primario con
+ * luminosidad y croma fijos (más abajo, con oklch(from …) si el navegador lo entiende).
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: color-mix(in oklab, var(--color-primario) 5%, white);
+  --color-superficie: #ffffff;
+  --color-alterna: color-mix(in oklab, var(--color-primario) 10%, white);
+  --color-texto: #10201b;
+  --color-texto-suave: #44564f;
+  --color-borde: #7f9189;
+  --color-primario: #0f5c4a; /* verde eucalipto; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #d4f27a; /* lima: solo decorativo, nunca lleva texto */
+  --color-foco: #10201b;
+
+  --font-titulo: var(--font-commissioner), system-ui, sans-serif;
+  --font-texto: var(--font-commissioner), system-ui, sans-serif;
+
+  --radius-boton: 999px;
+  --radius-tarjeta: 20px; /* 28px desde 768 px (más abajo, en :root) */
+  --radius-foto: 22px;
+
+  --text-display: clamp(2.5rem, 1.75rem + 3vw, 4.5rem);
+  --text-display--line-height: 1;
+
+  /* Propios */
+  --color-pleno: var(--color-primario);
+  --color-pleno-hover: color-mix(in oklab, var(--color-primario) 85%, black);
+  --color-primario-suave: color-mix(in oklab, var(--color-primario) 20%, white);
+  --color-pie: color-mix(in oklab, var(--color-primario) 16%, white);
+
+  --text-cifra: clamp(2.75rem, 2rem + 3vw, 5rem);
+  --text-cifra--line-height: 1;
+  --text-h2: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  --text-h2--line-height: 1.1;
+  --text-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-cuerpo--line-height: 1.55;
+
+  --container-contenido: 1280px;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-fondo: oklch(from var(--color-primario) 0.97 0.015 h);
+    --color-alterna: oklch(from var(--color-primario) 0.93 0.03 h);
+    --color-pleno-hover: oklch(from var(--color-primario) calc(l - 0.06) c h);
+    --color-primario-suave: oklch(from var(--color-primario) 0.9 calc(c * 0.4) h);
+    --color-pie: oklch(from var(--color-primario) 0.91 0.035 h);
+  }
+}
+
+:root {
+  --hueco-bento: 12px;
+}
+@media (min-width: 768px) {
+  :root {
+    --radius-tarjeta: 28px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --hueco-bento: 16px;
+  }
+}
+
+@utility contenedor {
+  width: 100%;
+  max-width: var(--container-contenido);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 0.5rem + 3vw, 3.5rem);
+}
+
+/* Sección aireada. */
+@utility seccion {
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);
+}
+
+@utility titulo-seccion {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 750;
+  font-size: var(--text-h2);
+  line-height: var(--text-h2--line-height);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* Cifra grande de las tarjetas. */
+@utility cifra {
+  font-family: var(--font-titulo);
+  font-weight: 750;
+  font-size: var(--text-cifra);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subrayado lima de cifra (decorativo, sin texto). */
+@utility raya-acento {
+  display: block;
+  width: 36px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: var(--color-acento);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.55;
+    overflow-x: clip;
+  }
+  a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  /* Barra móvil fija (72 px + zona segura): que no tape el elemento con foco (WCAG 2.4.11). */
+  @media (width < 48rem) {
+    html {
+      scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom));
+    }
+  }
+  /* Foco: anillo de 3 px. Sobre el pleno, en sobre-primario. */
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+  .sobre-pleno :focus-visible {
+    outline-color: var(--color-sobre-primario);
+  }
+  .sobre-pleno .sobre-claro :focus-visible {
+    outline-color: var(--color-foco);
+  }
+}
+
+/* ── Botones: pulsado y hover (solo transform y color) ─────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .boton {
+    transition:
+      background-color 150ms ease,
+      transform 150ms ease;
+  }
+  .boton:active {
+    transform: scale(0.98);
+  }
+}
+
+/* ── Tarjeta-enlace: escala al pasar o enfocar; la foto de dentro, más ── */
+@media (prefers-reduced-motion: no-preference) {
+  .tarjeta-enlace {
+    transition: transform 300ms ease;
+  }
+  .tarjeta-enlace img {
+    transition: transform 300ms ease;
+  }
+  .tarjeta-enlace:focus-visible {
+    transform: scale(1.01);
+  }
+  .tarjeta-enlace:focus-visible img {
+    transform: scale(1.04);
+  }
+  @media (hover: hover) {
+    .tarjeta-enlace:hover {
+      transform: scale(1.01);
+    }
+    .tarjeta-enlace:hover img {
+      transform: scale(1.04);
+    }
+  }
+}
+
+/* ── Cifra que sube dentro de su máscara al entrar (fuera del hero) ────── */
+@keyframes cifra-sube {
+  from {
+    transform: translateY(0.4em);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-cifra-sube] > * {
+      animation: cifra-sube linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 50%;
+    }
+  }
+}
+[data-cifra-sube] {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+[data-cifra-sube] > * {
+  display: inline-block;
+}
+
+/* Escalonado de 60 ms en listas de tarjetas (aparecer.css usa la línea de tiempo de view(),
+   así que el retraso se aplica como desplazamiento del rango). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-aparecer] {
+      animation-range: entry calc(var(--i, 0) * 4%) entry calc(60% + var(--i, 0) * 4%);
+    }
+  }
+}
+
+/* ── Hero bento ────────────────────────────────────────────────────────────
+   Todo CSS. El componente pinta solo las tarjetas con dato y pone
+   data-cifras (0–5) y data-foto. Orden del DOM = orden de lectura (titular →
+   cifras → foto); la posición cambia con grid-column / grid-row, nunca con order. */
+.hero-bento {
+  display: grid;
+  gap: var(--hueco-bento);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: dense;
+}
+.hero-bento > .titular,
+.hero-bento > .ancha-movil {
+  grid-column: 1 / -1;
+}
+.hero-bento > .foto {
+  grid-column: 1 / -1;
+  grid-row: 3;
+}
+.hero-bento[data-cifras="0"] > .foto {
+  grid-row: 2;
+}
+@media (min-width: 1024px) {
+  .hero-bento {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .hero-bento > .titular {
+    grid-column: 1 / 8;
+    grid-row: 1;
+  }
+  .hero-bento > .foto {
+    grid-column: 8 / 13;
+    grid-row: 1;
+  }
+  .hero-bento[data-cifras="4"] > .cifra-tarjeta {
+    grid-column: span 3;
+    grid-row: 2;
+  }
+  .hero-bento[data-cifras="3"] > .cifra-tarjeta {
+    grid-column: span 4;
+    grid-row: 2;
+  }
+  .hero-bento[data-cifras="2"] > .cifra-tarjeta {
+    grid-column: span 6;
+    grid-row: 2;
+  }
+  /* 1 o 5 cifras con foto: titular 7×2 y la última cifra bajo la foto. */
+  .hero-bento[data-foto="si"]:is([data-cifras="1"], [data-cifras="5"]) > .titular {
+    grid-row: 1 / 3;
+  }
+  .hero-bento[data-foto="si"]:is([data-cifras="1"], [data-cifras="5"]) > .cifra-ultima {
+    grid-column: 8 / 13;
+    grid-row: 2;
+  }
+  .hero-bento[data-foto="si"][data-cifras="5"] > .cifra-tarjeta:not(.cifra-ultima) {
+    grid-column: span 3;
+    grid-row: 3;
+  }
+  /* Sin foto: el titular a las 12 columnas y las cifras debajo. */
+  .hero-bento[data-foto="no"] > .titular {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .hero-bento[data-foto="no"][data-cifras="1"] > .titular {
+    grid-column: 1 / 9;
+  }
+  .hero-bento[data-foto="no"][data-cifras="1"] > .cifra-tarjeta {
+    grid-column: 9 / 13;
+    grid-row: 1;
+  }
+  .hero-bento[data-foto="no"][data-cifras="5"] > .cifra-tarjeta {
+    grid-column: span 4;
+    grid-row: 2;
+  }
+  .hero-bento[data-foto="no"][data-cifras="5"] > .cifra-tarjeta:nth-child(n + 5) {
+    grid-column: span 6;
+    grid-row: 3;
+  }
+}
+
+/* ── Menú a pantalla completa (popover nativo) ─────────────────────────── */
+.menu-pantalla {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  overflow: auto;
+  background-color: var(--color-pleno);
+  color: var(--color-sobre-primario);
+}
+.menu-pantalla:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-pantalla {
+    transition:
+      opacity 220ms ease,
+      transform 220ms ease,
+      overlay 220ms allow-discrete,
+      display 220ms allow-discrete;
+  }
+  .menu-pantalla:popover-open {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @starting-style {
+    .menu-pantalla:popover-open {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-pantalla:popover-open {
+    animation: menu-aparece 220ms ease both;
+  }
+}
+@keyframes menu-aparece {
+  from {
+    opacity: 0;
+  }
+}
+/* Página actual: punto lima (cada página lleva un marcador `data-pagina`). */
+.menu-pantalla .punto-actual {
+  display: none;
+}
+body:has([data-pagina="inicio"]) [data-ruta="/"] .punto-actual,
+body:has([data-pagina="servicios"]) [data-ruta="/servicios"] .punto-actual,
+body:has([data-pagina="contacto"]) [data-ruta="/contacto"] .punto-actual,
+body:has([data-pagina="trabajos"]) [data-ruta="/trabajos"] .punto-actual,
+body:has([data-pagina="empresa"]) [data-ruta="/empresa"] .punto-actual {
+  display: inline-block;
+}
+
+/* ── Barra móvil: entra desde abajo al cargar ──────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-movil {
+    transition: transform 280ms ease 150ms;
+  }
+  @starting-style {
+    .barra-movil {
+      transform: translateY(100%);
+    }
+  }
+}
+
+/* ── Legales: el texto y el <h1> los pone core; aquí solo el aspecto ───── */
+.lectura-legal article {
+  max-width: 68ch;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-titulo);
+  font-weight: 750;
+  font-size: clamp(2.25rem, 1.75rem + 2.4vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 1.75rem 0 0.25rem;
+  font-family: var(--font-titulo);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.6rem;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  font-weight: 600;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}

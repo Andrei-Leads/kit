@@ -1,0 +1,220 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Mándanos una foto» (electricidad-7): papel cálido y conversación en burbujas.
+ * Solo --color-primario (y --color-sobre-primario, que calcula core) se sobrescriben desde
+ * site.config (`estiloMarca` en el <html>). Los derivados salen del primario.
+ */
+@theme {
+  /* 16 tokens comunes (registry/README.md) */
+  --color-fondo: #f5efe4; /* papel */
+  --color-superficie: #fffdf8; /* burbujas entrantes y tarjetas */
+  --color-alterna: #ebe3d4; /* bandas */
+  --color-texto: #2a2420;
+  --color-texto-suave: #5f554c; /* ≥ 4,5:1 sobre fondo y alterna */
+  --color-borde: #8a7d6c; /* controles: ≥ 3:1 sobre superficie */
+  --color-primario: #0e7490; /* verde azulado; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #e8b04a; /* mostaza: icono de cámara y puntos; nunca texto */
+  --color-foco: #2a2420;
+  --font-titulo: var(--font-nunito), ui-rounded, system-ui, sans-serif;
+  --font-texto: var(--font-nunito), ui-rounded, system-ui, sans-serif;
+  --radius-boton: 999px;
+  --radius-tarjeta: 24px;
+  --radius-foto: 18px;
+  --text-display: clamp(2.25rem, 1.7rem + 2.4vw, 3.75rem);
+
+  /* Tokens propios */
+  --color-burbuja-sale: color-mix(in oklab, var(--color-primario) 12%, white);
+  /* Borde de respuesta-rapida: el primario; `bordeRespuesta()` lo cambia por --color-borde si no llega a 3:1. */
+  --color-borde-respuesta: var(--color-primario);
+  --color-primario-hover: color-mix(in oklab, var(--color-primario) 85%, black);
+  --color-wa-cta: color-mix(in oklab, var(--color-primario) 22%, var(--color-superficie));
+  --color-wa-cta-hover: color-mix(in oklab, var(--color-primario) 32%, var(--color-superficie));
+  --color-linea: rgb(42 36 32 / 0.08);
+  --color-linea-fuerte: rgb(42 36 32 / 0.14);
+
+  --radius-burbuja-entra: 22px 22px 22px 6px;
+  --radius-burbuja-sale: 22px 22px 6px 22px;
+  --shadow-capsula: 0 6px 24px rgb(42 36 32 / 0.12);
+  --shadow-chat: 0 22px 50px -24px rgb(42 36 32 / 0.35);
+  --shadow-panel: 0 14px 40px rgb(42 36 32 / 0.18);
+
+  --text-h2: clamp(1.625rem, 1.35rem + 1.2vw, 2.25rem);
+  --text-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-entrada: clamp(1.125rem, 1rem + 0.6vw, 1.4rem);
+
+  --container-contenido: 1184px;
+  --container-chat: 520px;
+  --container-lectura: 68ch;
+}
+
+/* Burbuja saliente con color relativo donde el navegador lo entiende (sigue al primario). */
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-burbuja-sale: oklch(from var(--color-primario) 0.93 0.04 h);
+  }
+}
+
+@utility contenedor {
+  max-width: calc(var(--container-contenido) + 2 * clamp(16px, 4vw, 48px));
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 48px);
+}
+
+/* Burbujas: una esquina más cerrada (la del lado de quien habla). */
+@utility burbuja-entra {
+  border-radius: var(--radius-burbuja-entra);
+}
+@utility burbuja-sale {
+  border-radius: var(--radius-burbuja-sale);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-padding-top: 6rem;
+  }
+  @media (max-width: 63.99rem) {
+    html {
+      scroll-padding-bottom: calc(72px + 1rem);
+    }
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  a {
+    color: inherit;
+  }
+  /* Foco: anillo de 2 px en --color-foco con 2 px de separación. */
+  :focus-visible {
+    outline: 2px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  /* Pulsado de botones y respuestas rápidas. */
+  .pulsable {
+    transition:
+      transform 100ms ease-out,
+      background-color 150ms ease;
+  }
+  .pulsable:active {
+    transform: scale(0.97);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Animaciones (solo transform y opacity; el estado por defecto es el visible)
+ * ------------------------------------------------------------------ */
+
+/* Burbujas nuevas del asistente (se insertan con JS): @starting-style, 200 ms. */
+.burbuja-nueva-entra,
+.burbuja-nueva-sale {
+  transition:
+    opacity 200ms ease-out,
+    translate 200ms ease-out;
+}
+@starting-style {
+  .burbuja-nueva-entra {
+    opacity: 0;
+    translate: 0 8px;
+  }
+  .burbuja-nueva-sale {
+    opacity: 0;
+    translate: 8px 0;
+  }
+}
+
+/* Panel del menú: opacidad + 6 px al abrir (API popover, sin JS). */
+.panel-menu {
+  transition:
+    opacity 200ms ease-out,
+    translate 200ms ease-out,
+    display 200ms allow-discrete,
+    overlay 200ms allow-discrete;
+}
+.panel-menu:popover-open {
+  opacity: 1;
+  translate: 0 0;
+}
+@starting-style {
+  .panel-menu:popover-open {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+}
+/* El botón «Menú» dice «Cerrar» con el panel abierto (sin JS: :has). */
+.texto-cerrar {
+  display: none;
+}
+html:has(#menu:popover-open) .texto-menu {
+  display: none;
+}
+html:has(#menu:popover-open) .texto-cerrar {
+  display: inline;
+}
+
+@keyframes barra-entra {
+  from {
+    translate: 0 100%;
+  }
+}
+@keyframes capsula-baja {
+  to {
+    scale: 0.96;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .barra-movil {
+    animation: barra-entra 280ms 150ms ease-out both;
+  }
+  @supports (animation-timeline: scroll()) {
+    .capsula {
+      transform-origin: top center;
+      animation: capsula-baja linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 120px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulsable:active {
+    transform: none;
+  }
+  .burbuja-nueva-entra,
+  .burbuja-nueva-sale,
+  .panel-menu {
+    translate: none !important;
+  }
+  @starting-style {
+    .burbuja-nueva-entra,
+    .burbuja-nueva-sale {
+      translate: none;
+    }
+    .panel-menu:popover-open {
+      translate: none;
+    }
+  }
+}

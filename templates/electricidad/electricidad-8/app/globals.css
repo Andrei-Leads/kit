@@ -1,0 +1,256 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Comunidades y fincas» (electricidad-8), encargo §8: papel de plano, tinta azul noche
+ * y latón. Solo --color-primario se sobrescribe desde site.config (estiloMarca en layout.tsx, que
+ * también calcula --color-sobre-primario). Regla: el primario es línea y relleno, nunca texto sobre
+ * papel; sobre noche, los botones principales van en superficie.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #f4f2ec; /* papel */
+  --color-superficie: #ffffff; /* hoja del dossier */
+  --color-alterna: #e9e5da; /* bandas claras */
+  --color-texto: #0f1e3d; /* azul noche como tinta */
+  --color-texto-suave: #45506a; /* ≥ 4,5:1 sobre fondo y alterna */
+  --color-borde: #6f7891; /* controles (≥ 3:1) */
+  --color-primario: #b8892d; /* latón; sustituible */
+  --color-sobre-primario: #0f1e3d;
+  --color-acento: #1d3a6e; /* segunda tinta: enlaces y cotas */
+  --color-foco: #0f1e3d;
+  /* --font-newsreader y --font-public las pone next/font en <html> (layout.tsx). */
+  --font-titulo: var(--font-newsreader), Georgia, serif;
+  --font-texto: var(--font-public), system-ui, sans-serif;
+  --radius-boton: 0;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+  --text-display: clamp(2.25rem, 1.6rem + 3.2vw, 5.25rem);
+
+  /* Propios */
+  --color-noche: #0f1e3d;
+  --color-noche-texto: #f4f2ec;
+  --color-noche-suave: #b7bfd3; /* ≥ 4,5:1 sobre noche */
+  --color-linea-plano: color-mix(in srgb, var(--color-noche) 16%, transparent);
+  --color-linea-plano-noche: color-mix(in srgb, var(--color-noche-texto) 10%, transparent);
+  --color-primario-suave: color-mix(in oklab, var(--color-primario) 12%, white);
+  --text-cifra: clamp(2.75rem, 2rem + 3vw, 4.5rem);
+  --text-h2: clamp(1.75rem, 1.35rem + 1.8vw, 3rem);
+  --text-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+}
+
+:root {
+  --grosor-filete: 1px;
+  --paso-reticula: 24px;
+  --primario-hover: color-mix(in oklab, var(--color-primario) 86%, black);
+  --pad: 20px;
+}
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-suave: oklch(from var(--color-primario) 0.94 calc(c * 0.3) h);
+    --primario-hover: oklch(from var(--color-primario) calc(l - 0.07) c h);
+  }
+}
+@media (min-width: 40rem) {
+  :root {
+    --pad: 32px;
+  }
+}
+@media (min-width: 64rem) {
+  :root {
+    --pad: 56px;
+  }
+}
+
+@layer base {
+  html {
+    /* Solo la barra de menú es fija (64 px): los anclajes no quedan debajo. */
+    scroll-padding-top: 72px;
+    /* La barra móvil fija (≈ 72 px) no tapa el foco (WCAG 2.4.11). */
+    scroll-padding-bottom: 88px;
+  }
+  @media (min-width: 48rem) {
+    html {
+      scroll-padding-bottom: 0;
+    }
+  }
+  body {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* Contenedor del template: 1200 px con margen lateral fluido. */
+@utility contenedor {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1200px; /* el relleno lateral va dentro */
+  padding-inline: var(--pad);
+}
+
+/* Versalitas de etiquetas: Public Sans no trae small-caps reales (ficha §02). */
+@utility versalitas {
+  font-family: var(--font-texto);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+@utility cifras-antiguas {
+  font-variant-numeric: oldstyle-nums;
+}
+
+/* Banda noche con la retícula de plano (CSS, sin imagen; estática). */
+@utility banda-noche {
+  --color-foco: #ffffff;
+  background-color: var(--color-noche);
+  color: var(--color-noche-texto);
+  background-image:
+    linear-gradient(var(--color-linea-plano-noche) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-linea-plano-noche) 1px, transparent 1px);
+  background-size: var(--paso-reticula) var(--paso-reticula);
+}
+
+/* Retícula tenue sobre papel: hero tipográfico (sin foto). */
+@utility reticula-papel {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--color-texto) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-texto) 6%, transparent) 1px, transparent 1px);
+  background-size: var(--paso-reticula) var(--paso-reticula);
+}
+
+/* Cota: línea de 1 px con dos marcas finales (decorativa, aria-hidden). */
+@utility cota {
+  display: block;
+  height: 9px;
+  border-inline: var(--grosor-filete) solid currentColor;
+  background: linear-gradient(currentColor, currentColor) center / 100% var(--grosor-filete) no-repeat;
+}
+@utility cota-vertical {
+  display: block;
+  width: 9px;
+  border-block: var(--grosor-filete) solid currentColor;
+  background: linear-gradient(currentColor, currentColor) center / var(--grosor-filete) 100% no-repeat;
+}
+
+/* Hojas legales: el texto de core (article, h1, h2, p, ul) en la columna de 66ch del template. */
+.hoja-legal article {
+  max-width: 66ch;
+  margin: 0;
+  padding: 0;
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+.hoja-legal h1 {
+  font-family: var(--font-titulo);
+  font-size: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.hoja-legal h2 {
+  font-family: var(--font-titulo);
+  font-size: 1.5rem;
+  font-weight: 400;
+  border-top: 1px solid var(--color-linea-plano);
+  padding-top: 1.25rem;
+  margin-top: 1.5rem;
+}
+.hoja-legal a {
+  color: var(--color-acento);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---------- Animaciones (encargo §12): solo transform y opacity; estado por defecto visible ---------- */
+
+@keyframes dibujar {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes dibujar-vertical {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes aparecer-texto {
+  from {
+    opacity: 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Filete bajo el número de sección y cotas: se dibujan desde la izquierda al entrar. */
+    [data-dibujar] {
+      transform-origin: left center;
+      animation: dibujar linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 70%;
+    }
+    [data-dibujar="vertical"] {
+      transform-origin: center top;
+      animation-name: dibujar-vertical;
+    }
+    [data-aparecer-texto] {
+      animation: aparecer-texto linear both;
+      animation-timeline: view();
+      animation-range: entry 20% entry 80%;
+    }
+  }
+}
+
+/* Flecha de whatsapp-linea: 4 px a la derecha al pasar o con foco. */
+.flecha {
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .flecha {
+    transition: transform 150ms ease-out;
+  }
+  a:hover .flecha,
+  a:focus-visible .flecha {
+    transform: translateX(4px);
+  }
+
+  /* Panel del menú: fundido con @starting-style. */
+  .panel-menu:popover-open {
+    opacity: 1;
+    transition:
+      opacity 200ms ease-out,
+      display 200ms allow-discrete,
+      overlay 200ms allow-discrete;
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  /* Barra móvil: entra desde abajo al cargar. */
+  .barra-entra {
+    transition: transform 280ms ease-out 150ms;
+    @starting-style {
+      transform: translateY(100%);
+    }
+  }
+}

@@ -1,0 +1,379 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * electricidad-6 «Apagón» (encargo §8): noche, una luz y una señal. Casi negro, blanco cálido y un único
+ * color de señal (primario, sustituible desde site.config). El primario NUNCA es color de texto sobre
+ * negro: rellena placas, cinta, rombos y la barra; el texto encima va en --color-sobre-primario.
+ */
+@theme {
+  /* 16 tokens comunes (nombre fijo) */
+  --color-fondo: #0b0c0e;
+  --color-superficie: #15171b;
+  --color-alterna: #1c1f24;
+  --color-texto: #f3f1ea;
+  --color-texto-suave: #b3b0a6;
+  --color-borde: #8a8f98;
+  --color-primario: #ffd21f;
+  --color-sobre-primario: #0b0c0e;
+  --color-acento: #2bd97c;
+  --color-foco: #f3f1ea;
+  --font-titulo: var(--font-archivo), system-ui, sans-serif;
+  --font-texto: var(--font-archivo), system-ui, sans-serif;
+  --radius-boton: 0;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+  --text-display: clamp(3.25rem, 2.2rem + 6.6vw, 7.5rem);
+  --text-display--line-height: 1;
+
+  /* Propios */
+  --color-primario-hover: color-mix(in oklab, var(--color-primario) 88%, black);
+  --text-cifra: clamp(3.5rem, 2.4rem + 5vw, 8rem);
+  --text-cifra--line-height: 1;
+  --text-h1: clamp(2rem, 1.6rem + 2vw, 3.25rem);
+  --text-h1--line-height: 1;
+  --text-h2: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  --text-h2--line-height: 1;
+  --text-cuerpo: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-cuerpo--line-height: 1.5;
+}
+
+:root {
+  --cinta: repeating-linear-gradient(45deg, var(--color-primario) 0 10px, var(--color-fondo) 10px 20px);
+  --inclinacion: -8deg;
+  --corte: 14px;
+  --haz: radial-gradient(60% 50% at 85% 0%, rgb(255 236 200 / 0.1), transparent 70%);
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+  }
+}
+
+html {
+  background: var(--color-fondo);
+  color-scheme: dark;
+}
+
+/* Barra combinada fija por debajo de 1024 px: el foco y las anclas no quedan tapados (WCAG 2.4.11). */
+@media (width < 64rem) {
+  html {
+    scroll-padding-bottom: calc(4.25rem + env(safe-area-inset-bottom) + 16px);
+  }
+}
+
+body {
+  font-family: var(--font-texto);
+  font-size: var(--text-cuerpo);
+  line-height: 1.5;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* ───────────── Firma: tipografía condensada, cinta, rombos y paralelogramos ───────────── */
+@layer components {
+  .contenedor {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: clamp(16px, 3.75vw, 48px);
+  }
+
+  /* Archivo a wdth 62 y peso 800: títulos, número y cifras. */
+  .condensada {
+    font-family: var(--font-titulo);
+    font-stretch: 62%;
+    font-weight: 800;
+    text-wrap: balance;
+  }
+
+  .titulo-h1 {
+    font-family: var(--font-titulo);
+    font-stretch: 62%;
+    font-weight: 800;
+    font-size: var(--text-h1);
+    line-height: 1;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .titulo-h2 {
+    font-family: var(--font-titulo);
+    font-stretch: 62%;
+    font-weight: 800;
+    font-size: var(--text-h2);
+    line-height: 1;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .rotulo {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-texto-suave);
+  }
+
+  /* Cinta de señalización: un gradiente, nunca imagen. En forced-colors desaparece. */
+  .cinta {
+    height: 6px;
+    background: var(--cinta);
+  }
+
+  .rombo {
+    display: inline-block;
+    flex: none;
+    width: 0.75rem;
+    height: 0.75rem;
+    background: var(--color-primario);
+    transform: rotate(45deg);
+  }
+
+  /* llamada-placa: paralelogramo primario en un pseudo-elemento; el texto nunca se inclina. */
+  .placa {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding-inline: 1rem;
+    color: var(--color-sobre-primario);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .placa::before,
+  .placa-falsa::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-primario);
+    transform: skewX(var(--inclinacion));
+  }
+  .placa:hover::before,
+  .telefono-gigante:hover .placa-falsa::before {
+    background: var(--color-primario-hover);
+  }
+  .placa:active,
+  .telefono-gigante:active .placa-falsa {
+    translate: 0 1px;
+  }
+
+  /* La placa dentro del telefono-gigante (el enlace es el bloque entero). */
+  .placa-falsa {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3.5rem;
+    padding-inline: 1.25rem;
+    color: var(--color-sobre-primario);
+    font-weight: 700;
+    font-size: 1.0625rem;
+  }
+
+  /* whatsapp-linea: contorno de 2 px en --color-texto, recto. */
+  .wa-linea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--color-texto);
+    color: var(--color-texto);
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    background: var(--color-fondo);
+  }
+  .wa-linea:hover {
+    background: var(--color-superficie);
+  }
+  .wa-linea:active {
+    translate: 0 1px;
+  }
+
+  /* Chip en paralelogramo (span: no es enlace). */
+  .chip {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2rem;
+    padding-inline: 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .chip::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 1px solid var(--color-borde);
+    background: var(--color-superficie);
+    transform: skewX(var(--inclinacion));
+  }
+  a.chip {
+    min-height: 2.75rem;
+    text-decoration: none;
+  }
+  a.chip:hover::before {
+    border-color: var(--color-texto);
+  }
+
+  /* Recorte en paralelogramo para fotos y miniaturas. */
+  .corte {
+    clip-path: polygon(var(--corte) 0, 100% 0, calc(100% - var(--corte)) 100%, 0 100%);
+  }
+
+  /* Placa inclinada de fondo para tarjetas (pasos del proceso). */
+  .losa {
+    position: relative;
+    isolation: isolate;
+  }
+  .losa::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-superficie);
+    transform: skewX(var(--inclinacion));
+  }
+
+  /* Foco común: contorno de 3 px en --color-foco. */
+  .foco:focus-visible,
+  .placa:focus-visible,
+  .wa-linea:focus-visible,
+  .telefono-gigante:focus-visible,
+  a.chip:focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+}
+
+/* Flecha «›» de las filas de servicio. */
+.flecha {
+  transition: translate 150ms ease-out;
+}
+.fila:hover .flecha,
+.fila:focus-visible .flecha {
+  translate: 4px 0;
+}
+
+/* ─────────────────────────── Hoja del menú (barra combinada) ─────────────────────────── */
+.hoja {
+  transition:
+    translate 240ms ease-out,
+    opacity 240ms ease-out,
+    overlay 240ms allow-discrete,
+    display 240ms allow-discrete;
+}
+.hoja:popover-open {
+  translate: 0 0;
+  opacity: 1;
+}
+@starting-style {
+  .hoja:popover-open {
+    translate: 0 100%;
+    opacity: 0;
+  }
+}
+.hoja::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+
+/* ─────────────────────────── Animaciones (solo CSS) ─────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  /* Barra combinada: entra desde abajo al cargar. */
+  .barra {
+    transition: translate 280ms ease-out 150ms;
+  }
+  @starting-style {
+    .barra {
+      translate: 0 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hoja,
+  .flecha {
+    transition: none;
+  }
+  .fila:hover .flecha,
+  .fila:focus-visible .flecha {
+    translate: none;
+  }
+}
+
+@keyframes cifra-sube {
+  from {
+    translate: 0 100%;
+  }
+}
+@keyframes cinta-dibuja {
+  from {
+    scale: 0 1;
+  }
+}
+@keyframes fila-entra {
+  from {
+    opacity: 0;
+    translate: -12px 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Cifras de «Guardia»: suben dentro de su máscara (overflow: hidden), escalonadas por rango de la línea de tiempo (equivale a ~80 ms). */
+    .cifra-valor {
+      animation: cifra-sube 320ms ease-out both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 70%;
+    }
+    .cifra:nth-child(2) .cifra-valor {
+      animation-range: entry 15% entry 75%;
+    }
+    .cifra:nth-child(3) .cifra-valor {
+      animation-range: entry 20% entry 80%;
+    }
+    /* Cinta de «Guardia»: se dibuja desde la izquierda. */
+    .cinta-dibujada {
+      transform-origin: left;
+      animation: cinta-dibuja linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+    /* Filas de servicios: fundido + 12 px desde la izquierda. */
+    .fila-aparece {
+      animation: fila-entra linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 50%;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .cinta,
+  .cinta-dibujada {
+    display: none;
+  }
+  .placa,
+  .placa-falsa {
+    border: 2px solid ButtonText;
+  }
+}
