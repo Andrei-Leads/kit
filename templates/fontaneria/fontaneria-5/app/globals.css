@@ -1,0 +1,306 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Llegamos» (fontaneria-5): plano de instalaciones impreso a dos tintas.
+ * Solo --color-primario (y --color-sobre-primario, que calcula core) se sobrescriben desde
+ * site.config (`estiloMarca` en el <html>). Los derivados se calculan del primario.
+ */
+@theme {
+  /* 16 tokens comunes (registry/README.md) */
+  --color-fondo: #f4f6f7;
+  --color-superficie: #ffffff;
+  --color-alterna: #e6ecef;
+  --color-texto: #0e1416;
+  --color-texto-suave: #465157; /* ≈ 7,6:1 sobre el fondo */
+  --color-borde: #0e1416; /* los bordes son tinta, no gris */
+  --color-primario: #0b6bcb; /* azul agua; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  /* Primario claro para texto sobre tinta (respaldo; la versión oklch va abajo, en @supports). */
+  --color-acento: color-mix(in oklch, var(--color-primario) 45%, white);
+  --color-foco: #0e1416;
+  --font-titulo: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-texto: var(--font-albert-sans), ui-sans-serif, system-ui, sans-serif;
+  --radius-boton: 0;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+  --text-display: clamp(2.5rem, 1.4rem + 4.8vw, 5.5rem);
+
+  /* Tokens propios */
+  --color-tinta: #0e1416;
+  --color-sobre-tinta: #f4f6f7;
+  --color-tinta-2: #26313a; /* filete del pie y hover de botones sobre tinta */
+  --color-primario-suave: color-mix(in oklch, var(--color-primario) 15%, white);
+  /* Banda clara de los heros (primario muy claro): el botón de llamar destaca sobre ella. */
+  --color-banda: color-mix(in oklch, var(--color-primario) 12%, white);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario) 85%, black);
+  --color-linea-clara: #e6ecef;
+
+  --text-h2: clamp(1.625rem, 1.2rem + 1.8vw, 2.5rem);
+  --text-h1: clamp(2.25rem, 1.5rem + 3vw, 4rem);
+  --text-zona: clamp(0.9375rem, 0.85rem + 0.4vw, 1.125rem);
+  --text-cuerpo: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+
+  --container-contenido: 1216px;
+  --container-lectura: 70ch;
+}
+
+/* Derivados con color relativo donde el navegador lo entiende (siguen al primario del cliente). */
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-acento: oklch(from var(--color-primario) 0.86 calc(c * 0.6) h);
+    --color-primario-suave: oklch(from var(--color-primario) 0.93 calc(c * 0.3) h);
+    --color-banda: oklch(from var(--color-primario) 0.95 calc(c * 0.25) h);
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+  }
+}
+
+/* Tokens de forma (no son colores ni tamaños: van fuera de @theme). */
+:root {
+  --corte: 14px;
+  --angulo: 6deg;
+  --grosor-troncal: 8px;
+  --grosor-rama: 4px;
+  --duotono-mezcla: multiply;
+}
+
+/* Ancho de contenido: 1216 px + margen de 20 px (móvil) y 32 px (escritorio). */
+@utility contenedor {
+  max-width: calc(var(--container-contenido) + 64px);
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (min-width: 64rem) {
+    padding-inline: 32px;
+  }
+}
+
+/*
+ * Esquina superior derecha cortada (--corte). `corte-N` para cortes más pequeños.
+ * El foco nunca va en el elemento recortado: va en el enlace que lo envuelve (outline fuera del recorte).
+ */
+@utility corte {
+  clip-path: polygon(0 0, calc(100% - var(--corte)) 0, 100% var(--corte), 100% 100%, 0 100%);
+}
+@utility corte-* {
+  --corte: calc(--value(integer) * 1px);
+  clip-path: polygon(0 0, calc(100% - var(--corte)) 0, 100% var(--corte), 100% 100%, 0 100%);
+}
+/* Octógono de la cápsula: las cuatro esquinas cortadas. */
+@utility octogono-* {
+  --o: calc(--value(integer) * 1px);
+  clip-path: polygon(
+    var(--o) 0,
+    calc(100% - var(--o)) 0,
+    100% var(--o),
+    100% calc(100% - var(--o)),
+    calc(100% - var(--o)) 100%,
+    var(--o) 100%,
+    0 calc(100% - var(--o)),
+    0 var(--o)
+  );
+}
+/* Botón de la cápsula: arriba y abajo a la derecha. */
+@utility corte-doble {
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+/* llamada-zona: corte en diagonal a la derecha. */
+@utility corte-diagonal {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
+  @media (min-width: 64rem) {
+    clip-path: polygon(0 0, 100% 0, calc(100% - 32px) 100%, 0 100%);
+  }
+}
+
+/*
+ * Bandas en diagonal (6°). La altura del corte es tan(6°) × ancho ≈ 10,5 vw.
+ *   banda-abajo     corte solo abajo (heros).
+ *   banda-ambos     arriba y abajo (franja de confianza).
+ *   banda-arriba    solo arriba (CTA final).
+ */
+@utility banda-abajo {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10.5vw), 0 100%);
+}
+@utility banda-ambos {
+  clip-path: polygon(0 10.5vw, 100% 0, 100% calc(100% - 10.5vw), 0 100%);
+}
+@utility banda-arriba {
+  clip-path: polygon(0 10.5vw, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Separador rayado en diagonal (preguntas, pie, franja de confianza). */
+@utility rayado {
+  height: 6px;
+  background: repeating-linear-gradient(-60deg, currentColor 0 2px, transparent 2px 7px);
+}
+
+/* Bloque sobre tinta: foco claro. */
+@utility sobre-tinta {
+  --color-foco: #f4f6f7;
+  background-color: var(--color-tinta);
+  color: var(--color-sobre-tinta);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-padding-top: 6rem;
+  }
+  @media (max-width: 63.99rem) {
+    html {
+      scroll-padding-bottom: calc(56px + 1rem);
+    }
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  /* Foco: anillo de 3 px en --color-foco con 2 px de separación blanca. */
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/*
+ * Botones y tarjetas en @layer components: así una utilidad del template (por ejemplo, el anillo
+ * oscuro de WhatsappSobreTinta) gana a estas reglas por defecto.
+ */
+@layer components {
+  /* Botones: pulsado = translateY(2px). */
+  .boton {
+    transition: transform 120ms ease;
+  }
+  .boton:active {
+    transform: translateY(2px);
+  }
+  .boton:focus-visible {
+    box-shadow: 0 0 0 2px #ffffff;
+  }
+
+  /* Tarjetas con esquina cortada: se desplazan 2 px al pasar (140 ms). */
+  .tarjeta-corte {
+    transition: transform 140ms ease;
+  }
+  @media (hover: hover) {
+    .tarjeta-corte:hover {
+      transform: translate(2px, -2px);
+    }
+  }
+  .tarjeta-corte:focus-visible {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Red de tuberías (RedZonas, solo en la sección «Dónde trabajamos»;
+ * el diagrama del hero se pinta estático). Solo transform y opacity;
+ * el estado por defecto es el dibujado.
+ * ------------------------------------------------------------------ */
+.red-texto {
+  font-family: var(--font-titulo);
+}
+.red-texto-sans {
+  font-family: var(--font-texto);
+}
+
+@keyframes tubo-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes tubo-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes nodo {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .red-animada [data-tubo] {
+      transform-box: fill-box;
+      animation: tubo-x linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+    .red-animada [data-tubo="derecha"] {
+      transform-origin: left center;
+    }
+    .red-animada [data-tubo="izquierda"] {
+      transform-origin: right center;
+    }
+    .red-animada [data-tubo="baja"],
+    .red-animada [data-tubo="rama-baja"] {
+      animation-name: tubo-y;
+      transform-origin: center top;
+    }
+    .red-animada [data-tubo="rama-sube"] {
+      animation-name: tubo-y;
+      transform-origin: center bottom;
+    }
+    .red-animada [data-nodo] {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: nodo linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 40%;
+    }
+    /* Montante móvil: la línea crece hacia abajo. */
+    [data-montante] {
+      transform-origin: top;
+      animation: tubo-y linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+  }
+}
+
+/* Panel del menú de la cápsula: opacidad + 8 px al abrir (sin JS: API popover). */
+.panel-menu {
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease,
+    display 200ms allow-discrete,
+    overlay 200ms allow-discrete;
+}
+.panel-menu:popover-open {
+  opacity: 1;
+  transform: none;
+}
+@starting-style {
+  .panel-menu:popover-open {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
