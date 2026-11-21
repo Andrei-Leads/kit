@@ -1,0 +1,333 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Cuadro» (electricidad-4), encargo §8: laboratorio claro, gris de carcasa y naranja de
+ * señal. Solo --color-primario se sobrescribe desde site.config (estiloMarca en layout.tsx, que
+ * también calcula --color-sobre-primario).
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #eef0f2; /* gris de carcasa */
+  --color-superficie: #ffffff;
+  --color-alterna: #e2e5e9;
+  --color-texto: #15181c;
+  --color-texto-suave: #4a525c; /* ≥ 7:1 sobre fondo */
+  --color-borde: #7b8591; /* ≥ 3:1 sobre blanco */
+  --color-primario: #c2410c; /* naranja de señal */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #15803d; /* verde «conectado»: solo sobre superficie blanca */
+  --color-foco: #15181c;
+  /* La variable --font-jost la pone next/font en <html> (layout.tsx). */
+  --font-titulo: var(--font-jost), system-ui, sans-serif;
+  --font-texto: var(--font-jost), system-ui, sans-serif;
+  --radius-boton: 2px;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+  --text-display: clamp(2.25rem, 1.6rem + 2.8vw, 4rem);
+
+  /* Propios */
+  --color-carril: #c9ced4; /* carril DIN y filetes */
+  --color-palanca: #f8f9fa; /* cara del módulo */
+  --color-etiqueta: #fff8db; /* cinta de rotuladora */
+  --color-etiqueta-hover: #fdf0b8;
+  --color-apagado: #b4bbc3; /* estrellas vacías */
+  --text-h1: clamp(2rem, 1.5rem + 2.2vw, 3.25rem); /* h1 de fichas */
+  --text-h2: clamp(1.5rem, 1.25rem + 1.1vw, 2.25rem);
+  --text-cuerpo: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --text-cta: clamp(1.75rem, 1.35rem + 1.8vw, 2.75rem);
+  --shadow-pulsador: inset 0 -3px 0 rgb(0 0 0 / 0.25);
+  --shadow-pulsado: inset 0 -1px 0 rgb(0 0 0 / 0.25);
+}
+
+/* Derivados del primario (el cliente puede cambiarlo): color-mix de respaldo, oklch(from) si existe. */
+:root {
+  --color-primario-hover: color-mix(in oklab, var(--color-primario) 88%, black);
+  --color-primario-suave: color-mix(in oklab, var(--color-primario) 10%, white);
+  --altura-modulo: 64px;
+  --ancho-modulo: 120px;
+}
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+    --color-primario-suave: oklch(from var(--color-primario) 0.95 calc(c * 0.25) h);
+  }
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 80px;
+  }
+  /* La barra móvil fija (60 px, hasta 1024) no debe tapar el elemento con foco (WCAG 2.4.11). */
+  @media (max-width: 63.99rem) {
+    html {
+      scroll-padding-bottom: 76px;
+    }
+  }
+  body {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  /* Ancho de página: 1280 px con margen lateral fluido. */
+  .contenedor {
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: clamp(16px, 4vw, 40px);
+  }
+  .h2 {
+    font-size: var(--text-h2);
+    line-height: 1.1;
+    font-weight: 600;
+  }
+  .rotulo {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-texto-suave);
+  }
+  .cifras {
+    font-variant-numeric: tabular-nums;
+  }
+  .enlace {
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ---------- Variantes de botón (encargo §3) ---------- */
+  .pulsador,
+  .pulsador-compacto {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: var(--radius-boton);
+    background: var(--color-primario);
+    color: var(--color-sobre-primario);
+    box-shadow: var(--shadow-pulsador);
+    font-weight: 600;
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;
+    transition:
+      transform 80ms ease-out,
+      background-color 120ms;
+  }
+  .pulsador {
+    min-height: 56px;
+    padding: 0 22px;
+    font-size: 1.125rem;
+  }
+  .pulsador-compacto {
+    min-height: 44px;
+    padding: 0 16px;
+    gap: 8px;
+    font-size: 1rem;
+  }
+  .pulsador:hover,
+  .pulsador-compacto:hover {
+    background: var(--color-primario-hover);
+  }
+  .pulsador:active,
+  .pulsador-compacto:active {
+    transform: translateY(2px);
+    box-shadow: var(--shadow-pulsado);
+  }
+  .whatsapp-etiqueta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 20px;
+    border-radius: var(--radius-boton);
+    border: 1px solid var(--color-borde);
+    background: var(--color-etiqueta);
+    color: var(--color-texto);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .whatsapp-etiqueta.compacto {
+    min-height: 44px;
+    padding: 0 16px;
+    gap: 8px;
+    font-size: 1rem;
+  }
+  .whatsapp-etiqueta:hover {
+    border-color: var(--color-texto);
+    background: var(--color-etiqueta-hover);
+  }
+  .whatsapp-etiqueta:active {
+    transform: translateY(1px);
+  }
+  .contorno-cuadro {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: var(--radius-boton);
+    border: 2px solid var(--color-texto);
+    background: var(--color-superficie);
+    color: var(--color-texto);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .contorno-cuadro:hover {
+    background: var(--color-texto);
+    color: var(--color-superficie);
+  }
+  .contorno-cuadro:active {
+    transform: translateY(1px);
+  }
+  /* Dentro de la banda oscura, el foco es blanco. */
+  .banda-oscura :focus-visible {
+    outline-color: var(--color-superficie);
+  }
+
+  /* ---------- Módulo del cuadro ---------- */
+  .maneta {
+    transition: transform 120ms ease-out;
+  }
+  .modulo:hover .maneta,
+  .modulo:focus-visible .maneta {
+    transform: translateY(14px);
+  }
+  .maneta-bajada {
+    transform: translateY(14px);
+  }
+
+  /* Preguntas: «+» que gira 45° al abrir. */
+  .mas {
+    transition: transform 150ms ease-out;
+  }
+  details[open] > summary .mas {
+    transform: rotate(45deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulsador:active,
+    .pulsador-compacto:active,
+    .whatsapp-etiqueta:active,
+    .contorno-cuadro:active,
+    .modulo:hover .maneta,
+    .modulo:focus-visible .maneta {
+      transform: none;
+    }
+    .pulsador,
+    .pulsador-compacto,
+    .maneta,
+    .mas {
+      transition: none;
+    }
+  }
+
+  /* Texto de core en las legales: columna de 68 caracteres sobre superficie blanca. */
+  .lectura-legal article {
+    margin: 0;
+    max-width: 68ch;
+    padding: 0;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  .lectura-legal h1 {
+    font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
+    line-height: 1.05;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .lectura-legal h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .lectura-legal a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+/* ---------- Peine del proceso: se dibuja de izquierda a derecha (view()) ---------- */
+@keyframes peine {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes peine-v {
+  from {
+    transform: scaleY(0);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .peine {
+      transform-origin: left top;
+      animation: peine-v 400ms linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 80%;
+    }
+    @media (min-width: 48rem) {
+      .peine {
+        animation-name: peine;
+      }
+    }
+  }
+}
+
+/* ---------- Menú móvil: panel recto que baja de la cabecera (MenuPopover reestilado) ---------- */
+.menu-panel {
+  inset: 64px 0 auto 0;
+  width: 100%;
+  height: auto;
+  max-height: calc(100dvh - 64px);
+  overflow-y: auto;
+}
+
+/* Con nombre largo, la cabecera móvil tiene dos filas (≈ 118 px). */
+@media (max-width: 47.99rem) {
+  .menu-panel-largo {
+    inset-block-start: 118px;
+    max-height: calc(100dvh - 118px);
+  }
+}
+
+/* ---------- Barra móvil: entra al cargar ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-entra {
+    transition: transform 280ms ease-out 150ms;
+    @starting-style {
+      transform: translateY(100%);
+    }
+  }
+}

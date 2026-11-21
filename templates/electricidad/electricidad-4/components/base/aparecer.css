@@ -1,0 +1,39 @@
+/*
+ * Pieza base del registro (kit/registry/base/aparecer.css). Aparición al hacer
+ * scroll SOLO con CSS (animation-timeline: view(), Baseline desde 10/2026).
+ * Sustituye a los Animaciones.tsx con JavaScript.
+ *
+ * Regla de oro: el estado por defecto es el visible. Si el navegador no entiende
+ * animation-timeline, o el usuario pide reducir movimiento, no se anima nada.
+ * Nunca en el h1, la foto del hero ni el botón de llamada (LCP y conversión).
+ *
+ * Uso: `@import "./aparecer.css";` en globals.css y `data-aparecer` en el
+ * elemento (o `data-aparecer="izquierda"`).
+ */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+@keyframes aparecer-izquierda {
+  from {
+    opacity: 0;
+    translate: -1.5rem 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-aparecer] {
+      animation: aparecer linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+
+    [data-aparecer="izquierda"] {
+      animation-name: aparecer-izquierda;
+    }
+  }
+}

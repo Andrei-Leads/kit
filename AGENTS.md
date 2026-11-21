@@ -107,6 +107,11 @@ kit/
 │     ├─ electricidad-1/           # «Boletín» (urgencias, contenido/SEO: trámite paso a paso y guías por servicio; fotos de relleno)
 │     ├─ electricidad-2/           # «Del barrio» (urgencias, confianza: foto a sangre, reseñas como estrella, barra combinada; fotos de relleno)
 │     └─ electricidad-3/           # «Sin sorpresas» (urgencias, paleta oscura: «Lo que cuesta» con tarifas, índice lateral; fotos de relleno)
+│     ├─ electricidad-4/           # nueva generación: «Cuadro» (servicios como cuadro eléctrico en SVG, sin foto en el hero)
+│     ├─ electricidad-5/           # «Casa al día» (bento con cifras, color pleno, menú a pantalla completa)
+│     ├─ electricidad-6/           # «Apagón» (teléfono gigante, paleta oscura, barra combinada)
+│     ├─ electricidad-7/           # «Mándanos una foto» (asistente de WhatsApp con aspecto de chat)
+│     └─ electricidad-8/           # «Comunidades y fincas» (dossier de habilitación, serif, /comunidades)
 │  └─ tienda/
 │     └─ tienda-1/                 # «Almacén» (tienda: carrusel en el hero)
 └─ apps/
@@ -484,6 +489,8 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 **Hecho (17–19/10/2026):** las 6 demos (`webs/demos/`) llevan la 404, el «falso 404» corregido, el JavaScript reducido, core 0.5.1 y Analytics activado (script 200), comprobado en producción; las de carpintería, además, las preguntas frecuentes sin JavaScript. Las tareas sueltas de Ysst están en `andrei-leads-tech/PENDIENTES.md`.
 
 **Hecho (21/11/2026, nueva generación, rama `claude/project-thread-pimpae`):** `next` 16.4.6 y React 19.3.1 en los 7 templates (PR #12); `preload` en lugar de `priority` y AVIF; core 0.6.0 (lógica común, `origen`, `videoHero`, `estiloMarca`), conectado solo en `electricidad-2`; `registry/` con 8 piezas base; `apps/playground`; Turborepo local. Las demos de `webs/demos/` siguen en `next` 16.4.0 hasta que Ysst las suba en local. Contexto y decisiones del debate: carpeta del proyecto `nueva-generacion/`.
+
+**Hecho (21/11/2026, rama `claude/project-thread-in28p4`):** los 5 templates de electricidad de la nueva generación (`templates/electricidad/electricidad-4..8`), desde las exportaciones de Claude Design, con core 0.7.0 y las piezas de `registry/`. Cada uno pasó 4 revisiones (fidelidad visual, contrato, rendimiento/accesibilidad, textos/legal). Fotos de relleno marcadas; faltan las de IA y sus prompts en `docs/fotos-ejemplo/electricidad-<n>/`. Pendiente de revisión de Ysst en local; decisiones abiertas en la carpeta del proyecto `nueva-generacion/electricidad-integracion/`.
 
 **Más adelante:** 404 sin JavaScript (§11), **descartado por ahora** (Ysst, 16/10/2026). Si se retoma: un `proxy.ts` por template con `matcher` solo en `/servicios/:path*` y `/trabajos/:path*` que, si el slug no está en `site.config` (o no hay trabajos ni galería), reescribe a una ruta inexistente (`NextResponse.rewrite(new URL("/__no-encontrada", request.url))`): Next sirve entonces la `not-found.tsx` prerenderizada, completa y con 404. Probado en `carpinteria-metalica-3` (sin commitear): 404 y `h1=1` desde la primera petición. Coste: una función por petición en esas rutas (también en las páginas válidas; latencia y facturación de middleware en Vercel) y el proxy importa `site.config` (la documentación de Next desaconseja módulos compartidos en el proxy). Alternativa sin función, sin probar: `rewrites` en `next.config.ts` generadas desde `site.config`. Turborepo (con 3 o 4 templates); script `create-site` (automatiza los pasos 1–4 de `docs/nuevo-cliente.md`); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
 
