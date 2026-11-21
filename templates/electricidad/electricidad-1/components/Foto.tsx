@@ -12,7 +12,7 @@ type Props = {
   proporcion?: Proporcion;
   /** Atributo `sizes` de next/image (ancho real de la foto según el breakpoint). */
   sizes: string;
-  priority?: boolean;
+  preload?: boolean;
   /** Foto dentro de un enlace con texto propio: `alt=""` (el enlace ya se nombra solo). */
   decorativa?: boolean;
   className?: string;
@@ -43,7 +43,7 @@ function FotoEjemplo() {
 }
 
 /** Foto con next/image, recta (radio 0) y con borde de 1 px. Si es de ejemplo (`/ejemplo/…`), lleva la etiqueta. */
-export function Foto({ imagen, proporcion = "4/3", sizes, priority, decorativa, className, children }: Props) {
+export function Foto({ imagen, proporcion = "4/3", sizes, preload, decorativa, className, children }: Props) {
   const deEjemplo = imagen.src.startsWith("/ejemplo/");
   return (
     <div className={cn("relative overflow-hidden border border-regla bg-papel-2", PROPORCION[proporcion], className)}>
@@ -52,7 +52,7 @@ export function Foto({ imagen, proporcion = "4/3", sizes, priority, decorativa, 
         alt={decorativa ? "" : imagen.alt}
         fill
         sizes={sizes}
-        priority={priority}
+        preload={preload}
         className="object-cover"
       />
       {deEjemplo && <FotoEjemplo />}

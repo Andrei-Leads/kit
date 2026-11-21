@@ -52,7 +52,7 @@ export function TarjetaServicio({ servicio, ancha = false, nivel = "h2", priorit
           imagen={foto}
           proporcion="3/2"
           decorativa
-          priority={prioritaria}
+          preload={prioritaria}
           sizes={ancha ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 1024px) 384px, (min-width: 768px) 50vw, 100vw"}
           className={cn(ancha && "md:aspect-auto md:min-h-[320px] md:w-1/2 md:flex-none md:self-stretch")}
         />

@@ -9,7 +9,7 @@ type Props = {
   proporcion: "5/2" | "16/9" | "4/3" | "4/5" | "1/1";
   /** Atributo `sizes` de next/image (ancho real de la foto según el breakpoint). */
   sizes: string;
-  priority?: boolean;
+  preload?: boolean;
   /** Marco de 1 px: `linea` (tarjetas), `tinta` (hero de escritorio) o `ninguno`. */
   marco?: "linea" | "tinta" | "ninguno";
   /** Foto dentro de un enlace con texto propio: `alt=""` y etiqueta más pequeña. */
@@ -56,7 +56,7 @@ export function Foto({
   imagen,
   proporcion,
   sizes,
-  priority,
+  preload,
   marco = "linea",
   decorativa,
   className,
@@ -77,7 +77,7 @@ export function Foto({
         alt={decorativa ? "" : imagen.alt}
         fill
         sizes={sizes}
-        priority={priority}
+        preload={preload}
         className="object-cover"
       />
       {deEjemplo && <FotoEjemplo pequena={decorativa} />}

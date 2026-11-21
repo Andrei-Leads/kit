@@ -19,12 +19,12 @@ export function ProyectoFotos({ trabajo }: Props) {
           <Foto imagen={trabajo.antes} proporcion="4/3" sizes="(min-width: 1200px) 572px, (min-width: 768px) 50vw, 100vw">
             <span className={etiqueta}>Antes</span>
           </Foto>
-          <Foto imagen={principal} proporcion="4/3" priority sizes="(min-width: 1200px) 572px, (min-width: 768px) 50vw, 100vw">
+          <Foto imagen={principal} proporcion="4/3" preload sizes="(min-width: 1200px) 572px, (min-width: 768px) 50vw, 100vw">
             <span className={etiqueta}>Después</span>
           </Foto>
         </div>
       ) : (
-        <Foto imagen={principal} proporcion="16/9" priority sizes="(min-width: 1200px) 1160px, 100vw" />
+        <Foto imagen={principal} proporcion="16/9" preload sizes="(min-width: 1200px) 1160px, 100vw" />
       )}
       {resto.length > 0 && (
         <ul className="m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-4">

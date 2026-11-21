@@ -42,7 +42,7 @@ export function FichaCabecera({ servicio, contacto }: Props) {
           <Foto
             imagen={foto}
             proporcion="3/2"
-            priority
+            preload
             sizes="(min-width: 1024px) 560px, 100vw"
           />
         ) : (

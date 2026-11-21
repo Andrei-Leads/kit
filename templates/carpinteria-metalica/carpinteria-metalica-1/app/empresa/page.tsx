@@ -57,7 +57,7 @@ export default function Page() {
             <Foto
               imagen={principal}
               proporcion="4/3"
-              priority
+              preload
               sizes={hayHistoria ? "(min-width: 1024px) 573px, 100vw" : "(min-width: 1200px) 1160px, 100vw"}
             />
           )}

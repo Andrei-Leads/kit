@@ -26,7 +26,7 @@ export function PageHero({ titulo, imagen }: Props) {
               src={imagen.src}
               alt=""
               fill
-              priority
+              preload
               sizes="100vw"
               className="object-cover motion-safe:animate-kenburns"
             />

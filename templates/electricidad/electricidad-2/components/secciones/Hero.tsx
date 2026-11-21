@@ -26,7 +26,7 @@ const FONDO_SIGUIENTE = { piedra: "bg-piedra", "piedra-2": "bg-piedra-2" } as co
 /**
  * Hero a sangre (Specs §2): foto con `.capa-hero` (degradado tinta) y el texto abajo, en blanco.
  * Chips oblicuos, valoración y `whatsapp-foto-hero` solo con dato, sin huecos. Sin foto: fondo tinta liso y
- * `descripcionCorta` bajo el h1. La foto lleva `priority` y `sizes="100vw"` (es el LCP); ni ella, ni la
+ * `descripcionCorta` bajo el h1. La foto lleva `preload` y `sizes="100vw"` (es el LCP); ni ella, ni la
  * capa, ni el h1, ni la valoración, ni `llamada-foto` llevan `data-anim`. El corte del pie es un triángulo
  * absoluto del color de la banda siguiente (`corte`): con foto no puede ser un elemento aparte entre bandas.
  * A 375×667 el h1, la valoración y la llamada con el número quedan por encima de la barra móvil.
@@ -44,7 +44,7 @@ export function Hero({ negocio, contacto, valoracion, imagen, siguiente }: Props
     >
       {imagen && (
         <>
-          <Foto imagen={imagen} proporcion="relleno" sizes="100vw" priority className="absolute inset-0" />
+          <Foto imagen={imagen} proporcion="relleno" sizes="100vw" preload className="absolute inset-0" />
           <div aria-hidden="true" className="capa-hero absolute inset-0" />
         </>
       )}

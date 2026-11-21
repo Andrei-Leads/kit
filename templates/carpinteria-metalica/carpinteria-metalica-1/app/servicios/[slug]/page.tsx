@@ -66,7 +66,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
           <div className="flex min-w-0 flex-col gap-3">
             {principal ? (
               <>
-                <Foto imagen={principal} proporcion="4/3" priority sizes="(min-width: 768px) 560px, 100vw" />
+                <Foto imagen={principal} proporcion="4/3" preload sizes="(min-width: 768px) 560px, 100vw" />
                 {resto.length > 0 && (
                   <ul className="m-0 grid list-none grid-cols-3 gap-3 p-0">
                     {resto.map((im) => (

@@ -16,7 +16,7 @@ type Props = {
  * Parte alta de la ficha de servicio (Pantalla, `servTop`): a la izquierda la foto 4:3 con contorno
  * orgánico (sin foto, un icono grande sobre una mancha de servicio) y, a la derecha, la pastilla grande de
  * `precioDesde` (el texto tal cual, decisión 3), `llamada-luz` y whatsapp-servicio (solo con `whatsapp`;
- * etiqueta de la decisión 4 y mensaje precargado del servicio). La foto es lo primero que se ve: `priority`;
+ * etiqueta de la decisión 4 y mensaje precargado del servicio). La foto es lo primero que se ve: `preload`;
  * ni la foto ni la mancha se animan. Apilado en móvil, dos columnas desde 700 px.
  */
 export function FichaCabecera({ servicio, contacto }: Props) {
@@ -27,7 +27,7 @@ export function FichaCabecera({ servicio, contacto }: Props) {
     <section aria-label="Resumen del servicio" className="mt-5 flex flex-wrap items-center gap-x-8 gap-y-5">
       <div className="relative min-w-0 flex-[1_1_300px]">
         {foto ? (
-          <Foto imagen={foto} proporcion="4/3" forma="organica" priority sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 100vw" />
+          <Foto imagen={foto} proporcion="4/3" forma="organica" preload sizes="(min-width: 1280px) 560px, (min-width: 768px) 45vw, 100vw" />
         ) : (
           <div className="relative flex aspect-[4/3] items-center justify-center">
             <Mancha forma="servicio" className="inset-x-[10%] inset-y-[6%]" />

@@ -61,7 +61,7 @@ export function Hero({ sector, descripcionCorta, ciudad, valoracion, imagen, ser
                 imagen={imagen}
                 proporcion="5/2"
                 marco="ninguno"
-                priority
+                preload
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 className="min-w-0 flex-1 lg:aspect-auto lg:min-h-[480px] lg:border lg:border-tinta-suave"
               />

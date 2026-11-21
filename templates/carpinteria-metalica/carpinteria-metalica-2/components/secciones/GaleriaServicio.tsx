@@ -22,7 +22,7 @@ export function GaleriaServicio({ imagenes }: { imagenes: Imagen[] }) {
         imagen={actual}
         proporcion="4/3"
         radio="tarjeta"
-        priority
+        preload
         sizes="(min-width: 1200px) 560px, (min-width: 768px) 46vw, 100vw"
       />
       {imagenes.length > 1 && (
