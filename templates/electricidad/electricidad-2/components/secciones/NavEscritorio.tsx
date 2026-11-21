@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { type Ancla } from "@andrei-leads/core";
 
-import type { Ancla } from "@/lib/formato";
 
 /** "page" si es la ruta exacta, "true" si estamos dentro de la sección (p. ej. /servicios/x). */
 export function actual(pathname: string, href: string): "page" | "true" | undefined {

@@ -2,10 +2,10 @@ import Link from "next/link";
 import type { Servicio } from "@andrei-leads/core";
 import { ArrowRight } from "lucide-react";
 
+import { precioDesde } from "@andrei-leads/core";
 import { Foto } from "@/components/Foto";
 import { IconoServicio } from "@/components/IconoServicio";
 import { h3 } from "@/lib/estilos";
-import { precioDesde } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 

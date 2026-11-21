@@ -1,9 +1,9 @@
-import { BotonLlamada, type Acreditacion } from "@andrei-leads/core";
+import { type Acreditacion, BotonLlamada, telefonoVisible } from "@andrei-leads/core";
 import { Check, Phone, ShieldCheck } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cifraGrande, h2, tarjeta } from "@/lib/estilos";
-import { acreditacionVisible, telefonoVisible } from "@/lib/formato";
+import { acreditacionVisible } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 

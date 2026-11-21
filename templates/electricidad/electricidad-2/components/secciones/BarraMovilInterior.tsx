@@ -3,9 +3,9 @@
 import { useRef, useState, type ReactNode } from "react";
 import { Menu } from "lucide-react";
 
+import { type Ancla } from "@andrei-leads/core";
 import { buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
-import type { Ancla } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 import { MenuMovil } from "./MenuMovil";
 

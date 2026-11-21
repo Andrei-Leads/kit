@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { metadatosPagina } from "@andrei-leads/core";
+import { hayTrabajos, metadatosPagina } from "@andrei-leads/core";
 
 import { CabeceraInterior } from "@/components/secciones/CabeceraInterior";
 import { CtaFinal } from "@/components/secciones/CtaFinal";
@@ -8,7 +8,6 @@ import { FiltroTrabajos } from "@/components/secciones/FiltroTrabajos";
 import { GaleriaTrabajos } from "@/components/secciones/GaleriaTrabajos";
 import { TrabajoTarjeta } from "@/components/secciones/TrabajoTarjeta";
 import config from "@/site.config";
-import { hayTrabajos } from "@/lib/navegacion";
 import { textos } from "@/lib/textos";
 import { filtroTrabajos, ID_LISTA_TRABAJOS } from "@/lib/trabajos";
 

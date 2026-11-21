@@ -1,10 +1,10 @@
+import { type Paso } from "@andrei-leads/core";
 import { h2 } from "@/lib/estilos";
-import type { Paso } from "@/lib/proceso";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  pasos: Paso[];
+  pasos: readonly Paso[];
 };
 
 /**

@@ -1,10 +1,4 @@
-import type { SiteConfig } from "@andrei-leads/core";
-import type { Ancla } from "./formato";
-
-/** /trabajos existe si hay trabajos o, al menos, fotos en la galería. */
-export function hayTrabajos(config: Pick<SiteConfig, "trabajos" | "galeria">): boolean {
-  return config.trabajos.length > 0 || config.galeria.length > 0;
-}
+import { hayTrabajos, type Ancla, type SiteConfig } from "@andrei-leads/core";
 
 /** Menú de cabecera, hoja y pie (orden de urgencias): Servicios · Contacto · Trabajos (solo si existe la ruta) · Empresa. */
 export function menu(config: Pick<SiteConfig, "trabajos" | "galeria">): Ancla[] {

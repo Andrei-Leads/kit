@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { metadatosTrabajo } from "@andrei-leads/core";
+import { buscarTrabajo, mensajeTrabajo, metadatosTrabajo, parametrosTrabajos, servicioDelTrabajo } from "@andrei-leads/core";
 import { ArrowRight } from "lucide-react";
 
 import { CabeceraInterior } from "@/components/secciones/CabeceraInterior";
@@ -12,7 +12,6 @@ import { TrabajoOtros } from "@/components/secciones/TrabajoOtros";
 import { TrabajoTexto } from "@/components/secciones/TrabajoTexto";
 import { buttonVariants } from "@/components/ui/button";
 import config from "@/site.config";
-import { mensajeTrabajo } from "@/lib/mensajes";
 import { textos } from "@/lib/textos";
 import { datosTrabajo } from "@/lib/trabajos";
 
@@ -23,8 +22,7 @@ import { datosTrabajo } from "@/lib/trabajos";
 export const ensureStatic = "navigation";
 
 export function generateStaticParams() {
-  const params = config.trabajos.map((t) => ({ slug: t.slug }));
-  return params.length > 0 ? params : [{ slug: "_" }];
+  return parametrosTrabajos(config);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -44,11 +42,11 @@ const MAX_OTROS = 3;
  */
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const trabajo = config.trabajos.find((t) => t.slug === slug);
+  const trabajo = buscarTrabajo(config, slug);
   if (!trabajo) notFound();
 
   const { contacto } = config;
-  const servicio = trabajo.servicio ? config.servicios.find((s) => s.slug === trabajo.servicio) : undefined;
+  const servicio = servicioDelTrabajo(config.servicios, trabajo);
   const otros = config.trabajos.filter((t) => t.slug !== trabajo.slug).slice(0, MAX_OTROS);
   const datos = datosTrabajo(trabajo);
 

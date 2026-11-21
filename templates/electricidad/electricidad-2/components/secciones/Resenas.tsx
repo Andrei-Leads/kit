@@ -1,11 +1,11 @@
-import { BotonLlamada, type Resena, type SiteConfig } from "@andrei-leads/core";
+import { BotonLlamada, mediaVisible, type Resena, type SiteConfig, telefonoVisible } from "@andrei-leads/core";
 import { ChevronDown, ExternalLink, Phone } from "lucide-react";
 
 import { ContadorTotal } from "@/components/ContadorTotal";
 import { Estrellas } from "@/components/Estrellas";
 import { buttonVariants } from "@/components/ui/button";
 import { cifraGrande, h2, tarjeta } from "@/lib/estilos";
-import { firmaResena, mediaVisible, palabraResenas, telefonoVisible } from "@/lib/formato";
+import { firmaResena, palabraResenas } from "@/lib/formato";
 import { RESENAS_VISIBLES, resenasRecientes, UMBRAL_RESENA_LARGA } from "@/lib/resenas";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";

@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
-import { Analitica, crearMetadatos, DatosEstructurados } from "@andrei-leads/core";
+import { Analitica, crearMetadatos, DatosEstructurados, horarioVisible, mensajeGeneral } from "@andrei-leads/core";
 import "./globals.css";
 import config from "@/site.config";
-import { horarioVisible } from "@/lib/formato";
 import { menu } from "@/lib/navegacion";
-import { mensajeGeneral } from "@/lib/mensajes";
 import { Animaciones } from "@/components/Animaciones";
 import { BarraMovil } from "@/components/secciones/BarraMovil";
 import { Cabecera } from "@/components/secciones/Cabecera";

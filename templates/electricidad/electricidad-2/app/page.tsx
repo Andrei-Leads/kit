@@ -1,3 +1,4 @@
+import { pasosProceso } from "@andrei-leads/core";
 import config from "@/site.config";
 import { Corte } from "@/components/Corte";
 import { Confianza } from "@/components/secciones/Confianza";
@@ -12,7 +13,6 @@ import { Tarifas } from "@/components/secciones/Tarifas";
 import { Zonas } from "@/components/secciones/Zonas";
 import { anioActual } from "@/lib/anio";
 import { aniosEnElBarrio } from "@/lib/formato";
-import { pasosProceso } from "@/lib/proceso";
 import { estrellaInicio, hayConfianza } from "@/lib/secciones";
 
 /**
@@ -66,7 +66,7 @@ export default async function Page() {
       {estrella === "resenas" && hayConfianza(config, anio) && (
         <Confianza anios={anios} acreditaciones={config.acreditaciones} garantias={config.garantias} />
       )}
-      <Proceso pasos={pasosProceso(config.proceso)} />
+      <Proceso pasos={pasosProceso(config.proceso, "urgencias")} />
 
       <Corte de="piedra" a="piedra-2" />
       <Servicios servicios={servicios} />

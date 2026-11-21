@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { metadatosServicio } from "@andrei-leads/core";
+import {
+  buscarServicio,
+  mensajeServicio,
+  metadatosServicio,
+  otrosServicios,
+  parametrosServicios,
+  trabajosDelServicio,
+} from "@andrei-leads/core";
 
 import config from "@/site.config";
 import { CabeceraInterior } from "@/components/secciones/CabeceraInterior";
@@ -12,19 +19,18 @@ import { FichaFotos } from "@/components/secciones/FichaFotos";
 import { FichaOtrosServicios } from "@/components/secciones/FichaOtrosServicios";
 import { FichaPreguntas } from "@/components/secciones/FichaPreguntas";
 import { TrabajosServicio } from "@/components/secciones/TrabajosServicio";
-import { etiquetaWhatsappServicio, mensajeServicio } from "@/lib/mensajes";
+import { etiquetaWhatsappServicio } from "@/lib/mensajes";
 import { resenasRecientes } from "@/lib/resenas";
-import { otrosServicios, tituloFicha, trabajosDelServicio } from "@/lib/servicios";
+import { tituloFicha } from "@/lib/servicios";
 
 // Un slug que no está en generateStaticParams se genera en la primera visita. Sin esto,
 // partialPrefetching sirve antes el App Shell con 200 y el 404 solo llega a la segunda.
 // Con "navigation", Next espera al resultado completo: 404 desde la primera petición.
 export const ensureStatic = "navigation";
 
-// Con cacheComponents, generateStaticParams no puede devolver [].
+// Con cacheComponents, generateStaticParams no puede devolver []: core pone un slug de relleno.
 export function generateStaticParams() {
-  const params = config.servicios.map((s) => ({ slug: s.slug }));
-  return params.length > 0 ? params : [{ slug: "_" }];
+  return parametrosServicios(config);
 }
 
 // Servicio sin `contenido`: core devuelve `noindex, follow`. Slug inexistente: {}.
@@ -43,7 +49,7 @@ export async function generateMetadata({ params }: PageProps<"/servicios/[slug]"
  */
 export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
   const { slug } = await params;
-  const servicio = config.servicios.find((s) => s.slug === slug);
+  const servicio = buscarServicio(config, slug);
   if (!servicio) notFound();
 
   const { contacto } = config;

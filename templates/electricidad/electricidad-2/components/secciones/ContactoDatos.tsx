@@ -1,6 +1,6 @@
 import type { LineaHorario, SiteConfig } from "@andrei-leads/core";
 
-import { urlComoLlegar } from "@/lib/formato";
+import { urlComoLlegar } from "@andrei-leads/core";
 import { textos } from "@/lib/textos";
 
 const h2 = "m-0 mb-1.5 font-serif text-2xl leading-[1.2] font-semibold";

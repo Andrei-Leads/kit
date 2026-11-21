@@ -1,11 +1,10 @@
-import { BotonLlamada, BotonWhatsApp, type SiteConfig } from "@andrei-leads/core";
+import { BotonLlamada, BotonWhatsApp, mediaVisible, mensajeGeneral, type SiteConfig, telefonoVisible } from "@andrei-leads/core";
 import { MessageCircle, Phone, Star } from "lucide-react";
 
 import { Foto } from "@/components/Foto";
 import { buttonVariants } from "@/components/ui/button";
 import { h1 } from "@/lib/estilos";
-import { mediaVisible, telefonoVisible, totalResenas } from "@/lib/formato";
-import { mensajeGeneral } from "@/lib/mensajes";
+import { totalResenas } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 
 type Props = {

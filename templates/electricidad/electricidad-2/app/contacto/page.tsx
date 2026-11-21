@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { metadatosPagina } from "@andrei-leads/core";
+import { horarioVisible, metadatosPagina } from "@andrei-leads/core";
 
 import { CabeceraInterior } from "@/components/secciones/CabeceraInterior";
 import { ContactoBotones } from "@/components/secciones/ContactoBotones";
 import { ContactoDatos } from "@/components/secciones/ContactoDatos";
 import config from "@/site.config";
-import { horarioVisible } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 
 export const metadata: Metadata = metadatosPagina(config, { ruta: "/contacto", titulo: textos.contacto });
