@@ -61,7 +61,7 @@ export default function Page() {
 
       <section aria-labelledby="titulo-historia" className="pt-[clamp(48px,7vw,110px)] pb-[clamp(40px,5vw,70px)]">
         <div className={cn("contenedor grid items-center gap-x-6 gap-y-10", fotoHistoria && "lg:grid-cols-2")}>
-          {fotoHistoria && <Foto imagen={fotoHistoria} proporcion="6/5" priority sizes="(min-width: 1024px) 586px, 100vw" />}
+          {fotoHistoria && <Foto imagen={fotoHistoria} proporcion="6/5" preload sizes="(min-width: 1024px) 586px, 100vw" />}
           <div className="flex flex-col gap-5 lg:pl-[10%]">
             <h2 id="titulo-historia" className={antetitulo}>
               Nuestra historia

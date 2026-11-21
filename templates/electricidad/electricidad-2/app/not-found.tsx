@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BotonLlamada, BotonWhatsApp } from "@andrei-leads/core";
+import { BotonLlamada, BotonWhatsApp, MENSAJE_NO_ENCONTRADA, telefonoVisible } from "@andrei-leads/core";
 import { ArrowRight, MessageCircle, Phone } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import config from "@/site.config";
 import { h1Interior } from "@/lib/estilos";
-import { telefonoVisible } from "@/lib/formato";
-import { MENSAJE_NO_ENCONTRADA } from "@/lib/mensajes";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 

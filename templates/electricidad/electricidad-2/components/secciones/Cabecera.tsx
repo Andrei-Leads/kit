@@ -1,10 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BotonLlamada, type Imagen, type SiteConfig } from "@andrei-leads/core";
+import { type Ancla, BotonLlamada, type Imagen, type SiteConfig, telefonoVisible } from "@andrei-leads/core";
 import { Phone } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
-import { telefonoVisible, type Ancla } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 import { NavEscritorio } from "./NavEscritorio";

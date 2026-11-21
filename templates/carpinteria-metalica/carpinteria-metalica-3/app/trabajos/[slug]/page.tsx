@@ -79,12 +79,12 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
           <Foto imagen={trabajo.antes} proporcion="4/3" sizes="(min-width: 1120px) 544px, (min-width: 768px) 50vw, 100vw">
             <span className={etiquetaFoto}>Antes</span>
           </Foto>
-          <Foto imagen={principal} proporcion="4/3" sizes="(min-width: 1120px) 544px, (min-width: 768px) 50vw, 100vw" priority>
+          <Foto imagen={principal} proporcion="4/3" sizes="(min-width: 1120px) 544px, (min-width: 768px) 50vw, 100vw" preload>
             <span className={etiquetaFoto}>Después</span>
           </Foto>
         </div>
       ) : (
-        <Foto imagen={principal} proporcion="4/3" sizes="(min-width: 1120px) 1120px, 100vw" priority className="md:aspect-[16/9]" />
+        <Foto imagen={principal} proporcion="4/3" sizes="(min-width: 1120px) 1120px, 100vw" preload className="md:aspect-[16/9]" />
       )}
       {resto.length > 0 && (
         <ul className="m-0 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-2 lg:grid-cols-3">

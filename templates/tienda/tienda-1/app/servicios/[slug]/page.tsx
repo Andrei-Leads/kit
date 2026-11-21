@@ -83,7 +83,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
 
             <div className="flex flex-col items-center gap-6">
               {foto ? (
-                <Foto imagen={foto} proporcion="3/2" priority sizes="(min-width: 1024px) 382px, 100vw" className="w-full" />
+                <Foto imagen={foto} proporcion="3/2" preload sizes="(min-width: 1024px) 382px, 100vw" className="w-full" />
               ) : (
                 <div className="flex aspect-[3/2] w-full items-center justify-center bg-tarjeta text-primario">
                   <Package aria-hidden="true" strokeWidth={1.25} className="size-20" />

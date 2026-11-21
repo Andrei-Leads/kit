@@ -1,4 +1,6 @@
-# Brief para Claude Design: templates de Andrei Leads
+# Brief para Claude Design: templates de Andrei Leads (v2, nueva generación)
+
+> **v2 (20/11/2026).** Sustituye al brief anterior. Recoge el debate «nueva generación de webs del kit»: webs más actuales y premium, dinámicas visuales de verdad distintas, fotografía con dirección de arte, y unos «huesos» comunes (tokens con nombre fijo, piezas base compartidas y contrato de core 0.6.0) sobre los que se monta cada diseño.
 
 > Este documento es la base de todos tus encargos. Léelo entero antes de diseñar. Cada encargo concreto (un nicho y un número de template) llega aparte y se apoya en este brief. Si algo de tu diseño contradice una regla, la regla gana. Si crees que una regla impide un buen diseño, dilo explícitamente en lugar de saltártela.
 
@@ -16,13 +18,15 @@ Un **template**: el diseño reutilizable de una **web completa de varias página
 
 **Quién la compra:** el dueño del negocio. Es de oficio, no de tecnología. Valora que se vea profesional, cercana y clara, no "de agencia".
 
-**Cada nicho tendrá 3 templates por tanda** (carpintería metálica, dos tandas: 6), distintos, con datos y fotos de ejemplo de su sector. El tipo de negocio del nicho (§6) marca las reglas de conversión; tu diseño marca la identidad.
+**Cada nicho tendrá 5 templates por tanda**, distintos, con datos y fotos de ejemplo de su sector. El tipo de negocio del nicho (§6) marca las reglas de conversión; tu diseño marca la identidad.
+
+**Nivel que se busca:** una web que el dueño enseñe con orgullo y que se note de 2026, no una plantilla de WordPress. La competencia local (WordPress con Elementor, banner de cookies, H1 de palabra clave, reseñas viejas, erratas, sin una idea visual) es el listón que hay que dejar muy atrás. Lo premium sale de **cuatro cosas**: una idea visual propia (la «dinámica» de tu encargo), tipografía con carácter y a buen tamaño, fotografía con dirección de arte (§8, reglas 13–14) y acabado impecable (espaciado, estados vacíos, móvil). No sale de efectos pesados: el presupuesto de rendimiento (§8, regla 15) es parte del diseño.
 
 ---
 
 ## 2. Restricciones técnicas
 
-- **Stack:** Next.js (App Router) con TypeScript, Tailwind CSS v4 y componentes **shadcn/ui** copiados dentro del template.
+- **Stack:** Next.js **16.4.6** (App Router, `cacheComponents`, Turbopack) con TypeScript, React **19.3.1**, Tailwind CSS v4 y componentes **shadcn/ui** copiados dentro del template. Las piezas base comunes vienen del registro del kit (§3, «Huesos»).
 - **Multipágina** (§3). Cabecera, pie y barra móvil están en `app/layout.tsx` y aparecen en **todas** las páginas, legales incluidas.
 - **Móvil primero:** diseña a 375 px de ancho (375×667 como pantalla de referencia) y después adapta a escritorio a 1280 px.
 - **Español de España** en todos los textos.
@@ -72,21 +76,32 @@ templates/<nicho>/<nicho>-<n>/          p. ej. templates/fontaneria/fontaneria-1
 │  ├─ privacidad/page.tsx    # ídem
 │  └─ cookies/page.tsx       # ídem
 ├─ components/
-│  ├─ ui/                 # componentes shadcn que uses
-│  └─ secciones/          # un componente por sección: Hero.tsx, Servicios.tsx, BarraMovil.tsx…
-├─ lib/                   # utilidades de formato (teléfono visible, estrellas…)
+│  ├─ ui/                 # componentes shadcn que uses (botón, etc.)
+│  ├─ base/               # piezas base copiadas del registro del kit (ver «Huesos»), adaptables
+│  └─ secciones/          # un componente por sección: Hero.tsx, Servicios.tsx…
+├─ lib/                   # solo lo propio del diseño; el formato y los mensajes vienen de core
 ├─ public/
 │  └─ ejemplo/            # imágenes de ejemplo neutras del nicho
 └─ site.config.ts         # datos de ejemplo del nicho (§4)
 ```
 
+### Huesos: lo que no cambia entre templates
+
+La web se construye en tres capas. **Tú diseñas la tercera**; las dos primeras son fijas y tu diseño se apoya en ellas:
+
+| Capa | Qué es | Qué significa para tu diseño |
+|---|---|---|
+| **core** (`@andrei-leads/core` 0.6.0, se importa) | Contrato de datos, SEO, legales, `BotonLlamada`, `BotonWhatsApp` y lógica pura: teléfono visible, listas («A, B y C»), media de reseñas, horario (`formatearHorario`), mensajes de WhatsApp por página, pasos por defecto del proceso, servicios y trabajos relacionados, año actual | No rediseñes esa lógica ni la escribas en `lib/`: úsala. **Nada visual vive en core.** |
+| **Registro del kit** (piezas base, se copian a `components/base/`) | `Foto` (pinta la etiqueta según `imagen.origen`), `MedioHero` (foto o vídeo con póster), `AntesDespues` (`<input type="range">` nativo + `clip-path`; sin JS, las dos fotos en fila), `Preguntas` (`<details name>` nativo), `MenuPopover` (API `popover` nativa), `BarraMovil` (variantes `dos` y `combinada`), `Migas`, `aparecer.css` (animaciones de aparición solo con CSS) | Están escritas **solo con los tokens comunes** (§8, regla 3), así que heredan tu diseño sin tocarlas. Puedes reestilarlas o sustituir una por una tuya si tu dinámica lo pide; dilo en la entrega |
+| **Template** (lo que diseñas) | Hero, sección estrella, firma visual, valores de los tokens, tipografía, cabecera y pie, orden de la home, ficha de estilo fotográfico | Es lo único que distingue un template de otro: aquí va toda la ambición |
+
 Cada sección es un componente que recibe **solo su parte** de los datos. Por ejemplo, `Servicios` recibe `servicios` y no el objeto completo. Una misma sección puede aparecer en varias páginas (por ejemplo, Reseñas en inicio y en un servicio).
 
 ---
 
-## 4. Contrato de datos (`site.config`, core 0.5.1)
+## 4. Contrato de datos (`site.config`, core 0.6.0)
 
-Es el contrato de core 0.5.0; la 0.5.1 no cambió ningún campo. **Core lo valida al compilar: si un dato no cumple su formato, la web no compila.** Los datos de ejemplo que entregues (§9) tienen que cumplir todo lo de esta tabla. Un campo que no esté aquí no existe: no lo inventes; si tu diseño lo necesita, proponlo aparte.
+Es el contrato de core 0.5.1 más tres novedades **opcionales** de 0.6.0 (al final de la tabla). **Core lo valida al compilar: si un dato no cumple su formato, la web no compila.** Los datos de ejemplo que entregues (§9) tienen que cumplir todo lo de esta tabla. Un campo que no esté aquí no existe: no lo inventes; si tu diseño lo necesita, proponlo aparte.
 
 `?` = opcional. "Lista" = puede llegar vacía salvo que se diga otra cosa. **Imagen** = `{ src, alt }`: `src` es una ruta (`"/ejemplo/hero.jpg"`) y `alt` es obligatorio y no puede estar vacío. **Párrafos** = lista de textos, uno por párrafo (sin Markdown ni HTML). Los máximos son en caracteres.
 
@@ -113,6 +128,9 @@ Es el contrato de core 0.5.0; la 0.5.1 no cambió ningún campo. **Core lo valid
 | `seo` | `titulo` (≤ 60), `descripcion` (≤ 160), `url` (con `https://`: `"https://web-ejemplo.vercel.app"`), `indexar?` (`true`/`false`; por defecto `false`, que pone `noindex` en toda la web) |
 | `analitica` | `vercel?` (`true`/`false`; por defecto `false`). Lo activa cada web, no el template; no diseñes nada para ello (§8, regla 5) |
 | `redes` | `instagram?`, `facebook?` (enlaces con `https://`) |
+| **Novedad 0.6.0:** imagen `origen?` | Toda imagen puede llevar `origen`: `"cliente"`, `"ficha-google"`, `"ia"` o `"stock"`. La pieza `Foto` pinta una etiqueta discreta: «Imagen generada con IA» (obligatoria por el AI Act) o «Foto de tu ficha de Google» (en una demo, vende). Diseña esa etiqueta (posición, tamaño, contraste) para que se lea sin estorbar |
+| **Novedad 0.6.0:** `videoHero?` | `{ src, srcAv1?, poster }` (`poster` es una imagen obligatoria). Vídeo corto en bucle, sin sonido. **Solo tipo proyecto.** El póster es el LCP, la imagen de Open Graph de respaldo y lo que se ve con «reducir movimiento» o sin vídeo. `imagenesHero` sigue siendo solo de fotos |
+| **Novedad 0.6.0:** `sobre-primario` calculado | Si el cliente trae `marca.colorPrimario`, core calcula el color del texto sobre él (blanco o casi negro) y lo pone en `--color-sobre-primario`. Tu diseño usa siempre ese token para el texto sobre primario: así aguanta incluso un amarillo de furgoneta |
 
 **Horario:** lista de franjas `{ dias, abre, cierra }`.
 - `dias`: lista de `"lunes"`, `"martes"`, `"miercoles"`, `"jueves"`, `"viernes"`, `"sabado"`, `"domingo"`, en minúsculas, **sin tildes** y sin repetir.
@@ -237,32 +255,46 @@ El **tipo** no es el nombre de la carpeta: es la guía de diseño que sigue cada
 - **Reseñas en la mitad superior del inicio** (o al menos la valoración en el hero).
 - **El CTA principal se ve sin hacer scroll** a 375×667.
 
-### Qué debe variar entre los 3 templates de una tanda
+### Qué debe variar entre los 5 templates de una tanda
 
-Cada template debe diferir de los otros dos de su tanda en **al menos 4** de estos ejes: composición del hero (número de fotos o ninguna), orden de las secciones del inicio (dentro de lo que permite el tipo), sección "estrella", forma de trabajos/galería, estilo de navegación, estilo de los botones por sección, tipografía y densidad. **No vale cambiar solo el color.**
+Cada template debe diferir de los otros cuatro de su tanda en **al menos 4** de estos ejes: composición del hero (número de fotos o ninguna), orden de las secciones del inicio (dentro de lo que permite el tipo), sección "estrella", forma de trabajos/galería, estilo de navegación, estilo de los botones por sección, tipografía y densidad. **No vale cambiar solo el color.**
 
-**Los 3 templates de una tanda tienen que parecer de estudios distintos**, no variaciones de uno solo: distinta estructura, distinto diseño, distintas formas y distintas fuentes. Para conseguirlo, antes de escribir los encargos de un nicho se rellena una **matriz de variedad**. Cada eje tiene varias opciones, a cada template le toca una combinación **al azar** y **ninguna opción se repite entre los 3 de la tanda**. Una segunda tanda del mismo nicho (carpintería metálica 4–6) tampoco puede parecerse a la primera: no repite la combinación de hero, tipografía y paleta de ningún template anterior del nicho:
+**Los 5 templates de una tanda tienen que parecer de estudios distintos**, no variaciones de uno solo: distinta estructura, distinto diseño, distintas formas y distintas fuentes. Para conseguirlo, antes de escribir los encargos de un nicho se rellena una **matriz de variedad**. Cada eje tiene varias opciones, a cada template le toca una combinación **al azar** y **ninguna opción se repite entre los 5 de la tanda** (salvo densidad, que tiene menos opciones). Una segunda tanda del mismo nicho (carpintería metálica 4–6) tampoco puede parecerse a la primera: no repite la combinación de hero, tipografía y paleta de ningún template anterior del nicho:
 
 | Eje | Opciones (ejemplos) |
 |---|---|
 | Objetivo del negocio | urgencia (llamada inmediata) · confianza (obras grandes, reseñas y trabajos) · contenido/SEO (texto por servicio, guías, preguntas) · exposición/tienda |
-| Hero | foto a sangre · partido foto/texto · tipográfico sin foto · collage o carrusel · asistente como protagonista |
+| Hero | foto a sangre · partido foto/texto · tipográfico sin foto · collage o carrusel (no en urgencias) · asistente como protagonista · índice por síntomas · antes/después · vídeo con póster (solo proyecto) |
 | Tipografía | sans geométrica · sans humanista · serif editorial · display condensada · mono técnica (máximo 2 familias por template) |
 | Formas | rectas y duras · redondeadas · orgánicas/blob · diagonales y cortes · líneas de plano y cotas |
-| Paleta | clara · oscura · color pleno de fondo · neutra con acento fuerte |
+| Paleta | clara · oscura · color pleno de fondo · neutra con acento fuerte · terrosa cálida · duotono/monocromo |
 | Densidad | aireada · compacta tipo catálogo · editorial con mucho texto |
-| Navegación | barra clásica · menú a pantalla completa · navegación en el pie del móvil · índice lateral en escritorio |
+| Navegación | barra clásica · menú a pantalla completa · barra combinada en el pie del móvil · índice lateral en escritorio · cápsula flotante · doble barra (franja de acreditaciones + menú) · cabecera transparente que se vuelve sólida al bajar |
 | Sección estrella | trabajos/antes-después · tarifas · proceso · reseñas · catálogo · asistente |
 
-El encargo de cada template dice qué combinación le ha tocado. Claude Design la respeta y, en su entrega, dice en qué ejes difiere de los otros dos.
+El encargo de cada template dice qué combinación le ha tocado. Claude Design la respeta y, en su entrega, dice en qué ejes difiere de los otros cuatro. Además, cada encargo trae una **dinámica visual** (la idea que hace memorable al template) sacada del catálogo de abajo.
 
-Variantes de referencia por tipo (el encargo te dirá cuál toca):
+### Catálogo de dinámicas visuales
 
-| Tipo | Template 1 | Template 2 | Template 3 |
+Cada encargo combina una o dos. Todas funcionan **sin JavaScript** (se ven estáticas) y respetan §8.
+
+| Dinámica | Qué es | Tipo | Ojo con |
 |---|---|---|---|
-| urgencias | **Llamada pura:** hero tipográfico sin foto, teléfono gigante, inicio corto | **Transparente:** tarifas y garantías justo tras el hero; una foto real del técnico | **Habilitado:** acreditaciones al frente y un servicio destacado con "qué incluye" (p. ej. boletín eléctrico) |
-| proyecto | **Portfolio primero:** antes/después en el hero; trabajos como sección estrella | **Asistente:** el asistente de WhatsApp como pieza central del inicio | **Taller/artesano:** historia del taller y del proceso; galería por servicio |
-| obra-tecnica | **Diagnóstico:** problema → síntoma → solución | **Comunidades:** IEEV, presupuesto para junta, referencias de edificios | **Industrial:** maquinaria, m² ejecutados, clientes empresa |
+| Foto documental a sangre | Foto real a pantalla completa (el profesional, su furgoneta, la obra) con velo degradado bajo el titular | urgencias, proyecto | Sin foto real del dueño no funciona; **nunca una persona de IA como el dueño** |
+| Vídeo corto en bucle con póster | 6–10 s sin sonido (manos, perfil, lijado), `videoHero` | solo proyecto | Póster precargado; > 5 s exige botón de pausa; «reducir movimiento» = solo póster |
+| Tipografía editorial gigante | Titular de 64–120 px (escritorio) con una palabra en cursiva o en primario | proyecto, obra técnica; urgencias si el teléfono sigue a la vista | `text-wrap: balance`; tamaño fluido con `clamp(rem + vw)` |
+| Bento de confianza | 5–7 tarjetas desiguales: valoración, años, llegada, acreditación con número, zonas, foto | urgencias | Cada tarjeta existe solo con datos; la rejilla se recompone (`:has()`) |
+| Tarjetas de precio cerrado | Precio en grande, «Precio cerrado», qué incluye | urgencias | Solo con `tarifas`/`precioDesde`; sin datos, la sección no existe |
+| Antes/después con deslizador | Pieza `AntesDespues` sobre `trabajos[].antes` | proyecto | Sin `antes`, foto sola; el `alt` describe las dos |
+| Relato con scroll (CSS) | Proceso o trabajo en 4–6 pasos *sticky*; la foto se revela con `animation-timeline: view()` | proyecto, obra técnica | Nunca secuestrar el scroll; en navegador viejo, estático |
+| Transición miniatura → ficha | La foto de la tarjeta «vuela» al hero de `/trabajos/[slug]` (`<ViewTransition>` de React) | proyecto | **Mejora opcional pendiente de una prueba técnica:** el diseño no puede depender de ella |
+| Portfolio protagonista | La home es una rejilla de trabajos con nombre, municipio y año; filtro `?servicio=` sin JS | proyecto | Con fotos de relleno queda pobre: diseña bien la tarjeta sin foto real |
+| Cifras de credibilidad | 3–4 números grandes salidos de los datos («Desde 1998», «4,9 de 212 reseñas», «Llegamos en 40 min») | todos | La cifra final está en el HTML; nunca cifras inventadas |
+| Asistente con aspecto de configurador | El asistente de WhatsApp con tarjetas, progreso y resumen del mensaje | proyecto (obligatorio un asistente), opcional en urgencias | Componente cliente pequeño; recibe los datos como props |
+| Oscuro de lujo | Casi negro + un acento metálico, mucho aire, fotos de poco color | todos | Contraste del texto secundario ≥ 4,5:1 |
+| Textura de oficio | Retícula de plano en SVG en línea, cotas, sellos, etiquetas mono («Ref. 014 · Paterna · 2025 · 32 m²») | obra técnica, metálica, carpintería | SVG pequeño en línea, nunca PNG de textura |
+| Índice por síntomas | La entrada principal son problemas («Salta el diferencial») que enlazan a cada servicio con su llamada | urgencias | Los títulos salen de `servicios`; nada escrito a mano |
+| Diagrama del oficio | Un esquema SVG propio del oficio (un cuadro eléctrico, una red de tuberías, una sección de ventana) donde cada pieza es un servicio enlazado | urgencias, proyecto | SVG en línea accesible (cada pieza es un enlace con texto); en móvil se convierte en lista |
 
 ---
 
@@ -290,27 +322,33 @@ Sustituye al formulario o a la calculadora de presupuesto. Son 2–3 preguntas c
 
 1. **Botones:** los de §7. El de llamada aparece como mínimo en la cabecera, el hero, la barra móvil y contacto.
 2. **Barra móvil fija** en todas las páginas: dos botones en el orden de su tipo o, solo en urgencias, la barra combinada de tres (§6). No debe tapar contenido: deja espacio al final de la página.
-3. **Color:** define tus propios tokens en `@theme` (colores, radios, sombras). `--color-primario` es el acento principal **y el cliente puede sustituirlo por su color de marca**. Úsalo donde funcione con cualquier color medio u oscuro con texto blanco encima. El diseño no puede depender de un tono concreto de primario.
+3. **Tokens con nombre fijo.** En `@theme` defines **valores** para este vocabulario común, siempre con estos nombres: `--color-fondo`, `--color-superficie`, `--color-alterna`, `--color-texto`, `--color-texto-suave`, `--color-borde`, `--color-primario`, `--color-sobre-primario`, `--color-acento`, `--color-foco`, `--font-titulo`, `--font-texto`, `--radius-boton`, `--radius-tarjeta`, `--radius-foto`, `--text-display`. Las piezas base solo usan estos. Puedes **añadir** tokens propios para tu firma visual (`--color-cota`, `--color-mancha`…), nunca renombrar los comunes. `--color-primario` es el acento principal y **el cliente puede sustituirlo por su color de marca**: el diseño no puede depender de un tono concreto. Deriva hover, tintes y bordes del primario con `oklch(from var(--color-primario) …)` (con `color-mix()` de respaldo) y pon el texto sobre primario siempre con `--color-sobre-primario`.
 4. **Tipografías:** siempre con `next/font` (autoalojadas). Máximo dos familias.
 5. **Nada de terceros:** ni iframes (Google Maps, YouTube), ni scripts externos, ni fuentes de servidores de Google, ni píxeles ni analítica de terceros. La única analítica la pone core (Vercel Web Analytics, sin cookies, cuando la web la activa): no diseñes nada para ella, ni banner ni aviso. La política de cookies declara que no hay cookies de terceros. Ubicación = dirección en texto + **enlace** "Cómo llegar"; vídeo = miniatura con enlace.
-6. **Imágenes:** con `next/image`, y el `alt` sale de los datos. Las de ejemplo son **neutras** (sin logos ni caras reconocibles) y están en `public/ejemplo/`. Aguantan fotos reales hechas con el móvil del cliente: proporciones fijas con recorte (`object-cover`) y nunca texto sobre una foto sin una capa oscura debajo.
+6. **Imágenes:** con `next/image` (formatos AVIF y WebP), y el `alt` sale de los datos. La foto principal de la primera pantalla lleva `preload` (no `priority`, obsoleto) y `sizes` real; ninguna otra imagen se precarga. Las de ejemplo son **neutras** (sin logos ni caras reconocibles) y están en `public/ejemplo/`. Aguantan fotos reales hechas con el móvil del cliente: proporciones fijas con recorte (`object-cover`) y nunca texto sobre una foto sin una capa oscura debajo.
 7. **Accesibilidad:** contraste WCAG AA, un solo `h1` por página, jerarquía de títulos sin saltos, foco visible, zonas táctiles de al menos 44 px, navegación móvil usable con teclado y lector de pantalla.
 8. **Legal:** el pie enlaza a `/aviso-legal`, `/privacidad` y `/cookies` (lista `enlacesLegales` de core). Esas páginas usan el layout del template.
 9. **Ligera y con animaciones baratas:** nada que retrase la primera carga. Pensada para 4G. Las animaciones siguen las reglas de «Animación» (abajo).
 10. **SEO local:** un servicio = una página; las zonas, solo como lista. Nada de páginas por municipio.
 11. **Móvil primero.** La mayoría de las visitas llegan desde el móvil. Se diseña y se pule **primero a 375 px**, incluidas las animaciones, y después se adapta a tablet y escritorio con la misma estructura, sin rehacerla. La entrega muestra el móvil primero, y el móvil es lo que se revisa con más detalle.
+12. **Vídeo:** solo en tipo proyecto y solo vía `videoHero` o como sección con póster. `muted`, `playsinline`, `loop`, sin sonido, H.264 MP4 de 1–3 MB (720p) + AV1 opcional, alojado en la propia web. Nunca YouTube, Vimeo ni reproductores de terceros. Con «reducir movimiento», solo el póster. Si dura más de 5 s, botón de pausa visible.
+13. **Fotografía con dirección de arte:** cada template tiene su **ficha de estilo fotográfico** (§9) y todas sus fotos de ejemplo la siguen. Dos templates no comparten estilo. Fotos creíbles de oficio: materiales españoles con nombre (terrazo, persiana de lamas, azulejo hidráulico), imperfección real (cinta de carrocero, virutas, polvo de obra), como mucho manos o antebrazos; nada de técnicos sonrientes de banco de imágenes.
+14. **Legal de imágenes:** las fotos de IA llevan `origen: "ia"` y su etiqueta; **nunca** una persona de IA presentada como el dueño o el equipo, y nunca IA en `/trabajos` de un cliente real (en la demo, sí, etiquetada). Prohibidas las capturas de Street View. De la ficha de Google solo valen las fotos «Del propietario».
+15. **Presupuesto de rendimiento** (se comprueba antes de aceptar el template): JS ≤ 200 KB comprimido por página; foto LCP ≤ 120 KB; LCP ≤ 2,5 s en móvil; accesibilidad 100 en Lighthouse; nada animado entre el `h1` y el `BotonLlamada` del hero; la web se ve completa solo con los datos del scraper (§4, «Datos mínimos»).
+16. **Interacción nativa primero:** menú con la API `popover`, preguntas con `<details name>`, filtros con enlaces `?servicio=`. Un componente cliente solo cuando no hay alternativa (el asistente, el deslizador), y recibe los datos como props: nunca importa `site.config` en el navegador.
+17. **Tipografía:** tamaños fluidos con `clamp()` en `rem + vw` (nunca solo `vw`, por el zoom), `text-wrap: balance` en títulos y `pretty` en párrafos, fuentes variables sin lista de pesos.
 
 ### Animación (todos los templates)
 
 Todo template lleva **animaciones básicas que llamen la atención**, pensadas para el móvil y **sin empeorar el rendimiento**:
 
-- **Solo CSS** (`@keyframes`, `transition`, `animation-timeline: view()` dentro de `@supports`) y, como mucho, un `IntersectionObserver` de pocas líneas. **Ninguna librería de animación** (framer-motion, GSAP, AOS…).
+- **Solo CSS** (`@keyframes`, `transition`, `@starting-style` y `animation-timeline: view()` dentro de `@supports`). Las apariciones al hacer scroll usan la pieza `aparecer.css` del registro; **sin `IntersectionObserver`** ni JavaScript para animar. El estado por defecto es el visible: si el navegador no entiende la animación, simplemente no anima. **Ninguna librería de animación** (Motion, GSAP, AOS, Lenis…).
 - **Solo se animan `transform` y `opacity`**. Nunca `width`, `height`, `top`, `margin` ni sombras grandes, porque obligan a recalcular la página.
 - **Lo primero que se ve no se anima:** el `h1`, la foto del hero y el botón de llamada del hero están visibles desde el primer pintado. Si se anima el elemento más grande de la primera pantalla (LCP), la web «tarda» más para Google.
 - **`prefers-reduced-motion: reduce`:** sin desplazamientos ni bucles; el contenido aparece directamente.
 - **Sin JavaScript** el contenido se ve entero: nada empieza oculto si depende de un script para aparecer (tampoco las respuestas de las preguntas frecuentes).
 - **Tipos recomendados:** aparecer al hacer scroll (fundido + desplazamiento corto, 200–400 ms, escalonado en listas), respuesta al tocar o pasar por encima en botones y tarjetas, subrayados o cotas que se dibujan, contadores en cifras clave y la barra móvil que entra al cargar.
-- **Prohibido:** parallax pesado, vídeo de fondo, carruseles automáticos que se mueven solos, animaciones en bucle que distraigan del botón de llamada, y cualquier cosa que mueva el contenido mientras se lee.
+- **Prohibido:** parallax pesado, vídeo de fondo sin póster o en urgencias, carruseles automáticos que se mueven solos, animaciones en bucle que distraigan del botón de llamada, y cualquier cosa que mueva el contenido mientras se lee.
 - En la entrega, describe cada animación: qué elemento, qué propiedad, cuánto dura y qué pasa con «reducir movimiento».
 
 ---
@@ -324,5 +362,7 @@ Todo template lleva **animaciones básicas que llamen la atención**, pensadas p
 5. Las **variantes de botón** por sección (§7) con su nombre.
 6. Por cada sección y página: el **nombre del componente**, los **campos** que usa y cómo se comporta cuando falta algo (servicio sin foto, reseña muy larga, sin WhatsApp, sin trabajos).
 7. Los **datos de ejemplo** del nicho en formato `site.config.ts`, ficticios y realistas de la ciudad que diga el encargo (Valencia, Barcelona, Sevilla o Madrid), y que cumplan los formatos de §4. Si llevan precios, cada uno con el comentario `// PRECIO FICTICIO: borrar en la web del cliente`.
-8. La lista de **componentes shadcn** usados.
+8. La lista de **componentes shadcn** usados y de **piezas base** del registro que usas tal cual, reestilas o sustituyes (y por qué).
 9. Un **nombre y una frase** que definan el concepto, y en qué ejes (§6) difiere de los otros templates de su nicho.
+10. La **ficha de estilo fotográfico**: luz, objetivo y encuadre, color o tratamiento, materia, presencia humana y tratamiento en la web; la foto ancla (la del hero) y una lista de prohibiciones propia. Más los **prompts de cada foto de ejemplo** (y del vídeo si lo hay) para generarlas con IA siguiendo esa ficha, con su nombre de archivo en `public/ejemplo/`, su `alt` y `origen: "ia"`.
+11. La comprobación del **presupuesto de rendimiento** (§8, regla 15) tal como lo estimas, y la descripción de cada animación.

@@ -50,7 +50,7 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
         <div className="contenedor flex flex-col gap-8">
           <h1 className={cn(display, "text-center")}>{trabajo.titulo}</h1>
           {datos.length > 0 && <p className="m-0 text-center font-bold text-tinta">{datos.join(" · ")}</p>}
-          <Foto imagen={principal} proporcion="16/9" priority sizes="(min-width: 1286px) 1220px, 100vw" />
+          <Foto imagen={principal} proporcion="16/9" preload sizes="(min-width: 1286px) 1220px, 100vw" />
           {(resto.length > 0 || trabajo.antes) && (
             <ul className="m-0 grid list-none grid-cols-2 gap-4 p-0 md:grid-cols-3">
               {trabajo.antes && (

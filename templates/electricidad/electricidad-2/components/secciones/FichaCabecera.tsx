@@ -1,11 +1,10 @@
-import { BotonLlamada, BotonWhatsApp, type Servicio } from "@andrei-leads/core";
+import { BotonLlamada, BotonWhatsApp, mensajeServicio, precioDesde, type Servicio, telefonoVisible } from "@andrei-leads/core";
 import { MessageCircle, Phone } from "lucide-react";
 
 import { Foto } from "@/components/Foto";
 import { IconoServicio } from "@/components/IconoServicio";
 import { buttonVariants } from "@/components/ui/button";
-import { precioDesde, telefonoVisible } from "@/lib/formato";
-import { etiquetaWhatsappServicio, mensajeServicio } from "@/lib/mensajes";
+import { etiquetaWhatsappServicio } from "@/lib/mensajes";
 import type { ContactoFicha } from "@/lib/servicios";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";
@@ -42,7 +41,7 @@ export function FichaCabecera({ servicio, contacto }: Props) {
           <Foto
             imagen={foto}
             proporcion="3/2"
-            priority
+            preload
             sizes="(min-width: 1024px) 560px, 100vw"
           />
         ) : (

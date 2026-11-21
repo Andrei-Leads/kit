@@ -16,7 +16,7 @@ export function TrabajoFotos({ trabajo }: { trabajo: Trabajo }) {
           <Foto imagen={trabajo.antes} proporcion="4/3" sizes="(min-width: 1200px) 592px, (min-width: 768px) 50vw, 100vw">
             <span className={etiqueta}>Antes</span>
           </Foto>
-          <Foto imagen={principal} proporcion="4/3" priority sizes="(min-width: 1200px) 592px, (min-width: 768px) 50vw, 100vw">
+          <Foto imagen={principal} proporcion="4/3" preload sizes="(min-width: 1200px) 592px, (min-width: 768px) 50vw, 100vw">
             <span className={etiqueta}>Después</span>
           </Foto>
         </div>
@@ -24,7 +24,7 @@ export function TrabajoFotos({ trabajo }: { trabajo: Trabajo }) {
         <Foto
           imagen={principal}
           proporcion="21/9"
-          priority
+          preload
           className="max-md:aspect-[4/3]"
           sizes="(min-width: 1200px) 1200px, 100vw"
         />

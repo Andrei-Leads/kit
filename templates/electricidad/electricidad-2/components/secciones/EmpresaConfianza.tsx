@@ -1,9 +1,10 @@
 import type { Acreditacion } from "@andrei-leads/core";
 import { Check, ShieldCheck } from "lucide-react";
 
+import { listaY } from "@andrei-leads/core";
 import { Corte } from "@/components/Corte";
 import { cifraGrande, tarjeta } from "@/lib/estilos";
-import { acreditacionVisible, listaY } from "@/lib/formato";
+import { acreditacionVisible } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 

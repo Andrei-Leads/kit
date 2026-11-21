@@ -1,8 +1,7 @@
-import { BotonLlamada, BotonWhatsApp } from "@andrei-leads/core";
+import { type Ancla, BotonLlamada, BotonWhatsApp, telefonoVisible } from "@andrei-leads/core";
 import { MessageCircle, Phone } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
-import { telefonoVisible, type Ancla } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 import { BarraMovilInterior } from "./BarraMovilInterior";
 

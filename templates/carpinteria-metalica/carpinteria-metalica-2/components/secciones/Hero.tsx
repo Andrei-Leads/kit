@@ -73,7 +73,7 @@ export function Hero({ negocio, contacto, valoracion, imagen, enlazarResenas }: 
           proporcion="5/2"
           sizes="(min-width: 1248px) 576px, (min-width: 768px) 46vw, 100vw"
           radio="ninguno"
-          priority
+          preload
           className="max-md:-mx-4 md:order-2 md:aspect-[4/5] md:rounded-tarjeta"
         />
         <div className="flex flex-col gap-2.5 pt-3.5 md:gap-5 md:pt-0">

@@ -62,7 +62,7 @@ function Diapositiva({
               imagen={imagen}
               proporcion="10/7"
               recorte
-              priority={primera}
+              preload={primera}
               sizes="(min-width: 768px) 55vw, 100vw"
               className="max-md:aspect-video"
             />

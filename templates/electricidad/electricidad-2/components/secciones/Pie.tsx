@@ -1,11 +1,9 @@
 import Link from "next/link";
-import { BotonLlamada, BotonWhatsApp, enlacesLegales, type SiteConfig } from "@andrei-leads/core";
+import { type Ancla, BotonLlamada, BotonWhatsApp, direccionLinea, enlacesLegales, horarioVisible, listaRedes, mensajeGeneral, type SiteConfig, telefonoVisible } from "@andrei-leads/core";
 
 import { Corte } from "@/components/Corte";
 import { anioActual } from "@/lib/anio";
 import { enlaceLista } from "@/lib/estilos";
-import { horarioVisible, listaRedes, telefonoVisible, direccionLinea, type Ancla } from "@/lib/formato";
-import { mensajeGeneral } from "@/lib/mensajes";
 import { textos } from "@/lib/textos";
 
 type Props = {

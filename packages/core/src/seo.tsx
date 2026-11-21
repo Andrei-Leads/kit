@@ -60,10 +60,11 @@ function absoluta(config: SiteConfig, ruta: string): string {
   return base(config) + (ruta.startsWith("/") ? ruta : "/" + ruta);
 }
 
-/** Imagen para compartir: hero → galería → primera foto de un servicio. */
+/** Imagen para compartir: hero → póster del vídeo → galería → primera foto de un servicio. */
 function imagenPrincipal(config: SiteConfig): Imagen | undefined {
   return (
     config.imagenesHero[0] ??
+    config.videoHero?.poster ??
     config.galeria[0] ??
     config.servicios.find((s) => s.imagenes.length > 0)?.imagenes[0]
   );

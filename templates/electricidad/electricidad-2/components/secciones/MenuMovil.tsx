@@ -5,8 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
+import { type Ancla } from "@andrei-leads/core";
 import { SheetContent, SheetTitle } from "@/components/ui/sheet";
-import type { Ancla } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 import { actual } from "./NavEscritorio";
 

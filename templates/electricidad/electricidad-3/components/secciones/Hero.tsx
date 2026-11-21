@@ -41,7 +41,7 @@ function Valoracion({ valoracion, fichaGoogle }: { valoracion: NonNullable<SiteC
 
 /**
  * Hero partido (Specs §2) sobre noche, con una mancha de luz detrás. SIN animación: es lo que pinta el LCP
- * (foto con `priority`, mancha, h1, chips y llamada-luz no llevan data-anim ni transición).
+ * (foto con `preload`, mancha, h1, chips y llamada-luz no llevan data-anim ni transición).
  *
  *  - Móvil con foto: foto 16:9 con contorno orgánico (sin texto encima), chips de estado (solo con dato),
  *    h1 «{sector} en {ciudad}» a 36 px, llamada-luz de 64 px, whatsapp-foto y valoración. A 375×667 el h1
@@ -124,7 +124,7 @@ export function Hero({ negocio, contacto, imagen, valoracion }: Props) {
             imagen={imagen}
             proporcion="16/9"
             sizes="(min-width: 1024px) 400px, 100vw"
-            priority
+            preload
             className="max-lg:[@media(max-height:720px)]:aspect-[2/1] lg:aspect-[4/5] lg:rounded-organico-b"
           />
         </div>

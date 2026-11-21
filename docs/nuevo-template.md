@@ -138,14 +138,18 @@ Desde **`kit/`** (comandos de terminal; lo hace el orquestador en su fase 0):
 O=templates/<origen>; D=templates/<nicho>/<paquete>
 mkdir -p $D/app $D/lib $D/components/ui $D/components/secciones $D/public/ejemplo
 cp $O/{package.json,next.config.ts,tsconfig.json,eslint.config.mjs,components.json,.gitignore} $D/
-cp $O/lib/{utils.ts,anio.ts} $D/lib/
+cp $O/lib/anio.ts $D/lib/
 cp $O/app/{sitemap.ts,robots.ts,favicon.ico} $D/app/
+mkdir -p $D/components/base
+cp registry/base/* $D/components/base/      # piezas base (registry/README.md)
+cp registry/lib/utils.ts $D/lib/utils.ts    # cn() que conoce los tokens comunes
 sed -i 's/"name": "[^"]*"/"name": "<paquete>"/' $D/package.json
 pnpm install
 pnpm ls -r --depth -1 | grep <paquete>
 ```
 
 - Son los archivos **neutros** (no dependen del diseño). No se copian `node_modules`, `.next`, `tsconfig.tsbuildinfo`, `next-env.d.ts`, ni secciones, `site.config.ts` o imágenes del origen.
+- **Desde core 0.6.0** el formato, los mensajes de WhatsApp y los ayudantes de `[slug]` se importan de `@andrei-leads/core` (`telefonoVisible`, `mensajeServicio`, `parametrosServicios`, `buscarServicio`…; lista en AGENTS.md §5). `lib/formato.ts` y `lib/mensajes.ts` solo llevan lo propio del diseño. Las piezas de `components/base/` solo usan los 16 tokens comunes: el `@theme` del template tiene que darles valor a todos.
 - **A adaptar**, no a copiar tal cual: `components/Foto.tsx`, `components/Migas.tsx`, `components/LecturaLegal.tsx`, las tres legales, `app/not-found.tsx`, `lib/formato.ts`, `lib/mensajes.ts` (y `lib/llegar.ts` si hay «Cómo llegar»). Usan tokens del origen (`bg-piedra`, `rounded-foto`…) y `@/lib/estilos`: Tailwind v4 **descarta en silencio** las clases que no existen, así que el build pasa y la página sale sin estilo.
 - `pnpm install` (desde la raíz) enlaza el paquete nuevo en el workspace y **cambia `pnpm-lock.yaml`**: ese cambio va en el mismo commit que el template (paso 8).
 
@@ -267,10 +271,19 @@ INFORME FINAL (con estos encabezados)
 
 ```bash
 pnpm --filter <paquete> build && pnpm --filter <paquete> lint
-pnpm -r --filter "./templates/**" build
-pnpm -r --filter "./templates/**" lint
+pnpm comprobar              # Turborepo: typecheck de core + lint y build de todo (lo que no cambió sale de caché)
 git status --short          # solo la carpeta nueva y pnpm-lock.yaml
 ```
+
+**Presupuesto** (desde la nueva generación, 21/11/2026). Un template que no lo cumple no se da por terminado:
+
+| Qué | Límite | Cómo se mide |
+|---|---|---|
+| JavaScript por página | ≤ 200 KB gzip; +30 KB como mucho si una librería entra en la sección estrella | Bloque «JavaScript por página» de abajo (con `gzip -c \| wc -c`) |
+| Foto LCP | ≤ 120 KB; `preload` en una sola foto por página y `sizes` real | DevTools → Red, y Lighthouse móvil en producción |
+| LCP | ≤ 2,5 s medido **en producción** (la primera petición a `/_next/image` codifica al vuelo) | Lighthouse móvil |
+| Animaciones | Nada animado entre el `h1` y el primer `BotonLlamada`; solo `aparecer.css` o CSS propio con el estado por defecto visible | Rendering → `prefers-reduced-motion`, y JS desactivado |
+| Datos | Se ve completa solo con los datos del scraper (nombre, contacto, zonas, reseñas, valoración) | Variante «mínimos» del bloque de variantes |
 
 **Greps** desde **`kit/templates/<nicho>/<paquete>/`** (no debe salir nada, salvo donde se indica):
 
@@ -420,4 +433,5 @@ Objetivo de Ysst: decir «integra este diseño siguiendo `docs/nuevo-template.md
 - 15/10/2026: `-2` «Exposición» (variante tienda: «Cómo llegar»). Matriz de variedad añadida al brief. Este documento.
 - 16/10/2026: requisito «JavaScript mínimo» y su comprobación. Los botones de core en componentes cliente metían zod en todas las páginas (~880 → ~575 KB al pasarlos como prop desde el servidor).
 - 16/10/2026: core 0.5.1 declara `sideEffects`; las páginas con asistente de WhatsApp de `carpinteria-metalica-1/2` bajan de ~850–870 a ~550–570 KB.
+- 21/11/2026: núcleo de la nueva generación. Core 0.6.0 (lógica común, `origen`, `videoHero`, `estiloMarca`), registro `registry/` con las piezas base, `apps/playground` y Turborepo (`pnpm comprobar`). Presupuesto en el paso 7.
 - 16/10/2026: `app/not-found.tsx` propia en los 6 templates y `ensureStatic = "navigation"` en las `[slug]` (el «falso 404»: 200 en la primera visita).

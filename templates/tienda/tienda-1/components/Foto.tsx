@@ -12,7 +12,7 @@ type Props = {
   proporcion: Proporcion;
   /** Atributo `sizes` de next/image (ancho real de la foto según el breakpoint). */
   sizes: string;
-  priority?: boolean;
+  preload?: boolean;
   /** Recorte de producto (PNG transparente): `object-contain` y sin fondo. */
   recorte?: boolean;
   /** Foto dentro de un enlace con texto propio: `alt=""` y etiqueta más pequeña. */
@@ -74,7 +74,7 @@ export function Foto({
   imagen,
   proporcion,
   sizes,
-  priority,
+  preload,
   recorte,
   decorativa,
   imgClassName,
@@ -89,7 +89,7 @@ export function Foto({
         alt={decorativa ? "" : imagen.alt}
         fill
         sizes={sizes}
-        priority={priority}
+        preload={preload}
         className={cn(recorte ? "object-contain" : "object-cover", imgClassName)}
       />
       {esDeEjemplo(imagen) && <EtiquetaEjemplo pequena={decorativa} posicion={etiqueta} />}

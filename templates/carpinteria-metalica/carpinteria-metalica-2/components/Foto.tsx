@@ -11,7 +11,7 @@ type Props = {
   proporcion: Proporcion;
   /** Atributo `sizes` de next/image (ancho real de la foto según el breakpoint). */
   sizes: string;
-  priority?: boolean;
+  preload?: boolean;
   /** Radio: `foto` (10 px, catálogo e instalaciones), `tarjeta` (14 px, hero y mosaico) o `ninguno`. */
   radio?: "foto" | "tarjeta" | "ninguno";
   /** Foto dentro de un enlace con texto propio: `alt=""` y etiqueta más pequeña. */
@@ -63,7 +63,7 @@ export function Foto({
   imagen,
   proporcion,
   sizes,
-  priority,
+  preload,
   radio = "foto",
   decorativa,
   zoom,
@@ -78,7 +78,7 @@ export function Foto({
         alt={decorativa ? "" : imagen.alt}
         fill
         sizes={sizes}
-        priority={priority}
+        preload={preload}
         className={cn(
           "object-cover",
           zoom && "md:transition-transform md:duration-250 md:group-hover:scale-[1.03]"

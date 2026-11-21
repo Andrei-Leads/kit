@@ -9,7 +9,7 @@ type Props = {
   proporcion: "4/3" | "1/1";
   /** Atributo `sizes` de next/image (ancho real de la foto según el breakpoint). */
   sizes: string;
-  priority?: boolean;
+  preload?: boolean;
   className?: string;
   /** Miniatura dentro de un enlace: `alt=""` (el enlace ya tiene su texto) y etiqueta más pequeña. */
   decorativa?: boolean;
@@ -18,7 +18,7 @@ type Props = {
 };
 
 /** Foto con next/image. Si es de ejemplo (`/ejemplo/…`) lleva la etiqueta «Foto de ejemplo». */
-export function Foto({ imagen, proporcion, sizes, priority, className, decorativa, children }: Props) {
+export function Foto({ imagen, proporcion, sizes, preload, className, decorativa, children }: Props) {
   const deEjemplo = imagen.src.startsWith("/ejemplo/");
   return (
     <div
@@ -33,7 +33,7 @@ export function Foto({ imagen, proporcion, sizes, priority, className, decorativ
         alt={decorativa ? "" : imagen.alt}
         fill
         sizes={sizes}
-        priority={priority}
+        preload={preload}
         className="object-cover"
       />
       {deEjemplo && (

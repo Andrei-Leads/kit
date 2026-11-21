@@ -45,7 +45,7 @@ export default async function Page() {
                 imagen={principal}
                 proporcion="4/3"
                 radio="tarjeta"
-                priority
+                preload
                 sizes="(min-width: 1200px) 640px, (min-width: 1024px) 52vw, 100vw"
               />
               {pequenas.length > 0 && (

@@ -1,9 +1,7 @@
-import { BotonLlamada, BotonWhatsApp, type SiteConfig } from "@andrei-leads/core";
+import { BotonLlamada, BotonWhatsApp, mensajeGeneral, type SiteConfig, telefonoVisible } from "@andrei-leads/core";
 import { MessageCircle, Phone } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
-import { telefonoVisible } from "@/lib/formato";
-import { mensajeGeneral } from "@/lib/mensajes";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 

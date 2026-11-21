@@ -1,8 +1,8 @@
 import type { SiteConfig } from "@andrei-leads/core";
 
+import { iniciales } from "@andrei-leads/core";
 import { Foto } from "@/components/Foto";
 import { h2 } from "@/lib/estilos";
-import { iniciales } from "@/lib/formato";
 import { textos } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 

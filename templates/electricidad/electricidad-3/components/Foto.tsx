@@ -16,7 +16,7 @@ type Props = {
   forma?: Forma;
   /** Atributo `sizes` de next/image (ancho real de la foto según el breakpoint). */
   sizes: string;
-  priority?: boolean;
+  preload?: boolean;
   /** Foto dentro de un enlace con texto propio: `alt=""` (el enlace ya se nombra solo). */
   decorativa?: boolean;
   /** Miniaturas: etiqueta «Foto de ejemplo» más pequeña (10,5 px). */
@@ -65,7 +65,7 @@ export function Foto({
   proporcion = "4/3",
   forma = "organica",
   sizes,
-  priority,
+  preload,
   decorativa,
   compacta,
   className,
@@ -79,7 +79,7 @@ export function Foto({
         alt={decorativa ? "" : imagen.alt}
         fill
         sizes={sizes}
-        priority={priority}
+        preload={preload}
         className="object-cover"
       />
       {deEjemplo && <FotoEjemplo forma={forma} compacta={compacta} />}

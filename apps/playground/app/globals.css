@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/* components/base/ está en .gitignore (es una copia del registro) y Tailwind no lee lo ignorado. */
+@source "../components/base";
+
+/*
+ * Los 16 tokens comunes (brief v2, §8, regla 3) con valores NEUTROS. Las piezas
+ * base solo usan estos; cada template pone los suyos.
+ */
+@theme {
+  --color-fondo: #ffffff;
+  --color-superficie: #f5f5f4;
+  --color-alterna: #e7e5e4;
+  --color-texto: #1c1917;
+  --color-texto-suave: #57534e;
+  --color-borde: #d6d3d1;
+  --color-primario: #1e40af;
+  --color-sobre-primario: #ffffff;
+  --color-acento: #b45309;
+  --color-foco: #1c1917;
+  --font-titulo: ui-serif, Georgia, serif;
+  --font-texto: system-ui, sans-serif;
+  --radius-boton: 6px;
+  --radius-tarjeta: 8px;
+  --radius-foto: 4px;
+  --text-display: clamp(2.25rem, 1.5rem + 3.2vw, 4.75rem);
+}
+
+body {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--font-texto);
+}

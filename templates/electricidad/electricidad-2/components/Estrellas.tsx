@@ -1,5 +1,5 @@
+import { mediaVisible } from "@andrei-leads/core";
 import { cn } from "@/lib/utils";
-import { mediaVisible } from "@/lib/formato";
 
 type Props = {
   /** Valor de 0 a 5 (puede tener decimales: 4,9). */
