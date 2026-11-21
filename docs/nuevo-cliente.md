@@ -246,7 +246,7 @@ Qué se ve en el panel y los límites por plan de Vercel: `docs/cambio-de-plan.m
 | `pnpm start` dice «Could not find a production build» | Se lanzó mientras `pnpm build` aún compilaba | Esperar a que termine el build |
 | Al compartir la demo por WhatsApp la vista previa sale sin foto | `seo.url` sigue en `https://ejemplo.com` | Poner la URL de Vercel (paso 5 y paso 12) |
 | Analytics activado, pero el `script.js` de la ruta propia (`/<16 caracteres>/script.js`) da `404` y el panel no recibe visitas | Se desplegó antes del *Enable*: la ruta va dentro del JavaScript del build | Redeploy sin «Use existing Build Cache», o un `git push` (paso 13.5) |
-| `pnpm build` acaba con `SecurityFatalError: Your version of Next.js is affected by a known security vulnerability` | Aviso de Next 16.4.0 (a 22/10/2026); sale una vez y para el build | Repetir `pnpm build` (pasa). En Vercel no apareció. La subida de `next` está pendiente de decidir (`PENDIENTES.md`) |
+| `pnpm build` acaba con `SecurityFatalError: Your version of Next.js is affected by a known security vulnerability` | La web sigue en `next` 16.4.0 (fallos críticos corregidos en 16.4.1 y 16.4.5) | Subir: `pnpm add next@16.4.6 eslint-config-next@16.4.6 react@19.3.1 react-dom@19.3.1`, quitar `experimental.agentFeedback` de `next.config.ts` y `pnpm build`. Si el build da «queries have exactly one entry» (next/font), `rm -rf .next` y repetir |
 | `pnpm build` falla con «useContext null» | `NODE_ENV=development` en el shell | `NODE_ENV=production pnpm build` |
 | Se pega el contenido de `NPM_RC` en la terminal | Confusión entre comando y contenido | Va en el campo *Value* de Vercel, no en la terminal |
 

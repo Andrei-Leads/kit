@@ -4,10 +4,6 @@ const nextConfig: NextConfig = {
 
   transpilePackages: ["@andrei-leads/core"],
 
-  /* config options here */
-  experimental: {
-    agentFeedback: true,
-  },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
