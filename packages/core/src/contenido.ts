@@ -4,7 +4,7 @@
  * Lógica pura: `notFound()` y `ensureStatic` siguen en el template, porque son
  * API de Next y core no depende de `next`.
  */
-import type { Servicio, SiteConfig, Trabajo } from "./site-config";
+import type { Imagen, Servicio, SiteConfig, Trabajo } from "./site-config";
 
 /** Slug de relleno: con `cacheComponents`, `generateStaticParams` no puede devolver []. */
 export const SLUG_RELLENO = "_";
@@ -66,8 +66,8 @@ export function servicioDelTrabajo(servicios: readonly Servicio[], trabajo: Pick
   return trabajo.servicio ? servicios.find((s) => s.slug === trabajo.servicio) : undefined;
 }
 
-/** Un paso de «Cómo trabajamos». */
-export type Paso = { titulo: string; texto: string };
+/** Un paso de «Cómo trabajamos». `imagen` solo llega de los datos (desde 0.7.0). */
+export type Paso = { titulo: string; texto: string; imagen?: Imagen };
 
 /** Tipos de negocio con pasos por defecto. */
 export type TipoNegocio = "urgencias" | "proyecto" | "obra-tecnica";
