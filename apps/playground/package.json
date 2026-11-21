@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "copiar-registro": "rm -rf components/base && mkdir -p components && cp -r ../../registry/base components/base && cp ../../registry/lib/utils.ts lib/utils.ts",
+    "copiar-registro": "rm -rf components/base && mkdir -p components lib && cp -r ../../registry/base components/base && cp ../../registry/lib/utils.ts lib/utils.ts",
     "predev": "pnpm copiar-registro",
     "dev": "next dev",
     "prebuild": "pnpm copiar-registro",
