@@ -185,7 +185,7 @@ Para ejecutar algo en un solo proyecto desde la raíz: `pnpm --filter <nombre> <
 | **Formato** (0.6.0): `telefonoVisible`, `listaY`, `mediaVisible`, `direccionLinea`, `urlComoLlegar`, `listaRedes`, `horarioVisible`, `iniciales`, `minusculaInicial`, `MESES`, `fechaResena`, `precioDesde`; tipo `Ancla` | Lógica pura para pintar datos (antes copiada en el `lib/formato.ts` de cada template) | El template no la reescribe en `lib/`: la importa |
 | **Mensajes de WhatsApp** (0.6.0): `MENSAJE_GENERICO`, `MENSAJE_NO_ENCONTRADA`, `mensajeGeneral`, `mensajeServicio`, `mensajeTrabajo` | El mensaje de los datos o uno por defecto | Cada uno acepta el texto por defecto del template (`mensajeServicio(s, (t) => `Precio de ${t}`)`), para que cada diseño lleve el suyo |
 | **Rutas y contenido** (0.6.0): `hayTrabajos`, `parametrosServicios`, `parametrosTrabajos` (relleno `SLUG_RELLENO = "_"`), `buscarServicio`, `buscarTrabajo`, `otrosServicios`, `trabajosDelServicio`, `otrosTrabajos`, `servicioDelTrabajo`, `PASOS_POR_DEFECTO`, `pasosProceso(proceso, tipo \| pasos)`; tipos `Paso`, `TipoNegocio` | `generateStaticParams` en una línea y búsqueda del slug | `ensureStatic` y `notFound()` siguen en el template (API de Next). `lib/anio.ts` también se queda en el template: usa `next/cache` |
-| **Marca y fotos** (0.6.0): `estiloMarca(config)`, `colorSobre`, `contraste`, `etiquetaOrigen(imagen)`; tipos `OrigenImagen`, `VideoHero` | `estiloMarca`: el `style` del `<html>` con `--color-primario` y `--color-sobre-primario` calculado (blanco o `#111111`; aviso en el build si no llega a 4,5:1). `etiquetaOrigen`: «Imagen generada con IA» / «Foto de tu ficha de Google» según `imagen.origen` | `<html lang="es" style={estiloMarca(config)}>` sustituye al `style` a mano de §6 |
+| **Marca y fotos** (0.6.0): `estiloMarca(config)`, `colorSobre`, `contraste`, `etiquetaOrigen(imagen)`; tipos `OrigenImagen`, `VideoHero`, `Video` (0.7.0, el mismo tipo para `videoPano`) | `estiloMarca`: el `style` del `<html>` con `--color-primario` y `--color-sobre-primario` calculado (blanco o `#111111`; aviso en el build si no llega a 4,5:1). `etiquetaOrigen`: «Imagen generada con IA» / «Foto de tu ficha de Google» según `imagen.origen` | `<html lang="es" style={estiloMarca(config)}>` sustituye al `style` a mano de §6 |
 
 `saludo` se eliminó en 0.2.0. `AvisoLegal` muestra `negocio.registroMercantil` si existe (desde 0.3.0).
 
@@ -225,7 +225,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; 
 | `trabajos` | {`titulo`, `slug?`, `descripcion` (≤ 300), `ubicacion?`, `anio?`, `servicio?` (slug de un servicio existente), `superficie?`, `duracion?`, `precio?`, `contenido` (párrafos), `imagenes` (imagen[], **mínimo 1**), `antes?` (imagen), `testimonio?` {`autor`, `texto`}} | Sin trabajos ni `galeria`, no hay `/trabajos` |
 | `valoracion` | opcional: {`media` 1–5, `total`} (resumen de Google) | Sin estrellas. **No** va al JSON-LD (`aggregateRating`) |
 | `resenas` | {`autor`, `texto`, `puntuacion` 1–5, `fecha?` (`AAAA-MM[-DD]`), `fuente?` (`google`, `web`, `otra`)} | Sección oculta |
-| `proceso` | ≤ 6 × {`titulo`, `texto`} | El template usa sus pasos por defecto según el tipo |
+| `proceso` | ≤ 6 × {`titulo`, `texto`, `imagen?` (desde 0.7.0)} | El template usa sus pasos por defecto según el tipo |
 | `acreditaciones` | {`nombre`, `numero?`} (solo números reales) | Se oculta |
 | `garantias` | ≤ 6 textos (≤ 80) | Se oculta |
 | `marcas` | lista de nombres | Se oculta |
@@ -234,6 +234,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; 
 | `comunidades` | opcional: {`texto` (párrafos, mínimo 1), `puntos`, `ieev` (por defecto `false`)} | Sin bloque ni `/comunidades` |
 | `imagenesHero` | imagen[] | Hero sin foto (o con la que elija el template) |
 | `videoHero` | opcional (0.6.0): {`src` (.mp4 H.264), `srcAv1?`, `poster` (imagen, obligatorio)}. Solo tipo proyecto | Sin vídeo |
+| `videoPano` | opcional (0.7.0): misma forma que `videoHero`. Vídeo de la sección «pano» (crece a pantalla completa con el scroll). No entra en Open Graph | Sin sección «pano» o con su póster |
 | `galeria` | imagen[] con `titulo?` | Se oculta |
 | `preguntas` | {`pregunta`, `respuesta`} | Se oculta |
 | `marca` | `colorPrimario?` (hex `#rrggbb`); por defecto `{}` | Color del template |
@@ -398,7 +399,7 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 | **Tokens de diseño en cada template; solo `--color-primario` sobrescribible desde `site.config`** | El diseño es del template; el cliente solo personaliza su color de marca. |
 | **Imágenes de ejemplo neutras en `public/ejemplo/`; fotos del cliente en `public/`** | El template se ve completo sin datos reales, y las fotos del cliente no se mezclan con las de ejemplo. |
 | **Tipografías siempre con `next/font`** | Rendimiento y sin peticiones a terceros. |
-| **Turborepo local, sin caché remota** (21/11/2026, `pnpm comprobar`) | Con 7 templates, un cambio en core se valida contra todos con un comando, y lo que no cambió sale de caché. |
+| **Turborepo local, sin caché remota** (21/11/2026, `pnpm comprobar`) | Con 7 templates, un cambio en core se valida contra todos con un comando, y lo que no cambió sale de caché. `build` y `lint` dependen de `^typecheck` (así un cambio en core invalida la caché de todos) y el playground incluye `registry/**` en sus entradas. |
 | **Tres capas: core (lógica, se importa), `registry/` (piezas base, se copian), template (lo que vende)** (21/11/2026) | Lógica repetida 7 veces pasa a core sin tocar el diseño de nadie; las piezas compartidas se copian para que una mejora no cambie webs ya entregadas. |
 | **16 tokens comunes con nombre fijo** (`fondo`, `superficie`, `alterna`, `texto`, `texto-suave`, `borde`, `primario`, `sobre-primario`, `acento`, `foco`, `font-titulo`, `font-texto`, `radius-boton/tarjeta/foto`, `text-display`) | Sin ese vocabulario ninguna pieza se puede compartir. El template les da valor y puede añadir los suyos, nunca renombrarlos. |
 | **`--color-sobre-primario` calculado en core (`estiloMarca`), aviso sin romper el build** | Un amarillo de furgoneta real no debe romper la web del cliente. |

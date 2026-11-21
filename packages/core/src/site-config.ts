@@ -21,6 +21,16 @@ const imagen = z.object({
   origen: origenImagen.optional(),
 });
 
+/**
+ * Vídeo corto en bucle y sin sonido: H.264 en .mp4, AV1 opcional y póster
+ * obligatorio (lo que se ve mientras carga, sin JS o con «reducir movimiento»).
+ */
+const video = z.object({
+  src: z.string().min(1),
+  srcAv1: z.string().min(1).optional(),
+  poster: imagen,
+});
+
 /** Texto largo: lista de párrafos. */
 const parrafos = z.array(z.string().min(1));
 
@@ -240,7 +250,14 @@ export const siteConfigSchema = z
       )
       .default([]),
     proceso: z
-      .array(z.object({ titulo: z.string().min(1), texto: z.string().min(1) }))
+      .array(
+        z.object({
+          titulo: z.string().min(1),
+          texto: z.string().min(1),
+          /** Una foto por paso (desde 0.7.0). */
+          imagen: imagen.optional(),
+        }),
+      )
       .max(6, "Máximo 6 pasos")
       .default([]),
     acreditaciones: z
@@ -294,13 +311,13 @@ export const siteConfigSchema = z
      * El póster es obligatorio: es el LCP, lo que se ve con «reducir movimiento» y la
      * imagen de Open Graph si no hay `imagenesHero`.
      */
-    videoHero: z
-      .object({
-        src: z.string().min(1), // H.264 en .mp4
-        srcAv1: z.string().min(1).optional(),
-        poster: imagen,
-      })
-      .optional(),
+    videoHero: video.optional(),
+    /**
+     * Vídeo de la sección «pano», la que crece a pantalla completa con el scroll
+     * (desde 0.7.0). Aparte del vídeo del hero, con la misma forma y el póster
+     * obligatorio. No entra en Open Graph.
+     */
+    videoPano: video.optional(),
     galeria: z
       .array(imagen.extend({ titulo: z.string().optional() }))
       .default([]),
@@ -362,7 +379,9 @@ export type SiteConfig = z.output<typeof siteConfigSchema>;
 
 export type Imagen = z.output<typeof imagen>;
 export type OrigenImagen = z.output<typeof origenImagen>;
-export type VideoHero = NonNullable<SiteConfig["videoHero"]>;
+export type VideoHero = z.output<typeof video>;
+/** Mismo tipo para `videoHero` y `videoPano` (desde 0.7.0). */
+export type Video = VideoHero;
 export type Servicio = SiteConfig["servicios"][number];
 export type Trabajo = SiteConfig["trabajos"][number];
 export type Resena = SiteConfig["resenas"][number];
