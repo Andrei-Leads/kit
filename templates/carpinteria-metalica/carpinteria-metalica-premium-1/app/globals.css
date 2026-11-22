@@ -1,0 +1,1044 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * «Marco» (carpinteria-metalica-premium-1, línea premium). Tinta grafito, gris
+ * aluminio y un solo acento (--color-primario, reservado al CTA de WhatsApp).
+ * Solo --color-primario (y --color-sobre-primario, que calcula core) se
+ * sobrescriben desde site.config: estilo del <html> en app/layout.tsx.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #f4f5f4;
+  --color-superficie: #ffffff;
+  --color-alterna: #e6e8e8;
+  --color-texto: #1b1f22;
+  --color-texto-suave: #545b61;
+  --color-borde: #cfd3d5;
+  --color-primario: #2f6b5f; /* verde canto de vidrio; marca.colorPrimario. Solo el CTA de WhatsApp */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #8d969b; /* gris anodizado: filetes sobre tinta y números grandes */
+  --color-foco: #1b1f22;
+
+  --font-titulo: var(--font-hanken), system-ui, sans-serif;
+  --font-texto: var(--font-inter), system-ui, sans-serif;
+
+  --radius-boton: 999px;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+
+  --text-display: clamp(2.25rem, 1.2rem + 4.6vw, 6rem);
+  --text-display--line-height: 1.05;
+
+  /* Propios de «Marco» */
+  --color-sobre-tinta: #eef0f0;
+  --color-sobre-tinta-suave: #a9b0b4;
+  --color-borde-tinta: #3a4146;
+
+  --text-h2: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem);
+  --text-h2--line-height: 1.08;
+  --text-h1i: clamp(2rem, 1.3rem + 3vw, 4.5rem);
+  --text-h1i--line-height: 1.05;
+  --text-cuerpo: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-cuerpo--line-height: 1.6;
+}
+
+/* Tokens premium (anexo P3): los de movimiento son iguales en los 5 premium. */
+@theme static {
+  --ease-salida: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-suave: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --dur-revelado: 0.9s;
+  --dur-hover: 0.5s;
+  --dur-pagina: 0.4s;
+  --escalonado: 0.12s;
+  --desplaz-revelado: 1.5rem;
+
+  --color-tinta: #1b1f22;
+  --color-tinta-suave: #262b2f;
+  --text-pano: clamp(4rem, 2rem + 8vw, 9rem);
+  --text-etiqueta: 0.75rem;
+}
+
+:root {
+  /* Derivados del primario del cliente (respaldo sin oklch relativo). */
+  --color-primario-hover: color-mix(in oklab, var(--color-primario), black 14%);
+  --color-primario-borde: color-mix(in oklab, var(--color-primario) 40%, white);
+  /* Solo para la pieza Luz. */
+  --color-luz: oklch(0.98 0.025 85);
+  --color-luz-tinta: oklch(0.98 0.03 85 / 0.12);
+  --color-velo: linear-gradient(to top, rgb(27 31 34 / 0.7), rgb(27 31 34 / 0.15));
+  --linea: 1px;
+  --seccion: clamp(5rem, 3.6rem + 6vw, 10rem);
+  --col-texto: 30rem;
+  --pad: 20px;
+  --alto-cabecera: 56px;
+  --alto-barra: 76px;
+}
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.07) c h);
+    --color-primario-borde: oklch(from var(--color-primario) max(l, 0.82) calc(c * 0.6) h);
+  }
+}
+@media (min-width: 64rem) {
+  :root {
+    --pad: 48px;
+    --alto-cabecera: 72px;
+    --alto-barra: 0px;
+  }
+}
+
+/* ── Utilidades de composición ─────────────────────────────────────────── */
+@utility contenedor {
+  width: 100%;
+  max-width: 1376px;
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+@utility seccion {
+  padding-block: var(--seccion);
+}
+@utility rejilla {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 24px;
+  @media (min-width: 64rem) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+/* Antetítulo, fechas y etiquetas: lo único en mayúsculas. */
+@utility etiqueta {
+  margin: 0;
+  font-size: var(--text-etiqueta);
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+@utility titulo-display {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  font-size: var(--text-display);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+@utility titulo-h1 {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  font-size: var(--text-h1i);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+@utility titulo-h2 {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  font-size: var(--text-h2);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+@utility fino {
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  letter-spacing: -0.015em;
+}
+@utility col-texto {
+  max-width: var(--col-texto);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--alto-cabecera) + 8px);
+    scroll-padding-bottom: var(--alto-barra);
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.6;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: inherit;
+    text-underline-offset: 4px;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  em {
+    font-style: italic;
+    font-weight: inherit;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  /* :not(html): CabeceraScroll pone data-tono en <html> solo para la cabecera. */
+  :not(html)[data-tono="oscuro"] {
+    --color-foco: #ffffff;
+    --color-texto-suave: var(--color-sobre-tinta-suave);
+  }
+}
+
+/* Espacio para la barra móvil fija al final de la página (lo deja el pie). */
+#contenido {
+  flex: 1;
+}
+footer {
+  padding-bottom: var(--alto-barra);
+}
+
+@layer components {
+/* ── Enlace de navegación «Texto →» (nunca de contacto) ─────────────────── */
+.enlace-flecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+}
+.enlace-flecha > span:first-child {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+.enlace-flecha .flecha {
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .enlace-flecha .flecha {
+    transition: translate var(--dur-hover) var(--ease-salida);
+  }
+  .enlace-flecha:hover .flecha,
+  .enlace-flecha:focus-visible .flecha {
+    translate: 5px 0;
+  }
+}
+
+/* ── Botones (píldora). Colores por variante; solo cambian de fondo. ───── */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 24px;
+  border-radius: var(--radius-boton);
+  font-family: var(--font-texto);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .boton {
+    transition:
+      background-color var(--dur-hover) var(--ease-salida),
+      border-color var(--dur-hover) var(--ease-salida),
+      color var(--dur-hover) var(--ease-salida);
+  }
+}
+.boton-wa {
+  background-color: var(--color-primario);
+  color: var(--color-sobre-primario);
+  border: 1px solid var(--color-primario);
+}
+.boton-wa:hover {
+  background-color: var(--color-primario-hover);
+  border-color: var(--color-primario-hover);
+}
+[data-tono="oscuro"]:not(html) .boton-wa,
+.boton-wa.sobre-tinta {
+  border-color: var(--color-primario-borde);
+}
+.boton-llamar {
+  background-color: var(--color-tinta);
+  color: var(--color-sobre-tinta);
+  border: 2px solid var(--color-tinta);
+}
+.boton-llamar:hover {
+  background-color: var(--color-borde-tinta);
+  border-color: var(--color-borde-tinta);
+}
+[data-tono="oscuro"]:not(html) .boton-llamar,
+.boton-llamar.sobre-tinta {
+  background-color: transparent;
+  color: var(--color-sobre-tinta);
+  border-color: var(--color-sobre-tinta);
+}
+[data-tono="oscuro"]:not(html) .boton-llamar:hover,
+.boton-llamar.sobre-tinta:hover {
+  background-color: rgb(238 240 240 / 0.12);
+}
+
+/* ── Cabecera inteligente ─────────────────────────────────────────────────
+   Sin JS (scripting: none) o sin animation-timeline: fija y sólida en tinta.
+   Con los dos: transparente sobre el hero y, en los primeros 200 px de scroll,
+   gana fondo (tinta o aluminio al 90 % según data-tono, que pone
+   CabeceraScroll). Desde 1024 px se esconde al bajar (data-scroll="abajo") y
+   aparece la pareja flotante. Por debajo de 1024 px no se esconde nunca. */
+.cabecera {
+  --cab-texto: var(--color-sobre-tinta);
+  --cab-fondo: rgb(27 31 34 / 0.9);
+  --cab-linea: var(--color-borde-tinta);
+  --cab-llamar-fondo: transparent;
+  --cab-llamar-texto: var(--color-sobre-tinta);
+  --cab-llamar-borde: var(--color-sobre-tinta);
+  --cab-foco: #ffffff;
+  --cab-fondo-op: 1;
+  color: var(--cab-texto);
+  height: var(--alto-cabecera);
+}
+.cabecera :focus-visible {
+  outline-color: var(--cab-foco);
+}
+.cabecera-fondo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--cab-fondo);
+  border-bottom: 1px solid var(--cab-linea);
+  opacity: var(--cab-fondo-op);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.cab-llamar {
+  background-color: var(--cab-llamar-fondo);
+  color: var(--cab-llamar-texto);
+  border: 2px solid var(--cab-llamar-borde);
+}
+.cab-llamar:hover {
+  background-color: color-mix(in oklab, var(--cab-llamar-fondo), var(--cab-llamar-texto) 14%);
+}
+.cab-wa {
+  background-color: var(--color-primario);
+  color: var(--color-sobre-primario);
+  border: 1px solid var(--cab-wa-borde, var(--color-primario-borde));
+}
+.cab-wa:hover {
+  background-color: var(--color-primario-hover);
+}
+@media (scripting: enabled) {
+  @supports (animation-timeline: scroll()) {
+    /* Tono de partida (antes de que hidrate CabeceraScroll): el de la primera sección. */
+    html:not([data-tono]):not(:has(#contenido > [data-tono="oscuro"]:first-child)) .cabecera,
+    html[data-tono="claro"] .cabecera {
+      --cab-texto: var(--color-texto);
+      --cab-fondo: rgb(244 245 244 / 0.9);
+      --cab-linea: var(--color-borde);
+      --cab-llamar-fondo: var(--color-tinta);
+      --cab-llamar-texto: var(--color-sobre-tinta);
+      --cab-llamar-borde: var(--color-tinta);
+      --cab-wa-borde: var(--color-primario);
+      --cab-foco: var(--color-texto);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .cabecera-fondo {
+        animation: cab-fondo linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 200px;
+      }
+      @media (min-width: 64rem) {
+        .cabecera-fondo {
+          animation-name: cab-fondo-escritorio;
+        }
+        .cabecera-fila {
+          animation: cab-fila linear both;
+          animation-timeline: scroll(root);
+          animation-range: 0 200px;
+        }
+        .cabecera-nombre {
+          transform-origin: left center;
+          animation: cab-nombre linear both;
+          animation-timeline: scroll(root);
+          animation-range: 0 200px;
+        }
+      }
+    }
+  }
+}
+@keyframes cab-fondo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes cab-fondo-escritorio {
+  from {
+    opacity: 0;
+    translate: 0 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 -8px;
+  }
+}
+@keyframes cab-fila {
+  to {
+    translate: 0 -4px;
+  }
+}
+@keyframes cab-nombre {
+  to {
+    scale: 0.88;
+  }
+}
+@media (min-width: 64rem) {
+  html[data-scroll="abajo"]:not(:has(.menu-persiana:popover-open)) .cabecera {
+    translate: 0 -100%;
+  }
+  html[data-scroll="abajo"]:not(:has(.menu-persiana:popover-open)) .pareja-flotante {
+    display: flex;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cabecera {
+    transition:
+      translate var(--dur-pagina) var(--ease-suave),
+      color var(--dur-pagina) var(--ease-suave);
+  }
+  .pareja-flotante {
+    transition:
+      opacity var(--dur-pagina) var(--ease-suave),
+      translate var(--dur-pagina) var(--ease-suave),
+      display var(--dur-pagina) allow-discrete;
+  }
+  @starting-style {
+    .pareja-flotante {
+      opacity: 0;
+      translate: 0 1rem;
+    }
+  }
+}
+.pareja-flotante {
+  display: none;
+  background: rgb(27 31 34 / 0.94);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* ── Menú «persiana» (popover nativo): baja desde arriba ───────────────── */
+.menu-persiana {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow-y: auto;
+  background: var(--color-tinta);
+  color: var(--color-sobre-tinta);
+}
+.menu-persiana:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-persiana {
+    transition:
+      translate var(--dur-pagina) var(--ease-suave),
+      overlay var(--dur-pagina) allow-discrete,
+      display var(--dur-pagina) allow-discrete;
+  }
+  @starting-style {
+    .menu-persiana:popover-open {
+      translate: 0 -100%;
+    }
+  }
+  .menu-persiana .menu-enlace {
+    transition:
+      opacity var(--dur-revelado) var(--ease-salida) calc(0.15s + var(--i, 0) * var(--escalonado)),
+      translate var(--dur-revelado) var(--ease-salida) calc(0.15s + var(--i, 0) * var(--escalonado));
+  }
+  @starting-style {
+    .menu-persiana:popover-open .menu-enlace {
+      opacity: 0;
+      translate: 0 -12px;
+    }
+  }
+}
+
+/* ── Barra móvil: entra desde abajo al cargar ──────────────────────────── */
+.barra-movil {
+  background: rgb(27 31 34 / 0.94);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .barra-movil {
+    transition: translate 250ms var(--ease-suave);
+  }
+  @starting-style {
+    .barra-movil {
+      translate: 0 100%;
+    }
+  }
+}
+
+/* ── Pieza Luz: rectángulo de sol con degradados, sin imágenes ─────────── */
+.luz {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background: var(--luz-fondo, var(--color-alterna));
+}
+.luz-halo {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(55% 45% at 48% 52%, oklch(0.99 0.03 85 / 0.6), transparent 72%);
+}
+.luz-oscura .luz-halo {
+  background: radial-gradient(55% 45% at 48% 52%, oklch(0.98 0.03 85 / 0.06), transparent 70%);
+}
+.luz-ventana {
+  position: absolute;
+  left: 22%;
+  top: 28%;
+  width: 52%;
+  height: 46%;
+  display: grid;
+  gap: 6%;
+  transform: skewY(-8deg);
+}
+.luz-cristal {
+  background: linear-gradient(165deg, var(--color-luz), oklch(0.975 0.04 82 / 0.7));
+}
+.luz-oscura .luz-cristal {
+  background: linear-gradient(165deg, oklch(0.98 0.03 85 / 0.2), oklch(0.98 0.03 85 / 0.07));
+}
+.luz-num {
+  position: absolute;
+  left: 7%;
+  bottom: 3%;
+  font-family: var(--font-titulo);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-acento);
+}
+
+}
+
+/* ── Movimiento ligado al scroll (todo dentro de @supports y no-preference) ─
+   Estado por defecto: visible y quieto. Solo transform/translate/scale,
+   opacity y clip-path. */
+@keyframes linea-sube {
+  from {
+    translate: 0 105%;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes px-grande {
+  to {
+    translate: 0 -8%;
+  }
+}
+@keyframes px-mediana {
+  to {
+    translate: 0 18%;
+  }
+}
+@keyframes px-pequena {
+  to {
+    translate: 0 -24%;
+  }
+}
+@keyframes px-grande-m {
+  to {
+    translate: 0 -4%;
+  }
+}
+@keyframes px-mediana-m {
+  to {
+    translate: 0 9%;
+  }
+}
+@keyframes px-pequena-m {
+  to {
+    translate: 0 -12%;
+  }
+}
+@keyframes px-mini {
+  from {
+    translate: 0 10%;
+  }
+  to {
+    translate: 0 -10%;
+  }
+}
+@keyframes px-luz {
+  from {
+    translate: 0 3%;
+  }
+  to {
+    translate: 0 -3%;
+  }
+}
+@keyframes pano-clip-m {
+  from {
+    clip-path: inset(18% 18% 36% 18% round 12px);
+  }
+  to {
+    clip-path: inset(0 round 0);
+  }
+}
+@keyframes pano-clip-d {
+  from {
+    clip-path: inset(19% 34% round 16px);
+  }
+  to {
+    clip-path: inset(0 round 0);
+  }
+}
+@keyframes pano-escala {
+  from {
+    scale: 1.15;
+  }
+  to {
+    scale: 1;
+  }
+}
+@keyframes aparece {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes marquesina {
+  to {
+    translate: -50% 0;
+  }
+}
+@keyframes bloque-tapado {
+  to {
+    scale: 0.94;
+  }
+}
+@keyframes velo-tapado {
+  to {
+    opacity: 0.6;
+  }
+}
+
+/* Titulares por líneas con máscara (h2 y lema; nunca un h1). */
+.lineas {
+  view-timeline-name: --titulo;
+}
+.lineas .linea {
+  display: block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.06em;
+}
+.lineas .linea > span {
+  display: inline-block;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .lineas .linea > span {
+      animation: linea-sube linear both;
+      animation-timing-function: var(--ease-salida);
+      animation-timeline: --titulo;
+      animation-range: entry calc(20% + var(--l, 0) * 8%) entry calc(80% + var(--l, 0) * 8%);
+    }
+
+    /* Parallax del collage del hero: empieza en su sitio (translate 0) con el scroll arriba. */
+    .px {
+      animation: linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+    .px-grande {
+      animation-name: px-grande-m;
+    }
+    .px-mediana {
+      animation-name: px-mediana-m;
+    }
+    .px-pequena {
+      animation-name: px-pequena-m;
+    }
+    @media (min-width: 64rem) {
+      .px-grande {
+        animation-name: px-grande;
+      }
+      .px-mediana {
+        animation-name: px-mediana;
+      }
+      .px-pequena {
+        animation-name: px-pequena;
+      }
+    }
+    .px-mini {
+      animation: px-mini linear both;
+      animation-timeline: view();
+    }
+    .px-luz {
+      animation: px-luz linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+/* ── Pano: la ventana que crece hasta pantalla completa ───────────────────
+   Por defecto (reducir movimiento o sin soporte): foto quieta a ancho
+   completo, una copia quieta de la marquesina y la pareja debajo. */
+.pano-marco {
+  position: relative;
+}
+.pano-medio {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--color-tinta-suave);
+}
+@media (min-width: 64rem) {
+  .pano-medio {
+    aspect-ratio: 16 / 9;
+  }
+}
+.pano-escala,
+.pano-capa {
+  position: absolute;
+  inset: 0;
+}
+.pano-velo {
+  z-index: 2;
+  background: var(--color-velo);
+}
+.pano-marquesina {
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-inline: var(--pad);
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  font-size: clamp(2.5rem, 1.5rem + 5vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: var(--color-sobre-tinta);
+}
+.pano-pista {
+  display: flex;
+  flex: none;
+  white-space: nowrap;
+}
+.pano-pista > span {
+  padding-right: 0.3em;
+}
+.pano-pista > span:not(:first-child),
+.pano-pista .punto {
+  display: none;
+}
+.pano-video {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pano-pausa {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+}
+.pano-pausa[hidden] {
+  display: none;
+}
+.pano-pareja {
+  position: relative;
+  z-index: 3;
+  margin-top: 24px;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .pano {
+      height: 220svh;
+      padding: 0 !important;
+      view-timeline-name: --pano;
+    }
+    .pano-fijo {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      max-width: none;
+      overflow: hidden;
+    }
+    .pano-marco {
+      position: static;
+    }
+    .pano-medio {
+      position: absolute;
+      inset: 0;
+      aspect-ratio: auto;
+      animation: pano-clip-m linear both;
+      animation-timeline: --pano;
+      animation-range: contain 0% contain 45%;
+    }
+    .pano-escala {
+      animation: pano-escala linear both;
+      animation-timeline: --pano;
+      animation-range: contain 0% contain 45%;
+    }
+    .pano-velo,
+    .pano-marquesina {
+      animation: aparece linear both;
+      animation-timeline: --pano;
+      animation-range: contain 30% contain 45%;
+    }
+    .pano-marquesina {
+      justify-content: flex-start;
+      padding-inline: 0;
+      font-size: var(--text-pano);
+      text-align: left;
+    }
+    .pano-pista > span:not(:first-child),
+    .pano-pista .punto {
+      display: inline;
+    }
+    .pano-pista {
+      animation: marquesina 40s linear infinite;
+      animation-play-state: paused;
+    }
+    .pano[data-listo]:not([data-pausa]) .pano-pista {
+      animation-play-state: running;
+    }
+    .pano .etiqueta-dentro {
+      top: calc(var(--alto-cabecera) + 12px);
+      right: var(--pad);
+    }
+    .pano-pareja {
+      position: absolute;
+      left: var(--pad);
+      right: var(--pad);
+      bottom: calc(var(--alto-barra) + 12px);
+      width: auto;
+      margin: 0;
+    }
+    .pano-pausa {
+      right: var(--pad);
+      bottom: calc(var(--alto-barra) + 190px);
+    }
+    @media (min-width: 64rem) {
+      .pano {
+        height: 260svh;
+      }
+      .pano-medio {
+        animation-name: pano-clip-d;
+        animation-range: contain 0% contain 40%;
+      }
+      .pano-escala {
+        animation-range: contain 0% contain 40%;
+      }
+      .pano-velo,
+      .pano-marquesina {
+        animation-range: contain 27% contain 40%;
+      }
+      .pano-pareja {
+        bottom: 40px;
+        right: auto;
+        width: min(620px, 50%);
+      }
+      .pano-pausa {
+        bottom: 40px;
+      }
+    }
+  }
+}
+
+/* ── Soluciones apiladas: cada bloque se fija y el siguiente sube encima ──
+   0 KB de JS. El bloque tapado se aleja (scale .94 y un velo de tinta) con
+   la línea de tiempo del bloque siguiente (timeline-scope en la lista). */
+.bloque {
+  position: relative;
+}
+.bloque-velo {
+  display: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .apilado .bloque {
+    position: sticky;
+    top: calc(var(--alto-cabecera) + var(--i, 0) * 8px);
+    view-timeline-name: var(--vt);
+  }
+  @media (min-width: 64rem) {
+    .apilado .bloque {
+      top: calc(88px + var(--i, 0) * 16px);
+    }
+  }
+  @supports (animation-timeline: view()) {
+    .apilado .bloque-cuerpo {
+      transform-origin: 50% 0;
+      animation: bloque-tapado linear both;
+      animation-timeline: var(--siguiente, none);
+      animation-range: entry 0% entry 100%;
+    }
+    .apilado .bloque-velo {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: var(--color-tinta);
+      opacity: 0;
+      animation: velo-tapado linear both;
+      animation-timeline: var(--siguiente, none);
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+/* ── Asistente: paso que entra (200 ms) ────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .paso-asistente {
+    animation: aparece 200ms var(--ease-suave);
+  }
+}
+
+/* ── Reseña larga: 6 líneas y «Leer entera» con <details> (sin JS) ─────── */
+.resena-larga:not(:has(details[open])) .resena-texto {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.resena-larga summary {
+  list-style: none;
+  cursor: pointer;
+}
+.resena-larga summary::-webkit-details-marker {
+  display: none;
+}
+.resena-larga details[open] .leer-entera,
+.resena-larga details:not([open]) .leer-menos {
+  display: none;
+}
+
+/* ── Preguntas: «+» fino que gira 45° ──────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .pregunta-mas {
+    transition: rotate var(--dur-hover) var(--ease-salida);
+  }
+}
+
+/* ── Legales: el texto y el <h1> los pone core ──────────────────────────── */
+.lectura-legal article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  font-size: var(--text-h1i);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 2rem 0 0.5rem;
+  font-family: var(--font-titulo);
+  font-weight: 400;
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.6rem;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  overflow-wrap: anywhere;
+}
+
+/* ── Transición entre páginas (View Transitions) ───────────────────────────
+   Navegación de Next: <ViewTransition> de React en app/layout.tsx (clase
+   «pagina»). Navegación de documento (sin JS): @view-transition. La cabecera,
+   la barra y la pareja flotante no entran en la transición. */
+@view-transition {
+  navigation: auto;
+}
+.cabecera {
+  view-transition-name: cabecera;
+}
+.barra-movil {
+  view-transition-name: barra-movil;
+}
+::view-transition-group(cabecera),
+::view-transition-group(barra-movil) {
+  animation: none;
+}
+::view-transition-old(.pagina),
+::view-transition-old(root) {
+  animation: var(--dur-pagina) var(--ease-salida) both vt-sale;
+}
+::view-transition-new(.pagina),
+::view-transition-new(root) {
+  animation: var(--dur-pagina) var(--ease-salida) both vt-entra;
+}
+::view-transition-group(.morph) {
+  animation-duration: var(--dur-pagina);
+  animation-timing-function: var(--ease-salida);
+}
+@keyframes vt-sale {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-entra {
+  from {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

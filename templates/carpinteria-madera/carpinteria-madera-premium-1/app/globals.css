@@ -1,0 +1,995 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * «Oficio» (carpinteria-madera-premium-1): papel de cal, tinta de nogal y un
+ * solo acento, almagra (encargo §8). Solo --color-primario (y
+ * --color-sobre-primario, que calcula core) se sobrescriben desde site.config
+ * con el style del <html> (app/layout.tsx). Lo demás se deriva del primario.
+ */
+@theme static {
+  /* 16 tokens comunes */
+  --color-fondo: #f3eee6;
+  --color-superficie: #faf7f2;
+  --color-alterna: #e8dfd2;
+  --color-texto: #211813;
+  --color-texto-suave: #6b5a4a;
+  --color-borde: #d6c9b7;
+  --color-primario: #9a3b26; /* almagra; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #6b5a4a; /* sin segundo color: gris cálido para filetes activos */
+  --color-foco: #7a2c1b;
+
+  --font-titulo: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-texto: var(--font-inter-tight), system-ui, sans-serif;
+
+  --radius-boton: 999px;
+  --radius-tarjeta: 0;
+  --radius-foto: 0.25rem;
+
+  --text-display: clamp(2.75rem, 1.5rem + 5.2vw, 6rem);
+  --text-display--line-height: 1.02;
+
+  /* Premium (anexo P3): movimiento igual en los 5 premium */
+  --ease-salida: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-suave: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --dur-revelado: 0.9s;
+  --dur-hover: 0.5s;
+  --dur-pagina: 0.4s;
+  --escalonado: 0.12s;
+  --desplaz-revelado: 1.5rem;
+  --color-tinta: #211813; /* nogal casi negro */
+  --color-tinta-suave: #3b2d23; /* nogal medio */
+  --text-pano: clamp(4rem, 2rem + 8vw, 9rem);
+  --text-pano--line-height: 1;
+  --text-etiqueta: 0.75rem;
+
+  /* Propios (encargo §8.3) */
+  --color-papel-suave: #c9bba8;
+  --color-destacado: var(--color-primario);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario), black 14%);
+  --text-h1: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+  --text-h1--line-height: 1.04;
+  --text-h2: clamp(2rem, 1.3rem + 3vw, 4rem);
+  --text-h2--line-height: 1.05;
+  --text-h3: clamp(1.375rem, 1.1rem + 1.2vw, 1.75rem);
+  --text-h3--line-height: 1.15;
+  --text-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem);
+  --text-cuerpo--line-height: 1.6;
+}
+
+:root {
+  --color-velo: rgb(33 24 19 / 0.62);
+  --color-veta: rgb(243 238 230 / 0.12);
+  --destacado-oscuro: #e9a48c;
+  --espacio-seccion: clamp(5rem, 3rem + 6vw, 10rem);
+  --medida-texto: 40ch;
+  --medida-legal: 68ch;
+  --margen: clamp(20px, 5vw, 72px);
+  --alto-cabecera: 56px;
+  --velo-hero: linear-gradient(to top, rgb(33 24 19 / 0.88) 0%, rgb(33 24 19 / 0.66) 42%, rgb(33 24 19 / 0.1) 72%, rgb(33 24 19 / 0.35) 100%);
+}
+@media (min-width: 64rem) {
+  :root {
+    --alto-cabecera: 64px;
+  }
+}
+
+/* Derivados del primario: aguantan cualquier color de marca sobre papel y sobre tinta. */
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-foco: oklch(from var(--color-primario) 0.45 c h);
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.07) c h);
+    --destacado-oscuro: oklch(from var(--color-primario) 0.78 c h);
+    --color-veta: oklch(from var(--color-fondo) l c h / 0.12);
+  }
+}
+
+/* Secciones oscuras: la palabra destacada y el foco pasan al primario claro. */
+[data-tono="oscuro"],
+.sobre-oscuro {
+  --color-destacado: var(--destacado-oscuro);
+  --color-foco: var(--destacado-oscuro);
+}
+[data-tono="claro"] {
+  --color-destacado: var(--color-primario);
+}
+
+@utility contenedor {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--margen);
+}
+
+@utility seccion {
+  padding-block: var(--espacio-seccion);
+}
+
+/* Titulares: Newsreader 300, en redonda, sin negrita ni mayúsculas (encargo §9). */
+@utility titulo {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  font-style: normal;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* Etiquetas: lo único en mayúsculas, 12 px con tracking. */
+@utility etiqueta {
+  font-family: var(--font-texto);
+  font-size: var(--text-etiqueta);
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@utility medida {
+  max-width: var(--medida-texto);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--alto-cabecera) + 8px);
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.6;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  /* Barra móvil fija: que no tape el elemento con foco (WCAG 2.4.11). */
+  @media (width < 64rem) {
+    html {
+      scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    }
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+}
+
+/* ── Hueco de la cabecera fija ──────────────────────────────────────────── */
+#contenido {
+  padding-top: var(--alto-cabecera);
+}
+body:has([data-hero]) #contenido {
+  padding-top: 0;
+}
+
+@layer components {
+/* ── Botones de contacto (encargo §8.4). Todos son className de BotonLlamada / BotonWhatsApp. */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 8px 24px;
+  border-radius: var(--radius-boton);
+  font-family: var(--font-texto);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+.boton svg {
+  flex: none;
+}
+.boton:active {
+  transform: scale(0.97);
+}
+.boton-48 {
+  min-height: 48px;
+  padding: 0 20px;
+  font-size: 15px;
+}
+/* pildora-hero, pildora-claro, cabecera-pildora (escritorio), flotante-whatsapp, barra (WhatsApp) */
+.b-primario {
+  background-color: var(--color-primario);
+  color: var(--color-sobre-primario);
+}
+/* pildora-hero-velo, flotante-llamar: relleno de papel, nunca un contorno fantasma */
+.b-papel {
+  background-color: var(--color-fondo);
+  color: var(--color-tinta);
+}
+/* pildora-tinta: Llamar sobre papel; WhatsApp del asistente */
+.b-tinta {
+  background-color: var(--color-tinta);
+  color: var(--color-fondo);
+}
+/* cabecera-llamar: contorno de 2 px del tono de la cabecera */
+.b-contorno {
+  border: 2px solid currentColor;
+  color: inherit;
+}
+@media (hover: hover) {
+  .b-primario:hover {
+    background-color: var(--color-primario-hover);
+  }
+  .b-papel:hover {
+    background-color: #ffffff;
+  }
+  .b-tinta:hover {
+    background-color: var(--color-tinta-suave);
+  }
+  .b-contorno:hover {
+    background-color: color-mix(in srgb, currentColor 12%, transparent);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .boton {
+    transition:
+      background-color var(--dur-hover) var(--ease-salida),
+      transform 0.12s ease;
+  }
+}
+
+/* enlace-flecha: solo navegación. La flecha se separa 5 px al pasar o enfocar. */
+.enlace-flecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  border-bottom: 1px solid currentColor;
+  align-self: flex-start;
+}
+.flecha {
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .flecha {
+    transition: transform var(--dur-hover) var(--ease-salida);
+  }
+}
+.enlace-flecha:focus-visible .flecha,
+.grupo-flecha:focus-visible .flecha {
+  transform: translateX(5px);
+}
+@media (hover: hover) {
+  .enlace-flecha:hover .flecha,
+  .grupo-flecha:hover .flecha {
+    transform: translateX(5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .enlace-flecha .flecha,
+  .grupo-flecha .flecha {
+    transform: none !important;
+  }
+  .enlace-flecha:hover,
+  .enlace-flecha:focus-visible {
+    color: var(--color-destacado);
+  }
+}
+
+}
+
+/* ── Cabecera inteligente (encargo §5.2) ─────────────────────────────────
+   Sin JS (o sin soporte, o con «reducir movimiento»): fija y sólida.
+   Con JS (`scripting: enabled`) y soporte de scroll(): transparente al principio,
+   el fondo aparece y la cabecera se compacta 8 px en los primeros 200 px.
+   CabeceraInteligente pone data-scroll en <html> y data-tono en la cabecera. */
+.cabecera {
+  --cab-fg: var(--color-fondo);
+  --cab-bg: rgb(33 24 19 / 0.92);
+  --cab-linea: rgb(243 238 230 / 0.12);
+  --cab-pildora-bg: var(--color-fondo);
+  --cab-pildora-fg: var(--color-tinta);
+  --color-destacado: var(--destacado-oscuro);
+  --color-foco: var(--destacado-oscuro);
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: var(--alto-cabecera);
+  color: var(--cab-fg);
+}
+.cabecera-fondo {
+  position: absolute;
+  inset: 0;
+  background-color: var(--cab-bg);
+  border-bottom: 1px solid var(--cab-linea);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.cabecera-pildora-movil {
+  background-color: var(--cab-pildora-bg);
+  color: var(--cab-pildora-fg);
+}
+@media (scripting: enabled) {
+  .cabecera[data-tono="claro"],
+  body:not(:has([data-hero])) .cabecera:not([data-tono]) {
+    --cab-fg: var(--color-tinta);
+    --cab-bg: rgb(243 238 230 / 0.9);
+    --cab-linea: var(--color-borde);
+    --cab-pildora-bg: var(--color-tinta);
+    --cab-pildora-fg: var(--color-fondo);
+    --color-destacado: var(--color-primario);
+    --color-foco: oklch(from var(--color-primario) 0.45 c h);
+  }
+  .cabecera[data-tono="oscuro"] {
+    --cab-bg: rgb(33 24 19 / 0.9);
+  }
+}
+@keyframes cabecera-fondo {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes cabecera-compacta {
+  to {
+    translate: 0 -8px;
+  }
+}
+@keyframes cabecera-fila {
+  to {
+    translate: 0 4px;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .cabecera {
+      animation: cabecera-compacta linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 200px;
+    }
+    .cabecera-fila {
+      animation: cabecera-fila linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 200px;
+    }
+    .cabecera-fondo {
+      animation: cabecera-fondo linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 200px;
+    }
+  }
+}
+/* Esconder al bajar y volver al subir: solo en escritorio. En móvil nunca se esconde. */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  .cabecera {
+    transition: transform var(--dur-pagina) var(--ease-suave);
+  }
+  html[data-scroll="abajo"] .cabecera:not(:focus-within) {
+    transform: translateY(-100%);
+  }
+}
+.cabecera-enlace {
+  position: relative;
+  padding-block: 12px;
+  font-size: 14px;
+}
+.cabecera-enlace::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 6px 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cabecera-enlace::after {
+    transition: transform var(--dur-hover) var(--ease-salida);
+  }
+}
+.cabecera-enlace:hover::after,
+.cabecera-enlace:focus-visible::after {
+  transform: scaleX(1);
+}
+body:has([data-pagina="trabajos"]) .cabecera-enlace[data-ruta="/trabajos"]::after,
+body:has([data-pagina="servicios"]) .cabecera-enlace[data-ruta="/servicios"]::after,
+body:has([data-pagina="empresa"]) .cabecera-enlace[data-ruta="/empresa"]::after,
+body:has([data-pagina="contacto"]) .cabecera-enlace[data-ruta="/contacto"]::after {
+  transform: scaleX(1);
+}
+
+/* ── Pareja flotante (escritorio, con la cabecera escondida) ───────────── */
+.flotante {
+  display: none;
+}
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  html[data-scroll="abajo"] .flotante {
+    display: flex;
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity var(--dur-hover) var(--ease-salida),
+      translate var(--dur-hover) var(--ease-salida),
+      display var(--dur-hover) allow-discrete;
+  }
+  @starting-style {
+    html[data-scroll="abajo"] .flotante {
+      opacity: 0;
+      translate: 0 12px;
+    }
+  }
+}
+
+/* ── Barra móvil: 56 px + zona segura, opaca, desde el primer pintado ──── */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-movil {
+    transition: translate 0.4s var(--ease-suave);
+  }
+  @starting-style {
+    .barra-movil {
+      translate: 0 100%;
+    }
+  }
+}
+
+/* ── Menú a pantalla completa en tinta (popover nativo) ────────────────── */
+.menu-panel {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: 0 var(--margen) calc(20px + env(safe-area-inset-bottom));
+  background-color: var(--color-tinta);
+  color: var(--color-fondo);
+  overflow: auto;
+}
+.menu-panel:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-panel {
+    transition:
+      opacity var(--dur-hover) var(--ease-salida),
+      overlay var(--dur-hover) allow-discrete,
+      display var(--dur-hover) allow-discrete;
+  }
+  @starting-style {
+    .menu-panel:popover-open {
+      opacity: 0;
+    }
+  }
+  .menu-panel li {
+    transition: translate var(--dur-hover) var(--ease-salida);
+    transition-delay: calc(var(--i, 0) * 40ms);
+  }
+  @starting-style {
+    .menu-panel:popover-open li {
+      translate: 0 8px;
+    }
+  }
+}
+
+/* ── Textura de veta (estados vacíos sobre tinta) ──────────────────────── */
+.veta {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  stroke: var(--color-veta);
+}
+
+/* ── Hero (encargo §5.1): nada se anima. Velo de abajo arriba. ─────────── */
+.hero {
+  height: 100svh;
+  min-height: 600px;
+  max-height: 760px;
+}
+@media (min-width: 64rem) {
+  .hero {
+    height: 100vh;
+    max-height: 900px;
+  }
+}
+.velo-hero {
+  position: absolute;
+  inset: 0;
+  background: var(--velo-hero);
+}
+
+/* ── Revelado y máscaras (recursos 1 y 2). Estado por defecto: visible. ── */
+@keyframes mascara {
+  from {
+    translate: 0 105%;
+  }
+}
+@keyframes parallax-grande {
+  from {
+    translate: 0 6%;
+  }
+  to {
+    translate: 0 -6%;
+  }
+}
+@keyframes parallax-mini {
+  from {
+    translate: 0 14%;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes asentar {
+  from {
+    scale: 1.06;
+  }
+}
+@keyframes marquesina {
+  to {
+    translate: -50% 0;
+  }
+}
+@keyframes aparece {
+  from {
+    opacity: 0;
+  }
+}
+.linea {
+  display: block;
+  overflow: clip;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.linea > span {
+  display: block;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .linea > span {
+      animation: mascara var(--ease-salida) both;
+      animation-timeline: view();
+      animation-range: entry calc(10% + var(--i, 0) * 10%) entry calc(70% + var(--i, 0) * 10%);
+    }
+    .parallax-grande {
+      animation: parallax-grande linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+    .parallax-mini {
+      animation: parallax-mini linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+    @media (width < 64rem) {
+      .parallax-movil {
+        animation: parallax-mini linear both;
+        animation-timeline: view();
+        animation-range: cover;
+      }
+    }
+  }
+}
+
+/* ── Pano (recurso 4, encargo §5.4) ──────────────────────────────────────
+   Por defecto (sin soporte o con «reducir movimiento»): medio quieto a ancho
+   completo (4:5 en móvil, 16:9 en escritorio), una sola copia de la marquesina
+   quieta y la pareja de CTAs debajo. Con soporte: contenedor de 250svh / 300vh,
+   escena fija y el medio que abre su clip-path. */
+.pano {
+  position: relative;
+  z-index: 6;
+  background-color: var(--color-tinta);
+  color: var(--color-fondo);
+}
+.pano-escena {
+  position: relative;
+  overflow: hidden;
+}
+.pano-medio {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+@media (min-width: 64rem) {
+  .pano-medio {
+    aspect-ratio: 16 / 9;
+  }
+}
+.pano-marquesina {
+  position: absolute;
+  inset: 50% 0 auto 0;
+  translate: 0 -50%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.pano-pista {
+  display: inline-flex;
+  padding-left: var(--margen);
+}
+.pano-pista .titulo {
+  text-wrap: nowrap; /* .titulo pone text-wrap: balance, que anularía el nowrap heredado */
+}
+.pano-pista > :nth-child(2) {
+  display: none;
+}
+.pano-pie {
+  position: relative;
+  padding-block: 32px var(--espacio-seccion);
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .pano {
+      height: 250svh;
+      view-timeline-name: --pano;
+    }
+    @media (min-width: 64rem) {
+      .pano {
+        height: 300vh;
+      }
+    }
+    .pano-escena {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+    }
+    .pano-medio {
+      position: absolute;
+      inset: 0;
+      aspect-ratio: auto;
+      animation: pano-crece var(--ease-salida) both;
+      animation-timeline: --pano;
+      animation-range: entry 50% contain 35%;
+    }
+    .pano-pista {
+      padding-left: 0;
+      animation: marquesina 24s linear infinite;
+    }
+    .pano-pista > :nth-child(2) {
+      display: inline;
+    }
+    .pano-marquesina {
+      animation: aparece linear both;
+      animation-timeline: --pano;
+      animation-range: contain 30% contain 45%;
+    }
+    .pano-pie {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding-block: 0 calc(96px + env(safe-area-inset-bottom));
+    }
+    @media (min-width: 64rem) {
+      .pano-pie {
+        padding-bottom: 64px;
+      }
+    }
+    .pano-frase {
+      animation: aparece linear both;
+      animation-timeline: --pano;
+      animation-range: contain 35% contain 50%;
+    }
+    .pano-cta {
+      animation: aparece linear both;
+      animation-timeline: --pano;
+      animation-range: contain 45% contain 60%;
+    }
+  }
+}
+@keyframes pano-crece {
+  from {
+    clip-path: inset(14% 10% round var(--radius-foto));
+  }
+  to {
+    clip-path: inset(0 round 0);
+  }
+}
+@media (min-width: 64rem) {
+  @keyframes pano-crece {
+    from {
+      clip-path: inset(18% 22% round var(--radius-foto));
+    }
+    to {
+      clip-path: inset(0 round 0);
+    }
+  }
+}
+
+/* ── Bloques que se apilan (recurso 5): proceso del inicio y /servicios ──
+   Sticky también sin soporte de animation-timeline (es posición, no animación).
+   Con «reducir movimiento» o con ventanas bajas, lista normal. */
+.apilado > li {
+  position: relative;
+}
+@media (prefers-reduced-motion: no-preference) and (min-height: 640px) {
+  .apilado > li {
+    position: sticky;
+    top: calc(var(--alto-cabecera) - 8px + var(--i, 0) * 8px);
+  }
+  @media (min-width: 64rem) {
+    .apilado > li {
+      top: calc(var(--alto-cabecera) + var(--i, 0) * 12px);
+    }
+    .apilado-alto > li {
+      height: 88vh;
+    }
+    .apilado-medio > li {
+      min-height: 80vh;
+    }
+  }
+}
+@media (width < 64rem) {
+  .apilado-alto > li {
+    min-height: 70svh;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .asentar {
+      animation: asentar var(--ease-salida) both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 50%;
+    }
+  }
+}
+/* /servicios: en móvil, lista sin sticky (encargo §7). */
+@media (width < 64rem) {
+  .apilado.apilado-medio > li {
+    position: relative;
+    top: auto;
+  }
+}
+
+/* ── Filas de servicios: banda 4:1 que se abre al pasar (escritorio) ──── */
+@media (min-width: 64rem) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .fila-servicio .banda {
+    clip-path: inset(0 0 0 100%);
+    transition: clip-path var(--dur-hover) var(--ease-salida);
+  }
+  .fila-servicio:hover .banda,
+  .fila-servicio:focus-visible .banda {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ── Índice lateral (≥ 1200 px): una regla fina (encargo §5.3), solo CSS ── */
+.regla-pista {
+  display: none;
+}
+@media (min-width: 75rem) {
+  .regla-pista {
+    display: block;
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 200px;
+    z-index: 5;
+    pointer-events: none;
+  }
+}
+.regla {
+  position: sticky;
+  top: 28vh;
+  height: 44vh;
+  pointer-events: auto;
+  width: 200px;
+}
+.regla-linea,
+.regla-relleno {
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--color-borde);
+}
+.regla-relleno {
+  background-color: var(--color-primario);
+  transform-origin: top;
+  scale: 1 0;
+}
+.regla a {
+  position: absolute;
+  left: 20px;
+  translate: 0 -50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+  padding-left: 8px;
+}
+.regla-marca {
+  width: 24px;
+  height: 1px;
+  background-color: var(--color-texto-suave);
+  transform-origin: left;
+  scale: 0.34 1;
+}
+.regla-nombre {
+  position: relative;
+  padding: 2px 6px;
+  background-color: rgb(243 238 230 / 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--color-texto-suave);
+  opacity: 0;
+}
+.regla-nombre-activo {
+  position: absolute;
+  inset: 0;
+  padding: 2px 6px;
+  color: var(--color-primario);
+  opacity: 0;
+}
+.regla:hover .regla-nombre,
+.regla:focus-within .regla-nombre {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .regla-nombre {
+    transition: opacity var(--dur-hover) var(--ease-salida);
+  }
+}
+@keyframes regla-progreso {
+  to {
+    scale: 1 1;
+  }
+}
+@keyframes regla-activa {
+  0%,
+  100% {
+    scale: 0.34 1;
+    background-color: var(--color-texto-suave);
+  }
+  8%,
+  92% {
+    scale: 1 1;
+    background-color: var(--color-primario);
+  }
+}
+@keyframes regla-nombre-activo {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  8%,
+  92% {
+    opacity: 1;
+  }
+}
+@supports (animation-timeline: view()) and (timeline-scope: --a) {
+  @media (prefers-reduced-motion: no-preference) {
+    .regla-relleno {
+      animation: regla-progreso linear both;
+      animation-timeline: scroll(root);
+    }
+    .regla [data-marca] .regla-marca {
+      animation: regla-activa linear both;
+      animation-timeline: var(--tl);
+      animation-range: cover 30% cover 70%;
+    }
+    .regla [data-marca] .regla-nombre {
+      opacity: 1;
+      background: transparent;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      color: transparent;
+    }
+    .regla:hover [data-marca] .regla-nombre,
+    .regla:focus-within [data-marca] .regla-nombre {
+      background-color: rgb(243 238 230 / 0.85);
+      color: var(--color-texto-suave);
+    }
+    .regla [data-marca] .regla-nombre-activo {
+      animation: regla-nombre-activo linear both;
+      animation-timeline: var(--tl);
+      animation-range: cover 30% cover 70%;
+      background-color: rgb(243 238 230 / 0.85);
+    }
+  }
+}
+
+@layer components {
+/* ── Asistente: opciones de filete ──────────────────────────────────────── */
+.opcion {
+  min-height: 48px;
+  padding: 10px 16px;
+  border: 1px solid #8c7a66;
+  background: transparent;
+  color: var(--color-tinta);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+}
+.opcion[aria-pressed="true"] {
+  border-color: var(--color-tinta);
+  background-color: var(--color-tinta);
+  color: var(--color-fondo);
+}
+.opcion:active {
+  transform: scale(0.97);
+}
+
+}
+
+/* ── Preguntas: «+» que gira 45° ────────────────────────────────────────── */
+.mas {
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mas {
+    transition: transform var(--dur-hover) var(--ease-salida);
+  }
+}
+details[open] .mas {
+  transform: rotate(45deg);
+}
+
+/* ── Transición entre páginas (recurso 6): fundido corto, foto de obra → ficha. */
+::view-transition-group(*) {
+  animation-duration: var(--dur-pagina);
+  animation-timing-function: var(--ease-suave);
+}
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: var(--dur-pagina);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ── Legales: texto y <h1> de core; aquí solo el aspecto ───────────────── */
+.lectura-legal article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 0 0 1.75rem;
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  font-size: var(--text-h1);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 2.25rem 0 0.5rem;
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  font-size: var(--text-h3);
+  line-height: 1.2;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.6rem;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}

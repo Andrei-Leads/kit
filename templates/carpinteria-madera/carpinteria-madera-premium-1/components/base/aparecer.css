@@ -1,0 +1,28 @@
+/*
+ * Pieza base del registro (kit/registry/base/aparecer.css), con los tokens
+ * premium de «Oficio» (anexo P3): fundido + subida de --desplaz-revelado, curva
+ * --ease-salida, rango entry 0–85 %. Escalonado con --i (en scroll no hay
+ * tiempo: --escalonado se traduce en un desplazamiento del rango).
+ *
+ * Regla de oro: el estado por defecto es el visible. Si el navegador no entiende
+ * animation-timeline, o el usuario pide reducir movimiento, no se anima nada.
+ * Nunca en el h1, la foto del hero ni el botón de llamada (LCP y conversión).
+ *
+ * Uso: `data-aparecer` en el elemento (y `style={{ "--i": n }}` para escalonar).
+ */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 var(--desplaz-revelado, 1.5rem);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-aparecer] {
+      animation: aparecer var(--ease-salida, ease-out) both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 8%) entry calc(85% + var(--i, 0) * 8%);
+    }
+  }
+}

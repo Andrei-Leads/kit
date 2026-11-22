@@ -1,0 +1,39 @@
+/*
+ * Pieza base del registro (kit/registry/base/aparecer.css), con los tokens premium
+ * de «Estancia» (anexo P3): `--desplaz-revelado`, `--ease-salida` y rango
+ * `entry 10% entry 70%` (termina hacia el 85 % de la pantalla). Solo CSS
+ * (animation-timeline: view()).
+ *
+ * Regla de oro: el estado por defecto es el visible. Si el navegador no entiende
+ * animation-timeline, o el usuario pide reducir movimiento, no se anima nada.
+ * Nunca en el h1, la foto del hero ni el botón de llamada (LCP y conversión).
+ * Escalonado: `style={{ "--i": n }}` desplaza el rango (globals.css).
+ */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 var(--desplaz-revelado, 1.5rem);
+  }
+}
+
+@keyframes aparecer-izquierda {
+  from {
+    opacity: 0;
+    translate: calc(var(--desplaz-revelado, 1.5rem) * -1) 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-aparecer] {
+      animation: aparecer linear both;
+      animation-timing-function: var(--ease-salida);
+      animation-timeline: view();
+      animation-range: entry 10% entry 70%;
+    }
+
+    [data-aparecer="izquierda"] {
+      animation-name: aparecer-izquierda;
+    }
+  }
+}

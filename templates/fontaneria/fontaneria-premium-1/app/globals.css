@@ -1,0 +1,819 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Caudal» (fontaneria-premium-1): tinta marina y blanco, un solo
+ * acento (--color-primario, el del cliente). Encargo §8 y anexo premium P3.
+ * Solo --color-primario (y --color-sobre-primario, que calcula core) se
+ * sobrescriben desde site.config: estilo del <html> en app/layout.tsx. Claro y
+ * hover del primario se derivan de él.
+ */
+@theme static {
+  /* 16 tokens comunes */
+  --color-fondo: #ffffff;
+  --color-superficie: #f4f6f8;
+  --color-alterna: #eef1f4;
+  --color-texto: #0a1a2a;
+  --color-texto-suave: #5b6672;
+  --color-borde: #d9dee4;
+  --color-primario: #0e6ba8; /* azul de agua; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #2f4a63; /* pizarra: estrellas y progreso */
+  --color-foco: #0a1a2a;
+
+  --font-titulo: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  --font-texto: var(--font-inter), "Inter", system-ui, sans-serif;
+
+  --radius-boton: 999px;
+  --radius-tarjeta: 0;
+  --radius-foto: 0.25rem;
+
+  --text-display: clamp(2.75rem, 1.6rem + 5.2vw, 6rem);
+  --text-display--line-height: 1.04;
+
+  /* Premium (P3): movimiento, iguales en los 5 */
+  --ease-salida: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-suave: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --dur-revelado: 0.9s;
+  --dur-hover: 0.5s;
+  --dur-pagina: 0.4s;
+  --escalonado: 0.12s;
+  --desplaz-revelado: 1.5rem;
+
+  /* Premium (P3): propios de «Caudal» */
+  --color-tinta: #0a1a2a;
+  --color-tinta-suave: #13283d;
+  --text-pano: clamp(4rem, 2rem + 8vw, 9rem);
+  --text-pano--line-height: 1.1;
+  --text-etiqueta: 0.75rem;
+  --text-etiqueta--line-height: 1.3;
+
+  /* Propios de «Caudal» */
+  --color-sobre-tinta: #ffffff;
+  --color-sobre-tinta-suave: #a9b6c4; /* ≈ 8:1 sobre tinta */
+  --color-primario-claro: color-mix(in oklch, var(--color-primario) 45%, white);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario), black 16%);
+  --text-cifra: clamp(3rem, 2rem + 4vw, 5.5rem);
+  --text-cifra--line-height: 1;
+  --text-h2: clamp(2.5rem, 1.9rem + 2.6vw, 4.5rem);
+  --text-h2--line-height: 1.04;
+  --text-h3: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+  --text-h3--line-height: 1.1;
+  --text-cuerpo: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-cuerpo--line-height: 1.6;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-claro: oklch(from var(--color-primario) 0.8 c h);
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+  }
+}
+
+:root {
+  --espacio-seccion: clamp(5rem, 3rem + 6vw, 9rem);
+  /* Franja superior: contraste de la cabecera transparente sobre cualquier foto. */
+  --velo-hero: linear-gradient(to bottom, rgb(10 26 42 / 0.6), transparent 8rem),
+    linear-gradient(20deg, rgb(10 26 42 / 0.8), rgb(10 26 42 / 0.4) 45%, transparent 72%);
+  --alto-cabecera: 60px;
+  --margen: 16px;
+  /* Trazado isométrico de tuberías, líneas de 1 px al 9 % de blanco (< 1 KB). */
+  --textura: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='69.28'%3E%3Cpath d='M0 34.64L60 0l60 34.64M60 0v34.64l60 34.64M0 69.28l60-34.64' fill='none' stroke='%23fff' stroke-opacity='.09'/%3E%3Ccircle cx='60' cy='34.64' r='2.5' fill='none' stroke='%23fff' stroke-opacity='.12'/%3E%3C/svg%3E");
+}
+@media (min-width: 64rem) {
+  :root {
+    --alto-cabecera: 72px;
+    --margen: 80px;
+  }
+}
+
+/* ── Utilidades ─────────────────────────────────────────────────────────── */
+
+/* 1120 px de contenido + 80 px de margen (16 px en móvil). */
+@utility contenedor {
+  width: 100%;
+  max-width: calc(1120px + 2 * var(--margen));
+  margin-inline: auto;
+  padding-inline: var(--margen);
+}
+
+/*
+ * Columna de texto que deja libres 280 px a la derecha del viewport en
+ * escritorio: ahí aparece la pareja flotante cuando la cabecera se esconde
+ * (encargo §5.2). Se aplica a las rejillas de texto, no a las fotos.
+ */
+@utility libre-flotante {
+  @media (min-width: 64rem) {
+    padding-right: max(0px, calc(280px - var(--margen) - max(0px, (100vw - 1280px) / 2)));
+  }
+}
+
+@utility seccion {
+  padding-block: var(--espacio-seccion);
+}
+
+@utility titulo {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* Antetítulo, fechas y etiquetas: 12 px, mayúsculas, tracking .08em, en primario. */
+@utility etiqueta {
+  margin: 0;
+  font-size: var(--text-etiqueta);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-etiqueta, var(--color-primario));
+}
+
+@utility textura {
+  background-color: var(--color-tinta);
+  background-image: var(--textura);
+  background-size: 120px 69.28px;
+}
+
+/* Lista con filetes de 1 px. */
+@utility filete {
+  border-top: 1px solid var(--color-borde);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--alto-cabecera) + 8px);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+  a {
+    color: inherit;
+    text-underline-offset: 4px;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  /* La palabra destacada: mismo peso, sin cursiva, en primario (primario claro sobre tinta). */
+  em {
+    font-style: normal;
+    color: var(--color-primario);
+  }
+  [data-tono="oscuro"] em,
+  .sobre-tinta em {
+    color: var(--color-primario-claro);
+  }
+  /* Sobre tinta, las etiquetas van en tinta clara (diseño): la utilidad lee --color-etiqueta. */
+  [data-tono="oscuro"],
+  .sobre-tinta {
+    --color-etiqueta: var(--color-sobre-tinta-suave);
+  }
+  /* Barra móvil fija (72 px + zona segura): que no tape el elemento con foco (WCAG 2.4.11). */
+  @media (width < 64rem) {
+    html {
+      scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom));
+    }
+    body {
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+  }
+  /* Foco: contorno de 2 px con 3 px de separación; blanco sobre tinta (encargo §8). */
+  :focus-visible {
+    outline: 2px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+  [data-tono="oscuro"] :focus-visible,
+  .sobre-tinta :focus-visible {
+    outline-color: #ffffff;
+  }
+}
+
+/* ── Página: hueco de la cabecera fija ─────────────────────────────────── */
+#contenido {
+  padding-top: var(--alto-cabecera);
+}
+body:has([data-hero="medio"]) #contenido {
+  padding-top: 0;
+}
+
+/* ── Enlace con flecha (solo navegación) ────────────────────────────────── */
+.enlace-flecha {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding-bottom: 2px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  align-self: flex-start;
+}
+.enlace-flecha::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  height: 1px;
+  background: currentColor;
+  transform-origin: left;
+}
+.enlace-flecha .flecha {
+  display: inline-block;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .enlace-flecha .flecha {
+    transition: translate var(--dur-hover) var(--ease-salida);
+  }
+  .enlace-flecha:hover .flecha,
+  .enlace-flecha:focus-visible .flecha {
+    translate: 5px 0;
+  }
+  .enlace-flecha:hover::after {
+    animation: linea-entra var(--dur-hover) var(--ease-salida);
+  }
+}
+@keyframes linea-entra {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* ── Botones de contacto: hover sin desplazamiento ─────────────────────── */
+.boton {
+  transition:
+    background-color var(--dur-hover) var(--ease-suave),
+    color var(--dur-hover) var(--ease-suave),
+    border-color var(--dur-hover) var(--ease-suave);
+}
+
+/* ── Cabecera inteligente ───────────────────────────────────────────────
+   Sin JS: fija y sólida en tinta. Con la clase `js` (script en línea) y
+   soporte de scroll(): transparente sobre el hero del inicio, fondo que entra
+   en los primeros 200 px. CabeceraScroll (≤ 1 KB) pone data-scroll y
+   data-sobre en <html>. */
+.cabecera {
+  --cab-fondo: rgb(10 26 42 / 0.9);
+  --cab-texto: #ffffff;
+  --cab-suave: var(--color-sobre-tinta-suave);
+  --cab-inverso: var(--color-tinta);
+  color: var(--cab-texto);
+}
+.cabecera::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--color-tinta);
+}
+.js .cabecera::before {
+  background-color: var(--cab-fondo);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+/* Sobre secciones claras (dato de CabeceraScroll; antes de hidratar, la marca de la página). */
+.js[data-sobre="claro"] .cabecera,
+.js:not([data-sobre]) body:has([data-inicio="claro"]) .cabecera {
+  --cab-fondo: rgb(255 255 255 / 0.9);
+  --cab-texto: var(--color-tinta);
+  --cab-suave: var(--color-texto-suave);
+  --cab-inverso: #ffffff;
+}
+.js[data-sobre="claro"] .cabecera::before,
+.js:not([data-sobre]) body:has([data-inicio="claro"]) .cabecera::before {
+  border-bottom: 1px solid var(--color-borde);
+}
+.cabecera :focus-visible {
+  outline-color: var(--cab-texto);
+}
+@keyframes cabecera-fondo {
+  from {
+    opacity: 0;
+    translate: 0 -40px;
+  }
+}
+@keyframes cabecera-nombre {
+  to {
+    scale: 0.9;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  .js body:has([data-hero="medio"]) .cabecera::before {
+    animation: cabecera-fondo linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 200px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .js body:has([data-hero="medio"]) .cabecera .nombre {
+      transform-origin: left center;
+      animation: cabecera-nombre linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 200px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    @keyframes cabecera-fondo {
+      from {
+        opacity: 0;
+      }
+    }
+  }
+}
+/* Escritorio: se esconde al bajar (data-scroll="abajo") y vuelve al subir. Nunca con el foco dentro. */
+@media (min-width: 64rem) {
+  .cabecera {
+    transition:
+      translate var(--dur-hover) var(--ease-suave),
+      opacity var(--dur-hover) var(--ease-suave);
+  }
+  html[data-scroll="abajo"] .cabecera:not(:focus-within) {
+    translate: 0 -100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html[data-scroll="abajo"] .cabecera:not(:focus-within) {
+      translate: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
+
+/* Página actual en la cabecera (cada página lleva `data-pagina`). */
+body:has([data-pagina="trabajos"]) .nav-principal [data-ruta="/trabajos"],
+body:has([data-pagina="servicios"]) .nav-principal [data-ruta="/servicios"],
+body:has([data-pagina="empresa"]) .nav-principal [data-ruta="/empresa"],
+body:has([data-pagina="contacto"]) .nav-principal [data-ruta="/contacto"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 8px;
+}
+
+/* ── Pareja flotante (escritorio, con la cabecera escondida) ────────────── */
+.pareja-flotante {
+  display: none;
+}
+@media (min-width: 64rem) {
+  html[data-scroll="abajo"] .pareja-flotante {
+    display: flex;
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity var(--dur-hover) var(--ease-salida),
+      translate var(--dur-hover) var(--ease-salida),
+      display var(--dur-hover) allow-discrete;
+  }
+  @starting-style {
+    html[data-scroll="abajo"] .pareja-flotante {
+      opacity: 0;
+      translate: 0 16px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    @starting-style {
+      html[data-scroll="abajo"] .pareja-flotante {
+        translate: 0 0;
+      }
+    }
+  }
+}
+
+/* ── Menú a pantalla completa (popover nativo) ─────────────────────────── */
+.menu-pantalla {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  overflow: auto;
+  background-color: var(--color-tinta);
+  color: #ffffff;
+}
+.menu-pantalla:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+.menu-pantalla :focus-visible {
+  outline-color: #ffffff;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-pantalla {
+    transition:
+      opacity var(--dur-pagina) var(--ease-salida),
+      translate var(--dur-pagina) var(--ease-salida),
+      overlay var(--dur-pagina) allow-discrete,
+      display var(--dur-pagina) allow-discrete;
+  }
+  @starting-style {
+    .menu-pantalla:popover-open {
+      opacity: 0;
+      translate: 0 24px;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-pantalla:popover-open {
+    animation: solo-opacidad var(--dur-pagina) ease both;
+  }
+}
+@keyframes solo-opacidad {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ── 1 · Revelado al entrar (aparecer.css con los tokens premium) ──────── */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-aparecer] {
+      animation-timing-function: var(--ease-salida);
+      animation-range: entry calc(15% + var(--i, 0) * 6%) cover calc(30% + var(--i, 0) * 6%);
+    }
+  }
+}
+
+/* ── 2 · Titulares por líneas con máscara (nunca el h1) ────────────────── */
+.mascara {
+  view-timeline: --titular block;
+}
+.mascara .linea {
+  display: block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+.mascara .linea > span {
+  display: block;
+}
+@keyframes linea-sube {
+  from {
+    translate: 0 105%;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .mascara .linea > span {
+      animation: linea-sube linear both;
+      animation-timing-function: var(--ease-salida);
+      animation-timeline: --titular;
+      animation-range: entry calc(10% + var(--l, 0) * 8%) cover calc(30% + var(--l, 0) * 8%);
+    }
+  }
+}
+
+/* ── 3 · Parallax suave (collage y hero interior; nunca la primera pantalla del inicio) ── */
+@keyframes parallax-grande {
+  from {
+    translate: 0 6%;
+  }
+  to {
+    translate: 0 -6%;
+  }
+}
+@keyframes parallax-mini {
+  from {
+    translate: 0 18%;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .parallax-grande {
+      animation: parallax-grande linear both;
+      animation-timeline: view();
+    }
+    .parallax-mini {
+      animation: parallax-mini linear both;
+      animation-timeline: view();
+      animation-range: entry 0% contain 50%;
+    }
+  }
+}
+
+/* ── 4 · Pano: la instalación vista que crece ──────────────────────────
+   Por defecto (sin soporte, reducir movimiento o sin JS): foto quieta 4:5 /
+   16:9, una copia de la marquesina partida en líneas y la pareja debajo. */
+.pano__escena {
+  position: relative;
+}
+.pano__medio {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+@media (min-width: 64rem) {
+  .pano__medio {
+    aspect-ratio: 16 / 9;
+  }
+}
+.pano__velo {
+  position: absolute;
+  inset: 0;
+  background: rgb(10 26 42 / 0.45);
+}
+.pano__marquesina {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  translate: 0 -50%;
+  padding-inline: var(--margen);
+  color: #ffffff;
+  pointer-events: none;
+}
+.pano__pista {
+  display: block;
+  font-size: clamp(1.5rem, 1.1rem + 2vw, 3rem);
+  line-height: 1.1;
+  white-space: normal;
+}
+.pano__pista .copia,
+.pano__pista .sep {
+  display: none;
+}
+.pano__pista--2 {
+  display: none;
+}
+.pano__pie {
+  position: relative;
+  padding: 32px var(--margen) 0;
+}
+@keyframes marquesina {
+  to {
+    translate: -50% 0;
+  }
+}
+@keyframes marquesina-inversa {
+  from {
+    translate: -50% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes pano-crece {
+  from {
+    clip-path: inset(16% 6% 22% 6% round 4px);
+  }
+  to {
+    clip-path: inset(0 round 0);
+  }
+}
+@keyframes pano-crece-escritorio {
+  from {
+    clip-path: inset(18% 24% round 4px);
+  }
+  to {
+    clip-path: inset(0 round 0);
+  }
+}
+@keyframes velo-entra {
+  from {
+    opacity: 0;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .pano {
+      height: 260svh;
+      view-timeline: --pano block;
+    }
+    .pano__escena {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      overflow: clip;
+    }
+    .pano__medio {
+      position: absolute;
+      inset: 0;
+      aspect-ratio: auto;
+      animation: pano-crece linear both;
+      animation-timeline: --pano;
+      animation-range: entry 70% contain 40%;
+    }
+    .pano__velo,
+    .pano__marquesina {
+      animation: velo-entra linear both;
+      animation-timeline: --pano;
+      animation-range: contain 0% contain 40%;
+    }
+    .pano__marquesina {
+      padding-inline: 0;
+      overflow: hidden;
+    }
+    .pano__pista {
+      display: flex;
+      width: max-content;
+      font-size: var(--text-pano);
+      white-space: nowrap;
+      animation: marquesina 40s linear infinite;
+    }
+    .pano__pista .copia,
+    .pano__pista .sep {
+      display: inline;
+    }
+    .pano__pista--2 {
+      display: flex;
+      color: rgb(255 255 255 / 0.5);
+      animation-name: marquesina-inversa;
+      animation-duration: 48s;
+    }
+    .pano__pie {
+      position: absolute;
+      inset-inline: 0;
+      bottom: calc(96px + env(safe-area-inset-bottom));
+      padding-top: 0;
+    }
+    @media (min-width: 64rem) {
+      .pano {
+        height: 300vh;
+      }
+      .pano__medio {
+        animation-name: pano-crece-escritorio;
+      }
+      .pano__pista--2 {
+        display: none;
+      }
+      .pano__pie {
+        bottom: 64px;
+      }
+    }
+  }
+}
+
+/* ── 5 · Bloques que se apilan (servicios) ─────────────────────────────
+   Sin soporte de view(): sticky sin encogido. Con reducir movimiento: lista. */
+.apilado {
+  --alto-bloque: calc(100svh - 132px);
+  --tope: calc(var(--alto-cabecera) + var(--i, 0) * 10px);
+}
+@media (min-width: 64rem) {
+  .apilado {
+    --alto-bloque: calc(100vh - 72px);
+    --tope: 72px;
+  }
+}
+@keyframes bloque-tapado {
+  to {
+    scale: 0.94;
+    opacity: 0.5;
+  }
+}
+/* En pantallas bajas (móvil apaisado) el bloque no cabe: lista normal. */
+@media (prefers-reduced-motion: no-preference) and (min-height: 600px) {
+  .apilado[data-apilar] > .bloque:not(.bloque--largo) {
+    position: sticky;
+    top: var(--tope);
+    height: var(--alto-bloque);
+  }
+  @supports (animation-timeline: view()) {
+    .apilado[data-apilar] {
+      view-timeline: --apilado block;
+    }
+    .apilado[data-apilar] > .bloque:not(.bloque--largo):not(:last-child) > .bloque__dentro {
+      transform-origin: 50% 0;
+      animation: bloque-tapado linear both;
+      animation-timeline: --apilado;
+      animation-range: cover calc((var(--i) + 1) * var(--alto-bloque)) cover
+        calc((var(--i) + 1) * var(--alto-bloque) + 100svh - var(--tope));
+    }
+  }
+}
+
+/* ── Línea del proceso: se dibuja con el scroll (solo scale del ::before) ── */
+.linea-proceso::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 1px;
+  background: var(--color-texto);
+  transform-origin: top;
+}
+@keyframes linea-dibuja {
+  from {
+    scale: 1 0;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .linea-proceso {
+      view-timeline: --proceso block;
+    }
+    .linea-proceso::before {
+      animation: linea-dibuja linear both;
+      animation-timeline: --proceso;
+      animation-range: entry 20% cover 70%;
+    }
+  }
+}
+
+/* ── 6 · Transición entre páginas (mejora: nada depende de ella) ───────── */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--dur-pagina);
+    animation-timing-function: var(--ease-suave);
+  }
+  ::view-transition-group(.morph) {
+    animation-duration: var(--dur-pagina);
+    animation-timing-function: var(--ease-suave);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ── Preguntas: «+» que gira 45° ───────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .mas {
+    transition: rotate var(--dur-hover) var(--ease-salida);
+  }
+}
+details[open] .mas {
+  rotate: 45deg;
+}
+
+/* ── Legales: el texto y el <h1> los pone core; aquí solo el aspecto ───── */
+.lectura-legal article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-titulo);
+  font-weight: 300;
+  font-size: clamp(2.5rem, 1.6rem + 4vw, 5rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 2rem 0 0.5rem;
+  font-family: var(--font-titulo);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.6rem;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+
+/* Filtro de /trabajos (enlaces de texto; el activo lo marca el CSS generado en la página). */
+.filtro-enlace {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+  color: var(--color-texto-suave);
+  text-decoration: none;
+  margin-bottom: -1px;
+  transition: color var(--dur-hover) var(--ease-suave);
+}
+.filtro-enlace:hover {
+  color: var(--color-texto);
+}
+.filtro-activo {
+  display: none;
+}
