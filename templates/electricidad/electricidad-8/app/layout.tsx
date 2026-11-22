@@ -10,11 +10,11 @@ import { textoLlamar } from "@/lib/formato";
 import { mensajeEdificio } from "@/lib/mensajes";
 
 // next/font las descarga en el build y las sirve desde la propia web (sin peticiones a Google).
-// Newsreader es la del h1 (LCP en móvil): variable con el eje óptico `opsz` y precargada.
+// Newsreader es la del h1 (LCP en móvil): variable y precargada, sin el eje óptico `opsz`
+// (≈74 KB menos de fuente precargada; Ysst, 22/11/2026).
 // Public Sans, variable y sin precarga (encargo §8, «Presupuesto»).
 const serif = Newsreader({
   subsets: ["latin"],
-  axes: ["opsz"],
   variable: "--font-newsreader",
   display: "swap",
   preload: true,

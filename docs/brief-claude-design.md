@@ -48,7 +48,7 @@ Un **template**: el diseño reutilizable de una **web completa de varias página
 | `/trabajos/[slug]` | Un trabajo | Una por cada `trabajos[]` |
 | `/empresa` | Quiénes somos | Siempre. Se compone con lo que haya (historia, equipo, fotos, años, acreditaciones, garantías); cada bloque vacío se oculta |
 | `/contacto` | Contacto | Siempre |
-| `/comunidades` | Para comunidades de vecinos | Solo si existe el bloque `comunidades` (tipo obra técnica) |
+| `/comunidades` | Para comunidades de vecinos | Solo si existe el bloque `comunidades` (tipo obra técnica; en urgencias, solo si el encargo la pide) |
 | Cualquier URL que no exista | Página no encontrada (404) | Siempre, con tu diseño: un `h1` («No encontramos esta página»), una frase, enlaces a `/`, `/servicios` y `/contacto`, `BotonLlamada` y `BotonWhatsApp` (si hay WhatsApp) |
 | `/aviso-legal`, `/privacidad`, `/cookies` | Legales | Siempre. **El texto lo pone core**; tú solo decides cómo se ven dentro de tu layout (cabecera, pie, ancho, tipografía) |
 
@@ -115,7 +115,7 @@ Es el contrato de core 0.5.1 más tres novedades **opcionales** de 0.6.0 (al fin
 | `valoracion` | opcional: {`media` (1–5), `total` (entero)} de Google ("4,8 · 127 reseñas") |
 | `resenas` | lista de {`autor`, `texto`, `puntuacion` (1–5), `fecha?` (`"2026-09"` o `"2026-09-14"`), `fuente?` (`"google"`, `"web"` u `"otra"`)} |
 | `proceso` | lista (máx. 6) de {`titulo`, `texto`} |
-| `acreditaciones` | lista de {`nombre`, `numero?`} ("Empresa instaladora RII", "n.º 46/12345") |
+| `acreditaciones` | lista de {`nombre`, `numero?`, `corto?`} ("Empresa instaladora RII", "n.º 46/12345", "RII"; `corto` ≤ 12 caracteres, desde 0.8.0) |
 | `garantias` | lista (máx. 6) de textos de ≤ 80 ("Presupuesto cerrado antes de empezar") |
 | `marcas` | lista de nombres ("Cortizo", "Daikin") |
 | `tarifas` | opcional: {`items` [{`concepto`, `precio` (≤ 40)}] (mínimo 1), `nota?`} |
@@ -361,7 +361,7 @@ Todo template lleva **animaciones básicas que llamen la atención**, pensadas p
 4. Los **tokens**: colores en hex, tipografías, radios y sombras.
 5. Las **variantes de botón** por sección (§7) con su nombre.
 6. Por cada sección y página: el **nombre del componente**, los **campos** que usa y cómo se comporta cuando falta algo (servicio sin foto, reseña muy larga, sin WhatsApp, sin trabajos).
-7. Los **datos de ejemplo** del nicho en formato `site.config.ts`, ficticios y realistas de la ciudad que diga el encargo (Valencia, Barcelona, Sevilla o Madrid), y que cumplan los formatos de §4. Si llevan precios, cada uno con el comentario `// PRECIO FICTICIO: borrar en la web del cliente`.
+7. Los **datos de ejemplo** del nicho en formato `site.config.ts`, ficticios y realistas de la ciudad que diga el encargo (Valencia, Barcelona, Sevilla o Madrid), y que cumplan los formatos de §4. Si llevan precios, cada uno con el comentario `// PRECIO FICTICIO: borrar en la web del cliente`. Dirección, email, web, ficha de Google y números de registro tienen que **verse ficticios**: «Calle Ejemplo, NN», dominios `.example`, `cid=000…`, «(ficticio)». Nunca la dirección, la web o el nombre de una empresa real.
 8. La lista de **componentes shadcn** usados y de **piezas base** del registro que usas tal cual, reestilas o sustituyes (y por qué).
 9. Un **nombre y una frase** que definan el concepto, y en qué ejes (§6) difiere de los otros templates de su nicho.
 10. La **ficha de estilo fotográfico**: luz, objetivo y encuadre, color o tratamiento, materia, presencia humana y tratamiento en la web; la foto ancla (la del hero) y una lista de prohibiciones propia. Más los **prompts de cada foto de ejemplo** (y del vídeo si lo hay) para generarlas con IA siguiendo esa ficha, con su nombre de archivo en `public/ejemplo/`, su `alt` y `origen: "ia"`.

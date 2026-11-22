@@ -10,7 +10,7 @@ Piezas de diseño compartidas por los templates. **Se copian, no se importan**: 
 |---|---|---|
 | `base/Foto.tsx` | `next/image` con proporción fija y la etiqueta de `imagen.origen` («Imagen generada con IA», «Foto de tu ficha de Google») | No |
 | `base/MedioHero.tsx` | Vídeo en bucle con póster (`config.videoHero`) o foto (`imagenesHero[0]`). Con «reducir movimiento», solo el póster | No |
-| `base/AntesDespues.tsx` + `base/DeslizadorAntesDespues.tsx` | Antes y después. Sin JS, en fila; con JS, superpuestas con un `<input type="range">` | Sí, una isla pequeña |
+| `base/AntesDespues.tsx` + `base/DeslizadorAntesDespues.tsx` | Antes y después. Sin JS, en fila; con JS, superpuestas ya en el HTML (`@media (scripting: enabled)`, sin salto al hidratar) con un `<input type="range">`. `preload` para cuando la foto de «después» es el LCP | Sí, una isla pequeña |
 | `base/Preguntas.tsx` | Preguntas con `<details name>` (sustituye al `accordion` de shadcn) | No |
 | `base/MenuPopover.tsx` | Menú móvil con la API `popover` (sustituye al `sheet` de shadcn) | No |
 | `base/BarraMovil.tsx` | Barra fija en móvil: `dos` (Llamar \| WhatsApp, o al revés con `primero="whatsapp"`) o `combinada` (Menú \| Llamar \| WhatsApp, solo urgencias) | No |
@@ -22,6 +22,7 @@ Piezas de diseño compartidas por los templates. **Se copian, no se importan**: 
 
 - Solo usan los **16 tokens comunes**: `--color-fondo`, `--color-superficie`, `--color-alterna`, `--color-texto`, `--color-texto-suave`, `--color-borde`, `--color-primario`, `--color-sobre-primario`, `--color-acento`, `--color-foco`, `--font-titulo`, `--font-texto`, `--radius-boton`, `--radius-tarjeta`, `--radius-foto`, `--text-display`. El template les da valor en `@theme`.
 - Sin JavaScript, todo se ve y funciona.
+- En los archivos `"use client"`, `clsx` y no `cn()`: `cn` mete tailwind-merge (~9 KB gzip) en el navegador. `cn` solo en componentes de servidor.
 - La lógica sale de `@andrei-leads/core` (`etiquetaOrigen`, `telefonoVisible`, `BotonLlamada`, `BotonWhatsApp`…). Aquí solo hay diseño.
 
 ## Cómo se usan en un template (a mano, la primera vez)

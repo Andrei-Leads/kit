@@ -79,7 +79,7 @@ Una sesión de Claude escribe **un encargo por template** en `andrei-leads-tech/
 5. **Páginas:** inicio en orden y con nº de palabras, y cada ruta fija con su etiqueta de menú.
 6. **Estados vacíos y extremos.**
 7. **Fotos de ejemplo:** lista de nombres de archivo previstos (se generarán con IA, paso 9; Claude Design solo entrega `CREDITOS.md`).
-8. **Datos de ejemplo** en formato `site.config.ts` según el **contrato vigente** (horario en franjas, sin `seo.indexar`): completo y mínimo. Precios con `// PRECIO FICTICIO: borrar en la web del cliente`.
+8. **Datos de ejemplo** en formato `site.config.ts` según el **contrato vigente** (horario en franjas, sin `seo.indexar`): completo y mínimo. Precios con `// PRECIO FICTICIO: borrar en la web del cliente`. Dirección, web, ficha de Google y números de registro **evidentemente ficticios** («Calle Ejemplo, NN», `.example`, `cid=000…`, «(ficticio)»).
 9. **Textos fijos de interfaz.**
 10. **Entregables:** los del brief §9, más una **Specs en HTML** (tokens + `@theme`, secciones y páginas con campos y estados vacíos, shadcn, variantes de botón, pieza clave, textos fijos, **animaciones descritas**), el **hero a 375×667** con y sin foto y con `#1e40af`, el **inicio mínimo con y sin WhatsApp**, la etiqueta «Foto de ejemplo» y `CREDITOS.md`.
 
@@ -183,7 +183,7 @@ FASES
 
 REQUISITOS (todos obligatorios)
 - Rutas fijas: / /servicios /servicios/[slug] /trabajos /trabajos/[slug] /empresa /contacto
-  /aviso-legal /privacidad /cookies (+ /comunidades solo en obra técnica y si existe). Sin trabajos
+  /aviso-legal /privacidad /cookies (+ /comunidades solo si existe: obra técnica, o urgencias si el encargo la pide). Sin trabajos
   ni galería, /trabajos da 404 y sale del menú. La etiqueta del menú es libre; la ruta no.
 - Ningún dato del negocio escrito a mano: todo de `import config from "@/site.config"`. Cada sección
   recibe solo su parte. Sin datos, la sección desaparece sin dejar hueco.
@@ -219,8 +219,15 @@ REQUISITOS (todos obligatorios)
   siempre, en 2 líneas como máximo y nunca cortado con «…», sin romper la cabecera a 375 px. Sin
   variante «solo logo».
 - Precio: la etiqueta «DESDE» solo si precioDesde empieza por «desde»; si no, el texto tal cual.
-- WhatsApp de servicio: «Pide presupuesto de {servicio} por WhatsApp» (nunca «Pide tu…»). El de la
+- WhatsApp de servicio: el botón lleva el texto corto del diseño («Pregunta por WhatsApp», «Mándanos
+  una foto»…) y el servicio va en el mensaje precargado (mensajeServicio), sin frases rotas con títulos
+  reales (Ysst, 22/11/2026; sustituye a «Pide presupuesto de {servicio} por WhatsApp»). El de la
   barra móvil lleva el mensaje general en todas las páginas.
+- Datos de ejemplo ficticios a la vista, aunque el encargo traiga datos verosímiles: «Calle Ejemplo,
+  NN», email y web en `.example`, `fichaGoogle` con `cid=000…`, números de registro o acreditación
+  con «(ficticio)», NIF con dígito de control inválido. Nunca una dirección, web, ficha o nombre de
+  una empresa real (Ysst, 22/11/2026).
+- Islas "use client": `clsx`, no `cn()` (cn mete tailwind-merge, ~9 KB gzip, en el navegador).
 - Imágenes con next/image a través de Foto: alt de los datos, etiqueta «Foto de ejemplo» si src empieza
   por /ejemplo/, proporción fija con object-cover, texto sobre foto solo con capa oscura.
 - Tokens propios en @theme; --color-primario sobrescribible desde marca.colorPrimario (style del <html>);

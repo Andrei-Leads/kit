@@ -73,7 +73,7 @@ export default defineSiteConfig({
     { autor: "Nuria F.", texto: "Buen trabajo, tardaron un día más de lo previsto en traer el material, pero avisaron.", puntuacion: 4, fecha: "2026-09-09", fuente: "google" },
     { autor: "Íñigo B.", texto: "Subida de potencia sin dramas y todo legalizado.", puntuacion: 5, fecha: "2026-08-27", fuente: "google" },
   ],
-  acreditaciones: [{ nombre: "Empresa instaladora en baja tensión (RII)", numero: "28/000000 (ficticio)" }],
+  acreditaciones: [{ nombre: "Empresa instaladora en baja tensión (RII)", corto: "RII", numero: "28/000000 (ficticio)" }],
   garantias: ["Precio cerrado antes de empezar", "Instalación certificada", "Dos años de garantía en mano de obra"],
   empresa: { historia: ["Empezamos en 2009 haciendo reformas eléctricas en Aravaca y hoy somos seis instaladores y una persona en la oficina."], imagenes: [{ src: "/ejemplo/empresa-almacen.jpg", alt: "Almacén con material ordenado", origen: "ia" }], equipo: [{ nombre: "Sergio", cargo: "Instalador" }, { nombre: "Laura", cargo: "Oficina y presupuestos" }] },
   galeria: [{ src: "/ejemplo/galeria-salon-led.jpg", alt: "Salón con iluminación indirecta", origen: "ia", titulo: "Iluminación indirecta" }],

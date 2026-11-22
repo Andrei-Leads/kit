@@ -118,7 +118,9 @@ export async function HeroBento({ negocio, contacto, valoracion, acreditacion, z
       }
       case "habilitacion": {
         const a = acreditacion!;
-        const { corto, largo } = partirAcreditacion(a.nombre);
+        // `corto` de los datos manda; si falta, las siglas del paréntesis final del nombre.
+        const { corto: siglas, largo } = partirAcreditacion(a.nombre);
+        const corto = a.corto ?? siglas;
         return (
           <div key={c} className={clase(c)}>
             <span className="sr-only">

@@ -2,31 +2,31 @@
 
 import { useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+// clsx y no cn(): cn arrastra tailwind-merge (~9 KB gzip) al navegador.
+import { clsx } from "clsx";
 
 const sinSuscripcion = () => () => {};
 
 /**
  * Isla de cliente de `AntesDespues`. Recibe las dos fotos ya pintadas en el
- * servidor (`children`). Hasta que hidrata, las deja en fila; después las
- * superpone y muestra el deslizador. Solo guarda un número (la posición).
+ * servidor (`children`). Sin JavaScript, en fila. Con JavaScript disponible
+ * (`@media (scripting: enabled)`), superpuestas ya en el HTML (sin salto de
+ * maquetación al hidratar); al hidratar solo se añade el deslizador. Solo
+ * guarda un número (la posición).
  */
 export function DeslizadorAntesDespues({ children, className }: { children: ReactNode; className?: string }) {
-  // false en el HTML del servidor y en la hidratación; true después: sin JS, las fotos se quedan en fila.
+  // false en el HTML del servidor y en la hidratación; true después: el deslizador solo aparece con JS.
   const activo = useSyncExternalStore(sinSuscripcion, () => true, () => false);
   const [posicion, setPosicion] = useState(50);
 
   return (
     <div
       data-activo={activo || undefined}
-      style={
-        activo
-          ? ({ "--posicion": `${posicion}%`, "--recorte": `inset(0 ${100 - posicion}% 0 0)` } as CSSProperties)
-          : undefined
-      }
-      className={cn(
-        // Sin JS: dos columnas. Con JS: una sola celda con las dos capas encima (AntesDespues las coloca).
-        "group/ad relative grid grid-cols-2 gap-2 data-[activo]:grid-cols-1 data-[activo]:gap-0",
+      // Las variables van desde el primer pintado: así la foto de antes ya sale recortada al 50 % sin esperar a hidratar.
+      style={{ "--posicion": `${posicion}%`, "--recorte": `inset(0 ${100 - posicion}% 0 0)` } as CSSProperties}
+      className={clsx(
+        // Sin JS: dos columnas. Con JS disponible: una sola celda con las dos capas encima (AntesDespues las coloca).
+        "group/ad relative grid grid-cols-2 gap-2 [@media(scripting:enabled)]:grid-cols-1 [@media(scripting:enabled)]:gap-0",
         className,
       )}
     >
