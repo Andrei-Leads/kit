@@ -43,7 +43,6 @@ Todo el archivo es de «Fontanería y Saneamientos Hermanos Rendón», un negoci
 
 ## 3. Decisiones que tomar con el cliente o con Ysst
 
-- [ ] **Botón de WhatsApp de la ficha de servicio:** usa todavía la regla antigua de fontanería, «Pide presupuesto de {servicio} por WhatsApp» (`lib/mensajes.ts`, `etiquetaWhatsappServicio`). La regla aprobada en electricidad es un texto corto («Pregunta por WhatsApp») con el servicio en el mensaje. *Recomendado:* pasar a la regla nueva si el botón se parte en dos líneas o el título del servicio es largo o empieza por verbo.
 - [ ] **Nombre en dos niveles:** con nombres cortos va entero; con más de 18 caracteres la llamada dice «Llamar ahora» en vez de «Llama a {nombre}». Comprueba que las dos últimas palabras tengan sentido solas.
 - [ ] **Logo:** con `negocio.logo`, va a 32 px a la izquierda del nombre (`alt=""`).
 - [ ] **Color primario:** marino de azulejo `#1f3a6b`. El template deriva `--color-primario-texto` (`lib/marca.ts`) para los textos en primario. *Recomendado:* un color medio u oscuro; con uno claro, mira el aviso del build.

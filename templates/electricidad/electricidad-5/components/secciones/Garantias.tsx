@@ -17,7 +17,7 @@ export function Garantias({ garantias, acreditaciones }: Props) {
     <section aria-labelledby="titulo-garantias" className="seccion">
       <div className="contenedor">
         <h2 id="titulo-garantias" className="titulo-seccion">
-          {acreditaciones.length > 0 ? "Garantías y habilitaciones" : "Lo que te prometemos"}
+          {acreditaciones.length > 0 ? "Garantías y habilitaciones" : "Nuestras garantías"}
         </h2>
         <ul className="m-0 mt-7 flex list-none flex-col gap-2.5 p-0 md:flex-row md:flex-wrap">
           {items.map((t, i) => (

@@ -20,7 +20,7 @@ import { BandaCabecera, H1_INTERIOR, H2 } from "@/components/secciones/BandaCabe
 import { CtaFinal } from "@/components/secciones/CtaFinal";
 import { TarjetaTrabajo } from "@/components/secciones/TarjetaTrabajo";
 import { horarioLinea, valoracionLinea } from "@/lib/formato";
-import { mensajeDeServicio, textoWhatsappServicio } from "@/lib/mensajes";
+import { mensajeDeServicio, TEXTO_WHATSAPP_SERVICIO } from "@/lib/mensajes";
 
 // Sin esto, con partialPrefetching un slug inexistente da 200 en la primera visita (AGENTS.md §11).
 export const ensureStatic = "navigation";
@@ -49,7 +49,7 @@ export default async function FichaServicio({ params }: PageProps<"/servicios/[s
 
   const { contacto, zonas } = config;
   const mensaje = mensajeDeServicio(servicio);
-  const textoWa = textoWhatsappServicio(servicio);
+  const textoWa = TEXTO_WHATSAPP_SERVICIO;
   const [foto, ...fotos] = servicio.imagenes;
   const precio = servicio.precioDesde ? precioDesde(servicio.precioDesde) : undefined;
   const trabajos = trabajosDelServicio(config.trabajos, servicio);

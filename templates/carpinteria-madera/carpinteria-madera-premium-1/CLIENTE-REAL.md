@@ -42,8 +42,7 @@ Todo el archivo es de «Ojeda Ebanistas», un taller inventado de Sevilla. Borra
 
 ## 3. Decisiones que tomar con el cliente o con Ysst
 
-- [ ] **«Si quieres, ven a ver las maderas.»** (`components/secciones/CtaFinal.tsx`, bajo la dirección): invita a visitar el taller, algo que se quitó del resto de la web porque ningún dato lo respalda. *Recomendado:* dejarlo solo si el cliente acepta visitas; si no, quitar la frase.
-- [ ] **«Respuesta por WhatsApp en horario de taller»** (`lib/textos.ts`, línea de confianza de la home, `/contacto` y las fichas de obra): promete un tiempo de respuesta. En «Marco» se quitó por eso. *Recomendado:* quitarla o dejarla solo si el cliente contesta de verdad en horario.
+- [ ] **Línea de confianza** (`lib/textos.ts`, `lineaConfianza`; home, `/contacto` y fichas de obra): «Por WhatsApp puedes mandarnos fotos y medidas», como en «Marco». No prometas un tiempo de respuesta salvo que el cliente lo cumpla. Si el cliente acepta visitas al taller, se puede añadir bajo la dirección del CTA final.
 - [ ] **Color primario:** almagra `#9a3b26`, único acento (palabra destacada, botón). *Recomendado:* un color cálido medio u oscuro; mira el aviso de contraste del build.
 - [ ] **Logo:** el ejemplo no trae; con `negocio.logo`, va junto al nombre.
 - [ ] **Fundido de todo el `main` al cambiar de página** (View Transitions); con «reducir movimiento», sin transición. Aceptado.
