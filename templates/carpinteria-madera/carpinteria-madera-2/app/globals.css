@@ -1,0 +1,392 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «A medida» (carpinteria-madera-2), encargo §8: verde bosque pleno, crema y píldoras.
+ * Solo --color-primario se sobrescribe desde site.config (estiloMarca en layout.tsx, que también
+ * calcula --color-sobre-primario). El campo de color pleno, el tinte alterno y el hover SALEN del
+ * primario (oklch(from …) con color-mix de respaldo): un cliente con marca azul tiene un campo azul
+ * noche. El campo tiene luminosidad fija 0,3, así que el texto crema aguanta con cualquier primario.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #f6f3ec;
+  --color-superficie: #ffffff;
+  --color-alterna: #e8efe9; /* respaldo: el valor real sale del primario (:root, abajo) */
+  --color-texto: #1c2420;
+  --color-texto-suave: #55605a; /* 5,9:1 sobre el fondo, 5,6:1 sobre alterna */
+  --color-borde: #dcd8cc;
+  --color-primario: #2f6b47; /* verde bosque; blanco encima 6,3:1 */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #f0c36b; /* miel: botón principal; texto encima --color-sobre-acento (10,5:1) */
+  --color-foco: #1c2420; /* dentro del campo pleno pasa a miel (.campo-pleno) */
+  /* Las variables --font-sora y --font-figtree las pone next/font en <html> (layout.tsx). */
+  --font-titulo: var(--font-sora), system-ui, sans-serif;
+  --font-texto: var(--font-figtree), system-ui, sans-serif;
+  --radius-boton: 999px;
+  --radius-tarjeta: 24px;
+  --radius-foto: 20px;
+  --text-display: clamp(2.25rem, 1.5rem + 3.2vw, 4.75rem);
+
+  /* Propios */
+  --color-pleno: #173826; /* respaldo: el valor real sale del primario (:root, abajo) */
+  --color-sobre-pleno: #f4efe4;
+  --color-sobre-acento: #1d1a12;
+  --color-acento-hover: #e7b453;
+  --color-estrella: #8a5d0c; /* estrellas sobre blanco (4,9:1); decorativas, la nota va en texto */
+  --text-h2: clamp(1.75rem, 1.3rem + 1.8vw, 3rem);
+  --text-h3-seccion: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  /* h1 del inicio: un poco menor en móvil para que «{sector} en {ciudad}» quepa en 2 líneas y el
+     botón del asistente entre en 375×667 (ajuste de la entrega). */
+  --text-h1-inicio: clamp(1.75rem, 0.6rem + 5vw, 4.75rem);
+  --text-cifra: clamp(2.5rem, 1.8rem + 3vw, 4.5rem);
+  --text-cuerpo: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-entradilla: clamp(1.05rem, 1rem + 0.3vw, 1.25rem);
+  --shadow-tarjeta: 0 12px 32px rgb(0 0 0 / 0.12); /* estática, nunca animada */
+}
+
+/* Derivados del primario: color-mix de respaldo; oklch(from …) donde exista (encargo §8). */
+:root {
+  --color-alterna: color-mix(in oklch, var(--color-primario) 12%, white);
+  --color-pleno: color-mix(in oklch, var(--color-primario) 55%, black);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario) 86%, black);
+  --color-linea-pleno: rgb(244 239 228 / 0.25);
+  --color-velo-pleno: rgb(244 239 228 / 0.14);
+  /* Base pegada del asistente: por encima de la barra móvil (56 + 2 × 8 + 1 px + área segura). */
+  --asistente-pegado: calc(81px + env(safe-area-inset-bottom));
+}
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-alterna: oklch(from var(--color-primario) 0.95 calc(c * 0.2) h);
+    --color-pleno: oklch(from var(--color-primario) 0.3 calc(c * 0.7) h);
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.07) c h);
+  }
+}
+@media (min-width: 64rem) {
+  :root {
+    --asistente-pegado: 16px;
+  }
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 96px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd,
+  blockquote {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  /* Campo de color pleno (hero, cabeceras interiores, recordatorio, CTA final, 404): texto crema y foco miel. */
+  .campo-pleno {
+    --color-foco: var(--color-acento);
+    background: var(--color-pleno);
+    color: var(--color-sobre-pleno);
+  }
+  /* Tarjetas blancas dentro del campo (asistente): vuelven al foco de tinta. */
+  .campo-pleno .tarjeta-clara {
+    --color-foco: #1c2420;
+    color: var(--color-texto);
+  }
+
+  .contenedor {
+    width: 100%;
+    max-width: calc(1200px + 2 * clamp(20px, 4vw, 40px));
+    margin-inline: auto;
+    padding-inline: clamp(20px, 4vw, 40px);
+  }
+  .seccion {
+    padding-block: clamp(64px, 9vw, 120px);
+  }
+  .h2 {
+    font-family: var(--font-titulo);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+  }
+  .h3-seccion {
+    font-family: var(--font-titulo);
+    font-size: var(--text-h3-seccion);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+  }
+  .enlace {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* ---------- Botones (variantes de la entrega, §8 del encargo) ---------- */
+  .boton {
+    display: inline-flex;
+    min-height: 56px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 26px;
+    border-radius: var(--radius-boton);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .boton-compacto {
+    min-height: 48px;
+    padding: 0 20px;
+    font-size: 15.5px;
+  }
+  /* asistente-enviar · cta-pleno: miel con tinta. */
+  .boton-acento {
+    background: var(--color-acento);
+    color: var(--color-sobre-acento);
+  }
+  /* cta-claro · barra-ancho · capsula-llamar: primario con su texto calculado. */
+  .boton-primario {
+    background: var(--color-primario);
+    color: var(--color-sobre-primario);
+  }
+  /* llamar-contorno · tarjeta-configurar: contorno de tinta de 2 px. */
+  .boton-contorno {
+    border: 2px solid var(--color-texto);
+    color: var(--color-texto);
+  }
+  /* llamar-pleno · hero-llamada-texto: contorno crema sobre el campo pleno. */
+  .boton-contorno-pleno {
+    border: 2px solid var(--color-sobre-pleno);
+    color: var(--color-sobre-pleno);
+  }
+  @media (hover: hover) {
+    .boton-acento:hover {
+      background: var(--color-acento-hover);
+    }
+    .boton-primario:hover {
+      background: var(--color-primario-hover);
+    }
+    .boton-contorno:hover {
+      background: var(--color-texto);
+      color: var(--color-fondo);
+    }
+    .boton-contorno-pleno:hover {
+      background: var(--color-velo-pleno);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .boton {
+      transition: transform 120ms ease;
+    }
+    .boton:active {
+      transform: scale(0.97);
+    }
+  }
+
+  /* Píldora con check (garantías e «Incluye»). */
+  .pildora-check {
+    display: inline-flex;
+    min-height: 52px;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 22px 8px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  /* ---------- Legales: el <article> y el <h1> los pone core ---------- */
+  .lectura-legal article {
+    margin: 0;
+    max-width: 70ch;
+    padding: 0;
+    line-height: 1.6;
+  }
+  .lectura-legal h1 {
+    font-family: var(--font-titulo);
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
+  }
+  .lectura-legal h2 {
+    font-family: var(--font-titulo);
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-top: 1rem;
+  }
+  .lectura-legal a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+/* ---------- Cápsula: el texto del botón cambia con el popover abierto (sin JS) ---------- */
+.capsula:has(.menu-capsula:popover-open) .texto-menu {
+  display: none;
+}
+.capsula:not(:has(.menu-capsula:popover-open)) .texto-cerrar {
+  display: none;
+}
+.menu-capsula {
+  position: fixed;
+  inset: 84px 12px auto 12px;
+  margin: 0;
+  width: auto;
+  max-height: calc(100dvh - 104px);
+  overflow: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-capsula {
+    transition:
+      opacity 200ms ease-out,
+      translate 200ms ease-out,
+      display 200ms allow-discrete,
+      overlay 200ms allow-discrete;
+  }
+  .menu-capsula:popover-open {
+    opacity: 1;
+    translate: 0 0;
+  }
+  @starting-style {
+    .menu-capsula:popover-open {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+}
+
+/* ---------- Barra móvil: entra desde abajo al cargar ---------- */
+@keyframes barra-entra {
+  from {
+    translate: 0 100%;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .barra-movil {
+    animation: barra-entra 280ms ease-out both;
+  }
+}
+
+/* ---------- Asistente ---------- */
+.asistente-base {
+  position: sticky;
+  bottom: var(--asistente-pegado);
+  z-index: 2;
+}
+@keyframes paso-entra {
+  from {
+    opacity: 0;
+    translate: 12px 0;
+  }
+}
+.progreso {
+  transform-origin: left center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .paso-entra {
+    animation: paso-entra 220ms ease-out both;
+  }
+  .progreso {
+    transition: transform 300ms ease;
+  }
+  .opcion {
+    transition: transform 120ms ease;
+  }
+  .opcion:active {
+    transform: scale(0.98);
+  }
+}
+.opcion {
+  border: 2px solid var(--color-borde);
+  background: var(--color-superficie);
+}
+.opcion[aria-pressed="true"] {
+  border-color: var(--color-primario);
+  background: var(--color-alterna);
+}
+@media (hover: hover) {
+  .opcion:hover {
+    background: var(--color-fondo);
+  }
+  .opcion[aria-pressed="true"]:hover {
+    background: var(--color-alterna);
+  }
+  .opcion-otra:hover {
+    border-color: var(--color-texto);
+  }
+}
+.opcion .check {
+  display: none;
+}
+.opcion[aria-pressed="true"] .check {
+  display: flex;
+}
+/* Casilla redonda de las opciones de texto: marcada con el primario. */
+.opcion[aria-pressed="true"] .marca {
+  border-color: var(--color-primario);
+  background: var(--color-primario);
+}
+
+/* ---------- Carriles con scroll-snap (sin auto-avance) ---------- */
+.carril {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 80%;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: clamp(20px, 4vw, 40px);
+  margin-inline: calc(-1 * clamp(20px, 4vw, 40px));
+  padding: 4px clamp(20px, 4vw, 40px) 8px;
+}
+.carril > * {
+  scroll-snap-align: start;
+  min-width: 0;
+}
+.carril-ancho {
+  grid-auto-columns: min(86%, 380px);
+}
+@media (min-width: 64rem) {
+  .carril-rejilla {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+}
+
+/* ---------- Cifras: con una sola, la fila no se estira ---------- */
+.cifras:has(> div:only-child) {
+  grid-template-columns: minmax(0, 24rem);
+}
