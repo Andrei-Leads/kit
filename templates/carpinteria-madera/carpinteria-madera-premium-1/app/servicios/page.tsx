@@ -11,7 +11,7 @@ import { Foto } from "@/components/base/Foto";
 import { CtaFinal } from "@/components/secciones/CtaFinal";
 import { HeroInterior } from "@/components/secciones/HeroInterior";
 import { Opiniones } from "@/components/secciones/Opiniones";
-import { mensajeDeServicio, mensajeInicio, textoWaServicio } from "@/lib/mensajes";
+import { mensajeDeServicio, mensajeInicio, TEXTO_WA_SERVICIO } from "@/lib/mensajes";
 import { datosCta, dosCifras, lineaConfianza } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 
@@ -67,7 +67,7 @@ export default function Page() {
                   <ParejaCta
                     cta={datosCta(contacto, mensajeDeServicio(s))}
                     tono="claro"
-                    textoWhatsapp={textoWaServicio(s.titulo)}
+                    textoWhatsapp={TEXTO_WA_SERVICIO}
                     className="mt-8"
                   />
                 </div>

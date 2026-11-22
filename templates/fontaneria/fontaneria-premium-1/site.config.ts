@@ -20,7 +20,7 @@ export default defineSiteConfig({
     tipoSchema: ["Plumber"],
   },
   contacto: {
-    telefono: "+34600006006", whatsapp: "+34600006006", email: "hola@olmedoinstalaciones.example",
+    telefono: "+34600000006", whatsapp: "+34600000006", email: "hola@olmedoinstalaciones.example",
     direccion: { calle: "Calle Ejemplo 47", cp: "28006", ciudad: "Madrid", provincia: "Madrid" },
     horario: [{ dias: [...lv], abre: "08:00", cierra: "14:00" }, { dias: [...lv], abre: "15:00", cierra: "18:30" }],
     coordenadas: { lat: 40.4296, lng: -3.6697 },
@@ -139,7 +139,7 @@ export default defineSiteConfig({
     { pregunta: "¿Hacéis reparaciones urgentes?", respuesta: "No. Nos dedicamos a obras planificadas para poder cumplir las fechas." },
     { pregunta: "¿Dais factura y certificado?", respuesta: "Siempre: factura con IVA y certificado de la instalación." },
   ],
-  redes: { instagram: "https://www.instagram.com/olmedoinstalaciones.example" },
+  redes: { instagram: "https://www.instagram.com/olmedoinstalaciones.ejemplo" },
   seo: {
     titulo: "Instalaciones de fontanería en Madrid · Olmedo",
     descripcion: "Baños completos, renovación de tuberías de plomo, agua caliente con aerotermia y comunidades en Madrid. Presupuesto por partidas y fecha por contrato.",

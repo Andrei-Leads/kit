@@ -35,7 +35,7 @@ export default function Page() {
             Lo que <em>hacemos</em>
           </>
         }
-        frase={`${n === 1 ? "Un tipo de obra" : `${n} tipos de obra`} en ${config.contacto.direccion.ciudad} y alrededores, cada uno con su presupuesto por escrito antes de empezar.`}
+        frase={`${n === 1 ? "Un tipo de obra" : `${n} tipos de obra`} en ${config.contacto.direccion.ciudad} y alrededores.`}
         cta={cta}
         confianza={confianza}
         sinFotos

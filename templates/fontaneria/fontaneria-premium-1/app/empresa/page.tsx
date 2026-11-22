@@ -85,7 +85,6 @@ export default function Page() {
         garantias={config.garantias}
         acreditaciones={config.acreditaciones}
         marcas={config.marcas}
-        lineas={[<>Todo <em key="e">por escrito</em></>]}
       />
 
       {empresa.equipo.length > 0 && (

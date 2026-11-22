@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { minusculaInicial, precioDesde, type Servicio } from "@andrei-leads/core";
+import { precioDesde, type Servicio } from "@andrei-leads/core";
 
 import { Foto } from "@/components/base/Foto";
 import { Enlace, Pareja, Titular } from "@/components/Botones";
@@ -115,7 +115,7 @@ export function ServiciosApilados({ servicios, datos, apilados = 4, conTitulo = 
                       alto={48}
                       textoWa={
                         <span>
-                          Pide presupuesto<span className="sr-only lg:not-sr-only"> de {minusculaInicial(s.titulo)}</span>
+                          Pide presupuesto<span className="sr-only">: {s.titulo}</span>
                         </span>
                       }
                       textoLlamar="Llamar"

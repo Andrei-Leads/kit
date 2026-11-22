@@ -27,17 +27,23 @@ export function Credenciales({ acreditaciones, garantias, marcas, pie, id = "tit
           <Titular
             id={id}
             lineas={
-              acreditaciones.length > 0
+              acreditaciones.length > 0 && garantias.length > 0
                 ? [
                     <>
-                      Habilitados, asegurados y <Senal>documentados</Senal>.
+                      Acreditaciones y <Senal>garantías</Senal>.
                     </>,
                   ]
-                : [
-                    <>
-                      Lo que te <Senal>garantizamos</Senal>.
-                    </>,
-                  ]
+                : acreditaciones.length > 0
+                  ? [
+                      <>
+                        Nuestras <Senal>acreditaciones</Senal>.
+                      </>,
+                    ]
+                  : [
+                      <>
+                        Nuestras <Senal>garantías</Senal>.
+                      </>,
+                    ]
             }
           />
         </div>

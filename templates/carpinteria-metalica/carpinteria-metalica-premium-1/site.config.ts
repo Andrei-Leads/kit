@@ -18,8 +18,8 @@ export default defineSiteConfig({
     tipoSchema: ["HomeAndConstructionBusiness"],
   },
   contacto: {
-    telefono: "+34600111451",
-    whatsapp: "+34600111451",
+    telefono: "+34600000451",
+    whatsapp: "+34600000451",
     email: "taller@lluerna-tancaments.example",
     direccion: { calle: "Calle Ejemplo 18, nave 4", cp: "08174", ciudad: "Sant Cugat del Vallès", provincia: "Barcelona" },
     horario: [
@@ -221,7 +221,7 @@ export default defineSiteConfig({
     { pregunta: "¿Trabajáis con mi interiorista?", respuesta: "Sí: revisamos sus planos y acordamos con él colores y despiece." },
     { pregunta: "¿Qué mantenimiento necesita el aluminio?", respuesta: "Limpiar perfiles y carriles con agua y jabón neutro y revisar las juntas de vez en cuando." },
   ],
-  redes: { instagram: "https://www.instagram.com/lluerna.example" },
+  redes: { instagram: "https://www.instagram.com/lluerna.ejemplo" },
   seo: {
     titulo: "Ventanas de aluminio en Sant Cugat y Barcelona | Lluerna",
     descripcion: "Ventanas, balconeras, cerramientos y puertas de aluminio y PVC fabricados en Sant Cugat e instalados en Barcelona y el Vallès.",

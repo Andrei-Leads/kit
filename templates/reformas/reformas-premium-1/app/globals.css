@@ -883,9 +883,15 @@ body:has([data-pagina="contacto"]) .nav-principal [data-ruta="/contacto"] {
         bottom: 184px;
       }
     }
+    /* Quieta: el pano no tiene botón de pausa (WCAG 2.2.2). Solo correría con
+       `data-listo` y sin `data-pausa` en la sección, como en «Marco». */
     .pano-marquesina > div {
       display: inline-flex;
       animation: marquesina 40s linear infinite;
+      animation-play-state: paused;
+    }
+    section[data-listo]:not([data-pausa]) .pano-marquesina > div {
+      animation-play-state: running;
     }
     .pano-marquesina span {
       display: inline-block;

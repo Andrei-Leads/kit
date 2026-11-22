@@ -169,7 +169,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
             <div>
               <Antetitulo>Preguntas</Antetitulo>
               <h2 id="titulo-preguntas" className="sr-only">
-                Preguntas sobre {servicio.titulo}
+                Preguntas frecuentes
               </h2>
             </div>
             <Preguntas preguntas={servicio.preguntas} grupo="preguntas-servicio" />

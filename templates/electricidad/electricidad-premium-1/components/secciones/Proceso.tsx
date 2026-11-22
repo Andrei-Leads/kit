@@ -1,26 +1,16 @@
-import { pasosProceso, type Paso, type SiteConfig } from "@andrei-leads/core";
+import { pasosProceso, type SiteConfig } from "@andrei-leads/core";
 
 import { Pareja } from "@/components/Botones";
 import { Antetitulo, Senal, Titular } from "@/components/Titular";
 import { numero, type DatosCta } from "@/lib/textos";
 
-/** Los 6 pasos por defecto de «Tensión» (tipo proyecto): sin plazos ni cifras. */
-const PASOS: readonly Paso[] = [
-  { titulo: "Visita", texto: "Vemos la vivienda y el plano de la reforma contigo." },
-  { titulo: "Presupuesto", texto: "Por partidas, para que compares línea a línea." },
-  { titulo: "Contrato con fecha", texto: "El plazo de obra, por escrito antes de empezar." },
-  { titulo: "Obra", texto: "Coordinada con albañilería, pladur y el resto de gremios." },
-  { titulo: "Limpieza", texto: "Recogemos cada día y dejamos la obra lista para el siguiente." },
-  { titulo: "Entrega", texto: "Certificado, esquema del cuadro y la documentación de la instalación." },
-];
-
 /**
- * Proceso (encargo §6.7, tramo claro): `proceso` o los 6 pasos por defecto.
+ * Proceso (encargo §6.7, tramo claro): `proceso` o los 4 pasos por defecto de core.
  * Rejilla 3 × 2 en escritorio y lista en móvil; número en Inter Tight 200 a
  * 64 px. Tipográfico: `proceso[].imagen` no se usa (encargo §8).
  */
 export function Proceso({ proceso, cta }: { proceso: SiteConfig["proceso"]; cta: DatosCta }) {
-  const pasos = pasosProceso(proceso, PASOS);
+  const pasos = pasosProceso(proceso, "proyecto");
   return (
     <section data-tono="claro" aria-labelledby="titulo-proceso" className="tramo-claro seccion">
       <div className="contenedor flex flex-col gap-[clamp(40px,2rem+2vw,64px)]">

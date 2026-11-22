@@ -119,7 +119,7 @@ export default async function Page() {
             <div className="contenedor">
               {config.garantias.length > 0 && (
                 <>
-                  <h2 className="titulo text-[clamp(1.75rem,1.3rem+1.6vw,2.75rem)] leading-[1.1]">Lo que firmamos</h2>
+                  <h2 className="titulo text-[clamp(1.75rem,1.3rem+1.6vw,2.75rem)] leading-[1.1]">Nuestras garantías</h2>
                   <ul className="m-0 mt-6 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-12 p-0">
                     {config.garantias.map((g) => (
                       <li key={g} className="border-t border-fondo/20 py-[18px] text-[17px] leading-[1.45]">

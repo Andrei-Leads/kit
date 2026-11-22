@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buscarServicio, metadatosServicio, minusculaInicial, otrosServicios, parametrosServicios, trabajosDelServicio } from "@andrei-leads/core";
+import { buscarServicio, metadatosServicio, otrosServicios, parametrosServicios, trabajosDelServicio } from "@andrei-leads/core";
 
 import config from "@/site.config";
 import { ParejaCta } from "@/components/Botones";
@@ -13,7 +13,7 @@ import { BandaServicio } from "@/components/secciones/BandaServicio";
 import { CtaFinal } from "@/components/secciones/CtaFinal";
 import { HeroInterior } from "@/components/secciones/HeroInterior";
 import { alcanceRegla, itemRegla, Regla, seccionRegla } from "@/components/secciones/Regla";
-import { mensajeDeServicio, textoWaServicio } from "@/lib/mensajes";
+import { mensajeDeServicio, TEXTO_WA_SERVICIO } from "@/lib/mensajes";
 import { datosCta, dosCifras, etiquetaObra, lineaConfianza } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 
@@ -44,8 +44,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
 
   const { contacto } = config;
   const cta = datosCta(contacto, mensajeDeServicio(servicio));
-  const textoWa = textoWaServicio(servicio.titulo);
-  const enFrase = minusculaInicial(servicio.titulo);
+  const textoWa = TEXTO_WA_SERVICIO;
   const [foto1, foto2, ...resto] = servicio.imagenes;
   const parrafos = servicio.contenido.length > 0 ? servicio.contenido : [servicio.descripcion];
   // Un párrafo con cada foto restante; si sobran párrafos, seguidos; si sobran fotos, en pareja.
@@ -109,7 +108,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
           <section
             {...seccionRegla("como")}
             data-tono="claro"
-            aria-label={`Cómo hacemos ${enFrase}`}
+            aria-label="Cómo lo hacemos"
             className="contenedor mt-(--espacio-seccion) flex flex-col gap-[clamp(56px,7vw,120px)]"
           >
             {bloques.map((b, i) => (
@@ -146,7 +145,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
         {obras.length > 0 && (
           <section {...seccionRegla("obras")} data-tono="claro" aria-labelledby="titulo-obras-servicio" className="contenedor mt-(--espacio-seccion)">
             <h2 id="titulo-obras-servicio" className="titulo text-h2">
-              Obras de <Destacada>{enFrase}</Destacada>
+              Obras de este <Destacada>servicio</Destacada>
             </h2>
             <ul className="m-0 mt-10 grid list-none gap-x-8 gap-y-12 p-0 sm:grid-cols-2 lg:grid-cols-3">
               {obras.map((t) => (
@@ -173,7 +172,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
             className="contenedor mt-(--espacio-seccion) max-w-[calc(820px+2*var(--margen))]"
           >
             <h2 id="titulo-preguntas-servicio" className="titulo text-[clamp(1.75rem,1.3rem+1.6vw,2.75rem)] leading-[1.1]">
-              Preguntas sobre {enFrase}
+              Preguntas frecuentes
             </h2>
             <Preguntas preguntas={servicio.preguntas} grupo="preguntas-servicio" className="mt-6" />
           </section>

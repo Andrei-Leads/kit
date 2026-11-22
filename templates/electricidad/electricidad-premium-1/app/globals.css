@@ -733,8 +733,13 @@ body:has([data-pagina="contacto"]) .menu-pantalla [data-ruta="/contacto"] .marca
     .marquesina-copia + .marquesina-copia {
       display: block;
     }
+    /* Solo corre con el vídeo montado y sin pausar (botón «Pausar», WCAG 2.2.2). */
     .marquesina-pista {
       animation: marquesina 40s linear infinite;
+      animation-play-state: paused;
+    }
+    .pano[data-listo]:not([data-pausa]) .marquesina-pista {
+      animation-play-state: running;
     }
     /* Contadores: la cifra real queda para el lector; se ve el odómetro (aria-hidden). */
     .cifra-texto {

@@ -1,7 +1,7 @@
 import { ViewTransition } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buscarTrabajo, metadatosTrabajo, minusculaInicial, parametrosTrabajos, servicioDelTrabajo } from "@andrei-leads/core";
+import { buscarTrabajo, metadatosTrabajo, parametrosTrabajos, servicioDelTrabajo } from "@andrei-leads/core";
 
 import config from "@/site.config";
 import { ParejaCta } from "@/components/Botones";
@@ -145,7 +145,9 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
             )}
             {servicio && (
               <p className="mt-8">
-                <EnlaceFlecha href={`/servicios/${servicio.slug}`}>Ver {minusculaInicial(servicio.titulo)}</EnlaceFlecha>
+                <EnlaceFlecha href={`/servicios/${servicio.slug}`}>
+                  Ver el servicio<span className="sr-only">: {servicio.titulo}</span>
+                </EnlaceFlecha>
               </p>
             )}
           </section>

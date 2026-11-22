@@ -16,6 +16,8 @@ type Props = {
  * en el HTML: sin JS, con «reducir movimiento» o con ahorro de datos solo se ve
  * el póster que hay debajo. El vídeo se hace visible cuando ya reproduce (el
  * póster es su primer fotograma: sin fundido). Pausa de 44 px: el clip dura más de 5 s.
+ * En la sección pone `data-listo` cuando el vídeo reproduce (solo entonces corre la
+ * marquesina del pano) y `data-pausa` al pausar, que para también la marquesina (WCAG 2.2.2).
  */
 export function VideoControl({ src, srcAv1, diferido, clasePausa }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -53,11 +55,14 @@ export function VideoControl({ src, srcAv1, diferido, clasePausa }: Props) {
   const alternar = () => {
     const v = ref.current;
     if (!v) return;
+    const s = v.closest("section");
     if (v.paused) {
       v.play().catch(() => {});
+      if (s) delete s.dataset.pausa;
       setEstado(1);
     } else {
       v.pause();
+      if (s) s.dataset.pausa = "";
       setEstado(2);
     }
   };
@@ -72,7 +77,11 @@ export function VideoControl({ src, srcAv1, diferido, clasePausa }: Props) {
         preload="none"
         aria-hidden="true"
         tabIndex={-1}
-        onPlaying={() => setEstado(1)}
+        onPlaying={(e) => {
+          const s = e.currentTarget.closest("section");
+          if (s) s.dataset.listo = "";
+          setEstado(1);
+        }}
         className={estado ? "absolute inset-0 size-full object-cover" : "absolute inset-0 size-full object-cover opacity-0"}
       />
       {estado > 0 && (

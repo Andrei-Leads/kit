@@ -7,7 +7,7 @@ import { Luz } from "@/components/Luz";
 import { ParejaCta } from "@/components/ParejaCta";
 import { TituloLineas } from "@/components/TituloLineas";
 import { Foto } from "@/components/base/Foto";
-import { mensajeDeServicio, RESPUESTA, TEXTO_WA, textoWaServicio } from "@/lib/mensajes";
+import { mensajeDeServicio, RESPUESTA, TEXTO_WA, TEXTO_WA_SERVICIO } from "@/lib/mensajes";
 import { dosCifras, textoLlamar } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 
@@ -134,7 +134,7 @@ function Bloque({
               textoWhatsapp={
                 <>
                   <span className="lg:hidden">WhatsApp</span>
-                  <span className="hidden lg:inline">{textoWaServicio(s.titulo)}</span>
+                  <span className="hidden lg:inline">{TEXTO_WA_SERVICIO}</span>
                 </>
               }
               textoLlamar={

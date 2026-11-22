@@ -5,7 +5,7 @@ import { Titular } from "@/components/Botones";
 type Props = Pick<SiteConfig, "garantias" | "acreditaciones" | "marcas">;
 
 /**
- * «Lo que *firmamos*» (encargo §6.7): `h2` a la izquierda; garantías entre filetes y
+ * «Nuestras *garantías*» (encargo §6.7): `h2` a la izquierda; garantías entre filetes y
  * acreditaciones con número a la derecha; marcas en una línea. Sin nada, no existe.
  */
 export function Garantias({ garantias, acreditaciones, marcas }: Props) {
@@ -15,7 +15,7 @@ export function Garantias({ garantias, acreditaciones, marcas }: Props) {
       <div className="contenedor grid gap-x-12 gap-y-10 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <p className="etiqueta mb-4 text-texto-suave">Garantías</p>
-          <Titular id="titulo-garantias" antes="Lo que" destacada="firmamos" />
+          <Titular id="titulo-garantias" antes="Nuestras" destacada="garantías" />
         </div>
         <div className="lg:col-span-7">
           {garantias.length > 0 && (
