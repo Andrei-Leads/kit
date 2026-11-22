@@ -1,0 +1,351 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Antes y después» (reformas-1): cal, papel y tinta azul de azulejo
+ * (encargo §8 y entrega de Claude Design). Rectas finas: filetes de 1 px y radios 0.
+ * Solo --color-primario (y --color-sobre-primario, que calcula core) se
+ * sobrescriben desde site.config: estilo del <html> en app/layout.tsx.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #f6f1e9;
+  --color-superficie: #fffdf9;
+  --color-alterna: #ede5d7;
+  --color-texto: #1f1b16;
+  --color-texto-suave: #5c5348;
+  --color-borde: #d6ccbb;
+  --color-primario: #2c4a6b; /* añil de azulejo; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #9a5a24; /* ocre tostado: solo números de 24 px o más y filetes */
+  --color-foco: #1f1b16;
+
+  --font-titulo: var(--font-newsreader), Georgia, serif;
+  --font-texto: var(--font-inter), system-ui, sans-serif;
+
+  --radius-boton: 0;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+
+  --text-display: clamp(2.5rem, 1.6rem + 4.2vw, 6.5rem);
+  --text-display--line-height: 1.02;
+
+  /* Propios */
+  --color-filete: rgb(31 27 22 / 0.18);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario), black 12%);
+  /* El primario como TEXTO (cursivas, enlaces, botón de contorno): con un primario claro del
+     cliente (amarillo #facc15), oscurecido hasta llegar a AA sobre fondo y alterna. El añil y
+     #1e40af no cambian (su luminosidad OKLCH ya es < 0,45). */
+  --color-primario-texto: var(--color-primario);
+  --color-velo-etiqueta: rgb(255 255 255 / 0.9);
+
+  --text-h2: clamp(1.75rem, 1.3rem + 1.9vw, 3rem);
+  --text-h2--line-height: 1.1;
+  --text-cuerpo: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-cuerpo--line-height: 1.6;
+  --text-lectura: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-lectura--line-height: 1.55;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-filete: oklch(from var(--color-texto) l c h / 0.18);
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+    --color-primario-texto: oklch(from var(--color-primario) min(l, 0.45) c h);
+  }
+}
+
+:root {
+  --tirador: 2px;
+}
+
+/* 1280 px como máximo, margen lateral de 16 a 64 px. */
+@utility contenedor {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 0.125rem + 4vw, 64px);
+}
+
+/* Sección aireada. */
+@utility seccion {
+  padding-block: clamp(48px, 7vw, 104px);
+}
+
+/* Versalitas de etiqueta (12 px, .08em). Nunca en la serif. */
+@utility versalitas {
+  font-family: var(--font-texto);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--color-texto-suave);
+}
+
+@utility titulo-display {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-size: var(--text-display);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  font-variation-settings: "opsz" 72;
+  text-wrap: balance;
+}
+
+@utility titulo-seccion {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-size: var(--text-h2);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+/* Enlace de texto: el preflight de Tailwind quita el subrayado; aquí se devuelve. */
+@utility enlace {
+  color: var(--color-primario-texto);
+  text-decoration-line: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  font-weight: 500;
+}
+
+/* Filete de 1 px bajo cada h2, que se dibuja de izquierda a derecha al entrar (solo CSS). */
+@utility filete-h2 {
+  position: relative;
+  padding-bottom: 18px;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--color-texto);
+    transform-origin: left;
+  }
+}
+
+@keyframes filete {
+  from {
+    transform: scaleX(0);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .filete-h2::after {
+      animation: filete linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 30%;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  em {
+    font-style: italic;
+  }
+  /* Barra móvil fija: que no tape el elemento con foco (WCAG 2.4.11). */
+  @media (width < 64rem) {
+    html {
+      scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    }
+  }
+  /* Foco: anillo de 2 px con desfase de 3 px. */
+  :focus-visible {
+    outline: 2px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+}
+
+/* Página actual en la cabecera de escritorio (cada página lleva `data-pagina`). */
+body:has([data-pagina="inicio"]) .nav-principal [data-ruta="/"],
+body:has([data-pagina="trabajos"]) .nav-principal [data-ruta="/trabajos"],
+body:has([data-pagina="servicios"]) .nav-principal [data-ruta="/servicios"],
+body:has([data-pagina="empresa"]) .nav-principal [data-ruta="/empresa"],
+body:has([data-pagina="contacto"]) .nav-principal [data-ruta="/contacto"] {
+  border-bottom-color: var(--color-texto);
+}
+
+/* ── Botones (variantes del tablero Sistema): hover solo de color ─────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .boton {
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+}
+
+/* ── Deslizador: pista de las flechas del asa (pares, no el hero) ─────────── */
+@keyframes pista {
+  0%,
+  100% {
+    translate: 0;
+  }
+  25% {
+    translate: -4px;
+  }
+  75% {
+    translate: 4px;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .asa-pista path {
+      animation: pista linear 2 both;
+      animation-timeline: view();
+      animation-range: entry 20% entry 80%;
+    }
+  }
+}
+
+/* ── Miniatura de servicio: escala al pasar o tocar ──────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .miniatura img {
+    transition: scale 200ms ease;
+  }
+  .fila-servicio:hover .miniatura img,
+  .fila-servicio:focus-within .miniatura img {
+    scale: 1.03;
+  }
+}
+
+/* ── Asistente: cada paso aparece (8 px + opacidad) ──────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .paso-asistente {
+    transition:
+      opacity 200ms ease,
+      translate 200ms ease;
+  }
+  @starting-style {
+    .paso-asistente {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+}
+
+/* ── Menú móvil (popover nativo): hoja desde arriba ──────────────────────── */
+.menu-hoja {
+  position: fixed;
+  inset: 0 0 auto 0;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  max-height: 100dvh;
+  margin: 0;
+  overflow: auto;
+  border: 0;
+  border-bottom: 1px solid var(--color-filete);
+  background: var(--color-fondo);
+  color: var(--color-texto);
+}
+.menu-hoja::backdrop {
+  background: rgb(31 27 22 / 0.35);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-hoja {
+    transition:
+      translate 220ms ease,
+      overlay 220ms allow-discrete,
+      display 220ms allow-discrete;
+  }
+  @starting-style {
+    .menu-hoja:popover-open {
+      translate: 0 -100%;
+    }
+  }
+}
+
+/* ── Barra móvil: entra desde abajo al cargar ────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-movil {
+    transition: translate 300ms ease-out;
+  }
+  @starting-style {
+    .barra-movil {
+      translate: 0 100%;
+    }
+  }
+}
+
+/* ── Preguntas: «+» que gira ─────────────────────────────────────────────── */
+.pregunta summary::-webkit-details-marker {
+  display: none;
+}
+.pregunta summary::after {
+  content: "+";
+  flex: none;
+  font-family: var(--font-titulo);
+  font-size: 28px;
+  line-height: 1;
+}
+.pregunta[open] summary::after {
+  transform: rotate(45deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pregunta summary::after {
+    transition: transform 200ms ease;
+  }
+}
+
+/* ── Legales: columna de 68 caracteres; el texto y el <h1> los pone core ─── */
+.lectura-legal article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 0 0 1.75rem;
+  font-family: var(--font-titulo);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 1.5rem + 3vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 2rem 0 0.625rem;
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.75rem;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  color: var(--color-primario-texto);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}

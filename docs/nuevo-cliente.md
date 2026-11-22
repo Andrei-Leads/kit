@@ -78,6 +78,8 @@ Prueba de que la web compila con el core descargado, antes de tocar datos. Con `
 
 ### 5. Rellenar `site.config.ts`
 
+**Antes de nada, lee `web-<cliente>/CLIENTE-REAL.md`** si el template lo trae: es la lista de lo que hay que cambiar en ese diseño concreto (datos ficticios, fotos, decisiones y textos). Ve marcando sus casillas.
+
 Se edita **`web-<cliente>/site.config.ts`**, **nunca** el del template en `kit` (error típico: abrir el archivo equivocado en VS Code; mira la ruta de la pestaña).
 
 - **Cliente real:** sus datos (contrato en `AGENTS.md` §6). Borra todo lo ficticio del ejemplo: precios marcados `PRECIO FICTICIO`, `registroMercantil`, `fichaGoogle`, `valoracion`, reseñas, trabajos y textos que no sean suyos. Precios solo con cifras validadas por el cliente.
@@ -257,6 +259,7 @@ Qué se ve en el panel y los límites por plan de Vercel: `docs/cambio-de-plan.m
 - [ ] **Analítica** activada (paso 13): *Enable* en Vercel y `analitica: { vercel: true }` en el `site.config.ts` de la web.
 - [ ] **Fotos reales** del cliente fuera de `public/ejemplo/`; ninguna foto de ejemplo ni generada con IA.
 - [ ] `site.config.ts` sin nada ficticio (paso 5) y precios validados por el cliente.
+- [ ] Todas las casillas de `CLIENTE-REAL.md` resueltas (si el template lo trae).
 
 ## Qué automatizará `create-site` (más adelante)
 

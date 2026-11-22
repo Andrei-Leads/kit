@@ -16,7 +16,7 @@ export const metadata: Metadata = metadatosPagina(config, {
   titulo: "Obras",
   descripcion:
     config.trabajos.length > 0
-      ? `Obras de ${config.negocio.nombre} en ${config.contacto.direccion.ciudad}: cada una con su barrio, año y superficie.`
+      ? `Obras de ${config.negocio.nombre} en ${config.contacto.direccion.ciudad}, con lo que hicimos en cada una.`
       : `Fotos del trabajo de ${config.negocio.nombre} en ${config.contacto.direccion.ciudad}.`,
 });
 
@@ -39,7 +39,7 @@ export default function Page() {
           { href: "/trabajos", texto: "Obras" },
         ]}
         titulo="Obras"
-        entrada={<p>{conObras ? `${obrasTexto(trabajos.length)} terminadas, cada una con su barrio, año y superficie.` : "Algunas fotos de nuestro trabajo."}</p>}
+        entrada={<p>{conObras ? `${obrasTexto(trabajos.length)} terminadas, con lo que hicimos en cada una.` : "Algunas fotos de nuestro trabajo."}</p>}
       />
       {conObras ? (
         <RejillaObras

@@ -26,7 +26,7 @@ export default function Page() {
           { href: "/trabajos", texto: "Casas" },
         ]}
         titulo="Casas"
-        entrada={trabajos.length > 0 ? "Cada casa con su barrio, sus metros y lo que tardamos." : "Algunas casas en las que hemos trabajado."}
+        entrada={trabajos.length > 0 ? "Casas terminadas, con lo que hicimos en cada una." : "Algunas casas en las que hemos trabajado."}
       />
       <section aria-label="Casas" className="contenedor pt-12">
         {trabajos.length > 0 ? (
