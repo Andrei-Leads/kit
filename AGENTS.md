@@ -120,6 +120,12 @@ kit/
 │     ├─ fontaneria-3/             # «La furgoneta» (foto a sangre, reseñas grandes, piedras, paleta arena)
 │     ├─ fontaneria-4/             # «Parte de trabajo» (albarán en papel, índice lateral, cronología con scroll)
 │     └─ fontaneria-5/             # «Llegamos» (red de tuberías hasta cada municipio, duotono)
+│  └─ reformas/                    # nueva generación (core 0.7.0 + registry/), tipo proyecto; fotos de relleno
+│     ├─ reformas-1/               # «Antes y después»: PENDIENTE (falta la exportación de Claude Design)
+│     ├─ reformas-2/               # «Planifica tu reforma» (planificador en el hero sobre terracota, cápsula flotante)
+│     ├─ reformas-3/               # «Obra con nombre» (portfolio de obras numeradas con filtro, menú a pantalla completa)
+│     ├─ reformas-4/               # «Diario de obra» (cronología en mono sobre negro cálido, índice lateral, videoPano)
+│     └─ reformas-5/               # «Tu casa» (vídeo con póster, estancias en arcos, cabecera transparente)
 └─ apps/
    └─ playground/            # banco de pruebas del registro: copia registry/ en cada build y lo pinta con tokens neutros
 ```
@@ -499,6 +505,8 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 **Hecho (21/11/2026, rama `claude/project-thread-pmmi4h`):** los 5 templates de fontanería de la nueva generación (`templates/fontaneria/fontaneria-1..5`), desde las exportaciones de Claude Design, con core 0.6.0 y las piezas de `registry/`. Cada uno pasó 4 revisiones (fidelidad visual, contrato, rendimiento/accesibilidad, textos/legal). Fotos de relleno marcadas; faltan las de IA y sus prompts en `docs/fotos-ejemplo/fontaneria-<n>/`. Pendiente de revisión de Ysst en local.
 
 **Hecho (21/11/2026, rama `claude/project-thread-in28p4`):** los 5 templates de electricidad de la nueva generación (`templates/electricidad/electricidad-4..8`), desde las exportaciones de Claude Design, con core 0.7.0 y las piezas de `registry/`. Cada uno pasó 4 revisiones (fidelidad visual, contrato, rendimiento/accesibilidad, textos/legal). Fotos de relleno marcadas; faltan las de IA y sus prompts en `docs/fotos-ejemplo/electricidad-<n>/`. Pendiente de revisión de Ysst en local; decisiones abiertas en la carpeta del proyecto `nueva-generacion/electricidad-integracion/`.
+
+**Hecho (22/11/2026, rama `claude/project-thread-k0h5h4`):** 4 de los 5 templates de reformas de la nueva generación (`templates/reformas/reformas-2..5`), desde las exportaciones de Claude Design, con core 0.7.0 y las piezas de `registry/`. Cada uno pasó 4 revisiones (fidelidad visual, contrato, rendimiento/accesibilidad, textos/legal). **`reformas-1` «Antes y después» queda pendiente: falta su exportación de Claude Design** (encargo en la carpeta del proyecto `nueva-generacion/prompts-claude-design/reformas/reformas-1.md`). Fotos de relleno marcadas; faltan las de IA y sus prompts en `docs/fotos-ejemplo/reformas-<n>/`. Pendiente de revisión de Ysst en local; decisiones abiertas en la carpeta del proyecto `nueva-generacion/reformas-integracion/`.
 
 **Más adelante:** 404 sin JavaScript (§11), **descartado por ahora** (Ysst, 16/10/2026). Si se retoma: un `proxy.ts` por template con `matcher` solo en `/servicios/:path*` y `/trabajos/:path*` que, si el slug no está en `site.config` (o no hay trabajos ni galería), reescribe a una ruta inexistente (`NextResponse.rewrite(new URL("/__no-encontrada", request.url))`): Next sirve entonces la `not-found.tsx` prerenderizada, completa y con 404. Probado en `carpinteria-metalica-3` (sin commitear): 404 y `h1=1` desde la primera petición. Coste: una función por petición en esas rutas (también en las páginas válidas; latencia y facturación de middleware en Vercel) y el proxy importa `site.config` (la documentación de Next desaconseja módulos compartidos en el proxy). Alternativa sin función, sin probar: `rewrites` en `next.config.ts` generadas desde `site.config`. Turborepo (con 3 o 4 templates); script `create-site` (automatiza los pasos 1–4 de `docs/nuevo-cliente.md`); generador de `site.config` desde Postgres (Marshmallow si es Python); integración del changelog con GitHub si llega a haber equipo.
 

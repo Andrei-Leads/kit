@@ -1,0 +1,516 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Obra con nombre» (reformas-3): papel blanco, tinta negra y un
+ * sello bermellón (encargo §8 y entrega §2). Bordes de 2 px, radio 0 y sin
+ * sombras. Solo --color-primario (y --color-sobre-primario, que calcula core)
+ * se sobrescriben desde site.config: estilo del <html> en app/layout.tsx.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #ffffff;
+  --color-superficie: #f4f4f2;
+  --color-alterna: #ececea;
+  --color-texto: #0b0b0b;
+  --color-texto-suave: #555555; /* 7,4:1 sobre blanco */
+  --color-borde: #0b0b0b;
+  --color-primario: #d12f16; /* bermellón; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-acento: var(--color-primario);
+  --color-foco: #0b0b0b;
+
+  --font-titulo: var(--font-archivo), "Arial Narrow", sans-serif;
+  --font-texto: var(--font-archivo), system-ui, sans-serif;
+
+  --radius-boton: 0;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+
+  --text-display: clamp(3rem, 1.8rem + 6vw, 9rem);
+  --text-display--line-height: 0.9;
+
+  /* Propios */
+  --color-negro: #0b0b0b;
+  --color-sobre-negro: #ffffff;
+  --color-foco-sobre-negro: #ffffff;
+  --color-filete-negro: #2b2b2b;
+  --color-primario-hover: color-mix(in oklch, var(--color-primario), black 12%);
+
+  --text-h2: clamp(2rem, 1.4rem + 2.8vw, 4rem);
+  --text-h2--line-height: 0.9;
+  --text-cuerpo: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  --text-cuerpo--line-height: 1.5;
+
+  --container-pagina: 1680px;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+  }
+}
+
+:root {
+  --borde-duro: 2px solid var(--color-borde);
+  --filtro-archivo: grayscale(1) contrast(1.05);
+  --seccion: 64px;
+  scroll-padding-bottom: 72px;
+}
+@media (min-width: 1024px) {
+  :root {
+    --seccion: 96px;
+    scroll-padding-bottom: 0;
+  }
+}
+
+@layer base {
+html {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--font-texto);
+  font-stretch: 100%;
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  font-size: var(--text-cuerpo);
+  line-height: 1.5;
+}
+a {
+  color: inherit;
+}
+p {
+  text-wrap: pretty;
+}
+:focus-visible {
+  outline: 3px solid var(--color-foco);
+  outline-offset: 3px;
+}
+}
+
+/* ── Utilidades del diseño ─────────────────────────────────────────────── */
+
+/* Ancho de página: todo el ancho con margen de 16–32 px (catálogo a sangre). */
+@utility contenedor {
+  width: 100%;
+  max-width: var(--container-pagina);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 2.5vw, 32px);
+}
+
+/* Archivo a ancho 62 %, 700 y mayúsculas: títulos, etiquetas y botones. */
+@utility condensada {
+  font-family: var(--font-titulo);
+  font-stretch: 62%;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@utility titulo-display {
+  font-family: var(--font-titulo);
+  font-stretch: 62%;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+  font-size: var(--text-display);
+  text-wrap: balance;
+}
+
+@utility titulo-h2 {
+  font-family: var(--font-titulo);
+  font-stretch: 62%;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+  font-size: var(--text-h2);
+  text-wrap: balance;
+}
+
+/* Etiqueta de catálogo: condensada de 12–15 px con espaciado .04em. */
+@utility etiqueta {
+  font-family: var(--font-titulo);
+  font-stretch: 62%;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@utility archivo {
+  filter: var(--filtro-archivo);
+}
+
+@utility borde-duro {
+  border: 2px solid var(--color-borde);
+}
+
+@layer components {
+/* ── Botones (className sobre BotonWhatsApp / BotonLlamada) ─────────────── */
+
+.boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 20px;
+  border: 2px solid currentColor;
+  font-family: var(--font-titulo);
+  font-stretch: 62%;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-decoration: none;
+  text-align: center;
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease,
+    border-color 0.12s ease;
+}
+.boton:active {
+  transform: translateY(1px);
+}
+.boton-wa {
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+  color: var(--color-sobre-primario);
+}
+.boton-wa:hover {
+  background: var(--color-primario-hover);
+  border-color: var(--color-primario-hover);
+  color: var(--color-sobre-primario);
+}
+.boton-contorno {
+  border-color: var(--color-borde);
+  color: var(--color-texto);
+  background: transparent;
+}
+.boton-contorno:hover {
+  background: var(--color-negro);
+  border-color: var(--color-negro);
+  color: var(--color-sobre-negro);
+}
+/* Sobre la banda primario (CTA final). */
+.boton-wa-banda {
+  background: var(--color-negro);
+  border-color: var(--color-negro);
+  color: var(--color-sobre-negro);
+}
+.boton-wa-banda:hover {
+  background: var(--color-fondo);
+  border-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+.boton-contorno-banda {
+  border-color: var(--color-sobre-primario);
+  color: var(--color-sobre-primario);
+}
+.boton-contorno-banda:hover {
+  background: var(--color-sobre-primario);
+  color: var(--color-primario);
+}
+.sobre-primario :focus-visible {
+  outline-color: var(--color-sobre-primario);
+}
+/* Sobre negro (menú). */
+.boton-contorno-negro {
+  border-color: var(--color-sobre-negro);
+  color: var(--color-sobre-negro);
+}
+.boton-contorno-negro:hover {
+  background: var(--color-sobre-negro);
+  color: var(--color-negro);
+}
+.sobre-negro :focus-visible {
+  outline-color: var(--color-foco-sobre-negro);
+}
+
+/* Pareja WhatsApp + Llamar: sin WhatsApp, Llamar ocupa el sitio sin hueco. */
+.pareja {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pareja > .boton-principal {
+  flex: 2 1 260px;
+  min-height: 56px;
+  font-size: 20px;
+}
+.pareja > .boton-secundario {
+  flex: 1 1 200px;
+  min-height: 52px;
+  font-size: 20px;
+}
+.pareja-compacta > .boton-principal {
+  flex: 2 1 200px;
+  min-height: 48px;
+  font-size: 17px;
+  padding: 0 14px;
+}
+.pareja-compacta > .boton-secundario {
+  flex: 1 1 140px;
+  min-height: 48px;
+  font-size: 17px;
+  padding: 0 14px;
+}
+}
+
+/* ── Rejilla de obras ──────────────────────────────────────────────────── */
+
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: 22px 8px;
+}
+@media (min-width: 640px) {
+  .rejilla {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .rejilla {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px 12px;
+  }
+  /* Mosaico: con 5 obras o más, la 1, la 9, la 17… ocupan 2×2. */
+  .rejilla-mosaico:has(> .tarjeta:nth-child(5)) > .tarjeta:nth-child(8n + 1) {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .rejilla-mosaico:has(> .tarjeta:nth-child(5)) > .tarjeta:nth-child(8n + 1) .tarjeta-foto {
+    aspect-ratio: auto;
+    flex: 1;
+    min-height: 0;
+  }
+  /* Con un filtro activo no hay mosaico: :nth-child cuenta también las ocultas. */
+  .rejilla-obras:has(.filtro input:not([value="todas"]):checked) .rejilla > .tarjeta {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .rejilla-obras:has(.filtro input:not([value="todas"]):checked) .rejilla > .tarjeta .tarjeta-foto {
+    aspect-ratio: 4 / 5;
+    flex: none;
+  }
+}
+/* Celda de cierre: rellena la última fila (calculado en el servidor por punto de corte). */
+.celda-cierre {
+  grid-column: 1 / -1;
+}
+@media (min-width: 640px) {
+  .celda-cierre {
+    grid-column: var(--cierre-sm, 1 / -1);
+  }
+}
+@media (min-width: 1024px) {
+  .celda-cierre {
+    grid-column: var(--cierre-lg, 1 / -1);
+  }
+}
+.rejilla-obras:has(.filtro input:not([value="todas"]):checked) .celda-cierre {
+  grid-column: 1 / -1;
+}
+
+.tarjeta-enlace .subrayado {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.tarjeta-enlace:hover .subrayado,
+.tarjeta-enlace:focus-visible .subrayado {
+  transform: scaleX(1);
+}
+.tarjeta-enlace:hover img,
+.tarjeta-enlace:focus-visible img {
+  scale: 1.02;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tarjeta-enlace .subrayado {
+    transition: transform 0.18s ease;
+  }
+  .tarjeta-enlace img {
+    transition: scale 0.25s ease;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta-enlace:hover img,
+  .tarjeta-enlace:focus-visible img {
+    scale: none;
+  }
+}
+
+/* Pestañas del filtro: radios nativos dentro de etiquetas rectangulares. */
+.filtro label:has(input:checked) {
+  background: var(--color-negro);
+  color: var(--color-sobre-negro);
+}
+.filtro label:hover {
+  background: var(--color-negro);
+  color: var(--color-sobre-negro);
+}
+.filtro label:has(input:focus-visible) {
+  outline: 3px solid var(--color-foco);
+  outline-offset: 3px;
+}
+.filtro [data-recuento] {
+  display: none;
+}
+.rejilla-obras:has(.filtro input[value="todas"]:checked) [data-recuento="todas"] {
+  display: inline;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rejilla-obras:has(.filtro input:not([value="todas"]):checked) .tarjeta {
+    transition:
+      opacity 0.15s ease,
+      display 0.15s allow-discrete;
+  }
+  @starting-style {
+    .rejilla-obras:has(.filtro input:not([value="todas"]):checked) .tarjeta {
+      opacity: 0;
+    }
+  }
+}
+
+/* ── Menú a pantalla completa (popover nativo) ────────────────────────── */
+
+.menu-pantalla {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  overflow: auto;
+  background: var(--color-negro);
+  color: var(--color-sobre-negro);
+}
+.menu-pantalla:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+.menu-pantalla .enlace-menu {
+  color: #d9d9d9;
+}
+.menu-pantalla .enlace-menu:hover {
+  color: var(--color-sobre-negro);
+}
+.menu-pantalla .actual-sr {
+  display: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-pantalla {
+    transition:
+      opacity 240ms ease,
+      translate 240ms ease,
+      overlay 240ms allow-discrete,
+      display 240ms allow-discrete;
+  }
+  .menu-pantalla:popover-open {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .menu-pantalla li {
+    transition:
+      opacity 240ms ease calc(var(--i, 0) * 30ms),
+      translate 240ms ease calc(var(--i, 0) * 30ms);
+  }
+  @starting-style {
+    .menu-pantalla:popover-open {
+      opacity: 0;
+      translate: 0 -16px;
+    }
+    .menu-pantalla:popover-open li {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+}
+/* Página actual en blanco (cada página lleva un marcador `data-pagina`). */
+body:has([data-pagina="inicio"]) [data-ruta="/"],
+body:has([data-pagina="trabajos"]) [data-ruta="/trabajos"],
+body:has([data-pagina="servicios"]) [data-ruta="/servicios"],
+body:has([data-pagina="empresa"]) [data-ruta="/empresa"],
+body:has([data-pagina="contacto"]) [data-ruta="/contacto"] {
+  color: var(--color-sobre-negro);
+}
+body:has([data-pagina="inicio"]) [data-ruta="/"] .actual-sr,
+body:has([data-pagina="trabajos"]) [data-ruta="/trabajos"] .actual-sr,
+body:has([data-pagina="servicios"]) [data-ruta="/servicios"] .actual-sr,
+body:has([data-pagina="empresa"]) [data-ruta="/empresa"] .actual-sr,
+body:has([data-pagina="contacto"]) [data-ruta="/contacto"] .actual-sr {
+  display: inline;
+}
+
+/* ── Barra móvil: entra desde abajo ────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-entra {
+    transition: translate 300ms ease;
+  }
+  @starting-style {
+    .barra-entra {
+      translate: 0 100%;
+    }
+  }
+}
+
+/* ── Preguntas: «+» condensado en primario que gira ─────────────────────── */
+details[open] > summary .mas {
+  rotate: 45deg;
+}
+@media (prefers-reduced-motion: no-preference) {
+  summary .mas {
+    transition: rotate 0.15s ease;
+  }
+}
+
+/* ── Legales: columna de 68 caracteres, títulos en condensada y filetes ── */
+.lectura-legal article {
+  max-width: 68ch;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 10px 0 24px;
+  font-family: var(--font-titulo);
+  font-stretch: 62%;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+  font-size: var(--text-display);
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 0;
+  padding-top: 18px;
+  border-top: 2px solid var(--color-borde);
+  font-family: var(--font-titulo);
+  font-stretch: 62%;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 24px;
+  line-height: 1;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.6rem;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-primario);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}

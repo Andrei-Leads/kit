@@ -1,0 +1,400 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Tu casa» (reformas-5): lino, arcilla, barro cocido y verde de
+ * planta (encargo §8 y entrega de Claude Design). Solo --color-primario (y
+ * --color-sobre-primario, que calcula core) se sobrescriben desde site.config:
+ * estilo del <html> en app/layout.tsx. Hover y tinte del primario se derivan de él.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #f3ebe0;
+  --color-superficie: #fbf7f1;
+  --color-alterna: #e8dccb;
+  --color-texto: #2b231d;
+  --color-texto-suave: #66574a;
+  --color-borde: #d8c8b4;
+  --color-primario: #56704f; /* verde salvia oscuro; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #b8693d; /* barro cocido: arcos decorativos, estrellas y números ≥ 24 px */
+  --color-foco: #2b231d;
+
+  --font-titulo: var(--font-commissioner), system-ui, sans-serif;
+  --font-texto: var(--font-commissioner), system-ui, sans-serif;
+
+  --radius-boton: 999px;
+  --radius-tarjeta: 1.5rem;
+  --radius-foto: 1.5rem;
+
+  --text-display: clamp(2.5rem, 1.7rem + 3.4vw, 5rem);
+  --text-display--line-height: 1.05;
+
+  /* Propios */
+  --color-cabecera-solida: oklch(0.24 0.02 50 / 0.94);
+  --color-pie: #2a211b;
+  --color-pie-suave: #d9cbb8;
+  --color-foco-invertido: #ffffff;
+  --color-primario-suave: color-mix(in oklch, var(--color-primario) 14%, #fbf7f1);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario), black 16%);
+
+  --text-h2: clamp(1.75rem, 1.3rem + 1.8vw, 2.875rem);
+  --text-h2--line-height: 1.1;
+  --text-entrada: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --text-entrada--line-height: 1.5;
+  --text-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-cuerpo--line-height: 1.65;
+
+  --container-contenido: 1152px;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-suave: oklch(from var(--color-primario) 0.93 calc(c * 0.3) h);
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+  }
+}
+
+:root {
+  /*
+   * Arcos (entrega §4.1): «999px 999px r r» hace que el navegador reduzca todos los
+   * radios a la vez y la base se queda en ~2 px. Radio por proporción: medio círculo
+   * arriba en una caja 3:4 (37,5 % del alto = 50 % del ancho) o 4:5 (40 %).
+   */
+  --radius-arco-3x4: 50% 50% var(--radius-foto) var(--radius-foto) / 37.5% 37.5% var(--radius-foto) var(--radius-foto);
+  --radius-arco-4x5: 50% 50% var(--radius-foto) var(--radius-foto) / 40% 40% var(--radius-foto) var(--radius-foto);
+  --velo-hero: linear-gradient(to top, oklch(0.2 0.02 50 / 0.82), oklch(0.2 0.02 50 / 0.72) 62%, oklch(0.2 0.02 50 / 0) 96%);
+  --velo-cabecera: linear-gradient(to bottom, oklch(0 0 0 / 0.35), transparent);
+  --alto-cabecera: 56px;
+  /* Tesela de azulejo hidráulico (acento al 25 %) para los arcos sin foto. */
+  --tesela: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='%23b8693d' fill-opacity='.25'%3E%3Ccircle cx='28' cy='28' r='8'/%3E%3Ccircle r='10'/%3E%3Ccircle cx='56' r='10'/%3E%3Ccircle cy='56' r='10'/%3E%3Ccircle cx='56' cy='56' r='10'/%3E%3C/g%3E%3Cpath d='M28 6L50 28L28 50L6 28Z' fill='none' stroke='%23b8693d' stroke-opacity='.25' stroke-width='2'/%3E%3C/svg%3E");
+}
+@media (min-width: 64rem) {
+  :root {
+    --alto-cabecera: 72px;
+  }
+}
+
+/* 1152 px de contenido más el margen lateral (como el diseño). */
+@utility contenedor {
+  width: 100%;
+  max-width: calc(var(--container-contenido) + 2 * clamp(1rem, 5vw, 4rem));
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 5vw, 4rem);
+}
+
+/* Sección aireada: separación generosa arriba. */
+@utility seccion {
+  padding-top: clamp(4.5rem, 3rem + 6vw, 8rem);
+}
+
+@utility titulo-display {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: var(--text-display);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  font-variation-settings: "FLAR" 60;
+  text-wrap: balance;
+}
+
+@utility titulo-seccion {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: var(--text-h2);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-variation-settings: "FLAR" 60;
+  text-wrap: balance;
+}
+
+/* Títulos pequeños (tarjetas): humanista con remate suave. */
+@utility remate {
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-variation-settings: "FLAR" 60;
+}
+
+@utility arco {
+  border-radius: var(--radius-arco-3x4);
+}
+@utility arco-4x5 {
+  border-radius: var(--radius-arco-4x5);
+}
+
+@utility tesela {
+  background-color: var(--color-alterna);
+  background-image: var(--tesela);
+  background-size: 56px 56px;
+  background-position: center;
+}
+
+/* Píldora «desde» (15 px, 600). */
+@utility pildora {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background-color: var(--color-alterna);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--alto-cabecera) + 8px);
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.65;
+    overflow-x: clip;
+  }
+  a {
+    color: inherit;
+    text-underline-offset: 4px;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  /* Barra móvil fija (72 px + zona segura): que no tape el elemento con foco (WCAG 2.4.11). */
+  @media (width < 64rem) {
+    html {
+      scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom));
+    }
+  }
+  /* Foco: anillo de 3 px a 3 px. Sobre vídeo, cabecera, pie y primario, en blanco. */
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+  .sobre-oscuro :focus-visible {
+    outline-color: var(--color-foco-invertido);
+  }
+  .sobre-primario :focus-visible {
+    outline-color: var(--color-sobre-primario);
+  }
+}
+
+/* ── Hueco de la cabecera fija ─────────────────────────────────────────────
+   Las páginas sin hero de medio empiezan bajo la cabecera. Con hero de vídeo o
+   foto (`data-hero="medio"`), el hero sube debajo de la cabecera. */
+#contenido {
+  padding-top: var(--alto-cabecera);
+}
+body:has([data-hero="medio"]) #contenido {
+  padding-top: 0;
+}
+
+/* ── Cabecera: sólida por defecto; transparente → sólida solo con CSS ──────
+   Solo en la página con hero de medio, si el navegador entiende
+   animation-timeline y no se pide reducir movimiento: el ::before (fondo
+   sólido) anima su opacidad de 0 a 1 en los primeros 40 vh. El texto es
+   siempre claro: nunca se anima el color. */
+.cabecera::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--color-cabecera-solida);
+}
+@keyframes cabecera-solida {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    body:has([data-hero="medio"]) .cabecera::before {
+      animation: cabecera-solida linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 40vh;
+    }
+  }
+}
+
+/* Página actual en la cabecera de escritorio (cada página lleva `data-pagina`). */
+body:has([data-pagina="trabajos"]) .nav-principal [data-ruta="/trabajos"],
+body:has([data-pagina="servicios"]) .nav-principal [data-ruta="/servicios"],
+body:has([data-pagina="empresa"]) .nav-principal [data-ruta="/empresa"],
+body:has([data-pagina="contacto"]) .nav-principal [data-ruta="/contacto"] {
+  border-bottom-color: #ffffff;
+}
+
+/* ── Hero de medio: curva inferior (el primer arco) ─────────────────────── */
+.hero-curva {
+  border-radius: 0 0 50% 50% / 0 0 32px 32px;
+}
+
+/* ── Botones: pulsado (solo transform) ──────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .boton {
+    transition:
+      background-color 200ms ease,
+      color 200ms ease,
+      border-color 200ms ease,
+      transform 150ms ease;
+  }
+  .boton:active {
+    transform: scale(0.97);
+  }
+}
+
+/* ── Foto dentro del arco: escala al pasar o enfocar la tarjeta ─────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .tarjeta-arco img {
+    transition: transform 300ms ease;
+  }
+  .tarjeta-arco:focus-visible img {
+    transform: scale(1.03);
+  }
+  @media (hover: hover) {
+    .tarjeta-arco:hover img {
+      transform: scale(1.03);
+    }
+  }
+}
+
+/* Escalonado de 70 ms en rejillas de arcos (aparecer.css usa view(): el retraso va en el rango). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-aparecer] {
+      animation-range: entry calc(var(--i, 0) * 5%) entry calc(60% + var(--i, 0) * 5%);
+    }
+  }
+}
+
+/* Arcos numerados del proceso: se abren como una ventana (scaleY .6 → 1, origen abajo). */
+@keyframes ventana {
+  from {
+    transform: scaleY(0.6);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .numero-arco {
+      animation: ventana linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+/* Rejilla de estancias: en escritorio, las columnas pares bajan 24 px (ritmo de ventanas). */
+@media (min-width: 64rem) {
+  .rejilla-estancias > :nth-child(4n + 2),
+  .rejilla-estancias > :nth-child(4n + 4) {
+    margin-top: 24px;
+  }
+  .rejilla-casas > :nth-child(3n + 2) {
+    margin-top: 40px;
+  }
+}
+
+/* ── Menú móvil (popover nativo): panel redondeado desde la cabecera ────── */
+.menu-panel {
+  position: fixed;
+  inset: var(--alto-cabecera) 8px auto 8px;
+  width: auto;
+  max-width: none;
+  max-height: calc(100dvh - var(--alto-cabecera) - 16px);
+  margin: 0;
+  border: 0;
+  overflow: auto;
+  border-radius: 0 0 28px 28px;
+  background-color: oklch(0.24 0.02 50 / 0.97);
+  color: #ffffff;
+}
+.menu-panel::backdrop {
+  background: oklch(0.2 0.02 50 / 0.35);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-panel {
+    transition:
+      opacity 220ms ease,
+      translate 220ms ease,
+      overlay 220ms allow-discrete,
+      display 220ms allow-discrete;
+  }
+  @starting-style {
+    .menu-panel:popover-open {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+}
+
+/* ── Barra móvil: entra desde abajo al cargar ──────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-movil {
+    transition: translate 300ms ease 150ms;
+  }
+  @starting-style {
+    .barra-movil {
+      translate: 0 100%;
+    }
+  }
+}
+
+/* ── Legales: el texto y el <h1> los pone core; aquí solo el aspecto ───── */
+.lectura-legal article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-variation-settings: "FLAR" 60;
+  font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 1.75rem 0 0.5rem;
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-variation-settings: "FLAR" 60;
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.6rem;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  font-weight: 600;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+
+/* ── Domo: caja de alto libre con medio círculo arriba (hero tipográfico, CTA final) ──
+   El radio vertical es medio ancho, en px (entrega §4.1). --ancho-domo = ancho máximo. */
+.domo {
+  --ancho-real: min(100vw - 2 * clamp(1rem, 5vw, 4rem), var(--ancho-domo, 640px));
+  width: 100%;
+  max-width: var(--ancho-domo, 640px);
+  margin-inline: auto;
+  border-radius: 50% 50% var(--radius-tarjeta) var(--radius-tarjeta) / calc(var(--ancho-real) / 2) calc(var(--ancho-real) / 2)
+    var(--radius-tarjeta) var(--radius-tarjeta);
+}
