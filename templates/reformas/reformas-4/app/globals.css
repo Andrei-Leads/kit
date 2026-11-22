@@ -1,0 +1,467 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Diario de obra» (reformas-4), encargo §8: noche de obra, latón y cinta de carrocero.
+ * Solo --color-primario se sobrescribe desde site.config (estiloMarca en layout.tsx, que también
+ * calcula --color-sobre-primario). El primario como texto o línea sobre negro pasa SIEMPRE por
+ * --color-primario-claro, para que un azul oscuro de cliente siga leyéndose.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #121110;
+  --color-superficie: #1b1a18;
+  --color-alterna: #171614;
+  --color-texto: #f1ece4;
+  --color-texto-suave: #b3aa9c; /* ≈ 8:1 sobre el fondo */
+  --color-borde: #36322c;
+  --color-primario: #d6a24c; /* latón y luz de obra */
+  --color-sobre-primario: #17120a;
+  --color-acento: #e9dcc0; /* crema de cinta */
+  --color-foco: #f1ece4;
+  /* --font-martian y --font-instrument las pone next/font en <html> (layout.tsx). */
+  --font-titulo: var(--font-martian), ui-monospace, monospace;
+  --font-texto: var(--font-instrument), system-ui, sans-serif;
+  --radius-boton: 2px;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+  --text-display: clamp(2.25rem, 1.4rem + 3.6vw, 5.25rem);
+
+  /* Propios */
+  --color-primario-claro: color-mix(in oklch, var(--color-primario) 55%, #f1ece4);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario) 88%, white);
+  --color-cinta: var(--color-acento);
+  --color-sobre-cinta: #1b1a18;
+  --color-reticula: rgb(255 255 255 / 0.06);
+  --color-cota: #5a534a; /* filete de cota (más marcado que el borde) */
+  --color-cota-marca: #8a8276; /* marcas verticales de los extremos */
+  --color-pie: #0f0e0d;
+  --text-h1: clamp(2rem, 1.3rem + 3vw, 4rem); /* h1 de páginas interiores */
+  --text-h2: clamp(1.5rem, 1.15rem + 1.5vw, 2.5rem);
+  --text-cuerpo: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-relato: clamp(5rem, 3rem + 8vw, 10rem);
+}
+
+/* Con color relativo (Baseline), los derivados del primario exactos del encargo. */
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-claro: oklch(from var(--color-primario) max(l, 0.78) c h);
+    --color-primario-hover: oklch(from var(--color-primario) calc(l + 0.06) c h);
+  }
+}
+
+:root {
+  --ancho-indice: 15rem;
+  --cota: 1px solid var(--color-borde);
+  --pad: clamp(20px, 1rem + 4vw, 72px);
+  --sec: clamp(64px, 3rem + 4vw, 120px);
+}
+
+/* Mono técnica a `wdth` 87: ahorra ancho en móvil (encargo §9). */
+@utility mono {
+  font-family: var(--font-titulo);
+  font-stretch: 87%;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 64px;
+  }
+  @media (min-width: 64rem) {
+    html {
+      scroll-padding-top: 16px;
+    }
+  }
+  body {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+  a {
+    color: var(--color-primario-claro);
+  }
+  a:hover {
+    color: var(--color-texto);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  /* Retícula de plano: líneas de 1 px cada 24 px. */
+  .reticula {
+    background-color: var(--color-fondo);
+    background-image:
+      linear-gradient(var(--color-reticula) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-reticula) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Trozo de cinta de carrocero. */
+  .cinta {
+    display: inline-block;
+    background: var(--color-cinta);
+    color: var(--color-sobre-cinta);
+    font-family: var(--font-titulo);
+    font-stretch: 87%;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 7px 12px 6px;
+    rotate: -1.2deg;
+    overflow-wrap: anywhere;
+  }
+
+  /* Rótulo de sección: «02 SERVICIOS ———». */
+  .rotulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    font-family: var(--font-titulo);
+    font-stretch: 87%;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-texto-suave);
+  }
+  .rotulo::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-borde);
+  }
+  .rotulo > b {
+    color: var(--color-primario-claro);
+    font-weight: 600;
+  }
+  .h2-diario {
+    font-family: var(--font-titulo);
+    font-stretch: 87%;
+    font-weight: 500;
+    font-size: var(--text-h2);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .texto-editorial {
+    font-size: var(--text-cuerpo);
+    line-height: 1.65;
+    max-width: 65ch;
+  }
+
+  /* Botones (ParCta del diseño): WhatsApp relleno latón; Llamar con contorno de 2 px claro. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-sizing: border-box;
+    min-height: 56px;
+    padding: 0 22px;
+    border-radius: var(--radius-boton);
+    font-family: var(--font-titulo);
+    font-stretch: 87%;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background-color 0.15s ease,
+      transform 0.1s ease;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-wa {
+    background: var(--color-primario);
+    color: var(--color-sobre-primario);
+    border: 1px solid var(--color-primario-claro);
+  }
+  .btn-wa:hover {
+    background: var(--color-primario-hover);
+    color: var(--color-sobre-primario);
+  }
+  .btn-tel {
+    background: transparent;
+    color: var(--color-texto);
+    border: 2px solid var(--color-primario-claro);
+  }
+  .btn-tel:hover {
+    color: var(--color-texto);
+    background: color-mix(in oklch, var(--color-primario-claro) 14%, transparent);
+  }
+  .btn-tel:active {
+    background: color-mix(in oklch, var(--color-primario-claro) 22%, transparent);
+  }
+  /* Icono de bocadillo dibujado a línea (WhatsApp). */
+  .bocadillo {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-radius: 50% 50% 50% 2px;
+  }
+
+  /* Enlace en mono subrayado con filete («Leer la obra →»). */
+  .enlace-mono {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-titulo);
+    font-stretch: 87%;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-primario-claro);
+    text-decoration: none;
+  }
+  .enlace-mono > span {
+    border-bottom: 1px solid currentColor;
+  }
+
+  /* Marca de paso: rombo latón. */
+  .rombo {
+    width: 9px;
+    height: 9px;
+    background: var(--color-primario-claro);
+    rotate: 45deg;
+  }
+
+  /* Filete de plano con marcas verticales en los extremos. */
+  .filete {
+    position: relative;
+    border-top: 1px solid var(--color-cota);
+  }
+  .filete::before,
+  .filete::after {
+    content: "";
+    position: absolute;
+    top: -6px;
+    width: 1px;
+    height: 11px;
+    background: var(--color-cota-marca);
+  }
+  .filete::before {
+    left: 0;
+  }
+  .filete::after {
+    right: 0;
+  }
+
+  /* Número en contorno (años de /trabajos, números del relato). */
+  .contorno {
+    font-family: var(--font-titulo);
+    font-stretch: 87%;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: color-mix(in oklch, var(--color-primario-claro) 10%, transparent);
+    -webkit-text-stroke: 1.5px var(--color-primario-claro);
+  }
+
+  /* Texto de core en las legales: 68 caracteres, títulos en mono. */
+  .legal-diario article {
+    margin: 0;
+    max-width: 68ch;
+    padding: 0;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-texto-suave);
+  }
+  .legal-diario h1 {
+    font-family: var(--font-titulo);
+    font-stretch: 87%;
+    font-weight: 500;
+    font-size: var(--text-h1);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--color-texto);
+    margin-bottom: 1.5rem;
+  }
+  .legal-diario h2,
+  .legal-diario h3 {
+    font-family: var(--font-titulo);
+    font-stretch: 87%;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--color-texto);
+    margin-top: 1.75rem;
+  }
+  .legal-diario a {
+    color: var(--color-primario-claro);
+  }
+}
+
+/* ---------- Animaciones ligadas al scroll (solo opacity y transform) ---------- */
+@keyframes aparece-num {
+  from {
+    opacity: 0.2;
+    translate: 0 24px;
+  }
+}
+@keyframes cota-crece {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes linea-crece {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes indice-activo {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+}
+@keyframes indice-guion {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+}
+@keyframes num-grande {
+  0%,
+  25% {
+    opacity: 0;
+    translate: 0 24px;
+  }
+  40%,
+  60% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  75%,
+  100% {
+    opacity: 0;
+    translate: 0 -24px;
+  }
+}
+
+/* Guion del índice activo: sin soporte (o con «reducir movimiento») no se pinta y todo queda al 100 %. */
+.indice-guion {
+  opacity: 0;
+}
+/* Panel sticky del relato: sin soporte, el total («06 pasos»); con soporte, el número de cada paso. */
+.relato-num {
+  display: none;
+}
+
+@supports (animation-timeline: view()) and (timeline-scope: --a) {
+  @media (prefers-reduced-motion: no-preference) {
+    .cota-anim {
+      transform-origin: left center;
+      animation: cota-crece linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 100%;
+    }
+    .num-anim {
+      animation: aparece-num linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+    .relato {
+      timeline-scope: --pasos, --paso1, --paso2, --paso3, --paso4, --paso5, --paso6;
+    }
+    .relato-pasos {
+      view-timeline-name: --pasos;
+    }
+    .relato-linea {
+      transform-origin: top center;
+      animation: linea-crece linear both;
+      animation-timeline: --pasos;
+      animation-range: contain 0% contain 100%;
+    }
+    .relato-total {
+      display: none;
+    }
+    .relato-num {
+      display: block;
+      opacity: 0;
+      animation: num-grande linear both;
+      animation-range: cover 0% cover 100%;
+    }
+    .relato-paso:nth-of-type(1) { view-timeline-name: --paso1; }
+    .relato-paso:nth-of-type(2) { view-timeline-name: --paso2; }
+    .relato-paso:nth-of-type(3) { view-timeline-name: --paso3; }
+    .relato-paso:nth-of-type(4) { view-timeline-name: --paso4; }
+    .relato-paso:nth-of-type(5) { view-timeline-name: --paso5; }
+    .relato-paso:nth-of-type(6) { view-timeline-name: --paso6; }
+    .relato-num:nth-of-type(1) { animation-timeline: --paso1; }
+    .relato-num:nth-of-type(2) { animation-timeline: --paso2; }
+    .relato-num:nth-of-type(3) { animation-timeline: --paso3; }
+    .relato-num:nth-of-type(4) { animation-timeline: --paso4; }
+    .relato-num:nth-of-type(5) { animation-timeline: --paso5; }
+    .relato-num:nth-of-type(6) { animation-timeline: --paso6; }
+  }
+}
+
+/* ---------- Hoja del índice en móvil (MenuPopover reestilado): sube desde abajo ---------- */
+.indice-hoja {
+  inset: auto 0 0 0;
+  transition:
+    opacity 240ms ease-out,
+    translate 240ms ease-out,
+    display 240ms allow-discrete,
+    overlay 240ms allow-discrete;
+  opacity: 0;
+  translate: 0 100%;
+}
+.indice-hoja:popover-open {
+  opacity: 1;
+  translate: 0 0;
+}
+@starting-style {
+  .indice-hoja:popover-open {
+    opacity: 0;
+    translate: 0 100%;
+  }
+}
+.indice-hoja::backdrop {
+  background: rgb(8 7 6 / 0.72);
+}
+@media (prefers-reduced-motion: reduce) {
+  .indice-hoja {
+    transition: none;
+  }
+}
+
+/* ---------- Barra móvil: entra desde abajo ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-diario {
+    animation: barra-sube 300ms ease-out both;
+  }
+}
+@keyframes barra-sube {
+  from {
+    translate: 0 100%;
+  }
+}

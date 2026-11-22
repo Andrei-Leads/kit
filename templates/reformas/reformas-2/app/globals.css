@@ -1,0 +1,344 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Planifica tu reforma» (reformas-2), encargo §8: barro cocido, papel crema y
+ * superficies blancas mullidas. Solo --color-primario se sobrescribe desde site.config
+ * (estiloMarca en layout.tsx, que también calcula --color-sobre-primario). El fondo del hero
+ * ES el primario: con otro color de marca, todo el hero cambia y el texto usa siempre
+ * --color-sobre-primario.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #fbf6f1;
+  --color-superficie: #ffffff;
+  --color-alterna: #f3e5da;
+  --color-texto: #2a1d17;
+  --color-texto-suave: #6b564b; /* ≈ 6,5:1 sobre el fondo */
+  --color-borde: #e8d6c8;
+  --color-primario: #b4532a; /* terracota; con blanco ≈ 5:1 */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #ffdca0; /* arena: solo detalles sobre terracota, nunca texto sobre claro */
+  --color-foco: #2a1d17;
+  /* Las variables --font-outfit y --font-figtree las pone next/font en <html> (layout.tsx). */
+  --font-titulo: var(--font-outfit), system-ui, sans-serif;
+  --font-texto: var(--font-figtree), system-ui, sans-serif;
+  --radius-boton: 999px;
+  --radius-tarjeta: 1.25rem;
+  --radius-foto: 1rem;
+  --text-display: clamp(2.375rem, 1.5rem + 3.6vw, 5rem);
+
+  /* Propios */
+  --color-pie-suave: #dccbbf; /* texto secundario del pie, sobre --color-texto */
+  --color-pie-linea: #4a372d;
+  --text-h2: clamp(1.625rem, 1.2rem + 1.8vw, 2.75rem);
+  --text-h1-interior: clamp(2.125rem, 1.4rem + 3vw, 4rem);
+  --text-cifra: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  --text-cuerpo: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --shadow-tarjeta: 0 1px 2px oklch(0.3 0.05 40 / 0.08), 0 12px 32px oklch(0.3 0.05 40 / 0.12);
+}
+
+/* Derivados del primario (el cliente puede cambiarlo): color-mix de respaldo, oklch(from) si existe. */
+:root {
+  --color-fondo-hero: var(--color-primario);
+  --color-foco-invertido: var(--color-sobre-primario);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario) 85%, black);
+  --color-pista: color-mix(in oklch, var(--color-primario) 35%, white);
+  --color-tinte: color-mix(in oklch, var(--color-primario) 9%, var(--color-superficie));
+  --color-pulsado: color-mix(in oklch, var(--color-primario) 16%, var(--color-superficie));
+  --color-burbuja: color-mix(in oklch, var(--color-primario) 12%, var(--color-superficie));
+  --color-linea-sobre: color-mix(in oklch, var(--color-sobre-primario) 40%, transparent);
+  --sombra-tarjeta: var(--shadow-tarjeta);
+}
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+    --color-pista: oklch(from var(--color-primario) calc(l + 0.18) calc(c * 0.5) h);
+  }
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 84px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-superficie);
+  }
+  /* Sobre terracota: anillo del color del texto encima y halo de tinta. */
+  [data-sobre-primario] :focus-visible {
+    outline-color: var(--color-foco-invertido);
+    box-shadow: 0 0 0 2px var(--color-texto);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  .contenedor {
+    width: 100%;
+    max-width: calc(1200px + 2 * clamp(16px, 4vw, 40px));
+    margin-inline: auto;
+    padding-inline: clamp(16px, 4vw, 40px);
+  }
+  .seccion {
+    padding-top: clamp(56px, 2rem + 5vw, 112px);
+  }
+  .h2 {
+    font-family: var(--font-titulo);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+  .enlace {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--color-primario);
+    text-underline-offset: 4px;
+  }
+  [data-sobre-primario] .enlace {
+    text-decoration-color: currentColor;
+  }
+
+  /* ---------- Botones (variantes de la entrega §5) ---------- */
+  .boton {
+    display: flex;
+    min-height: 56px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 22px;
+    border-radius: var(--radius-boton);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 120ms ease;
+  }
+  .boton:active {
+    transform: translateY(1px) scale(0.98);
+  }
+  .boton-primario {
+    background: var(--color-primario);
+    color: var(--color-sobre-primario);
+  }
+  .boton-contorno {
+    border: 2px solid var(--color-texto);
+    color: var(--color-texto);
+  }
+  .boton-claro {
+    background: var(--color-superficie);
+    color: var(--color-texto);
+  }
+  .boton-contorno-sobre {
+    border: 2px solid var(--color-sobre-primario);
+    color: var(--color-sobre-primario);
+  }
+  @media (hover: hover) {
+    .boton-primario:hover {
+      background: var(--color-primario-hover);
+    }
+    .boton-contorno:hover {
+      box-shadow: inset 0 0 0 999px rgb(42 29 23 / 0.07);
+    }
+    .boton-claro:hover {
+      background: var(--color-alterna);
+    }
+    .boton-contorno-sobre:hover {
+      box-shadow: inset 0 0 0 999px color-mix(in oklch, var(--color-sobre-primario) 16%, transparent);
+    }
+  }
+
+  /* ---------- Legales: el <article> y el <h1> los pone core ---------- */
+  .lectura-legal article {
+    margin: 0;
+    max-width: 68ch;
+    padding: 0;
+    line-height: 1.6;
+  }
+  .lectura-legal h1 {
+    font-family: var(--font-titulo);
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+  .lectura-legal h2 {
+    font-family: var(--font-titulo);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .lectura-legal a {
+    text-decoration: underline;
+    text-decoration-color: var(--color-primario);
+    text-underline-offset: 3px;
+  }
+}
+
+/* ---------- Cápsula: el texto del botón cambia con el popover abierto (sin JS) ---------- */
+.capsula:has(.menu-capsula:popover-open) .texto-menu {
+  display: none;
+}
+.capsula:not(:has(.menu-capsula:popover-open)) .texto-cerrar {
+  display: none;
+}
+.menu-capsula {
+  position: fixed;
+  inset: 76px 10px auto 10px;
+  margin: 0;
+  width: auto;
+  max-height: calc(100dvh - 96px);
+  overflow: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-capsula {
+    transition:
+      opacity 200ms ease-out,
+      translate 200ms ease-out,
+      display 200ms allow-discrete,
+      overlay 200ms allow-discrete;
+  }
+  .menu-capsula:popover-open {
+    opacity: 1;
+    translate: 0 0;
+  }
+  @starting-style {
+    .menu-capsula:popover-open {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+}
+
+/* ---------- Planificador ---------- */
+@keyframes paso-entra {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .paso-entra {
+    animation: paso-entra 220ms ease-out both;
+  }
+  .segmento {
+    transition: transform 250ms ease;
+  }
+  .opcion {
+    transition:
+      transform 120ms ease,
+      border-color 120ms ease;
+  }
+  .opcion:active {
+    transform: scale(0.97);
+  }
+}
+@media (hover: hover) {
+  .opcion:hover {
+    border-color: var(--color-primario);
+  }
+}
+.opcion-tinte {
+  background: var(--color-tinte);
+  border-color: transparent;
+}
+.opcion[aria-pressed="true"] {
+  background: var(--color-pulsado);
+  border-color: var(--color-primario);
+}
+/* Si el número de casillas es impar, la última ocupa las 2 columnas. */
+.rejilla-opciones > :last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Cifras: con una sola, centrada ---------- */
+.cifras:has(> div:only-child) > div {
+  text-align: center;
+}
+
+/* ---------- Fichas de trabajos: fila con scroll-snap en móvil, rejilla de 3 en escritorio ---------- */
+.fila-fichas {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(100% - 40px);
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 16px;
+  margin-inline: calc(-1 * clamp(16px, 4vw, 40px));
+  padding: 4px clamp(16px, 4vw, 40px) 40px;
+}
+.fila-fichas > * {
+  scroll-snap-align: start;
+}
+@media (min-width: 64rem) {
+  .fila-fichas {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+    margin-inline: 0;
+    padding: 0 0 26px;
+  }
+}
+
+/* ---------- Reseña larga: 6 líneas + «Leer más» con <details> (sin JS) ---------- */
+.recorte {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+li:has(details[open]) .recorte {
+  display: block;
+  -webkit-line-clamp: unset;
+}
+details[open] .leer-mas,
+details:not([open]) .leer-menos {
+  display: none;
+}
+
+/* ---------- Pistas del proceso: se rellenan con el scroll (view()) ---------- */
+@keyframes pista-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes pista-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .pista {
+      transform-origin: left top;
+      animation: pista-y linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 40%;
+    }
+    @media (min-width: 64rem) {
+      .pista {
+        animation-name: pista-x;
+      }
+    }
+  }
+}
