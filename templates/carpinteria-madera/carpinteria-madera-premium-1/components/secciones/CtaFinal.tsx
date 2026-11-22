@@ -42,8 +42,6 @@ export function CtaFinal({ cta, contacto, confianza, lineas, textoWhatsapp = TEX
           <div className="mt-14 flex flex-wrap items-baseline gap-x-10 gap-y-3 border-t border-fondo/20 pt-6">
             <p className="m-0 max-w-[44ch] flex-[1_1_320px] text-base leading-normal">
               {direccionLinea(contacto.direccion)}
-              <br />
-              <span className="text-papel-suave">Si quieres, ven a ver las maderas.</span>
             </p>
             <EnlaceFlecha href={urlComoLlegar(contacto)} externo>
               Cómo llegar
