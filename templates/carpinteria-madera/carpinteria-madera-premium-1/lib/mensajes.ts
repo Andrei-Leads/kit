@@ -35,7 +35,5 @@ export const TEXTO_WA_FINAL = "Cuéntanos tu pieza por WhatsApp";
 export const TEXTO_WA_TRABAJO = "Quiero algo parecido";
 export const TEXTO_WA_ESCRIBIR = "Escribir por WhatsApp";
 
-/** «Pedir presupuesto de cocinas a medida». */
-export function textoWaServicio(titulo: string): string {
-  return `Pedir presupuesto de ${minusculaInicial(titulo)}`;
-}
+/** Botón de WhatsApp de un servicio: genérico, sin el título (puede empezar por verbo). */
+export const TEXTO_WA_SERVICIO = "Pedir presupuesto por WhatsApp";

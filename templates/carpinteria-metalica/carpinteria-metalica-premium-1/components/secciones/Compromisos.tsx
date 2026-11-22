@@ -17,7 +17,7 @@ export function Compromisos({ garantias, acreditaciones, marcas }: Props) {
       <div className="contenedor rejilla gap-y-10">
         <div className="lg:col-[1/6]">
           <p className="etiqueta">Compromisos</p>
-          <TituloLineas id="titulo-compromisos" lineas={[<>Lo que <em>firmamos</em>.</>]} className="titulo-h2 mt-3" />
+          <TituloLineas id="titulo-compromisos" lineas={[<>Nuestras <em>garantías</em>.</>]} className="titulo-h2 mt-3" />
         </div>
         <div className="lg:col-[7/13]">
           {garantias.length > 0 && (

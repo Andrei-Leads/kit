@@ -7,7 +7,7 @@ export function dosCifras(n: number): string {
   return String(n).padStart(2, "0");
 }
 
-/** «Llamar al 600 11 14 51». */
+/** «Llamar al 600 00 04 51». */
 export function textoLlamar(telefono: string): string {
   return `Llamar al ${telefonoVisible(telefono)}`;
 }

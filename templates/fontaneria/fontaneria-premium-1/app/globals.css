@@ -631,6 +631,12 @@ body:has([data-pagina="contacto"]) .nav-principal [data-ruta="/contacto"] {
       font-size: var(--text-pano);
       white-space: nowrap;
       animation: marquesina 40s linear infinite;
+      /* Quieta mientras el pano no tenga botón de pausa (WCAG 2.2.2): solo
+         correría con `data-listo` y sin `data-pausa` en la sección, como en «Marco». */
+      animation-play-state: paused;
+    }
+    .pano[data-listo]:not([data-pausa]) .pano__pista {
+      animation-play-state: running;
     }
     .pano__pista .copia,
     .pano__pista .sep {

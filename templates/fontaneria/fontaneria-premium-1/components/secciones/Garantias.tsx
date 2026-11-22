@@ -6,7 +6,7 @@ import { Titular } from "./Titular";
 type Props = Pick<SiteConfig, "garantias" | "acreditaciones" | "marcas"> & { id?: string; lineas?: ReactNode[] };
 
 /**
- * «Todo por escrito» (encargo §6.7), sobre --color-alterna: garantías en filas
+ * «Nuestras garantías» (encargo §6.7), sobre --color-alterna: garantías en filas
  * de 1 px, acreditaciones con su número en etiqueta y las marcas como una
  * frase («Trabajamos con …»), sin logos. Cada bloque vacío se oculta; sin
  * ninguno, la sección no existe.
@@ -18,7 +18,7 @@ export function Garantias({ garantias, acreditaciones, marcas, id = "titulo-gara
       <div className="contenedor grid gap-12 lg:grid-cols-[440px_240px_240px] lg:gap-10">
         <div className="flex flex-col gap-[18px]">
           <p className="etiqueta">Garantías</p>
-          <Titular id={id} className="text-[40px] lg:text-[clamp(2.75rem,2rem+2vw,3.5rem)]" lineas={lineas ?? [<>Todo <em key="e">por escrito</em>,</>, "antes de empezar"]} />
+          <Titular id={id} className="text-[40px] lg:text-[clamp(2.75rem,2rem+2vw,3.5rem)]" lineas={lineas ?? [<>Nuestras <em key="e">garantías</em></>]} />
           {garantias.length > 0 && (
             <ul className="m-0 mt-5 list-none border-b border-borde p-0">
               {garantias.map((g, i) => (

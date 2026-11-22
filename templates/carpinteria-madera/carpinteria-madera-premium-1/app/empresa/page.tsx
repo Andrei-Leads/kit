@@ -33,7 +33,7 @@ export default async function Page() {
     ...(hayHistoria ? [itemRegla("historia", "Historia")] : []),
     itemRegla("como-trabajamos", "Cómo trabajamos"),
     ...(empresa.equipo.length > 0 ? [itemRegla("equipo", "Quiénes somos")] : []),
-    itemRegla("visita", "Visítanos"),
+    itemRegla("visita", "Dónde estamos"),
   ];
 
   return (
@@ -50,7 +50,7 @@ export default async function Page() {
             El <Destacada>taller</Destacada>
           </>
         }
-        frase="Aquí se dibuja, se elige la madera y se fabrica cada pieza. Se puede visitar."
+        frase="Aquí se dibuja, se elige la madera y se fabrica cada pieza."
         cta={cta}
         confianza={lineaConfianza(config, "valoracion")}
         fotos={[empresa.imagenes[0], empresa.imagenes[1]]}
@@ -119,7 +119,7 @@ export default async function Page() {
             <div className="contenedor">
               {config.garantias.length > 0 && (
                 <>
-                  <h2 className="titulo text-[clamp(1.75rem,1.3rem+1.6vw,2.75rem)] leading-[1.1]">Lo que firmamos</h2>
+                  <h2 className="titulo text-[clamp(1.75rem,1.3rem+1.6vw,2.75rem)] leading-[1.1]">Nuestras garantías</h2>
                   <ul className="m-0 mt-6 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-12 p-0">
                     {config.garantias.map((g) => (
                       <li key={g} className="border-t border-fondo/20 py-[18px] text-[17px] leading-[1.45]">
@@ -140,13 +140,11 @@ export default async function Page() {
 
         <section {...seccionRegla("visita")} data-tono="claro" aria-labelledby="titulo-visita" className="contenedor seccion">
           <h2 id="titulo-visita" className="titulo text-h2">
-            Ven a ver las <Destacada>maderas</Destacada>
+            Dónde <Destacada>estamos</Destacada>
           </h2>
           <div className="mt-8 flex flex-wrap items-baseline gap-x-10 gap-y-3">
             <p className="m-0 max-w-[44ch] text-cuerpo">
               {direccionLinea(contacto.direccion)}
-              <br />
-              <span className="text-texto-suave">El taller se puede visitar: avísanos antes.</span>
             </p>
             <EnlaceFlecha href={urlComoLlegar(contacto)} externo>
               Cómo llegar

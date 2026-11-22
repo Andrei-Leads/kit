@@ -49,7 +49,7 @@ export function ServiciosApilados({ servicios, telefono, whatsapp, conCabecera =
             <Titular id="titulo-servicios" className="text-[45px] lg:text-h2" lineas={[<>Lo que <em>hacemos</em></>]} />
           </div>
           <p className="m-0 text-sobre-tinta-suave">
-            {servicios.length === 1 ? "Un tipo de obra" : `${servicios.length} tipos de obra`}, cada uno con su presupuesto por escrito antes de empezar.
+            {servicios.length === 1 ? "Un tipo de obra" : `${servicios.length} tipos de obra`} en los que trabajamos.
           </p>
         </div>
       )}

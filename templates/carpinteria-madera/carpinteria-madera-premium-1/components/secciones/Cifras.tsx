@@ -44,7 +44,7 @@ export function Cifras({ anioFundacion, valoracion, zonas, garantias, marcas, ct
         {garantias.length > 0 && (
           <div className="mt-[clamp(56px,6vw,96px)]">
             <h2 id="titulo-garantias" className="titulo text-[clamp(1.75rem,1.3rem+1.6vw,2.75rem)] leading-[1.1]">
-              Lo que firmamos
+              Nuestras garantías
             </h2>
             <ul className="m-0 mt-6 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-12 p-0">
               {garantias.map((g) => (

@@ -1,4 +1,4 @@
-import { listaY, mediaVisible, minusculaInicial, telefonoVisible, formatearHorario, type SiteConfig, type Trabajo } from "@andrei-leads/core";
+import { listaY, mediaVisible, telefonoVisible, formatearHorario, type SiteConfig, type Trabajo } from "@andrei-leads/core";
 
 /** Datos de una pareja de botones (WhatsApp + Llamar) con el mensaje de la página. */
 export type DatosCta = {
@@ -25,8 +25,8 @@ export const TEXTOS = {
 export const llamarAl = (telefono: string) => `Llamar al ${telefonoVisible(telefono)}`;
 /** «Llamar · 910 00 00 00» (cabecera y pareja flotante: número entero para copiarlo). */
 export const llamarPunto = (telefono: string) => `Llamar · ${telefonoVisible(telefono)}`;
-/** «Pide presupuesto de reforma de baño». */
-export const pidePresupuesto = (titulo: string) => `Pide presupuesto de ${minusculaInicial(titulo)}`;
+/** Botón de WhatsApp de un servicio: genérico, sin el título (puede empezar por verbo). */
+export const PIDE_PRESUPUESTO = "Pide presupuesto";
 
 /** «4,9 · 96 reseñas en Google». */
 export function textoValoracion(v: NonNullable<SiteConfig["valoracion"]>): string {

@@ -75,7 +75,6 @@ export default function Page() {
           <div>
             <h2 className="etiqueta m-0 text-texto-suave">Dirección</h2>
             <p className="mt-4 mb-0 text-cuerpo">{direccionLinea(contacto.direccion, { provincia: contacto.direccion.provincia !== contacto.direccion.ciudad })}</p>
-            <p className="mt-1 text-[15px] text-texto-suave">El taller se puede visitar: avísanos antes.</p>
             <div className="mt-3 flex flex-wrap gap-x-8 gap-y-2">
               <EnlaceFlecha href={urlComoLlegar(contacto)} externo>
                 Cómo llegar

@@ -25,9 +25,8 @@ export function mensajeDeTrabajo(trabajo: Pick<Trabajo, "titulo">): string {
 export const TEXTO_WA = "Envíanos fotos por WhatsApp";
 export const TEXTO_WA_CORTO = "Escribir por WhatsApp";
 export const TEXTO_WA_TRABAJO = "Quiero algo parecido";
-export function textoWaServicio(titulo: string): string {
-  return `Consultar ${minusculaInicial(titulo)}`;
-}
+/** Botón de WhatsApp de un servicio: genérico, sin el título (puede empezar por verbo). */
+export const TEXTO_WA_SERVICIO = "Consultar por WhatsApp";
 
 /** Línea de confianza por defecto (sin valoración ni horario). */
-export const RESPUESTA = "Respuesta por WhatsApp en horario de trabajo";
+export const RESPUESTA = "Por WhatsApp puedes mandarnos fotos y medidas";

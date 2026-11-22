@@ -9,6 +9,8 @@ type Props = { src: string; srcAv1?: string };
  * pano se acerca a la pantalla (nunca se precarga) y nunca con «reducir
  * movimiento» o ahorro de datos: entonces se queda el póster. Botón «Pausar»
  * de 44 px (el clip dura más de 5 s). El vídeo es decorativo (`aria-hidden`).
+ * Pone `data-listo` en la sección al montar el vídeo (solo entonces corre la
+ * marquesina) y `data-pausa` al pausar, que para también la marquesina (WCAG 2.2.2).
  */
 export function ControlVideo({ src, srcAv1 }: Props) {
   const ancla = useRef<HTMLDivElement>(null);
@@ -22,6 +24,8 @@ export function ControlVideo({ src, srcAv1 }: Props) {
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
+          const s = ancla.current?.closest("section");
+          if (s) s.dataset.listo = "";
           setActivo(true);
           io.disconnect();
         }
@@ -35,8 +39,14 @@ export function ControlVideo({ src, srcAv1 }: Props) {
   const alternar = () => {
     const v = video.current;
     if (!v) return;
-    if (v.paused) void v.play();
-    else v.pause();
+    const s = ancla.current?.closest("section");
+    if (v.paused) {
+      void v.play();
+      if (s) delete s.dataset.pausa;
+    } else {
+      v.pause();
+      if (s) s.dataset.pausa = "";
+    }
     setPausado(!v.paused);
   };
 

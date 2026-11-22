@@ -43,7 +43,7 @@ export function HeroInicio({ video, imagen, sector, ciudad, anioFundacion, valor
       )}
       <div className="contenedor relative z-[2] flex flex-wrap items-end gap-x-8 gap-y-5 pb-[calc(88px+env(safe-area-inset-bottom))] lg:pb-16">
         <div className="min-w-0 flex-[1_1_430px]">
-          <p className="etiqueta m-0 text-papel-suave">Taller de ebanistería{anioFundacion ? ` · desde ${anioFundacion}` : ""}</p>
+          {anioFundacion ? <p className="etiqueta m-0 text-papel-suave">Desde {anioFundacion}</p> : null}
           <h1 className="titulo mt-3 text-display">
             {sector} en <Destacada>{ciudad}</Destacada>
           </h1>

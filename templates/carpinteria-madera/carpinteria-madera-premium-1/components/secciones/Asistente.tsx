@@ -21,7 +21,7 @@ const PUNTOS = [
   ["De momento es una idea", "De momento es una idea."],
 ] as const;
 const VISITAS = [
-  ["Quiero ver maderas en el taller", "Me gustaría pasar por el taller a ver maderas."],
+  ["Quiero ver muestras de madera", "Me gustaría ver muestras de madera."],
   ["Prefiero que vengáis a medir", "Prefiero que vengáis a medir."],
 ] as const;
 
@@ -82,10 +82,10 @@ export function Asistente({ servicios, numero, mensajeGenerico, llamada }: Props
             </div>
             {grupo("1. ¿Qué pieza?", servicios.map((s) => s.titulo), pieza, setPieza)}
             {grupo("2. ¿En qué punto estás?", PUNTOS.map((p) => p[0]), punto, setPunto)}
-            {grupo("3. ¿Taller o medición?", VISITAS.map((v) => v[0]), visita, setVisita)}
+            {grupo("3. ¿Muestras o medición?", VISITAS.map((v) => v[0]), visita, setVisita)}
           </>
         ) : (
-          <p className="medida mt-6 text-cuerpo text-texto-suave">Dinos qué pieza, en qué punto estás y si quieres ver el taller.</p>
+          <p className="medida mt-6 text-cuerpo text-texto-suave">Dinos qué pieza, en qué punto estás y si quieres ver muestras de madera.</p>
         )}
       </div>
       <div className="max-w-[460px] flex-[1_1_340px] border-t border-tinta pt-7">

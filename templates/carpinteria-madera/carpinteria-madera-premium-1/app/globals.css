@@ -657,9 +657,14 @@ body:has([data-pagina="contacto"]) .cabecera-enlace[data-ruta="/contacto"]::afte
       animation-timeline: --pano;
       animation-range: entry 50% contain 35%;
     }
+    /* Solo corre con el vídeo reproduciendo y sin pausar (botón de pausa, WCAG 2.2.2). */
     .pano-pista {
       padding-left: 0;
       animation: marquesina 24s linear infinite;
+      animation-play-state: paused;
+    }
+    .pano[data-listo]:not([data-pausa]) .pano-pista {
+      animation-play-state: running;
     }
     .pano-pista > :nth-child(2) {
       display: inline;

@@ -10,7 +10,7 @@ import { Foto } from "@/components/base/Foto";
 import { Preguntas } from "@/components/base/Preguntas";
 import { CtaFinal } from "@/components/secciones/CtaFinal";
 import { HeroInterior } from "@/components/secciones/HeroInterior";
-import { mensajeDeServicio, RESPUESTA, textoWaServicio } from "@/lib/mensajes";
+import { mensajeDeServicio, RESPUESTA, TEXTO_WA_SERVICIO } from "@/lib/mensajes";
 import { confianzaHorario, dosCifras, lugarAnio } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +43,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
 
   const c = config;
   const cta = { telefono: c.contacto.telefono, whatsapp: c.contacto.whatsapp, mensaje: mensajeDeServicio(servicio) };
-  const textoWa = textoWaServicio(servicio.titulo);
+  const textoWa = TEXTO_WA_SERVICIO;
   const bloques: { texto: string; imagen: (typeof servicio.imagenes)[number] }[] = [];
   const resto: string[] = [];
   servicio.contenido.forEach((p, i) => {

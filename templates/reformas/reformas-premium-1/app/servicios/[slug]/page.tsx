@@ -19,7 +19,7 @@ import { HeroInterior } from "@/components/secciones/HeroInterior";
 import { TarjetaObra } from "@/components/secciones/TarjetaObra";
 import { TarjetaServicio } from "@/components/secciones/TarjetaServicio";
 import { mensajeDeServicio } from "@/lib/mensajes";
-import { datosCta, lineaConfianza, num, pidePresupuesto } from "@/lib/textos";
+import { datosCta, lineaConfianza, num, PIDE_PRESUPUESTO } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 
 // Un slug que no está en generateStaticParams se genera en la primera visita. Sin esto,
@@ -76,7 +76,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
         grande={s.imagenes[0]}
         mini={s.imagenes[1]}
       >
-        <Pareja datos={datos} fondo="claro" textoWa={pidePresupuesto(s.titulo)} textoLlamar="Llamar" className="max-w-[620px]" />
+        <Pareja datos={datos} fondo="claro" textoWa={PIDE_PRESUPUESTO} textoLlamar="Llamar" className="max-w-[620px]" />
       </HeroInterior>
 
       {s.incluye.length > 0 && (
@@ -96,7 +96,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
             <ParejaCta
               datos={datos}
               fondo="claro"
-              textoWa={pidePresupuesto(s.titulo)}
+              textoWa={PIDE_PRESUPUESTO}
               textoLlamar="Llamar"
               confianza={lineaConfianza(config)}
               className="mt-[clamp(48px,5vw,88px)]"
@@ -187,7 +187,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
         </section>
       )}
 
-      <CtaFinal datos={datos} textoWa={pidePresupuesto(s.titulo)} textoLlamar="Llamar" confianza={lineaConfianza(config, "horario")} />
+      <CtaFinal datos={datos} textoWa={PIDE_PRESUPUESTO} textoLlamar="Llamar" confianza={lineaConfianza(config, "horario")} />
     </>
   );
 }

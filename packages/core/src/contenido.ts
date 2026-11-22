@@ -84,7 +84,7 @@ export const PASOS_POR_DEFECTO: Record<TipoNegocio, readonly Paso[]> = {
     { titulo: "Lo arreglamos", texto: "Y te explicamos qué ha pasado." },
   ],
   proyecto: [
-    { titulo: "Nos cuentas qué necesitas", texto: "Por WhatsApp, por teléfono o en persona." },
+    { titulo: "Nos cuentas qué necesitas", texto: "Nos llamas o nos escribes y vemos qué quieres hacer." },
     { titulo: "Medimos", texto: "Vamos a verlo y tomamos las medidas reales." },
     { titulo: "Presupuesto por escrito", texto: "Con el detalle de lo que incluye." },
     { titulo: "Lo hacemos", texto: "Y lo dejamos terminado y limpio." },
