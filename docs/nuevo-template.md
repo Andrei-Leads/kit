@@ -304,7 +304,7 @@ grep -rl '"use client"' app components lib | xargs grep -n -E '^import \{[^}]*\}
 curl -s $URL/empresa | grep -o '<script src="[^"]*" async' | cut -d'"' -f2 | while read s; do curl -s $URL$s; done | wc -c
 ```
 
-Referencia (core 0.5.1, Next 16.4; bytes de `wc -c`): unos **545–575 KB** sin comprimir (≈ 165–175 KB gzip), también en las páginas **con** asistente de WhatsApp (con core 0.5.0 daban ~850–870 KB). De ellos, unos 480 KB son el suelo de React + Next. Si sale **~850–880 KB**, un componente cliente arrastra zod: importa un valor de `@/site.config` (o de un `lib/*` que lo importe), o la web sigue en core < 0.5.1 e importa un valor de core. Para ver qué pesa y quién lo importa: `pnpm next analyze` (desde la carpeta del template; busca `zod`).
+Referencia (core 0.7.0, Next 16.4.6 y React 19.3.1, 22/11/2026): unos **580 KB** sin comprimir de base por página (≈ 180 KB gzip) más las islas del template; es lo normal. Referencia anterior (core 0.5.1, Next 16.4; bytes de `wc -c`): unos **545–575 KB** sin comprimir (≈ 165–175 KB gzip), también en las páginas **con** asistente de WhatsApp (con core 0.5.0 daban ~850–870 KB). De ellos, unos 480 KB son el suelo de React + Next. Si sale **~850–880 KB**, un componente cliente arrastra zod: importa un valor de `@/site.config` (o de un `lib/*` que lo importe), o la web sigue en core < 0.5.1 e importa un valor de core. Para ver qué pesa y quién lo importa: `pnpm next analyze` (desde la carpeta del template; busca `zod`).
 
 **HTML generado.** Desde la carpeta del template, servidor en segundo plano con su PID:
 

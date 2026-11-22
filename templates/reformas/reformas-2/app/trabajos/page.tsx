@@ -23,7 +23,7 @@ export default function Page() {
           { href: "/trabajos", texto: "Trabajos" },
         ]}
         titulo="Trabajos"
-        entradilla={config.trabajos.length > 0 ? "Obras terminadas, con su barrio, su tamaño y su plazo." : undefined}
+        entradilla={config.trabajos.length > 0 ? "Obras terminadas, con lo que hicimos en cada una." : undefined}
       />
       <FichasTrabajos trabajos={config.trabajos} servicios={config.servicios} galeria={config.galeria} fila={false} />
       <CtaFinal contacto={contacto} mensaje={mensajeInicio(contacto)} />

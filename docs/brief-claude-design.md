@@ -336,7 +336,8 @@ Sustituye al formulario o a la calculadora de presupuesto. Son 2–3 preguntas c
 14. **Legal de imágenes:** las fotos de IA llevan `origen: "ia"` y su etiqueta; **nunca** una persona de IA presentada como el dueño o el equipo, y nunca IA en `/trabajos` de un cliente real (en la demo, sí, etiquetada). Prohibidas las capturas de Street View. De la ficha de Google solo valen las fotos «Del propietario».
 15. **Presupuesto de rendimiento** (se comprueba antes de aceptar el template): JS ≤ 200 KB comprimido por página; foto LCP ≤ 120 KB; LCP ≤ 2,5 s en móvil; accesibilidad 100 en Lighthouse; nada animado entre el `h1` y el `BotonLlamada` del hero; la web se ve completa solo con los datos del scraper (§4, «Datos mínimos»).
 16. **Interacción nativa primero:** menú con la API `popover`, preguntas con `<details name>`, filtros con enlaces `?servicio=`. Un componente cliente solo cuando no hay alternativa (el asistente, el deslizador), y recibe los datos como props: nunca importa `site.config` en el navegador.
-17. **Tipografía:** tamaños fluidos con `clamp()` en `rem + vw` (nunca solo `vw`, por el zoom), `text-wrap: balance` en títulos y `pretty` en párrafos, fuentes variables sin lista de pesos.
+17. **Subrayado de enlaces:** el *preflight* de Tailwind quita el subrayado a todos los enlaces. Si un enlace debe ir subrayado (pie, migas, datos de contacto, enlaces dentro de un párrafo), ponlo explícito en el diseño.
+18. **Tipografía:** tamaños fluidos con `clamp()` en `rem + vw` (nunca solo `vw`, por el zoom), `text-wrap: balance` en títulos y `pretty` en párrafos, fuentes variables sin lista de pesos.
 
 ### Animación (todos los templates)
 
