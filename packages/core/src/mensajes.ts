@@ -4,6 +4,7 @@
  * puede pasar su propio texto por defecto: así cada diseño puede llevar un
  * mensaje distinto y se sabe de qué template llega el lead.
  */
+import { minusculaInicial } from "./formato";
 import type { Servicio, SiteConfig, Trabajo } from "./site-config";
 
 /** Mensaje general por defecto (sin `contacto.mensajeWhatsapp`). */
@@ -23,7 +24,7 @@ export function mensajeGeneral(
 /** Ficha de servicio: el `mensajeWhatsapp` del servicio o «Hola, quiero información sobre {titulo}». */
 export function mensajeServicio(
   servicio: Pick<Servicio, "titulo" | "mensajeWhatsapp">,
-  porDefecto: (titulo: string) => string = (titulo) => `Hola, quiero información sobre ${titulo}`,
+  porDefecto: (titulo: string) => string = (titulo) => `Hola, quiero información sobre ${minusculaInicial(titulo)}.`,
 ): string {
   return servicio.mensajeWhatsapp ?? porDefecto(servicio.titulo);
 }
