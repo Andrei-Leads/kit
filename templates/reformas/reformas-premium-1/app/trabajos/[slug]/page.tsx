@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
-import { buscarTrabajo, metadatosTrabajo, minusculaInicial, parametrosTrabajos, servicioDelTrabajo } from "@andrei-leads/core";
+import { buscarTrabajo, metadatosTrabajo, parametrosTrabajos, servicioDelTrabajo } from "@andrei-leads/core";
 import Link from "next/link";
 
 import config from "@/site.config";
@@ -116,7 +116,7 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
               ))}
               {servicio && (
                 <Enlace href={`/servicios/${servicio.slug}`} className="mt-6">
-                  Ver {minusculaInicial(servicio.titulo)}
+                  Ver el servicio<span className="sr-only">: {servicio.titulo}</span>
                 </Enlace>
               )}
             </div>

@@ -2,7 +2,8 @@
 
 import { useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+// clsx y no cn: tailwind-merge pesa ~30 KB en el navegador.
+import { clsx } from "clsx";
 
 const sinSuscripcion = () => () => {};
 
@@ -19,7 +20,7 @@ export function DeslizadorAntesDespues({ children, className }: { children: Reac
     <div
       data-activo={activo || undefined}
       style={activo ? ({ "--posicion": `${posicion}%`, "--recorte": `inset(0 ${100 - posicion}% 0 0)` } as CSSProperties) : undefined}
-      className={cn("group/ad relative grid grid-cols-1 gap-2 sm:grid-cols-2 data-[activo]:grid-cols-1 data-[activo]:gap-0", className)}
+      className={clsx("group/ad relative grid grid-cols-1 gap-2 sm:grid-cols-2 data-[activo]:grid-cols-1 data-[activo]:gap-0", className)}
     >
       {children}
       {activo && (

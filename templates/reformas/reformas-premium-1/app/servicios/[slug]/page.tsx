@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import {
   buscarServicio,
   metadatosServicio,
-  minusculaInicial,
   otrosServicios,
   parametrosServicios,
   precioDesde,
@@ -57,7 +56,6 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
   const conAntes = obras.find((t) => t.antes);
   const otros = otrosServicios(servicios, s);
   const fotosResto = s.imagenes.slice(2);
-  const enFrase = minusculaInicial(s.titulo);
 
   return (
     <>
@@ -162,7 +160,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
         <section data-tono="claro" aria-labelledby="titulo-obras" className="seccion bg-alterna">
           <div className="contenedor">
             <h2 id="titulo-obras" className="titulo-h2">
-              Obras de <Destacada>{enFrase}</Destacada>
+              Obras donde lo <Destacada>hicimos</Destacada>
             </h2>
             <div className="mt-10 grid gap-x-12 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
               {obras.slice(0, 3).map((t, i) => (

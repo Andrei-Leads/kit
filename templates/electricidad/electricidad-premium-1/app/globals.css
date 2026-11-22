@@ -443,6 +443,12 @@ body:has([data-pagina="contacto"]) .menu-pantalla [data-ruta="/contacto"] .marca
   text-decoration: none;
   color: var(--color-texto);
 }
+/* Zona táctil de 44 px sin mover la línea (el enlace mide 26 px). */
+.enlace-flecha::before {
+  content: "";
+  position: absolute;
+  inset: -9px 0;
+}
 .enlace-flecha::after {
   content: "";
   position: absolute;

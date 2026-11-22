@@ -11,7 +11,7 @@ type Props = {
   enlaces: readonly Ancla[];
 };
 
-const ENLACE = "flex min-h-8 items-center underline-offset-4 hover:underline";
+const ENLACE = "flex min-h-11 items-center underline-offset-4 hover:underline lg:min-h-8";
 
 /** Pie (encargo §6.12): el lema a tamaño display, nombre, enlaces, horario, redes y legales. */
 export async function Pie({ negocio, contacto, redes, enlaces }: Props) {

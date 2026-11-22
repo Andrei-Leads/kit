@@ -32,16 +32,18 @@ const PLAZOS = [
 ];
 
 /**
- * «Hola, vengo de vuestra web. Me interesa reforma integral en una casa de 60 a 120 m²,
- * para este año. ¿Podéis venir a verla?» (redacción de la entrega de diseño; ver detalle).
+ * «Hola, vengo de vuestra web. Quiero presupuesto para reforma integral en una casa de
+ * 60 a 120 m², para este año. ¿Podéis venir a verlo?» (base de la entrega de diseño; «Me
+ * interesa» fallaba con títulos en plural: «Me interesa suelos de madera…»).
  */
 function componer(r: readonly (string | undefined)[]): string {
   const [servicio, casa, plazo] = r;
   let m = "Hola, vengo de vuestra web.";
-  if (servicio || casa) m += ` Me interesa ${[servicio, casa && `en ${casa}`].filter(Boolean).join(" ")}`;
+  if (servicio) m += ` Quiero presupuesto para ${servicio}`;
+  if (casa) m += servicio ? ` en ${casa}` : ` Quiero presupuesto para una reforma en ${casa}`;
   if (plazo) m += `, ${plazo}`;
   if (servicio || casa) m += ".";
-  return `${m} ¿Podéis venir a verla?`;
+  return `${m} ¿Podéis venir a verlo?`;
 }
 
 const sinSuscripcion = () => () => {};

@@ -188,7 +188,8 @@
     outline: 3px solid var(--color-foco);
     outline-offset: 2px;
   }
-  [data-tono="oscuro"] {
+  /* :not(html): CabeceraScroll pone data-tono en <html> solo para la cabecera. */
+  :not(html)[data-tono="oscuro"] {
     --color-foco: #ffffff;
     --color-texto-suave: var(--color-sobre-tinta-suave);
   }
@@ -265,7 +266,7 @@ footer {
   background-color: var(--color-primario-hover);
   border-color: var(--color-primario-hover);
 }
-[data-tono="oscuro"] .boton-wa,
+[data-tono="oscuro"]:not(html) .boton-wa,
 .boton-wa.sobre-tinta {
   border-color: var(--color-primario-borde);
 }
@@ -278,13 +279,13 @@ footer {
   background-color: var(--color-borde-tinta);
   border-color: var(--color-borde-tinta);
 }
-[data-tono="oscuro"] .boton-llamar,
+[data-tono="oscuro"]:not(html) .boton-llamar,
 .boton-llamar.sobre-tinta {
   background-color: transparent;
   color: var(--color-sobre-tinta);
   border-color: var(--color-sobre-tinta);
 }
-[data-tono="oscuro"] .boton-llamar:hover,
+[data-tono="oscuro"]:not(html) .boton-llamar:hover,
 .boton-llamar.sobre-tinta:hover {
   background-color: rgb(238 240 240 / 0.12);
 }

@@ -79,7 +79,7 @@
 
 :root {
   --velo-hero: linear-gradient(to top, rgb(35 26 31 / 0.82), rgb(35 26 31 / 0.55) 38%, rgb(35 26 31 / 0) 72%);
-  --velo-cabecera: linear-gradient(to bottom, rgb(35 26 31 / 0.45), rgb(35 26 31 / 0));
+  --velo-cabecera: linear-gradient(to bottom, rgb(35 26 31 / 0.6), rgb(35 26 31 / 0));
   /* Tarima en espiga (24 × 16 px, trazo de 1 px en yeso al 8 %): firma de todos los estados vacíos. */
   --textura-espiga: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3E%3Cpath d='M0 8 12 0 24 8M0 16 12 8 24 16' fill='none' stroke='%23f5f1eb' stroke-opacity='.08'/%3E%3C/svg%3E");
   --alto-cabecera: 64px;

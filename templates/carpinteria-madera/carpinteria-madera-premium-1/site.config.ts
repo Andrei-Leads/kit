@@ -10,7 +10,7 @@ export default defineSiteConfig({
   negocio: {
     nombre: "Ojeda Ebanistas",
     nombreLegal: "Ojeda Ebanistas, S.L.",
-    nif: "B00000000", // FICTICIO
+    nif: "B00000001", // FICTICIO
     sector: "Carpintería a medida",
     descripcionCorta:
       "Taller de ebanistería en Sevilla: cocinas, vestidores, portones y muebles de madera maciza, hechos en nuestra nave y montados en tu casa.",

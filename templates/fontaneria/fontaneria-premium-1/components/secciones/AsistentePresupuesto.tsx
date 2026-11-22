@@ -3,9 +3,10 @@
 import { useRef, useState, type ReactNode } from "react";
 import { BotonWhatsApp } from "@andrei-leads/core";
 
-import { ALTURA, waRelleno } from "@/components/Botones";
+import { ALTURA, waRelleno } from "@/components/clases-boton";
 import { IconoWhatsapp } from "@/components/Iconos";
-import { cn } from "@/lib/utils";
+// clsx y no cn: tailwind-merge pesa ~30 KB en el navegador.
+import { clsx } from "clsx";
 
 const LUGARES = [
   { texto: "Piso", frase: "un piso" },
@@ -14,6 +15,12 @@ const LUGARES = [
   { texto: "Local", frase: "un local" },
 ] as const;
 const PLAZOS = ["Este mes", "En 1–3 meses", "Estoy comparando presupuestos"] as const;
+/** El plazo como frase («Plazo: estoy comparando presupuestos» sonaba a formulario). */
+const PLAZO_FRASE: Record<string, string> = {
+  "Este mes": "Me gustaría empezar este mes.",
+  "En 1–3 meses": "Me gustaría empezar en 1–3 meses.",
+  "Estoy comparando presupuestos": "De momento estoy comparando presupuestos.",
+};
 
 type Props = {
   /** Títulos de los servicios (datos que llegan como props: nada de `@/site.config` en cliente). */
@@ -30,7 +37,7 @@ const minuscula = (t: string) => t.charAt(0).toLocaleLowerCase("es") + t.slice(1
 /**
  * Asistente de presupuesto (encargo §6.9): tres preguntas con botones que solo
  * componen el `mensaje` de BotonWhatsApp («Hola, quiero presupuesto de {servicio}
- * para {lugar}. Plazo: {plazo}. Os mando fotos y medidas.»). No guarda ni envía
+ * para {lugar}. {plazo como frase} Os mando fotos y medidas.»). No guarda ni envía
  * nada. Sin JavaScript, las opciones no se muestran y queda la pareja con el
  * mensaje general. Sin WhatsApp, no existe (lo decide la página).
  */
@@ -50,7 +57,7 @@ export function AsistentePresupuesto({ servicios, whatsapp, mensajeGeneral, llam
   ];
   const listo = paso === 3;
   const mensaje = listo
-    ? `Hola, quiero presupuesto de ${minuscula(respuestas[0])} para ${LUGARES.find((l) => l.texto === respuestas[1])?.frase ?? minuscula(respuestas[1])}. Plazo: ${minuscula(respuestas[2])}. Os mando fotos y medidas.`
+    ? `Hola, quiero presupuesto de ${minuscula(respuestas[0])} para ${LUGARES.find((l) => l.texto === respuestas[1])?.frase ?? minuscula(respuestas[1])}. ${PLAZO_FRASE[respuestas[2]] ?? `Plazo: ${minuscula(respuestas[2])}.`} Os mando fotos y medidas.`
     : mensajeGeneral;
 
   return (
@@ -58,7 +65,7 @@ export function AsistentePresupuesto({ servicios, whatsapp, mensajeGeneral, llam
       <div className="flex flex-col gap-6 [@media(scripting:none)]:hidden">
         <div aria-hidden="true" className="grid grid-cols-3 gap-1.5">
           {[0, 1, 2].map((i) => (
-            <span key={i} className={cn("h-px", i <= paso ? "bg-white" : "bg-white/25")} />
+            <span key={i} className={clsx("h-px", i <= paso ? "bg-white" : "bg-white/25")} />
           ))}
         </div>
         <div ref={zona} tabIndex={-1} className="flex flex-col gap-6 outline-none">
@@ -102,7 +109,7 @@ export function AsistentePresupuesto({ servicios, whatsapp, mensajeGeneral, llam
         </div>
       </div>
       <div className="flex flex-col gap-2.5 lg:flex-row lg:flex-wrap">
-        <BotonWhatsApp numero={whatsapp} mensaje={mensaje} className={cn(waRelleno, ALTURA.hero, "w-full lg:w-auto")}>
+        <BotonWhatsApp numero={whatsapp} mensaje={mensaje} className={clsx(waRelleno, ALTURA.hero, "w-full lg:w-auto")}>
           <IconoWhatsapp tamano={20} />
           <span>{listo ? "Enviar por WhatsApp" : "Pedir presupuesto por WhatsApp"}</span>
         </BotonWhatsApp>

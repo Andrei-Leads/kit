@@ -13,12 +13,12 @@ export function mensajeInicio(contacto: Pick<SiteConfig["contacto"], "mensajeWha
 
 /** `servicios[].mensajeWhatsapp` o «Hola, quiero presupuesto de {servicio}». */
 export function mensajeDeServicio(servicio: Pick<Servicio, "titulo" | "mensajeWhatsapp">): string {
-  return mensajeServicio(servicio, (t) => `Hola, quiero presupuesto de ${minusculaInicial(t)}`);
+  return mensajeServicio(servicio, (t) => `Hola, quiero presupuesto de ${minusculaInicial(t)}.`);
 }
 
 /** «Hola, he visto el proyecto «{titulo}» y quiero algo parecido». */
 export function mensajeDeTrabajo(trabajo: Pick<Trabajo, "titulo">): string {
-  return mensajeTrabajo(trabajo, (t) => `Hola, he visto el proyecto «${t}» y quiero algo parecido`);
+  return mensajeTrabajo(trabajo, (t) => `Hola, he visto el proyecto «${t}» y quiero algo parecido.`);
 }
 
 /** Texto de la píldora principal (encargo §3). */

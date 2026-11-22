@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { BotonWhatsApp } from "@andrei-leads/core";
 
 /*
@@ -18,7 +18,7 @@ const DONDE: Record<string, string> = {
 const CUANDO: Record<string, string> = {
   "Este mes": "para este mes",
   "En 1–3 meses": "para dentro de 1–3 meses",
-  "Estoy comparando presupuestos": "estoy comparando presupuestos",
+  "Estoy comparando presupuestos": "sin fecha todavía (estoy comparando presupuestos)",
 };
 
 const opcion =
@@ -39,25 +39,45 @@ export function Asistente({ servicios, whatsapp, mensajeBase }: Props) {
   const partes = [que && minuscula(que), donde && DONDE[donde], cuando && CUANDO[cuando]].filter(Boolean);
   const mensaje = partes.length ? `${mensajeBase} ${partes.join(", ")}.` : mensajeBase;
   const hechas = [que, donde, cuando].filter(Boolean).length;
+  // Sin JS (y hasta hidratar) cada opción es un BotonWhatsApp con esa sola respuesta:
+  // así ningún botón queda muerto. Misma caja, así que no salta al hidratar.
+  const hidratado = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
-  const pregunta = (n: number, titulo: string, opciones: readonly string[], valor: string | undefined, poner: (v?: string) => void) => (
+  const pregunta = (
+    n: number,
+    titulo: string,
+    opciones: readonly string[],
+    valor: string | undefined,
+    poner: (v?: string) => void,
+    parte: (o: string) => string,
+  ) => (
     <fieldset className="m-0 border-0 p-0">
       <legend className="mb-3 flex items-baseline gap-2.5 text-lg">
         <span className="etiqueta text-acento">{n}</span>
         {titulo}
       </legend>
       <div className="flex flex-wrap gap-2">
-        {opciones.map((o) => (
-          <button
-            key={o}
-            type="button"
-            aria-pressed={valor === o}
-            onClick={() => poner(valor === o ? undefined : o)}
-            className={`${opcion} ${valor === o ? "" : "border-borde text-texto"}`}
-          >
-            {o}
-          </button>
-        ))}
+        {opciones.map((o) =>
+          !hidratado ? (
+            <BotonWhatsApp key={o} numero={whatsapp} mensaje={`${mensajeBase} ${parte(o)}.`} className={`${opcion} border-borde text-texto no-underline`}>
+              {o}
+            </BotonWhatsApp>
+          ) : (
+            <button
+              key={o}
+              type="button"
+              aria-pressed={valor === o}
+              onClick={() => poner(valor === o ? undefined : o)}
+              className={`${opcion} ${valor === o ? "" : "border-borde text-texto"}`}
+            >
+              {o}
+            </button>
+          ),
+        )}
       </div>
     </fieldset>
   );
@@ -67,9 +87,9 @@ export function Asistente({ servicios, whatsapp, mensajeBase }: Props) {
       <div aria-hidden="true" className="-mt-px h-px w-full">
         <div className="progreso h-px bg-acento" style={{ transform: `scaleX(${hechas / 3})` }} />
       </div>
-      {pregunta(1, "¿Qué necesitas?", [...servicios.slice(0, 6), "Otra cosa"], que, setQue)}
-      {pregunta(2, "¿Dónde?", Object.keys(DONDE), donde, setDonde)}
-      {pregunta(3, "¿Para cuándo?", Object.keys(CUANDO), cuando, setCuando)}
+      {pregunta(1, "¿Qué necesitas?", [...servicios.slice(0, 6), "Otra cosa"], que, setQue, minuscula)}
+      {pregunta(2, "¿Dónde?", Object.keys(DONDE), donde, setDonde, (o) => DONDE[o])}
+      {pregunta(3, "¿Para cuándo?", Object.keys(CUANDO), cuando, setCuando, (o) => CUANDO[o])}
       <div className="border border-[var(--color-linea)] p-5">
         <p className="etiqueta m-0 mb-2 text-acento">Tu mensaje</p>
         <p className="m-0" aria-live="polite">

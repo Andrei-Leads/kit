@@ -43,7 +43,7 @@ export default function Page() {
             Lo que <Senal>instalamos</Senal>.
           </>
         }
-        frase={`${cuantos} con el mismo criterio: la instalación ordenada, documentada y legalizada.`}
+        frase={n === 1 ? "La instalación ordenada, documentada y legalizada." : `${cuantos} con el mismo criterio: la instalación ordenada, documentada y legalizada.`}
         cta={cta}
         confianza={lineaConfianza(config)}
         imagenes={fotos}

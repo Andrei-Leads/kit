@@ -43,7 +43,8 @@ export function Asistente({ servicios, numero, mensajeGenerico, llamada }: Props
     cuenta === 0
       ? mensajeGenerico
       : [
-          `Hola, me interesa ${pieza >= 0 ? servicios[pieza].enFrase : "una pieza a medida"}.`,
+          // «Quiero presupuesto de»: «me interesa» no concuerda con títulos en plural («me interesa cocinas a medida»).
+          `Hola, quiero presupuesto de ${pieza >= 0 ? servicios[pieza].enFrase : "una pieza a medida"}.`,
           punto >= 0 ? PUNTOS[punto][1] : "",
           visita >= 0 ? VISITAS[visita][1] : "",
           "Os mando fotos.",

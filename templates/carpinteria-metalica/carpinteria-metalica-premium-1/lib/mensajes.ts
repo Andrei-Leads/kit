@@ -13,7 +13,7 @@ export function mensajeInicio(contacto: Pick<SiteConfig["contacto"], "mensajeWha
 
 /** `servicios[].mensajeWhatsapp` o el de core («Hola, quiero información sobre {servicio}»). */
 export function mensajeDeServicio(servicio: Pick<Servicio, "titulo" | "mensajeWhatsapp">): string {
-  return mensajeServicio(servicio, (t) => `Hola, quiero información sobre ${minusculaInicial(t)}`);
+  return mensajeServicio(servicio, (t) => `Hola, quiero información sobre ${minusculaInicial(t)}.`);
 }
 
 /** El de core: «Hola, he visto el trabajo «{titulo}» y quiero algo parecido.». */

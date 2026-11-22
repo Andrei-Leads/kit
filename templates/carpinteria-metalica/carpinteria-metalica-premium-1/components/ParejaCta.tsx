@@ -41,7 +41,7 @@ export function ParejaCta({ cta, textoWhatsapp, textoLlamar: tl, tono = "claro",
   const ancho = apilar ? "max-lg:w-full" : "flex-[1_1_auto] lg:flex-none";
   return (
     <div className={cn("w-full", className)}>
-      <div className={cn("flex gap-2", apilar ? "max-lg:flex-col" : "flex-wrap", !cta.whatsapp && "lg:max-w-[560px]")}>
+      <div className={cn("flex gap-2", apilar ? "flex-wrap max-lg:flex-col" : "flex-wrap", !cta.whatsapp && "lg:max-w-[560px]")}>
         {cta.whatsapp && (
           <BotonWhatsApp numero={cta.whatsapp} mensaje={cta.mensaje} className={cn("boton boton-wa", alto, pad, ancho, oscuro && "sobre-tinta")}>
             <IconoWhatsapp />
@@ -58,7 +58,7 @@ export function ParejaCta({ cta, textoWhatsapp, textoLlamar: tl, tono = "claro",
       {confianza && (
         <p className={cn("m-0 mt-3 text-sm leading-normal", oscuro ? "text-sobre-tinta-suave" : "text-texto-suave")}>
           {confianza.href ? (
-            <a href={confianza.href} target="_blank" rel="noopener noreferrer" className="underline decoration-1 underline-offset-4">
+            <a href={confianza.href} target="_blank" rel="noopener noreferrer" className="relative underline decoration-1 underline-offset-4 before:absolute before:inset-x-0 before:-inset-y-3.5 before:content-['']">
               {confianza.texto}
             </a>
           ) : (

@@ -46,7 +46,7 @@ export default function Page() {
             <div className={FILA}>
               <dt className={DT}>Email</dt>
               <dd className="m-0 mt-2 text-[17px]">
-                <a href={`mailto:${c.email}`} className="break-all underline decoration-1 underline-offset-[5px]">
+                <a href={`mailto:${c.email}`} className="relative break-all underline decoration-1 underline-offset-[5px] before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']">
                   {c.email}
                 </a>
               </dd>
@@ -56,7 +56,8 @@ export default function Page() {
               <dd className="m-0 mt-2 text-[17px] leading-normal">
                 {c.direccion.calle}
                 <br />
-                {c.direccion.cp} {c.direccion.ciudad} ({c.direccion.provincia})
+                {c.direccion.cp} {c.direccion.ciudad}
+                {c.direccion.provincia !== c.direccion.ciudad && ` (${c.direccion.provincia})`}
                 <br />
                 <EnlaceFlecha href={urlComoLlegar(c)} externo className="text-sobre-tinta">
                   Cómo llegar

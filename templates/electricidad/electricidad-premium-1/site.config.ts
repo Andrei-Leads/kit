@@ -10,7 +10,7 @@ export default defineSiteConfig({
   negocio: {
     nombre: "Borne Instalaciones",
     nombreLegal: "Borne Instal·lacions Elèctriques, S.L.",
-    nif: "B00000000", // NIF FICTICIO
+    nif: "B00000001", // NIF FICTICIO
     sector: "Instalaciones eléctricas",
     descripcionCorta:
       "Reforma eléctrica integral, domótica, puntos de recarga y autoconsumo en Valencia. Presupuesto por partidas y la instalación legalizada.",

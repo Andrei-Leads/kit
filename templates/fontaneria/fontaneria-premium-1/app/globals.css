@@ -73,7 +73,9 @@
 
 :root {
   --espacio-seccion: clamp(5rem, 3rem + 6vw, 9rem);
-  --velo-hero: linear-gradient(20deg, rgb(10 26 42 / 0.8), rgb(10 26 42 / 0.4) 45%, transparent 72%);
+  /* Franja superior: contraste de la cabecera transparente sobre cualquier foto. */
+  --velo-hero: linear-gradient(to bottom, rgb(10 26 42 / 0.6), transparent 8rem),
+    linear-gradient(20deg, rgb(10 26 42 / 0.8), rgb(10 26 42 / 0.4) 45%, transparent 72%);
   --alto-cabecera: 60px;
   --margen: 16px;
   /* Trazado isométrico de tuberías, líneas de 1 px al 9 % de blanco (< 1 KB). */

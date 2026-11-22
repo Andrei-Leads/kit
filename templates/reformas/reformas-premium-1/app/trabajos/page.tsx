@@ -16,7 +16,7 @@ export const metadata: Metadata = metadatosPagina(config, { ruta: "/trabajos", t
 
 /** Columnas alternas del sumario: 7 y 4 en escritorio; 100 % y 78 % en móvil. */
 const ritmo = (i: number) =>
-  i % 2 === 0 ? "lg:col-span-7" : "ml-auto w-[78%] lg:col-span-4 lg:col-start-9 lg:mt-[160px] lg:w-auto";
+  i % 2 === 0 ? "lg:col-span-7" : "ml-auto w-[78%] lg:col-span-4 lg:col-start-9 lg:mt-[160px] lg:ml-0 lg:w-auto";
 
 /**
  * /trabajos («Obras», encargo §7): `h1` «Obras en *{ciudad}*» y el sumario de tarjetas 4:5

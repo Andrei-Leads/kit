@@ -38,7 +38,7 @@ export default function Page() {
         <Pareja datos={datos} fondo="claro" className="max-w-[620px]" />
       </HeroInterior>
       <ServiciosApilados servicios={servicios} datos={{ telefono: contacto.telefono, whatsapp: contacto.whatsapp }} apilados={6} conTitulo={false} nivel="h2" />
-      <ResenasTestimonio config={config} datos={datos} />
+      <ResenasTestimonio config={config} datos={datos} testimonio={false} />
       <CtaFinal datos={datos} confianza={lineaConfianza(config, "horario")} />
     </>
   );

@@ -82,7 +82,10 @@ export function ServiciosApilados({ servicios, datos, apilados = 4, conTitulo = 
                     </div>
                   )}
                   <div className={cn("max-w-[440px]", !foto && "lg:max-w-[640px]")}>
-                    <p className={cn("etiqueta", oscuro ? "text-texto-claro" : "text-texto-suave")}>Servicio {num(i + 1)}</p>
+                    <p className={cn("etiqueta flex flex-wrap gap-x-4", oscuro ? "text-texto-claro" : "text-texto-suave")}>
+                      <span>Servicio {num(i + 1)}</span>
+                      {precio && <span>{precio}</span>}
+                    </p>
                     <Titulo className="m-0 mt-3 text-[clamp(1.75rem,1.2rem+2.2vw,2.75rem)] leading-[1.05] tracking-[-0.015em]">
                       {oscuro ? (
                         <>
@@ -93,16 +96,18 @@ export function ServiciosApilados({ servicios, datos, apilados = 4, conTitulo = 
                       )}
                     </Titulo>
                     <p className={cn("m-0 mt-3 line-clamp-3 lg:mt-5 lg:line-clamp-none", oscuro ? "text-texto-claro" : "text-texto-suave")}>{s.descripcion}</p>
-                    {precio && <p className="m-0 mt-2 text-[15px]">{precio}</p>}
                     {s.incluye.length > 0 && (
-                      <ul className={cn("m-0 mt-6 hidden list-none flex-wrap gap-x-5 gap-y-1 border-t p-0 pt-4 text-sm lg:flex", oscuro ? "border-borde-oscuro" : "border-borde")}>
-                        {s.incluye.slice(0, 3).map((x) => (
-                          <li key={x}>· {x}</li>
+                      <ol className="m-0 mt-5 hidden list-none p-0 text-[15px] lg:block">
+                        {s.incluye.slice(0, 3).map((x, j) => (
+                          <li key={x} className={cn("flex gap-4 border-t py-2.5", oscuro ? "border-borde-oscuro" : "border-borde")}>
+                            <span className={cn("tabular-nums", oscuro ? "text-texto-claro" : "text-texto-suave")}>{num(j + 1)}</span>
+                            {x}
+                          </li>
                         ))}
-                      </ul>
+                      </ol>
                     )}
                     <Enlace href={`/servicios/${s.slug}`} className="mt-2 lg:mt-5">
-                      Ver {minusculaInicial(s.titulo)}
+                      Ver el servicio<span className="sr-only">: {s.titulo}</span>
                     </Enlace>
                     <Pareja
                       datos={{ ...datos, mensaje: mensajeDeServicio(s) }}

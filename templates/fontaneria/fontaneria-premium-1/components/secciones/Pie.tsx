@@ -38,7 +38,7 @@ export async function Pie({ negocio, contacto, redes, enlaces }: Props) {
             <ul className="m-0 flex list-none flex-col p-0">
               {enlaces.map((e) => (
                 <li key={e.href}>
-                  <Link href={e.href} className="inline-flex min-h-[31px] items-center no-underline hover:underline">
+                  <Link href={e.href} className="inline-flex min-h-11 items-center no-underline hover:underline lg:min-h-[31px]">
                     {e.texto}
                   </Link>
                 </li>
@@ -48,7 +48,7 @@ export async function Pie({ negocio, contacto, redes, enlaces }: Props) {
           <div className="flex min-w-0 flex-col gap-3">
             <p className="etiqueta !text-sobre-tinta-suave">Contacto</p>
             <p className="m-0">{telefonoVisible(contacto.telefono)}</p>
-            <a href={`mailto:${contacto.email}`} className="no-underline [overflow-wrap:anywhere] hover:underline">
+            <a href={`mailto:${contacto.email}`} className="inline-flex min-h-11 items-center no-underline [overflow-wrap:anywhere] hover:underline lg:min-h-0">
               {contacto.email}
             </a>
             <p className="m-0 leading-normal text-sobre-tinta-suave">

@@ -11,7 +11,7 @@ export default defineSiteConfig({
   negocio: {
     nombre: "Lucernario Reformas",
     nombreLegal: "Lucernario Obras e Interiores, S.L.",
-    nif: "B00000000", // NIF ficticio
+    nif: "B00000001", // NIF ficticio
     sector: "Reforma integral de pisos",
     descripcionCorta: "Reformamos pisos enteros, baños y cocinas en Madrid, con un solo interlocutor, precio cerrado y fecha de entrega en el contrato.",
     anioFundacion: 2008,
@@ -188,7 +188,7 @@ export default defineSiteConfig({
     { autor: "Lucía S.", texto: "Muy limpios y muy serios.", puntuacion: 5, fecha: "2025-12", fuente: "google" },
     { autor: "Fernando G.", texto: "Nos enseñaron dos obras parecidas antes de firmar. Eso nos convenció.", puntuacion: 5, fecha: "2025-10", fuente: "google" },
   ],
-  acreditaciones: [{ nombre: "Registro de Empresas Acreditadas (REA)", numero: "n.º 13/0034871" }],
+  acreditaciones: [{ nombre: "Registro de Empresas Acreditadas (REA)", numero: "n.º 00/0000000 (ficticio)" }],
   garantias: ["Precio cerrado y firmado antes de empezar", "Fecha de entrega en el contrato", "Un solo interlocutor durante toda la obra", "Casa protegida y recogida cada tarde", "3 años de garantía en la obra"],
   marcas: ["Cosentino", "Laufen", "Hansgrohe", "Finsa"],
   empresa: {

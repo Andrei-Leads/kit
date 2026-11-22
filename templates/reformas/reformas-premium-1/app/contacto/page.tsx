@@ -38,13 +38,13 @@ export default function Page() {
             Hablemos de <Destacada>tu casa</Destacada>
           </>
         }
-        frase="Mándanos fotos y medidas por WhatsApp o llámanos, y quedamos para ir a verla."
+        frase={contacto.whatsapp ? "Mándanos fotos y medidas por WhatsApp o llámanos, y quedamos para ir a verla." : "Llámanos y quedamos para ir a ver tu casa."}
         franja={false}
       >
         <Pareja datos={datos} fondo="claro" textoWa={TEXTOS.whatsappContacto} className="max-w-[620px]" />
         <BotonLlamada
           telefono={contacto.telefono}
-          className="mt-8 inline-block text-[clamp(2.25rem,1rem+5vw,5rem)] leading-none tracking-[-0.02em] no-underline hover:underline"
+          className="mt-7 inline-block py-1 text-[clamp(2.25rem,1rem+5vw,5rem)] leading-none tracking-[-0.02em] no-underline hover:underline"
         >
           {telefonoVisible(contacto.telefono)}
         </BotonLlamada>
@@ -74,7 +74,7 @@ export default function Page() {
             <div>
               <a href={urlComoLlegar(contacto)} target="_blank" rel="noopener" className={ENLACE_EXTERNO}>
                 <span>
-                  Cómo llegar<span className="sr-only"> (se abre Google Maps)</span>
+                  Cómo llegar<span className="sr-only"> (se abre en Google Maps)</span>
                 </span>
                 <span aria-hidden="true">→</span>
               </a>

@@ -61,7 +61,7 @@ export default function Page() {
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
             <div>
               <h2 className={ETIQUETA}>Email</h2>
-              <a href={`mailto:${contacto.email}`} className="break-words underline underline-offset-4 hover:text-primario">
+              <a href={`mailto:${contacto.email}`} className="relative break-words underline underline-offset-4 hover:text-primario before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']">
                 {contacto.email}
               </a>
             </div>

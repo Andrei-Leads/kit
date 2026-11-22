@@ -47,7 +47,7 @@ export function ParejaCta({ cta, tono, textoWhatsapp = TEXTO_WA, confianza, clas
               <IconoWhatsapp />
               <span>{textoWhatsapp}</span>
             </BotonWhatsApp>
-            <BotonLlamada telefono={telefono} className={cn(llamarClase, "flex-[1_1_180px]")}>
+            <BotonLlamada telefono={telefono} className={cn(llamarClase, "flex-[1_1_180px] whitespace-nowrap")}>
               <IconoTelefono />
               <span>{textoLlamar(telefono)}</span>
             </BotonLlamada>

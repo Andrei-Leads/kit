@@ -73,7 +73,7 @@ export function EnPortada({ config, datos }: Props) {
                     numero={i + 2}
                     i={i}
                     sizes="(min-width: 1024px) 520px, 90vw"
-                    className={cn(i === 0 ? "lg:col-span-6" : "ml-auto w-[78%] lg:col-span-5 lg:col-start-8 lg:mt-[120px] lg:w-auto")}
+                    className={cn(i === 0 ? "lg:col-span-6" : "ml-auto w-[78%] lg:col-span-5 lg:col-start-8 lg:mt-[120px] lg:ml-0 lg:w-auto")}
                   />
                 ))}
               </div>
@@ -86,7 +86,7 @@ export function EnPortada({ config, datos }: Props) {
                 key={g.src}
                 data-aparecer
                 style={{ "--i": i } as React.CSSProperties}
-                className={cn(i === 0 && "lg:col-span-7", i === 1 && "ml-auto w-[78%] lg:col-span-5 lg:mt-[120px] lg:w-auto", i === 2 && "lg:col-span-6")}
+                className={cn(i === 0 && "lg:col-span-7", i === 1 && "ml-auto w-[78%] lg:col-span-5 lg:mt-[120px] lg:ml-0 lg:w-auto", i === 2 && "lg:col-span-6")}
               >
                 <figure className="m-0">
                   <Foto imagen={g} sizes="(min-width: 1024px) 560px, 90vw" proporcion="4/5" />

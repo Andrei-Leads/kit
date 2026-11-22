@@ -7,6 +7,8 @@ import { lineaConfianza, partirResena, type DatosCta } from "@/lib/textos";
 type Props = {
   config: Pick<SiteConfig, "resenas" | "valoracion" | "contacto" | "trabajos">;
   datos: DatosCta;
+  /** `false` en /servicios: el diseño solo pone ahí las reseñas, sin la cita de la obra. */
+  testimonio?: boolean;
 };
 
 /**
@@ -15,9 +17,9 @@ type Props = {
  * 3 reseñas más recientes en columnas con filete. Las largas, «Leer más» en `<details>`.
  * «Ver todas en Google →» solo con `fichaGoogle`. Sin reseñas ni testimonio, no existe.
  */
-export function ResenasTestimonio({ config, datos }: Props) {
+export function ResenasTestimonio({ config, datos, testimonio = true }: Props) {
   const { resenas, valoracion, contacto, trabajos } = config;
-  const conTestimonio = trabajos.find((t) => t.testimonio);
+  const conTestimonio = testimonio ? trabajos.find((t) => t.testimonio) : undefined;
   if (resenas.length === 0 && !conTestimonio) return null;
   const recientes = [...resenas].sort((a, b) => (b.fecha ?? "").localeCompare(a.fecha ?? "")).slice(0, 3);
 
@@ -43,7 +45,7 @@ export function ResenasTestimonio({ config, datos }: Props) {
           <figure data-aparecer className="m-0 mt-[clamp(48px,5vw,88px)] grid items-center gap-x-12 gap-y-8 border-t border-borde pt-10 md:grid-cols-[200px_1fr]">
             <Foto imagen={conTestimonio.imagenes[0]} sizes="200px" proporcion="4/5" etiqueta="mini" className="w-[140px] md:w-full" />
             <div>
-              <blockquote className="m-0 max-w-[30ch] font-destacada text-[clamp(1.625rem,1.3rem+1.2vw,2rem)] leading-[1.25] italic">
+              <blockquote className="m-0 max-w-[760px] font-destacada text-[clamp(1.625rem,1.3rem+1.2vw,2rem)] leading-[1.25] text-pretty italic">
                 «{conTestimonio.testimonio.texto}»
               </blockquote>
               <figcaption className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[15px] text-texto-suave">

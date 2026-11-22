@@ -54,7 +54,7 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
     servicio && {
       dt: "Servicio",
       dd: (
-        <Link href={`/servicios/${servicio.slug}`} className="underline underline-offset-4 hover:text-primario">
+        <Link href={`/servicios/${servicio.slug}`} className="relative underline underline-offset-4 hover:text-primario before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']">
           {servicio.titulo}
         </Link>
       ),

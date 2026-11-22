@@ -66,7 +66,7 @@ export function Credenciales({ acreditaciones, garantias, marcas, pie, id = "tit
         {garantias.length > 0 && (
           <div className="flex flex-col gap-4">
             <p className="etiqueta m-0 text-acento">Garantías</p>
-            <ol className="m-0 grid list-none gap-x-10 p-0 md:grid-cols-2">
+            <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-x-12 p-0">
               {garantias.map((g, i) => (
                 <li key={g} data-aparecer className="flex gap-3 border-t border-[var(--color-linea)] py-4 text-[17px]">
                   <span className="etiqueta mt-1 text-[10px] text-acento">{numero(i)}</span>

@@ -35,7 +35,7 @@ export async function Pie({ negocio, contacto, redes, enlaces }: Props) {
             <ul className="m-0 list-none p-0">
               {enlaces.map((e) => (
                 <li key={e.href}>
-                  <Link href={e.href} className="inline-flex min-h-9 items-center no-underline hover:underline">
+                  <Link href={e.href} className="inline-flex min-h-11 items-center lg:min-h-9 no-underline hover:underline">
                     {e.texto}
                   </Link>
                 </li>
@@ -43,7 +43,7 @@ export async function Pie({ negocio, contacto, redes, enlaces }: Props) {
             </ul>
           </nav>
           <address className="leading-relaxed text-sobre-tinta-suave not-italic lg:col-span-4">
-            <p className="m-0">{direccionLinea(contacto.direccion, { provincia: true })}</p>
+            <p className="m-0">{direccionLinea(contacto.direccion, { provincia: contacto.direccion.provincia !== contacto.direccion.ciudad })}</p>
             {horario.length > 0 && (
               <ul className="m-0 mt-3 list-none p-0">
                 {horario.map((l) => (
@@ -54,7 +54,7 @@ export async function Pie({ negocio, contacto, redes, enlaces }: Props) {
               </ul>
             )}
             <p className="m-0 mt-3">
-              <a href={`mailto:${contacto.email}`} className="inline-flex min-h-9 items-center text-sobre-tinta underline decoration-1">
+              <a href={`mailto:${contacto.email}`} className="inline-flex min-h-11 items-center lg:min-h-9 text-sobre-tinta underline decoration-1">
                 {contacto.email}
               </a>
             </p>
@@ -63,14 +63,14 @@ export async function Pie({ negocio, contacto, redes, enlaces }: Props) {
             <ul className="m-0 list-none p-0 text-sobre-tinta-suave">
               {enlacesLegales.map((e) => (
                 <li key={e.href}>
-                  <Link href={e.href} className="inline-flex min-h-9 items-center no-underline hover:underline">
+                  <Link href={e.href} className="inline-flex min-h-11 items-center lg:min-h-9 no-underline hover:underline">
                     {e.texto}
                   </Link>
                 </li>
               ))}
               {listaR.map((r) => (
                 <li key={r.href}>
-                  <a href={r.href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center underline decoration-1">
+                  <a href={r.href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center lg:min-h-9 underline decoration-1">
                     {r.texto}
                   </a>
                 </li>

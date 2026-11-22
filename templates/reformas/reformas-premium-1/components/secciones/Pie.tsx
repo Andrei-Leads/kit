@@ -25,7 +25,7 @@ type Props = {
 const PEQUENO = "etiqueta mb-3 text-texto-claro/80";
 
 /**
- * Pie en tinta (encargo §6.10): el lema a `--text-pano`, columnas de nombre y páginas,
+ * Pie en tinta (encargo §6.10): el lema al tamaño del diseño (clamp 3–9rem), columnas de nombre y páginas,
  * contacto con «Cómo llegar», horario corto y redes; abajo, © y `enlacesLegales`.
  * Deja 80 px libres sobre la barra en móvil y 96 px abajo a la derecha en escritorio
  * para la pareja flotante.
@@ -37,7 +37,7 @@ export async function Pie({ negocio, contacto, redes, enlaces }: Props) {
   return (
     <footer data-tono="oscuro" className="bg-tinta pt-[clamp(80px,3rem+6vw,140px)] pb-[calc(80px+72px+env(safe-area-inset-bottom))] text-fondo lg:pb-[96px]">
       <div className="contenedor">
-        <p className="m-0 text-[length:var(--text-pano)] leading-none tracking-[-0.03em] [text-wrap:balance]">
+        <p className="m-0 text-[clamp(3rem,1.5rem+6vw,9rem)] leading-[0.98] tracking-[-0.025em] [text-wrap:balance]">
           {TEXTOS.lema.antes} <Destacada>{TEXTOS.lema.destacada}</Destacada> {TEXTOS.lema.despues}
         </p>
         <div className="mt-[clamp(56px,4vw,96px)] grid gap-x-10 gap-y-10 border-t border-borde-oscuro pt-10 sm:grid-cols-2 lg:grid-cols-4">

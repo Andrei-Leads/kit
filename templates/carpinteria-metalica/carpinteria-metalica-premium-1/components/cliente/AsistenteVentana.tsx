@@ -35,10 +35,12 @@ export function AsistenteVentana({ soluciones, whatsapp, mensajeVacio, llamada, 
   const hecho = paso >= 3;
   const q = Math.min(paso, 2);
   const [a, b, c] = r;
-  const vista = `Hola, os escribo desde vuestra web. Me interesa ${a ? minuscula(a) : "…"} para ${b ? minuscula(b) : "…"}. Lo que más me importa: ${c ? minuscula(c) : "…"}. ¿Podéis venir a medir?`;
+  // Hueco «…» sin punto detrás (nada de «….» en la vista previa).
+  const h = (x: string | undefined, fin = "") => (x ? `${minuscula(x)}${fin}` : "…");
+  const vista = `Hola, os escribo desde vuestra web. Quiero presupuesto de ${h(a)} para ${h(b, ".")} Lo que más me importa: ${h(c, ".")} ¿Podéis venir a medir?`;
   const mensaje = !a && !b && !c
     ? mensajeVacio
-    : ["Hola, os escribo desde vuestra web.", a && `Me interesa ${minuscula(a)}${b ? ` para ${minuscula(b)}` : ""}.`, !a && b && `Es para ${minuscula(b)}.`, c && `Lo que más me importa: ${minuscula(c)}.`, "¿Podéis venir a medir?"]
+    : ["Hola, os escribo desde vuestra web.", a && `Quiero presupuesto de ${minuscula(a)}${b ? ` para ${minuscula(b)}` : ""}.`, !a && b && `Es para ${minuscula(b)}.`, c && `Lo que más me importa: ${minuscula(c)}.`, "¿Podéis venir a medir?"]
         .filter(Boolean)
         .join(" ");
 

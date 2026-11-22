@@ -10,7 +10,7 @@ export default defineSiteConfig({
   negocio: {
     nombre: "Lluerna Tancaments",
     nombreLegal: "Lluerna Cerramientos de Aluminio, S.L.",
-    nif: "B00000000", // FICTICIO
+    nif: "B00000001", // FICTICIO
     sector: "Carpintería de aluminio",
     descripcionCorta: "Fabricamos e instalamos ventanas, balconeras, cerramientos y puertas de aluminio y PVC en Barcelona y el Vallès.",
     anioFundacion: 2007,

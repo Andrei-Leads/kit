@@ -39,7 +39,7 @@ export function Pano({ video, imagen, cifras, servicios, cta }: Props) {
         </div>
 
         <h2 id="titulo-pano" className="sr-only">
-          La empresa en cifras
+          {cifras.length > 0 ? "La empresa en cifras" : "La instalación, por dentro"}
         </h2>
         <p aria-hidden="true" className="pano-lema absolute inset-x-0 top-[32%] lg:top-[46%] m-0 -translate-y-1/2 px-6 text-center font-titulo text-[clamp(2rem,1.4rem+2.4vw,3.5rem)] leading-[1.05] tracking-[-0.02em] text-balance">
           La instalación, <Senal>por dentro</Senal>.

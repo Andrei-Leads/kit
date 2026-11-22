@@ -54,8 +54,8 @@ export function Resenas({ resenas, valoracion, fichaGoogle, trabajos, cta }: Pro
           )}
         </div>
         {grande && (
-          <figure className="m-0 mt-8 max-w-[28ch] lg:mt-10 lg:max-w-[24em]" data-aparecer>
-            <blockquote className="fino m-0 text-[32px] leading-[1.18] lg:text-[44px]">«{grande.texto}»</blockquote>
+          <figure className="m-0 mt-8 max-w-[1000px] lg:mt-10" data-aparecer>
+            <blockquote className="fino m-0 text-[32px] leading-[1.18] text-balance lg:text-[44px]">«{grande.texto}»</blockquote>
             <figcaption>
               <Pie r={grande} />
             </figcaption>

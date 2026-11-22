@@ -28,7 +28,7 @@ export function Migas({ migas, className }: Props) {
                 </span>
               ) : (
                 <>
-                  <Link href={m.href} className="inline-flex min-h-8 items-center underline-offset-4 hover:underline">
+                  <Link href={m.href} className="inline-flex min-h-11 items-center underline-offset-4 hover:underline lg:min-h-8">
                     {m.texto}
                   </Link>
                   <span aria-hidden="true">/</span>
