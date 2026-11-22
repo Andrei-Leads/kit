@@ -100,7 +100,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
             </h2>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-x-[clamp(24px,4vw,64px)] gap-y-12">
               {obras.map((t) => (
-                <TarjetaObra key={t.slug} trabajo={t} sizes="(min-width: 1024px) 45vw, 100vw" />
+                <TarjetaObra key={t.slug} trabajo={t} sizes={obras.length === 1 ? "(min-width: 1440px) 1312px, 100vw" : "(min-width: 1024px) 45vw, 100vw"} />
               ))}
             </div>
           </section>

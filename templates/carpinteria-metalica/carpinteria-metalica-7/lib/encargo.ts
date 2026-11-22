@@ -21,6 +21,7 @@ export function componerEncargo(general: string, pieza?: string, donde?: string,
   const partes = ["Hola, os escribo desde vuestra web."];
   if (pieza || donde) partes.push(`Quiero ${pieza ?? "una pieza"}${donde ? ` para ${donde}` : ""}.`);
   if (medidas) partes.push(`${medidas}.`);
-  partes.push("Os mando una foto.");
+  // «Os mando una foto con el metro» ya la anuncia: sin repetir «Os mando una foto.».
+  if (!medidas?.includes("foto")) partes.push("Os mando una foto.");
   return partes.join(" ");
 }

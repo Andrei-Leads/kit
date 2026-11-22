@@ -39,7 +39,7 @@ export function HeroCollage({ negocio, contacto, valoracion, fotoA, fotoB, mensa
           {valoracion && (
             <a
               href="#resenas"
-              className="inline-flex min-h-8 items-center gap-2 self-start rounded-full border border-borde bg-superficie py-1 ps-2.5 pe-3.5 text-[15px] leading-tight no-underline"
+              className="relative inline-flex min-h-8 items-center gap-2 self-start rounded-full after:absolute after:-inset-y-1.5 after:inset-x-0 after:content-[''] border border-borde bg-superficie py-1 ps-2.5 pe-3.5 text-[15px] leading-tight no-underline"
             >
               <span aria-hidden="true" className="text-base text-acento">
                 ★

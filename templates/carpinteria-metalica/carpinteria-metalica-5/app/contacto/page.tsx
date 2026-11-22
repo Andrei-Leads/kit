@@ -33,7 +33,7 @@ export default function Page() {
       <div className="mt-[clamp(64px,9vw,128px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-x-[clamp(24px,4vw,64px)] gap-y-10">
         <div className={BLOQUE}>
           <h2 className={H2}>Email</h2>
-          <a href={`mailto:${c.email}`} className="font-titulo text-[22px] leading-[1.3] break-words underline decoration-1 underline-offset-[5px]">
+          <a href={`mailto:${c.email}`} className="-my-2 inline-block max-w-full py-2 font-titulo text-[22px] leading-[1.3] break-words underline decoration-1 underline-offset-[5px]">
             {c.email}
           </a>
         </div>

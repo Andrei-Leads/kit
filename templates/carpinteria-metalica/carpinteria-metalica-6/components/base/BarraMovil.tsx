@@ -23,7 +23,8 @@ const BOTON =
  */
 export function BarraMovil({ telefono, whatsapp, mensaje, className }: Props) {
   return (
-    <div
+    <nav
+      aria-label="Contacto rápido"
       className={cn(
         "barra-movil fixed inset-x-0 bottom-0 z-40 flex gap-2 bg-superficie px-3 pt-2 pb-[calc(8px+env(safe-area-inset-bottom))] shadow-[0_-6px_18px_-10px_rgb(0_0_0/0.25)] lg:hidden",
         className,
@@ -46,6 +47,6 @@ export function BarraMovil({ telefono, whatsapp, mensaje, className }: Props) {
           Llamar · {telefonoVisible(telefono)}
         </BotonLlamada>
       )}
-    </div>
+    </nav>
   );
 }

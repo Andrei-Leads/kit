@@ -15,6 +15,8 @@ type Props = {
  * «DESDE» solo si `precioDesde` empieza por «desde».
  */
 export function Servicios({ servicios, conCabecera }: Props) {
+  // Sin cabecera propia (/servicios), las tarjetas cuelgan del h1 de la página: h2.
+  const Titulo = conCabecera ? "h3" : "h2";
   return (
     <section
       id={conCabecera ? "servicios" : undefined}
@@ -48,7 +50,7 @@ export function Servicios({ servicios, conCabecera }: Props) {
                   </span>
                 )}
                 {etiqueta && <span className="pie-foto -mt-1 text-xs leading-[1.2]">{etiqueta}</span>}
-                <h3 className="font-titulo text-lg leading-[1.15] font-medium text-balance lg:text-[22px]">{s.titulo}</h3>
+                <Titulo className="font-titulo text-lg leading-[1.15] font-medium text-balance lg:text-[22px]">{s.titulo}</Titulo>
                 <p className="hidden text-base leading-[1.55] text-texto-suave text-pretty lg:block">{s.descripcion}</p>
                 {precio && (
                   <p className="text-[15px]">

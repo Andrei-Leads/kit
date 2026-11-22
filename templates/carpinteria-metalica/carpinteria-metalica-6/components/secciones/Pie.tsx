@@ -10,7 +10,7 @@ type Props = {
   enlaces: readonly Ancla[];
 };
 
-const ENLACE = "inline-flex min-h-10 items-center text-[15px] no-underline hover:underline underline-offset-4";
+const ENLACE = "inline-flex min-h-11 items-center text-[15px] no-underline hover:underline underline-offset-4";
 const ROTULO = "mb-2 text-[13px] font-bold tracking-[0.08em] text-texto-suave uppercase";
 
 /**
@@ -32,14 +32,14 @@ export async function Pie({ negocio, contacto, redes, enlaces }: Props) {
             <p className="mb-2 text-[15px] leading-[1.55] text-texto-suave">
               {direccion.calle} · {direccion.cp} {direccion.ciudad} ({direccion.provincia})
             </p>
-            <a href={`mailto:${contacto.email}`} className="inline-flex min-h-10 items-center text-[15px] underline underline-offset-4 [overflow-wrap:anywhere]">
+            <a href={`mailto:${contacto.email}`} className="inline-flex min-h-11 items-center text-[15px] underline underline-offset-4 [overflow-wrap:anywhere]">
               {contacto.email}
             </a>
             {redesLista.length > 0 && (
               <ul className="mt-1 flex flex-wrap gap-x-5">
                 {redesLista.map((r) => (
                   <li key={r.href}>
-                    <a href={r.href} className="inline-flex min-h-10 items-center text-[15px] font-bold underline underline-offset-4">
+                    <a href={r.href} className="inline-flex min-h-11 items-center text-[15px] font-bold underline underline-offset-4">
                       {r.texto}
                     </a>
                   </li>

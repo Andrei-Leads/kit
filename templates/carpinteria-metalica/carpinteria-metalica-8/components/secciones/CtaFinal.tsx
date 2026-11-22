@@ -23,7 +23,7 @@ export function CtaFinal({ contacto, mensaje, textoWhatsapp = "Cuéntanos qué n
           ¿Pasamos a verlo?
         </h2>
         <p className="max-w-[40ch]">
-          {contacto.whatsapp ? "Mándanos un par de fotos por WhatsApp o llámanos." : "Llámanos y cuéntanos qué necesitas."} Te contesta alguien del taller.
+          {contacto.whatsapp ? "Mándanos un par de fotos por WhatsApp o llámanos." : "Llámanos y cuéntanos qué necesitas."}
         </p>
         <Pareja contacto={contacto} mensaje={mensaje} textoWhatsapp={textoWhatsapp} tono="sobre" grande className="mt-2 justify-center max-lg:w-full" />
       </div>

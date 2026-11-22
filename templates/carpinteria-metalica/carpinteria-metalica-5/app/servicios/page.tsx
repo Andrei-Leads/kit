@@ -18,6 +18,7 @@ export default function Page() {
       <Soluciones
         servicios={c.servicios}
         fichas={c.servicios.length}
+        nivel="h2"
         titulo={
           <h1 id="titulo-soluciones" className="titulo-display">
             Soluciones

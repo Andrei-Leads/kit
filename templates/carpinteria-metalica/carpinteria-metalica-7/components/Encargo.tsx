@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useSyncExternalStore, type ReactNode } from "react";
 // Única importación de valores de core en cliente (excepción del asistente): con `sideEffects`
 // (core ≥ 0.5.1) solo se lleva este botón, sin zod ni el contrato.
 import { BotonWhatsApp } from "@andrei-leads/core";
@@ -25,16 +25,20 @@ type Props = {
 
 type Clave = "pieza" | "donde" | "medidas";
 
+const sinSuscripcion = () => () => {};
+
 const OPCION =
   "min-h-11 cursor-pointer px-3.5 py-2 text-left text-[15px] focus-visible:outline-3 focus-visible:-outline-offset-4 focus-visible:outline-acento";
 
 /**
  * Asistente «Encargo» (encargo §5): tres preguntas con botones que solo componen el mensaje y un
- * `BotonWhatsApp` «Enviar el encargo». No pide datos, no guarda ni envía nada. Sin JavaScript,
- * los botones no hacen nada y «Enviar el encargo» abre WhatsApp con el mensaje general.
+ * `BotonWhatsApp` «Enviar el encargo». No pide datos, no guarda ni envía nada. Sin JavaScript (y
+ * hasta hidratar), cada opción es un `BotonWhatsApp` con esa sola respuesta en el mensaje (misma
+ * caja, sin salto), y «Enviar el encargo» abre WhatsApp con el mensaje general.
  */
 export function Encargo({ piezas, numero, mensajeGeneral, llamada }: Props) {
   const [eleccion, setEleccion] = useState<Partial<Record<Clave, string>>>({});
+  const hidratado = useSyncExternalStore(sinSuscripcion, () => true, () => false);
   const pieza = piezas.find((p) => p.titulo === eleccion.pieza);
   const mensaje = componerEncargo(mensajeGeneral, pieza?.frase, eleccion.donde, eleccion.medidas);
   const hechos = [eleccion.pieza, eleccion.donde, eleccion.medidas].filter(Boolean).length;
@@ -59,6 +63,24 @@ export function Encargo({ piezas, numero, mensajeGeneral, llamada }: Props) {
             <div className="flex flex-wrap gap-1.5">
               {p.opciones.map((o) => {
                 const marcado = eleccion[p.clave] === o.valor;
+                if (!hidratado) {
+                  const sola = componerEncargo(
+                    mensajeGeneral,
+                    p.clave === "pieza" ? piezas.find((x) => x.titulo === o.valor)?.frase : undefined,
+                    p.clave === "donde" ? o.valor : undefined,
+                    p.clave === "medidas" ? o.valor : undefined,
+                  );
+                  return (
+                    <BotonWhatsApp
+                      key={o.valor}
+                      numero={numero}
+                      mensaje={sola}
+                      className={clsx(OPCION, "inline-flex items-center border border-borde font-medium text-inherit no-underline hover:border-texto-suave")}
+                    >
+                      {o.texto}
+                    </BotonWhatsApp>
+                  );
+                }
                 return (
                   <button
                     key={o.valor}

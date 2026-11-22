@@ -18,7 +18,7 @@ Todo el archivo es de «Serralleria Bosch Ribalta», un negocio inventado de Bad
 - [ ] `proceso`: los 5 pasos de ejemplo (el primero nombra WhatsApp). Pon los reales o `[]` para usar los 4 de core.
 - [ ] `garantias` («Las reparaciones pequeñas, en el día», «Volvemos si algo falla»…): solo lo que el cliente confirme.
 - [ ] `marcas` (Cortizo, Somfy) y `acreditaciones` («Socio del gremio local de cerrajería (ficticio)»): bórralas o pon las reales.
-- [ ] `empresa.historia` (Josep, Marc y Laia son inventados), `imagenes` y `equipo` (4 personas: sale la cifra «4 personas en el taller»).
+- [ ] `empresa.historia` (Josep, Marc y Laia son inventados; el último párrafo promete «te contesta alguien del taller»: confírmalo o quítalo), `imagenes` y `equipo` (4 personas: sale la cifra «4 personas en el taller»).
 - [ ] `preguntas`: hablan de urgencias, comercios, edificios protegidos y plazos de galería. Revísalas con el cliente.
 - [ ] `seo.titulo`, `seo.descripcion` y `seo.url` (`boschribalta.example` → el dominio definitivo), más **`seo.indexar: true`**.
 - [ ] `analitica: { vercel: true }` (plan Básico) y *Enable* en Vercel.
@@ -47,7 +47,7 @@ Todo el archivo es de «Serralleria Bosch Ribalta», un negocio inventado de Bad
 
 - `lib/mensajes.ts`: `MENSAJE_TALLER` y `MENSAJE_NO_ENCONTRADA`.
 - `components/cliente/Configurador.tsx`: `DONDES`, `CUANDOS` y el mensaje «Necesito {servicio} para {dónde}, {cuándo}. ¿Cuándo podéis pasar a verlo?».
-- `components/secciones/CtaFinal.tsx` y `app/contacto/page.tsx`: «Te contesta alguien del taller.» Solo es cierto si quien coge el teléfono es del taller.
+- `components/secciones/CtaFinal.tsx`: «¿Pasamos a verlo?» y «Mándanos un par de fotos por WhatsApp o llámanos.». `app/contacto/page.tsx`: «Escríbenos por WhatsApp o llámanos al taller.».
 - `components/secciones/ZonasPreguntas.tsx`: «Si estás cerca y no ves tu municipio, pregúntanos.» y el recordatorio «Desde {año} en {ciudad}».
 - `lib/textos.ts`: los sellos («años de taller», «personas en el taller», «N reseñas en Google», «municipios»). Salen de los datos; comprueba que sean ciertos.
 - `app/contacto/page.tsx`: «Mándanos fotos y te decimos algo» (tarjeta de WhatsApp).

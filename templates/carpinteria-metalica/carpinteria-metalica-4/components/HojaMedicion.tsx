@@ -55,7 +55,7 @@ export function HojaMedicion({ servicios, numero, llamada }: Props) {
     { n: 3, label: "Persiana", pregunta: "¿Y la persiana?", opciones: PERSIANA },
   ];
   const actual = casillas[paso - 1];
-  const mensaje = mensajeHoja(...valores);
+  const mensaje = mensajeHoja(valores[0], valores[1], valores[2]);
 
   const elegir = (i: number, t: string) => {
     setTocado(true);
@@ -103,7 +103,7 @@ export function HojaMedicion({ servicios, numero, llamada }: Props) {
                         {contenido}
                       </button>
                     ) : (
-                      <BotonWhatsApp numero={numero} mensaje={mensajeHoja(t)} className={OPCION}>
+                      <BotonWhatsApp numero={numero} mensaje={actual.n === 1 ? mensajeHoja(t) : mensajeHoja(valores[0], t)} className={OPCION}>
                         {contenido}
                       </BotonWhatsApp>
                     )}

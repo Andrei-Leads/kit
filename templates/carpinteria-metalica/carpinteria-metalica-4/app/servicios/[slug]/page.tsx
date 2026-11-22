@@ -15,6 +15,13 @@ import config from "@/site.config";
 
 // Un slug que no está en generateStaticParams se genera en la primera visita. Sin esto,
 // partialPrefetching sirve antes el App Shell con 200 y el 404 solo llega a la segunda.
+
+/** `sizes` de las láminas: la rejilla es auto-fit (280 px mín.), así que 1 o 2 fotos ocupan todo el ancho. */
+function sizesLaminas(n: number) {
+  if (n === 1) return "(min-width: 1308px) 1180px, 90vw";
+  if (n === 2) return "(min-width: 1308px) 578px, (min-width: 664px) 45vw, 90vw";
+  return "(min-width: 1308px) 377px, (min-width: 1024px) 30vw, (min-width: 664px) 45vw, 90vw";
+}
 export const ensureStatic = "navigation";
 
 // Con cacheComponents, generateStaticParams no puede devolver []: core pone un slug de relleno.
@@ -111,7 +118,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
           <ul className="ancho grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-6">
             {servicio.imagenes.map((im, i) => (
               <li key={im.src}>
-                <Foto imagen={im} sizes="(min-width: 1024px) 320px, calc(100vw - 40px)" proporcion="1/1" fig={i + 1} />
+                <Foto imagen={im} sizes={sizesLaminas(servicio.imagenes.length)} proporcion="1/1" fig={i + 1} />
               </li>
             ))}
           </ul>

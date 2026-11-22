@@ -21,6 +21,8 @@ type Props = {
  * separador). Sin trabajos, la galería en mosaico con radio de 32 px. Sin nada, no se pinta.
  */
 export function Obras({ trabajos, galeria = [], modo, antetitulo, titulo }: Props) {
+  // Sin título de sección (/trabajos), las tarjetas cuelgan del h1 de la página: h2.
+  const Titulo = titulo ? "h3" : "h2";
   const conTrabajos = trabajos.length > 0;
   if (!conTrabajos && galeria.length === 0) return null;
   const lista = modo === "inicio" ? trabajos.slice(0, 3) : trabajos;
@@ -80,9 +82,9 @@ export function Obras({ trabajos, galeria = [], modo, antetitulo, titulo }: Prop
                   />
                   <div className="flex flex-col gap-1.5 px-[22px] pt-3.5 pb-[22px]">
                     {etiqueta && <span className="pie-foto">{etiqueta}</span>}
-                    <h3 className={cn("font-titulo font-medium text-balance", grande ? "text-[clamp(1.5rem,1.2rem+1vw,2rem)]" : "text-[21px]", "leading-[1.15]")}>
+                    <Titulo className={cn("font-titulo font-medium text-balance", grande ? "text-[clamp(1.5rem,1.2rem+1vw,2rem)]" : "text-[21px]", "leading-[1.15]")}>
                       {t.titulo}
-                    </h3>
+                    </Titulo>
                     {meta && <p className="text-[15px] leading-[1.4] text-texto-suave">{meta}</p>}
                   </div>
                 </Link>

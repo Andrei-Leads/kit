@@ -35,6 +35,8 @@ export function ElTaller({ config, anioActual, mensaje, modo }: Props) {
   const { empresa, contacto } = config;
   const listaSellos = calcularSellos(config, anioActual);
   const historia = modo === "inicio" ? empresa.historia.slice(0, 2) : empresa.historia;
+  // En /empresa la sección no tiene h2 propio: «El equipo» cuelga del h1 de la página.
+  const Rotulo = modo === "inicio" ? "h3" : "h2";
   const [primero, ...resto] = historia;
   const fotos = modo === "inicio" ? empresa.imagenes.slice(0, 3) : [];
   const relato = historia.length > 0 || fotos.length > 0;
@@ -123,7 +125,7 @@ export function ElTaller({ config, anioActual, mensaje, modo }: Props) {
 
         {empresa.equipo.length > 0 && (
           <div className="flex flex-col gap-5">
-            <h3 className="font-titulo text-2xl font-medium">El equipo</h3>
+            <Rotulo className="font-titulo text-2xl font-medium">El equipo</Rotulo>
             <ul className="grid gap-4 lg:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
               {empresa.equipo.map((p, i) => (
                 <li key={p.nombre} className="flex items-center gap-3.5 rounded-tarjeta border-[1.5px] border-borde py-3 ps-3 pe-4">

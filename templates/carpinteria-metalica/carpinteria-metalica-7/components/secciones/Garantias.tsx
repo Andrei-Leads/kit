@@ -11,7 +11,8 @@ const ROMBO = <span aria-hidden="true" className="rombo size-[7px] border-[1.5px
 /**
  * Garantías (encargo §6): etiquetas tipo chapa grabada, en contorno sobre el óxido, con
  * `garantias` y `acreditaciones` («Nombre · número»). «En el oficio desde {año}» solo con
- * `anioFundacion`. Sin nada, no se pinta. Título «Nuestras garantías» (regla de Ysst).
+ * `anioFundacion`. Sin nada, no se pinta. Título «Nuestras garantías» (regla de Ysst); sin garantías (solo
+ * acreditaciones o el año), «Nuestro oficio», para no llamar garantía a lo que no lo es.
  */
 export function Garantias({ garantias, acreditaciones, anioFundacion }: Props) {
   const items = [...garantias, ...acreditaciones.map((a) => (a.numero ? `${a.nombre} · ${a.numero}` : a.nombre))];
@@ -20,7 +21,7 @@ export function Garantias({ garantias, acreditaciones, anioFundacion }: Props) {
     <section aria-labelledby="titulo-garantias" className="py-[clamp(36px,5vw,72px)]">
       <div className="contenedor">
         <h2 id="titulo-garantias" className="h2">
-          Nuestras garantías
+          {garantias.length > 0 ? "Nuestras garantías" : "Nuestro oficio"}
         </h2>
         {anioFundacion && (
           <p className="mt-1.5 font-titulo text-[clamp(1.25rem,1rem+1vw,1.75rem)] font-bold tracking-[0.04em] text-texto-suave uppercase">

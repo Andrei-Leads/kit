@@ -53,7 +53,7 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
     ["SERVICIO", servicio?.titulo],
     ["PRECIO", trabajo.precio],
   ].filter((f): f is [string, string] => !!f[1]);
-  const sizes = "(min-width: 1024px) 760px, calc(100vw - 62px)";
+  const sizes = "(min-width: 1024px) 980px, calc(100vw - 62px)";
 
   return (
     <Marco actual="trabajos" lamina={`${lam}.${ref}`}>

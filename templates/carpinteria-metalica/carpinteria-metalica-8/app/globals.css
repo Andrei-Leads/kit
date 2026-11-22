@@ -54,8 +54,11 @@
 
 @supports (color: oklch(from red l c h)) {
   :root {
-    --color-primario-suave: oklch(from var(--color-primario) 0.92 calc(c * 0.35) h);
+    --color-primario-suave: oklch(from var(--color-primario) calc(l * 0.15 + 0.85) calc(c * 0.15) h); /* = color-mix 15 % con blanco, como el diseño */
     --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.07) c h);
+    /* La mezcla del 72 % no basta con un primario claro (#facc15: 2,3:1): luminosidad tope 0,48
+       (≥ 5:1 sobre el fondo y la superficie). Con el oliva o un azul oscuro no cambia nada. */
+    --color-primario-tinta: oklch(from color-mix(in oklab, var(--color-primario) 72%, var(--color-texto)) min(l, 0.48) c h);
   }
 }
 

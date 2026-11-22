@@ -70,7 +70,7 @@ export function HeroFachada({ negocio, contacto, trabajos, imagenesHero, valorac
             </span>
             <Link
               href={`/trabajos/${par.slug}`}
-              className="min-w-0 flex-1 truncate py-0.5 underline underline-offset-3 lg:flex-initial lg:font-bold lg:text-texto"
+              className="-my-2.5 min-w-0 flex-1 truncate py-3 underline underline-offset-3 lg:flex-initial lg:font-bold lg:text-texto"
             >
               {pieTrabajo(par)}
             </Link>

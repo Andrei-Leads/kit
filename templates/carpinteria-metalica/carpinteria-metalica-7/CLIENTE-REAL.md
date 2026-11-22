@@ -87,14 +87,14 @@ Todo el archivo es de «L'Enclusa», una herrería inventada de Massanassa (Vale
 
 ## 4. Textos fijos que conviene revisar
 
-- `lib/encargo.ts`: las listas `DONDE` y `MEDIDAS`, y el mensaje compuesto («Hola, os escribo desde vuestra web. Quiero {pieza} para {sitio}. {medidas}. Os mando una foto.»; lo que no se elige se omite).
+- `lib/encargo.ts`: las listas `DONDE` y `MEDIDAS`, y el mensaje compuesto («Hola, os escribo desde vuestra web. Quiero {pieza} para {sitio}. {medidas}. Os mando una foto.»; lo que no se elige se omite, y con «Os mando una foto con el metro» no se repite la frase final).
 - `components/secciones/CtaFinal.tsx`:
   - El título «¿Qué necesitas forjar?».
   - Con WhatsApp, «Mándanos una foto del sitio y una medida aproximada.».
   - Sin WhatsApp, «Llámanos y cuéntanos qué pieza necesitas y dónde va.».
 - `app/page.tsx`: los títulos «Obras del taller», «Piezas que forjamos» y «Encarga tu pieza». La entradilla «cada una con su pueblo y su año» solo sale si todas las obras tienen `ubicacion` y `anio`.
 - `components/Botones.tsx` y las páginas: «Mándanos una foto», «Mándanos una foto del sitio» y «Quiero una así».
-- `components/secciones/Garantias.tsx`: «Nuestras garantías» y «En el oficio desde {año}» (solo con `anioFundacion`).
+- `components/secciones/Garantias.tsx`: «Nuestras garantías» (sin `garantias`, «Nuestro oficio») y «En el oficio desde {año}» (solo con `anioFundacion`).
 - `lib/mensajes.ts`: `MENSAJE_NO_ENCONTRADA` (el de la 404).
 
 ## 5. Lo que falta o queda pendiente

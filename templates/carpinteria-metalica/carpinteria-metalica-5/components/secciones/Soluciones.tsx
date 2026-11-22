@@ -12,6 +12,8 @@ type Props = {
   titulo: ReactNode;
   /** Fichas antes del índice (4 en el inicio; todas en /servicios). */
   fichas?: number;
+  /** Nivel del título de cada ficha: `h3` bajo el `h2` del inicio; `h2` bajo el `h1` de /servicios. */
+  nivel?: "h2" | "h3";
 };
 
 const SIZES = "(min-width: 1024px) 50vw, 100vw";
@@ -51,7 +53,7 @@ export function ListaIncluye({ incluye, grande }: { incluye: readonly string[]; 
   );
 }
 
-function Ficha({ s, i, sola }: { s: Servicio; i: number; sola?: boolean }) {
+function Ficha({ s, i, sola, nivel: Titulo = "h3" }: { s: Servicio; i: number; sola?: boolean; nivel?: "h2" | "h3" }) {
   const foto = s.imagenes[0];
   const enlace = (
     <Link href={`/servicios/${s.slug}`} className="enlace mt-4">
@@ -61,7 +63,7 @@ function Ficha({ s, i, sola }: { s: Servicio; i: number; sola?: boolean }) {
   const cabeza = (
     <>
       {foto && <span className="font-titulo text-[28px] leading-none text-anodizado italic">{romano(i + 1)}</span>}
-      <h3 className={cn("m-0 font-titulo text-[clamp(2rem,1.6rem+1.4vw,2.5rem)] leading-[1.1] font-[350] tracking-[-0.01em]", sola ? "mt-2" : "mt-2.5")}>{s.titulo}</h3>
+      <Titulo className={cn("m-0 font-titulo text-[clamp(2rem,1.6rem+1.4vw,2.5rem)] leading-[1.1] font-[350] tracking-[-0.01em]", sola ? "mt-2" : "mt-2.5")}>{s.titulo}</Titulo>
       <div aria-hidden="true" className="trazo mt-5 h-px w-16 bg-anodizado" />
       {s.precioDesde && <Precio texto={s.precioDesde} />}
     </>
@@ -103,7 +105,7 @@ function Ficha({ s, i, sola }: { s: Servicio; i: number; sola?: boolean }) {
  * solución». Con 1, a todo el ancho; de 2 en adelante, alternas; las que pasan de `fichas`, en
  * un índice en serif de 28 px. Sin marcas en las fichas (el contrato no las relaciona).
  */
-export function Soluciones({ servicios, titulo, fichas = 4 }: Props) {
+export function Soluciones({ servicios, titulo, fichas = 4, nivel }: Props) {
   const sola = servicios.length === 1;
   const grandes = servicios.slice(0, fichas);
   const indice = servicios.slice(fichas);
@@ -111,11 +113,11 @@ export function Soluciones({ servicios, titulo, fichas = 4 }: Props) {
     <section aria-labelledby="titulo-soluciones" className="contenedor seccion">
       <div className="mb-[clamp(48px,7vw,112px)]">{titulo}</div>
       {sola ? (
-        <Ficha s={servicios[0]} i={0} sola />
+        <Ficha s={servicios[0]} i={0} sola nivel={nivel} />
       ) : (
         <div className="flex flex-col gap-[clamp(80px,10vw,160px)]">
           {grandes.map((s, i) => (
-            <Ficha key={s.slug} s={s} i={i} />
+            <Ficha key={s.slug} s={s} i={i} nivel={nivel} />
           ))}
         </div>
       )}

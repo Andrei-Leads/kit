@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buscarServicio, metadatosServicio, minusculaInicial, parametrosServicios, precioDesde, trabajosDelServicio } from "@andrei-leads/core";
+import { buscarServicio, metadatosServicio, parametrosServicios, precioDesde, trabajosDelServicio } from "@andrei-leads/core";
 
 import { Pareja } from "@/components/Botones";
 import { Foto } from "@/components/base/Foto";
@@ -130,7 +130,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
         </section>
       )}
 
-      <Obras trabajos={trabajosDelServicio(config.trabajos, servicio)} modo="servicio" antetitulo="Obras" titulo={`Trabajos de ${minusculaInicial(servicio.titulo)}`} />
+      <Obras trabajos={trabajosDelServicio(config.trabajos, servicio)} modo="servicio" antetitulo="Obras" titulo="Trabajos de este servicio" />
       <PreguntasFrecuentes preguntas={servicio.preguntas} grupo="preguntas-servicio" />
       <Recordatorio anio={negocio.anioFundacion} ciudad={contacto.direccion.ciudad} />
       <CtaFinal contacto={contacto} mensaje={mensaje} textoWhatsapp={PEDIR} />

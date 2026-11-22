@@ -67,6 +67,8 @@ export function Foto({
         sizes={sizes}
         preload={preload}
         loading={eager && !preload ? "eager" : undefined}
+        // Con «low», React no mete un segundo `<link rel="preload">` para la foto eager.
+        fetchPriority={eager && !preload ? "low" : undefined}
         quality={calidad}
         className="object-cover"
       />

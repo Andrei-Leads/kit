@@ -25,12 +25,16 @@ const DONDE = ["un piso", "una casa", "un bajo", "una comunidad"];
 const INICIO = "Hola, os escribo desde vuestra web.";
 const FINAL = "Os mando una foto de la fachada.";
 
-/** «Hola, os escribo desde vuestra web. Quiero {servicio}: {cuántas} en {vivienda}. Os mando una foto de la fachada.» (encargo §3). */
+/**
+ * «Hola, os escribo desde vuestra web. Os consulto por {servicio}: {cuántas}, en {vivienda}. Os mando
+ * una foto de la fachada.» «Os consulto por» vale con cualquier título («Quiero cambio de ventanas
+ * sin obra» no), y la coma evita «toda la vivienda en una casa».
+ */
 export function componerMensaje(servicio?: string, cuantas?: string, donde?: string): string {
   if (!servicio) return `${INICIO} ${FINAL}`;
-  let m = `${INICIO} Quiero ${servicio}`;
+  let m = `${INICIO} Os consulto por ${servicio}`;
   if (cuantas) m += `: ${cuantas.charAt(0).toLowerCase()}${cuantas.slice(1)}`;
-  if (donde) m += ` en ${donde}`;
+  if (donde) m += cuantas ? `, en ${donde}` : ` para ${donde}`;
   return `${m}. ${FINAL}`;
 }
 

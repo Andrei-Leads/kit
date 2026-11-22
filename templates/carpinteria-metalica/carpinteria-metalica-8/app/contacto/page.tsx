@@ -31,7 +31,7 @@ export default function Page() {
           { href: "/contacto", texto: "Contacto" },
         ]}
         titulo="Contacto"
-        entradilla={contacto.whatsapp ? "Escríbenos o llámanos. Te contesta alguien del taller." : "Llámanos o escríbenos un email. Te contesta alguien del taller."}
+        entradilla={contacto.whatsapp ? "Escríbenos por WhatsApp o llámanos al taller." : "Llámanos al taller o escríbenos un email."}
         ctas={<Pareja contacto={contacto} mensaje={mensaje} grande />}
       />
       <section aria-label="Datos de contacto" className="contenedor pb-[clamp(56px,7vw,96px)]">

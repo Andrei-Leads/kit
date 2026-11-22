@@ -204,7 +204,7 @@ export default defineSiteConfig({
     "10 años de garantía en perfiles", // GARANTÍA FICTICIA: borrar en la web del cliente
   ],
   acreditaciones: [
-    { nombre: "Taller asociado a la federación andaluza de carpintería metálica" }, // ACREDITACIÓN FICTICIA: borrar en la web del cliente
+    { nombre: "Taller asociado a la federación regional de carpintería metálica (ficticio)" }, // ACREDITACIÓN FICTICIA: borrar en la web del cliente
   ],
   marcas: ["Cortizo", "Kömmerling", "Persax"], // MARCAS DE EJEMPLO: poner las que use el cliente
   empresa: {

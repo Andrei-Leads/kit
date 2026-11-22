@@ -51,7 +51,7 @@
 }
 @supports (color: oklch(from red l c h)) {
   :root {
-    --color-alterna: oklch(from var(--color-primario) calc(l - 0.08) c h);
+    --color-alterna: oklch(from var(--color-primario) calc(l * 0.85) calc(c * 0.85) h); /* = color-mix 85 % con negro, como el diseño */
     --primario-hover: oklch(from var(--color-primario) calc(l - 0.06) c h);
     --primario-pulsado: oklch(from var(--color-primario) calc(l - 0.1) c h);
   }
@@ -78,6 +78,10 @@
     font-size: var(--text-cuerpo);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    /* Big Shoulders a «opsz» 72 en todos los tamaños = el corte Display del diseño (más estrecho).
+     * Con el automático, los títulos pequeños salen un 8 % más anchos y parten línea. Archivo no
+     * carga el eje «opsz», así que no le afecta. */
+    font-variation-settings: "opsz" 72;
   }
   /* Grano: una tesela SVG fija detrás del contenido. Solo se ve sobre el óxido (los bloques de
    * hierro tienen fondo opaco). Se rasteriza una vez; nunca un filtro vivo ni dentro de las fotos. */

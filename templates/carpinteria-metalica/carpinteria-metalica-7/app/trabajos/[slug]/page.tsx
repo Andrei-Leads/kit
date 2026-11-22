@@ -47,7 +47,7 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
     [
       ["Lugar", trabajo.ubicacion],
       ["Año", trabajo.anio],
-      ["Superficie", trabajo.superficie],
+      ["Tamaño", trabajo.superficie],
       ["Duración", trabajo.duracion],
       ["Servicio", servicio?.titulo],
       ["Precio", trabajo.precio],

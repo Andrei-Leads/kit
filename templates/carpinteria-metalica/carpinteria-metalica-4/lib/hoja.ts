@@ -9,7 +9,16 @@ export const PERSIANA = ["Persiana nueva", "Mantengo la que tengo", "No lo sé"]
 const ENTRADA = "Hola, os escribo desde vuestra web. Hoja de medición: ";
 const CIERRE = ". ¿Cuándo podéis venir a medir?";
 
-/** «Hola, os escribo desde vuestra web. Hoja de medición: {servicio} · {huecos} · {persiana}. ¿Cuándo podéis venir a medir?» */
-export function mensajeHoja(...casillas: (string | null | undefined)[]): string {
-  return ENTRADA + casillas.filter(Boolean).join(" · ") + CIERRE;
+/** Minúscula inicial (copia local: este archivo no importa nada de core). */
+const minuscula = (t: string) => t.charAt(0).toLowerCase() + t.slice(1);
+
+/**
+ * «Hola, os escribo desde vuestra web. Hoja de medición: {servicio} · Huecos: {huecos} · Persiana:
+ * {persiana}. ¿Cuándo podéis venir a medir?». Las casillas 2 y 3 llevan su nombre para que «2 o 3» o
+ * «No lo sé» se entiendan solos en el chat («Persiana nueva» queda «Persiana: nueva»). Las casillas
+ * vacías se omiten.
+ */
+export function mensajeHoja(servicio?: string | null, huecos?: string | null, persiana?: string | null): string {
+  const partes = [servicio, huecos && `Huecos: ${minuscula(huecos)}`, persiana && `Persiana: ${minuscula(persiana).replace(/^persiana /, "")}`];
+  return ENTRADA + partes.filter(Boolean).join(" · ") + CIERRE;
 }

@@ -79,7 +79,7 @@ export function FichasObra({ trabajos, servicios, galeria = [], modo }: Props) {
                 </Link>
               </Titulo>
               {inicio && servicio && (
-                <Link href={`/servicios/${servicio.slug}`} className="self-start text-[15px] text-texto-suave underline underline-offset-[3px]">
+                <Link href={`/servicios/${servicio.slug}`} className="-my-2.5 self-start py-2.5 text-[15px] text-texto-suave underline underline-offset-[3px]">
                   {servicio.titulo} <span className="flecha">→</span>
                 </Link>
               )}

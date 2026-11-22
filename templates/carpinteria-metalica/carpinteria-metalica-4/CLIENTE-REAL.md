@@ -33,7 +33,7 @@ Todo el archivo es de «Albenca Aluminio», un negocio inventado de Alboraya (Va
 - [ ] **`proceso`:** los 5 pasos de ejemplo incluyen «En uno o dos días te mandamos el presupuesto cerrado», «Montamos en el día» y «Volvemos a las pocas semanas». Elige una:
   - Pon los pasos reales del cliente.
   - Pon `[]` para usar los 4 de core. El dibujo de la ventana se reparte igual.
-- [ ] `acreditaciones`: «Fabricante homologado de sistemas Cortizo» es **ficticia**. Pon solo acreditaciones reales y con su número si lo tienen.
+- [ ] `acreditaciones`: «Instalador homologado de sistemas de aluminio (ficticio)» es **ficticia**. Pon solo acreditaciones reales y con su número si lo tienen.
 - [ ] `garantias` («Volvemos a ajustar sin coste el primer año»…) y `marcas` (Cortizo, Strugal, Technal, Somfy): pon solo lo que el cliente confirme.
 - [ ] `empresa.historia`, `imagenes` y `equipo`. El equipo tiene nombres de ejemplo («Toni», «Lucía», «Rafa»), que también aparecen en una reseña.
 - [ ] `preguntas`: las de ejemplo hablan de plazos de fabricación («de tres a cuatro semanas»). Revísalas con el cliente.
@@ -45,7 +45,7 @@ Todo el archivo es de «Albenca Aluminio», un negocio inventado de Alboraya (Va
 
 - [ ] Borra `public/ejemplo/` entera (14 rellenos grises; tabla en `public/ejemplo/CREDITOS.md`).
 - [ ] Pon las fotos del cliente en `public/`, con `origen: "cliente"` (o `"ficha-google"`). En `/trabajos` no puede haber ni una foto de IA.
-- [ ] **Trabajos, 4:3, las más importantes:** son las láminas de «Obras terminadas» (la primera sección de la home).
+- [ ] **Trabajos, 4:3, las más importantes:** son las láminas de «Obras recientes» (la primera sección de la home) y de `/trabajos`.
   - Alzado frontal, sin cielo y con algo de muro alrededor.
   - Si hay `antes`, con el mismo encuadre: sale el deslizador.
   - Sin trabajos ni `galeria`, la sección y `/trabajos` desaparecen.
@@ -74,7 +74,7 @@ Todo el archivo es de «Albenca Aluminio», un negocio inventado de Alboraya (Va
 
 ## 4. Textos fijos que conviene revisar
 
-- `lib/hoja.ts`: `HUECOS`, `PERSIANA` y el mensaje compuesto «… Hoja de medición: {servicio} · {huecos} · {persiana}. ¿Cuándo podéis venir a medir?».
+- `lib/hoja.ts`: `HUECOS`, `PERSIANA` y el mensaje compuesto «… Hoja de medición: {servicio} · Huecos: {huecos} · Persiana: {persiana}. ¿Cuándo podéis venir a medir?».
 - `lib/mensajes.ts`: el de la ficha de servicio, «Hola, quiero información sobre {servicio}.», y el de la ficha de trabajo.
 - `components/secciones/CtaFinal.tsx`: «¿Vamos a medir?» y «Te decimos qué día podemos pasar.».
 - `components/secciones/HojaMedicionServidor.tsx`: «Rellena la hoja y vamos a medir».

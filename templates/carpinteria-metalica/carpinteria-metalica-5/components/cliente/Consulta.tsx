@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { BotonWhatsApp } from "@andrei-leads/core";
 
 // clsx y no cn(): cn arrastra tailwind-merge (~9 KB gzip) al navegador.
@@ -27,30 +27,36 @@ const OBRAS: [string, string][] = [
 ];
 const FASES = ["Tengo planos", "La obra ya ha empezado", "Todavía es una idea"];
 
+const sinSuscripcion = () => () => {};
+
 /** Minúscula inicial salvo siglas (copia local: un archivo cliente no importa valores de core). */
 const minuscula = (t: string) => (t.length > 1 && /[A-ZÁÉÍÓÚÑ]/.test(t[1]) ? t : t.charAt(0).toLowerCase() + t.slice(1));
 
 /**
  * Asistente «Consulta» (encargo §5): tres preguntas con botones (`aria-pressed`; tocar otra vez
  * deselecciona) que solo componen el mensaje de WhatsApp, visible en directo en serif cursiva.
- * No pide ni guarda datos. Sin JS, el botón abre WhatsApp con el mensaje general.
+ * No pide ni guarda datos. Sin JS (y hasta hidratar), cada opción es un `BotonWhatsApp` con esa
+ * sola respuesta en el mensaje (misma caja, sin salto), y el botón final lleva el mensaje general.
  */
 export function Consulta({ titulo, soluciones, whatsapp, mensajeVacio, llamada }: Props) {
   const [r, setR] = useState<(number | null)[]>([null, null, null]);
+  const hidratado = useSyncExternalStore(sinSuscripcion, () => true, () => false);
   const grupos = [
     { titulo: "¿Qué solución?", opciones: soluciones },
     { titulo: "¿Para qué obra?", opciones: OBRAS.map((o) => o[0]) },
     { titulo: "¿En qué punto estás?", opciones: FASES },
   ];
-  const [s, o, f] = r;
-  const sol = s !== null ? soluciones[s] : undefined;
-  const obra = o !== null ? OBRAS[o][1] : undefined;
-  const fase = f !== null ? FASES[f] : undefined;
-  // «Os consulto por {título}» vale en singular y en plural («Me interesa puertas…» no). Hueco
-  // «…» sin punto detrás (nada de «….» en la vista previa).
-  const vista = `${SALUDO} Os consulto por ${sol ? minuscula(sol) : "…"} para ${obra ? `${obra}.` : "…"}${fase ? ` ${fase}.` : ""}`;
-  const mensaje =
-    !sol && !obra && !fase
+  const respuestas = (rr: readonly (number | null)[]) => {
+    const [s, o, f] = rr;
+    return {
+      sol: s !== null ? soluciones[s] : undefined,
+      obra: o !== null ? OBRAS[o][1] : undefined,
+      fase: f !== null ? FASES[f] : undefined,
+    };
+  };
+  const componer = (rr: readonly (number | null)[]) => {
+    const { sol, obra, fase } = respuestas(rr);
+    return !sol && !obra && !fase
       ? mensajeVacio
       : [
           SALUDO,
@@ -60,6 +66,12 @@ export function Consulta({ titulo, soluciones, whatsapp, mensajeVacio, llamada }
         ]
           .filter(Boolean)
           .join(" ");
+  };
+  const { sol, obra, fase } = respuestas(r);
+  // «Os consulto por {título}» vale en singular y en plural («Me interesa puertas…» no). Hueco
+  // «…» sin punto detrás (nada de «….» en la vista previa).
+  const vista = `${SALUDO} Os consulto por ${sol ? minuscula(sol) : "…"} para ${obra ? `${obra}.` : "…"}${fase ? ` ${fase}.` : ""}`;
+  const mensaje = componer(r);
   const respondidas = r.filter((v) => v !== null).length;
 
   const elegir = (g: number, v: number) => {
@@ -89,6 +101,20 @@ export function Consulta({ titulo, soluciones, whatsapp, mensajeVacio, llamada }
             <div className="flex flex-col gap-2">
               {g.opciones.map((op, v) => {
                 const sel = r[gi] === v;
+                if (!hidratado) {
+                  const sola = [null, null, null].map((_, i) => (i === gi ? v : null));
+                  return (
+                    <BotonWhatsApp
+                      key={op}
+                      numero={whatsapp}
+                      mensaje={componer(sola)}
+                      className="flex min-h-11 items-center gap-3 rounded-boton border border-borde bg-transparent px-3.5 py-2.5 text-left text-[15px] leading-[1.35] text-texto no-underline hover:border-anodizado"
+                    >
+                      <span aria-hidden="true" className="size-2.5 flex-none border border-anodizado" />
+                      {op}
+                    </BotonWhatsApp>
+                  );
+                }
                 return (
                   <button
                     key={op}

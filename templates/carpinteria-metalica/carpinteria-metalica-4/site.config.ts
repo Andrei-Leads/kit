@@ -172,7 +172,7 @@ export default defineSiteConfig({
     { titulo: "Ajuste y revisión", texto: "Volvemos a las pocas semanas para ajustar las hojas y comprobar que todo cierra bien." },
   ],
   acreditaciones: [
-    { nombre: "Fabricante homologado de sistemas Cortizo" }, // ACREDITACIÓN FICTICIA: borrar en la web del cliente
+    { nombre: "Instalador homologado de sistemas de aluminio (ficticio)" }, // ACREDITACIÓN FICTICIA: borrar en la web del cliente
   ],
   garantias: ["Presupuesto cerrado antes de empezar", "Plazo de entrega por escrito", "Volvemos a ajustar sin coste el primer año", "Retiramos y reciclamos las ventanas viejas"],
   marcas: ["Cortizo", "Strugal", "Technal", "Somfy"],

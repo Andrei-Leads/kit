@@ -21,7 +21,8 @@ type Props = {
  */
 export function BarraMovil({ telefono, whatsapp, mensaje, className }: Props) {
   return (
-    <div
+    <nav
+      aria-label="Contacto rápido"
       data-alterna=""
       className={cn(
         "barra-movil fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t-2 border-reticula-fuerte bg-alterna px-2.5 pt-2 pb-[calc(8px+env(safe-area-inset-bottom))] lg:hidden",
@@ -39,6 +40,6 @@ export function BarraMovil({ telefono, whatsapp, mensaje, className }: Props) {
         Llamar
         <span className="sr-only"> al {telefonoVisible(telefono)}</span>
       </BotonLlamada>
-    </div>
+    </nav>
   );
 }

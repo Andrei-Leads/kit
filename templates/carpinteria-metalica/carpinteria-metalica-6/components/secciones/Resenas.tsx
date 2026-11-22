@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { fechaResena, mediaVisible, type SiteConfig } from "@andrei-leads/core";
+import { etiquetaOrigen, fechaResena, mediaVisible, type SiteConfig } from "@andrei-leads/core";
 
 import { IconoSalir } from "@/components/Iconos";
 import { Foto } from "@/components/base/Foto";
@@ -36,7 +36,7 @@ export function Resenas({ resenas, valoracion, trabajos, fichaGoogle, className 
                 </span>
                 <strong className="text-xl">{mediaVisible(valoracion.media)}</strong>
                 <span className="text-texto-suave">
-                  de {valoracion.total} {valoracion.total === 1 ? "reseña" : "reseñas"} en Google
+                  · {valoracion.total} {valoracion.total === 1 ? "reseña" : "reseñas"} en Google
                 </span>
               </p>
             )}
@@ -61,7 +61,8 @@ export function Resenas({ resenas, valoracion, trabajos, fichaGoogle, className 
               <blockquote className="text-[clamp(1.125rem,1rem+0.5vw,1.375rem)] leading-[1.45] font-bold">«{obra.testimonio.texto}»</blockquote>
               <figcaption className="flex flex-wrap gap-x-4 gap-y-0.5 text-[15px] text-texto-suave">
                 <span>{obra.testimonio.autor}</span>
-                <Link href={`/trabajos/${obra.slug}`} className="inline-flex min-h-6 items-center font-bold text-texto underline underline-offset-3">
+                {etiquetaOrigen(obra.imagenes[0]) && <span>{etiquetaOrigen(obra.imagenes[0])}</span>}
+                <Link href={`/trabajos/${obra.slug}`} className="-my-2.5 inline-flex min-h-11 items-center font-bold text-texto underline underline-offset-3">
                   Ver «{obra.titulo}»
                 </Link>
               </figcaption>
