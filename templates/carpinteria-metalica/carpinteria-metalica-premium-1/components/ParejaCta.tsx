@@ -33,7 +33,7 @@ type Props = {
  * los dos. De servidor (0 KB de JS). Las parejas no se animan nunca.
  */
 export function ParejaCta({ cta, textoWhatsapp, textoLlamar: tl, tono = "claro", tamano = 48, apilar, telefonoGrande, confianza: conf, className }: Props) {
-  // Sin WhatsApp, la línea «Respuesta por WhatsApp…» no tiene sentido.
+  // Sin WhatsApp, la línea de WhatsApp no tiene sentido.
   const confianza = !cta.whatsapp && conf?.texto === RESPUESTA ? undefined : conf;
   const oscuro = tono === "oscuro";
   const alto = ALTO[tamano];

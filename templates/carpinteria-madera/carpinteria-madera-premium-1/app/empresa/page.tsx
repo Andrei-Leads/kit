@@ -33,7 +33,7 @@ export default async function Page() {
     ...(hayHistoria ? [itemRegla("historia", "Historia")] : []),
     itemRegla("como-trabajamos", "Cómo trabajamos"),
     ...(empresa.equipo.length > 0 ? [itemRegla("equipo", "Quiénes somos")] : []),
-    itemRegla("visita", "Visítanos"),
+    itemRegla("visita", "Dónde estamos"),
   ];
 
   return (
@@ -50,7 +50,7 @@ export default async function Page() {
             El <Destacada>taller</Destacada>
           </>
         }
-        frase="Aquí se dibuja, se elige la madera y se fabrica cada pieza. Se puede visitar."
+        frase="Aquí se dibuja, se elige la madera y se fabrica cada pieza."
         cta={cta}
         confianza={lineaConfianza(config, "valoracion")}
         fotos={[empresa.imagenes[0], empresa.imagenes[1]]}
@@ -140,13 +140,11 @@ export default async function Page() {
 
         <section {...seccionRegla("visita")} data-tono="claro" aria-labelledby="titulo-visita" className="contenedor seccion">
           <h2 id="titulo-visita" className="titulo text-h2">
-            Ven a ver las <Destacada>maderas</Destacada>
+            Dónde <Destacada>estamos</Destacada>
           </h2>
           <div className="mt-8 flex flex-wrap items-baseline gap-x-10 gap-y-3">
             <p className="m-0 max-w-[44ch] text-cuerpo">
               {direccionLinea(contacto.direccion)}
-              <br />
-              <span className="text-texto-suave">El taller se puede visitar: avísanos antes.</span>
             </p>
             <EnlaceFlecha href={urlComoLlegar(contacto)} externo>
               Cómo llegar

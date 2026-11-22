@@ -29,4 +29,4 @@ export const TEXTO_WA_TRABAJO = "Quiero algo parecido";
 export const TEXTO_WA_SERVICIO = "Consultar por WhatsApp";
 
 /** Línea de confianza por defecto (sin valoración ni horario). */
-export const RESPUESTA = "Respuesta por WhatsApp en horario de trabajo";
+export const RESPUESTA = "Por WhatsApp puedes mandarnos fotos y medidas";
