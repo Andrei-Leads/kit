@@ -1,0 +1,29 @@
+/*
+ * Pieza base del registro (kit/registry/base/aparecer.css), con los tokens de
+ * movimiento premium (anexo P3): subida de --desplaz-revelado con
+ * --ease-salida. Aparición al hacer scroll SOLO con CSS (animation-timeline:
+ * view()). El rango y el escalonado (--i × --escalonado, como % del rango)
+ * están en app/globals.css.
+ *
+ * Regla de oro: el estado por defecto es el visible. Si el navegador no
+ * entiende animation-timeline, o el usuario pide reducir movimiento, no se
+ * anima nada. Nunca en el h1, la foto del hero ni los botones de contacto.
+ *
+ * Uso: `data-aparecer` en el elemento (y `style={{ "--i": n }}` para escalonar).
+ */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 var(--desplaz-revelado, 1.5rem);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-aparecer] {
+      animation: aparecer linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 30%;
+    }
+  }
+}

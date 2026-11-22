@@ -1,0 +1,28 @@
+/*
+ * Pieza base del registro (kit/registry/base/aparecer.css), con los tokens
+ * premium de «Marco» (anexo P3): fundido + subida de --desplaz-revelado al
+ * llegar al ~85 % de la pantalla (rango `entry 10% cover 25%`), con
+ * --ease-salida. Escalonado: `style={{ "--i": n }}` desplaza el rango un 4 %
+ * por elemento (el equivalente de --escalonado en un disparo por scroll).
+ *
+ * Regla de oro: el estado por defecto es el visible. Sin animation-timeline o
+ * con «reducir movimiento», no se anima nada. Nunca en un h1, las fotos del
+ * hero ni los botones (las parejas de CTAs no se animan nunca).
+ */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 var(--desplaz-revelado, 1.5rem);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-aparecer] {
+      animation: aparecer linear both;
+      animation-timing-function: var(--ease-salida);
+      animation-timeline: view();
+      animation-range: entry calc(10% + var(--i, 0) * 4%) cover calc(25% + var(--i, 0) * 4%);
+    }
+  }
+}
