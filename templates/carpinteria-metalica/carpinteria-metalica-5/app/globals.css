@@ -1,0 +1,437 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * «Perfil» (carpinteria-metalica-5). Oscura de lujo con acento metálico: casi negro,
+ * texto hueso, filetes de 1 px en anodizado y serif editorial (encargo §8).
+ * Solo --color-primario (y --color-sobre-primario, que calcula core) se sobrescriben
+ * desde site.config: estilo del <html> en app/layout.tsx. El primario es SOLO relleno
+ * de botón: nunca color de texto ni de filete sobre el fondo.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #0d0e0f;
+  --color-superficie: #151719;
+  --color-alterna: #1c1f22;
+  --color-texto: #eceae4;
+  --color-texto-suave: #a8a8a2; /* 8,1:1 sobre fondo; 7,5:1 sobre superficie */
+  --color-borde: #2c3034;
+  --color-primario: #c8b48c; /* champán anodizado; marca.colorPrimario */
+  --color-sobre-primario: #15130f;
+  --color-acento: #8f9aa3; /* aluminio natural, solo decorativo */
+  --color-foco: #e8dcc0;
+
+  --font-titulo: var(--font-newsreader), Georgia, serif;
+  --font-texto: var(--font-schibsted), system-ui, sans-serif;
+
+  --radius-boton: 2px;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+
+  --text-display: clamp(2.75rem, 1.6rem + 5vw, 7rem);
+  --text-display--line-height: 0.95;
+
+  /* Propios de «Perfil» */
+  --color-anodizado: #b9a582; /* filetes y números romanos; fijo, no depende de la marca */
+  --color-texto-medio: #c9c8c2;
+  --color-medio: #111315; /* fondo del medio del hero mientras carga */
+  --color-pie: #0a0b0c;
+  --color-filete-apagado: #3a3f44;
+
+  --text-h2: clamp(1.875rem, 1.3rem + 2.4vw, 3.5rem);
+  --text-h2--line-height: 1.05;
+  --text-h1i: clamp(2.5rem, 1.8rem + 2.4vw, 4rem);
+  --text-h1i--line-height: 1;
+  --text-gigante: clamp(3.25rem, 1.8rem + 6.5vw, 8.5rem);
+  --text-gigante--line-height: 0.95;
+  --text-cuerpo: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-cuerpo--line-height: 1.65;
+}
+
+:root {
+  --color-velo: linear-gradient(to top, rgb(8 9 10 / 0.85), rgb(8 9 10 / 0) 60%);
+  --color-velo-alto: linear-gradient(to bottom, rgb(8 9 10 / 0.7), rgb(8 9 10 / 0));
+  --linea-fina: 1px;
+  /* Borde del botón relleno: un primario oscuro (#1e40af) sobre negro se distingue mal como forma. */
+  --color-primario-borde: color-mix(in oklab, var(--color-primario) 60%, white);
+  --color-primario-hover: color-mix(in oklab, var(--color-primario) 84%, white);
+  --color-primario-activo: color-mix(in oklab, var(--color-primario) 86%, black);
+  --pad: clamp(20px, 5vw, 64px);
+  --seccion: clamp(88px, 11vw, 168px);
+  --alto-cabecera: 56px;
+  --alto-barra: 64px;
+}
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-borde: oklch(from var(--color-primario) calc(l + 0.2) c h);
+  }
+}
+@media (min-width: 64rem) {
+  :root {
+    --alto-cabecera: 64px;
+    --alto-barra: 0px;
+  }
+}
+
+/* ── Composición ─────────────────────────────────────────────────────────── */
+@utility contenedor {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+@utility seccion {
+  padding-top: var(--seccion);
+}
+/* Versalitas: antetítulos, datos de ficha, pies de obra. */
+@utility versalitas {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+@utility serif {
+  font-family: var(--font-titulo);
+  font-weight: 350;
+}
+@utility titulo-display {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 350;
+  font-size: var(--text-display);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+@utility titulo-h1 {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 350;
+  font-size: var(--text-h1i);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+@utility titulo-h2 {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-weight: 350;
+  font-size: var(--text-h2);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+/* Enlace secundario subrayado (nunca de contacto): «Ver la solución», «Ver las 5 obras». */
+@utility enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--alto-cabecera) + 8px);
+    scroll-padding-bottom: var(--alto-barra);
+    background-color: var(--color-fondo);
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.65;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: inherit;
+  }
+  a:hover {
+    color: var(--color-foco);
+  }
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  em {
+    font-style: italic;
+    font-weight: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+  /* Capitular de la ficha de servicio y de /empresa: la letra sigue en el texto (lector de pantalla). */
+  .capitular::first-letter {
+    float: left;
+    font-size: 4.6em;
+    line-height: 0.82;
+    margin: 6px 12px 0 0;
+    font-style: italic;
+    color: var(--color-anodizado);
+  }
+}
+
+@layer components {
+  /* ── Botones (encargo §3). Rectos, 2 px de radio, versalitas de 13 px. ───── */
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 10px 22px;
+    border-radius: var(--radius-boton);
+    font-family: var(--font-texto);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .boton:active {
+    transform: scale(0.98);
+  }
+  /* Relleno primario: siempre con borde de 1 px más claro (se ve sobre negro con cualquier primario). */
+  .boton-anodizado {
+    background-color: var(--color-primario);
+    color: var(--color-sobre-primario);
+    border: 1px solid var(--color-primario-borde);
+  }
+  .boton-anodizado:hover {
+    background-color: var(--color-primario-hover);
+    color: var(--color-sobre-primario);
+  }
+  .boton-anodizado:active {
+    background-color: var(--color-primario-activo);
+  }
+  .boton-contorno {
+    background-color: transparent;
+    color: var(--color-texto);
+    border: 2px solid var(--color-texto);
+  }
+  .boton-contorno:hover {
+    background-color: var(--color-texto);
+    color: var(--color-fondo);
+  }
+  .boton-contorno:active {
+    background-color: #cfccc4;
+    color: var(--color-fondo);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .boton {
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.1s ease;
+    }
+  }
+
+  /* Botón de texto subrayado (Menú, Cerrar): el subrayado se vuelve a dibujar al pasar. */
+  .boton-filete {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 12px;
+    background: none;
+    border: 0;
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .boton-filete::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: calc(12px + 0.12em);
+    bottom: 10px;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .boton-filete:hover::after,
+    .boton-filete:focus-visible::after {
+      animation: trazo 200ms ease-out;
+    }
+  }
+
+  /* ── Cabecera: siempre igual (no cambia al bajar; eso es de -8) ──────────── */
+  .cabecera {
+    background: rgb(13 14 15 / 0.8);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  /* ── Menú a pantalla completa (popover nativo) ──────────────────────────── */
+  .menu-pantalla {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0 var(--pad) 32px;
+    border: 0;
+    overflow-y: auto;
+    background: var(--color-fondo);
+    color: var(--color-texto);
+  }
+  .menu-pantalla:popover-open {
+    display: flex;
+    flex-direction: column;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .menu-pantalla {
+      transition:
+        opacity 300ms ease,
+        overlay 300ms allow-discrete,
+        display 300ms allow-discrete;
+    }
+    @starting-style {
+      .menu-pantalla:popover-open {
+        opacity: 0;
+      }
+    }
+    .menu-pantalla .menu-enlace {
+      transition: translate 300ms ease calc(var(--i, 0) * 40ms);
+    }
+    @starting-style {
+      .menu-pantalla:popover-open .menu-enlace {
+        translate: 0 16px;
+      }
+    }
+  }
+
+  /* ── Barra móvil: entra desde abajo al cargar ──────────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .barra-movil {
+      transition: translate 250ms ease-out;
+    }
+    @starting-style {
+      .barra-movil {
+        translate: 0 100%;
+      }
+    }
+  }
+
+  /* ── Preguntas: marcador de filete que gira 45° ─────────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .pregunta-marca {
+      transition: rotate 0.2s ease;
+    }
+  }
+
+  /* ── Legales: el texto y el <h1> los pone core ──────────────────────────── */
+  .lectura-legal article {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .lectura-legal h1 {
+    margin: 0 0 2rem;
+    font-family: var(--font-titulo);
+    font-weight: 350;
+    font-size: var(--text-h1i);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .lectura-legal h2 {
+    margin: 2rem 0 0.5rem;
+    font-family: var(--font-titulo);
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+  .lectura-legal h3 {
+    margin: 1.5rem 0 0.5rem;
+    font-family: var(--font-titulo);
+    font-weight: 400;
+    font-size: 1.25rem;
+  }
+  .lectura-legal p,
+  .lectura-legal li {
+    margin-top: 0.6rem;
+    color: var(--color-texto-medio);
+  }
+  .lectura-legal ul {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .lectura-legal a {
+    color: var(--color-texto);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* ── Animaciones (encargo §12). Estado por defecto: visible. Solo transform y
+   opacity, dentro de @supports y de prefers-reduced-motion: no-preference. ── */
+@keyframes trazo {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes revelar {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+}
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Foto de cada ficha de solución (nunca la del hero). */
+    .revelar {
+      animation: revelar ease-out both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+    /* Filete bajo el título de cada ficha. */
+    .trazo {
+      transform-origin: left;
+      animation: trazo linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 40%;
+    }
+    /* Líneas de `incluye`, escalonadas. */
+    .subir {
+      animation: subir ease-out both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 6%) entry calc(60% + var(--i, 0) * 6%);
+    }
+  }
+}

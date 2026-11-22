@@ -1,0 +1,447 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Forja» (carpinteria-metalica-7), encargo §8. El fondo ES el primario (óxido de
+ * minio): con otro color de marca cambia el fondo entero y todo el texto encima usa
+ * --color-sobre-primario, que calcula core (estiloMarca en layout.tsx). Los bloques de hierro
+ * (.hierro) y la lectura de las legales (.lectura) redefinen en local los tokens de texto.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: var(--color-primario);
+  --color-superficie: #1b1714; /* hierro */
+  --color-alterna: color-mix(in oklab, var(--color-primario) 85%, black);
+  --color-texto: var(--color-sobre-primario);
+  --color-texto-suave: color-mix(in oklab, var(--color-sobre-primario) 88%, var(--color-primario));
+  --color-borde: color-mix(in oklab, var(--color-sobre-primario) 30%, var(--color-primario));
+  --color-primario: #a8461f; /* óxido de minio; con blanco 5,9:1 */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #f2b544; /* chispa: solo sobre hierro o sobre foto con velo */
+  --color-foco: var(--color-sobre-primario);
+  /* --font-big-shoulders y --font-archivo las pone next/font en <html> (layout.tsx). */
+  --font-titulo: var(--font-big-shoulders), "Arial Narrow", sans-serif;
+  --font-texto: var(--font-archivo), system-ui, sans-serif;
+  --radius-boton: 0;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+  --text-display: clamp(2.75rem, 1.4rem + 6vw, 7.5rem);
+
+  /* Propios */
+  --color-hierro: #1b1714;
+  --color-hierro-hover: #2e2620;
+  --color-hierro-linea: #3a322c;
+  --color-sobre-hierro: #f3eee8; /* 15,4:1 sobre hierro */
+  --color-sobre-hierro-suave: #c9bfb6; /* 9,9:1 sobre hierro */
+  --color-papel: #f5efe9;
+  --text-h2: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  --text-cuerpo: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+}
+
+/* Derivados del primario (el cliente puede cambiarlo): color-mix de respaldo, oklch(from) si existe. */
+:root {
+  --corte: 14px;
+  --corte-boton: 12px;
+  --diagonal: 10.5vw; /* tan(6°) del ancho: el corte de las bandas */
+  --primario-hover: color-mix(in oklab, var(--color-primario) 88%, black);
+  --primario-pulsado: color-mix(in oklab, var(--color-primario) 80%, black);
+  --grano: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --opacidad-grano: 0.08;
+}
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-alterna: oklch(from var(--color-primario) calc(l - 0.08) c h);
+    --primario-hover: oklch(from var(--color-primario) calc(l - 0.06) c h);
+    --primario-pulsado: oklch(from var(--color-primario) calc(l - 0.1) c h);
+  }
+}
+@media (min-width: 1280px) {
+  :root {
+    --diagonal: 134px;
+  }
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 84px;
+    -webkit-text-size-adjust: 100%;
+    background: var(--color-fondo);
+    overflow-x: clip;
+  }
+  body {
+    position: relative;
+    overflow-x: clip;
+    background: transparent;
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Grano: una tesela SVG fija detrás del contenido. Solo se ve sobre el óxido (los bloques de
+   * hierro tienen fondo opaco). Se rasteriza una vez; nunca un filtro vivo ni dentro de las fotos. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--grano);
+    opacity: var(--opacidad-grano);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary {
+    list-style: none;
+  }
+}
+
+@layer components {
+  /* Ámbitos (encargo §8) */
+  .hierro {
+    --color-texto: var(--color-sobre-hierro);
+    --color-texto-suave: var(--color-sobre-hierro-suave);
+    --color-borde: var(--color-hierro-linea);
+    --color-foco: var(--color-acento);
+    background-color: var(--color-hierro);
+    color: var(--color-sobre-hierro);
+  }
+  .lectura {
+    --color-superficie: var(--color-papel);
+    --color-texto: #1b1714;
+    --color-texto-suave: #4f443b;
+    --color-borde: #d9cfc6;
+    --color-foco: #1b1714;
+    background-color: var(--color-papel);
+    color: #1b1714;
+  }
+
+  .contenedor {
+    width: 100%;
+    max-width: calc(1200px + 2 * clamp(16px, 3.2vw, 40px));
+    margin-inline: auto;
+    padding-inline: clamp(16px, 3.2vw, 40px);
+  }
+  .rotulo {
+    font-family: var(--font-titulo);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .display {
+    font-family: var(--font-titulo);
+    font-size: var(--text-display);
+    font-weight: 800;
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .h2 {
+    font-family: var(--font-titulo);
+    font-size: var(--text-h2);
+    font-weight: 800;
+    line-height: 0.95;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .etiqueta {
+    font-family: var(--font-titulo);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .enlace {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    font-family: var(--font-titulo);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* Cortes (formas: diagonales y esquinas cortadas, sin radios) */
+  .corte-tarjeta {
+    clip-path: polygon(0 0, calc(100% - var(--corte)) 0, 100% var(--corte), 100% 100%, 0 100%);
+  }
+  .corte-boton {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--corte-boton)), calc(100% - var(--corte-boton)) 100%, 0 100%);
+  }
+  .corte-placa {
+    clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
+  .banda-abajo {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--diagonal)), 0 100%);
+  }
+  .banda-arriba {
+    clip-path: polygon(0 var(--diagonal), 100% 0, 100% 100%, 0 100%);
+  }
+  .banda-doble {
+    clip-path: polygon(0 var(--diagonal), 100% 0, 100% calc(100% - var(--diagonal)), 0 100%);
+  }
+  .contorno-acento {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-acento);
+  }
+  .rombo {
+    display: block;
+    flex: none;
+    width: 9px;
+    height: 9px;
+    rotate: 45deg;
+  }
+
+  /* ---------- Botones (entrega §3) ---------- */
+  .boton {
+    display: flex;
+    min-height: 56px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 20px;
+    font-family: var(--font-titulo);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: transform 100ms ease;
+  }
+  .boton:active {
+    transform: translateY(2px);
+  }
+  /* Sobre hierro o sobre foto con velo; nunca sobre el óxido. */
+  .boton-chispa {
+    background: var(--color-primario);
+    color: var(--color-sobre-primario);
+    font-size: 21px;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--corte-boton)), calc(100% - var(--corte-boton)) 100%, 0 100%);
+  }
+  .boton-chispa:focus-visible {
+    outline: 3px solid var(--color-sobre-primario);
+    outline-offset: -6px;
+  }
+  .boton-chispa:active {
+    background: var(--primario-pulsado);
+  }
+  /* El botón sobre óxido. */
+  .boton-hierro {
+    background: var(--color-hierro);
+    color: var(--color-sobre-hierro);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--corte-boton)), calc(100% - var(--corte-boton)) 100%, 0 100%);
+  }
+  .boton-hierro:focus-visible,
+  .boton-hierro-contorno:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: -6px;
+  }
+  /* «Llamar al taller» sobre la foto del hero: hierro con contorno interior. */
+  .boton-hierro-contorno {
+    min-height: 52px;
+    background: var(--color-hierro);
+    color: var(--color-sobre-hierro);
+    box-shadow: inset 0 0 0 2px var(--color-sobre-hierro);
+  }
+  /* Llamar sobre óxido. */
+  .boton-contorno {
+    min-height: 52px;
+    color: var(--color-sobre-primario);
+    box-shadow: inset 0 0 0 2px var(--color-sobre-primario);
+  }
+  .boton-contorno:focus-visible {
+    outline: 3px solid var(--color-sobre-primario);
+    outline-offset: 3px;
+  }
+  /* Llamar sobre hierro. */
+  .boton-contorno-claro {
+    min-height: 52px;
+    color: var(--color-sobre-hierro);
+    box-shadow: inset 0 0 0 2px var(--color-sobre-hierro);
+  }
+  .boton-contorno-claro:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 3px;
+  }
+  .boton-capsula {
+    display: flex;
+    height: 44px;
+    flex: none;
+    align-items: center;
+    gap: 8px;
+    padding: 0 18px;
+    border-radius: 999px;
+    font-family: var(--font-titulo);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: transform 100ms ease;
+  }
+  .boton-capsula:active {
+    transform: scale(0.97);
+  }
+  .boton-capsula:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 2px;
+  }
+  .capsula-primario {
+    background: var(--color-primario);
+    color: var(--color-sobre-primario);
+  }
+  .capsula-contorno {
+    color: var(--color-sobre-hierro);
+    box-shadow: inset 0 0 0 2px var(--color-sobre-hierro);
+  }
+
+  @media (hover: hover) {
+    .boton-chispa:hover,
+    .capsula-primario:hover {
+      background: var(--primario-hover);
+    }
+    .boton-hierro:hover,
+    .boton-hierro-contorno:hover {
+      background: var(--color-hierro-hover);
+    }
+    .boton-contorno:hover {
+      background: color-mix(in oklab, var(--color-sobre-primario) 12%, transparent);
+    }
+    .boton-contorno-claro:hover,
+    .capsula-contorno:hover {
+      background: rgb(243 238 232 / 0.1);
+    }
+  }
+
+  /* Ficha de pieza: la ficha se levanta sobre una sombra dura fija en acento. */
+  .ficha {
+    transition: translate 120ms ease;
+  }
+  @media (hover: hover) {
+    .ficha:hover {
+      translate: -3px -3px;
+    }
+  }
+  .ficha:focus-visible {
+    translate: -3px -3px;
+    outline: 3px solid var(--color-acento);
+    outline-offset: -4px;
+  }
+
+  .chip:active {
+    transform: scale(0.97);
+  }
+
+  /* Menú: «Menú» / «Cerrar» según el popover. */
+  .texto-cerrar {
+    display: none;
+  }
+  html:has(#menu:popover-open) .texto-menu {
+    display: none;
+  }
+  html:has(#menu:popover-open) .texto-cerrar {
+    display: inline;
+  }
+
+  /* Legales: el texto y el <h1> los pone core; aquí solo la tipografía del template. */
+  .lectura article {
+    padding-block: 0;
+  }
+  .lectura h1 {
+    font-family: var(--font-titulo);
+    font-size: clamp(2.5rem, 1.2rem + 4.4vw, 5.5rem);
+    font-weight: 800;
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .lectura h2 {
+    font-family: var(--font-titulo);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .lectura a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+/* ---------- Animaciones (entrega §8): solo CSS, estado visible por defecto ---------- */
+@keyframes banda-entra {
+  from {
+    opacity: 0;
+    translate: -6% 0;
+  }
+}
+@keyframes titulo-entra {
+  from {
+    translate: -12px 0;
+  }
+}
+@keyframes aparece-arriba {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-banda] > * {
+      animation: banda-entra linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+    [data-titulo-grupo] {
+      animation: titulo-entra linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .menu-capsula:popover-open {
+    transition:
+      opacity 200ms ease,
+      translate 200ms ease,
+      display 200ms allow-discrete,
+      overlay 200ms allow-discrete;
+    @starting-style {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+  .barra-movil {
+    transition: translate 250ms ease;
+    @starting-style {
+      translate: 0 100%;
+    }
+  }
+  .ficha,
+  .chip {
+    transition-duration: 120ms;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ficha:hover,
+  .ficha:focus-visible {
+    translate: none;
+  }
+  .chip:active {
+    transform: none;
+  }
+}
