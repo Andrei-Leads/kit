@@ -60,6 +60,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
         par={conAntes?.antes ? { antes: conAntes.antes, despues: conAntes.imagenes[0], titulo: conAntes.titulo } : undefined}
         foto={conAntes ? undefined : servicio.imagenes[0]}
         forma="apaisada"
+        display
       >
         <p className="mt-2 text-texto-suave text-pretty">{servicio.descripcion}</p>
         {servicio.precioDesde && <PildoraPrecio precio={servicio.precioDesde} className="mt-3 text-[15px]" />}
@@ -114,7 +115,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
           <div className="flex flex-wrap gap-x-[clamp(40px,6vw,96px)] gap-y-10">
             {trabajos.length > 0 && (
               <div className="min-w-0 flex-[1_1_320px]">
-                <h2 className="mb-4 text-h2 font-[640]">Trabajos de {nombre}</h2>
+                <h2 className="mb-4 text-[clamp(1.5rem,1.2rem+1vw,2rem)] leading-[1.1] font-[640]">Trabajos de {nombre}</h2>
                 <ul className="flex flex-col gap-3">
                   {trabajos.map((t) => (
                     <li key={t.slug}>
@@ -138,7 +139,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
             )}
             {servicio.preguntas.length > 0 && (
               <div className="min-w-0 flex-[1.4_1_360px]">
-                <h2 className="mb-4 text-h2 font-[640]">Preguntas sobre {nombre}</h2>
+                <h2 className="mb-4 text-[clamp(1.5rem,1.2rem+1vw,2rem)] leading-[1.1] font-[640]">Preguntas sobre {nombre}</h2>
                 <Preguntas preguntas={servicio.preguntas} grupo="preguntas-servicio" />
               </div>
             )}

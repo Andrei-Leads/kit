@@ -20,13 +20,13 @@ export function ZonasPreguntas({ zonas, preguntas, sinPreguntas }: Props) {
       <div className="contenedor seccion flex flex-wrap gap-[clamp(40px,6vw,96px)]">
         {zonas.length > 0 && (
           <div className="min-w-0 flex-[1_1_280px]">
-            <h2 className="mb-3 text-h2 font-[640]">Dónde trabajamos</h2>
+            <h2 className="mb-3 text-[clamp(1.5rem,1.2rem+1vw,2rem)] leading-[1.1] font-[640]">Dónde trabajamos</h2>
             <p className="text-texto-suave text-pretty">Trabajamos en {listaY(zonas)}.</p>
           </div>
         )}
         {conPreguntas && (
           <div className="min-w-0 flex-[2_1_420px]">
-            <h2 className="mb-5 text-h2 font-[640]">Preguntas frecuentes</h2>
+            <h2 className="mb-5 text-[clamp(1.5rem,1.2rem+1vw,2rem)] leading-[1.1] font-[640]">Preguntas frecuentes</h2>
             <Preguntas preguntas={preguntas} grupo="preguntas-inicio" />
           </div>
         )}

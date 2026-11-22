@@ -34,7 +34,7 @@ export function MenuPopover({ enlaces, actual, id = "menu", pie, className }: Pr
       )}
     >
       <ul className="flex flex-col">
-        {[{ id: undefined, href: "/", texto: "Inicio" }, ...enlaces].map((e) => (
+        {[{ id: "inicio" as const, href: "/", texto: "Inicio" }, ...enlaces].map((e) => (
           <li key={e.href}>
             <Link
               href={e.href}

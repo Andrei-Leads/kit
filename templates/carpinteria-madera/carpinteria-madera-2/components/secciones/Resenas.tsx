@@ -48,7 +48,7 @@ export function Resenas({ resenas, valoracion, fichaGoogle, testimonio }: Props)
             </a>
           )}
         </div>
-        <ul className="carril carril-ancho">
+        <ul aria-labelledby="h2-resenas" tabIndex={0} className="carril carril-ancho">
           {testimonio && test && (
             <li className="campo-pleno flex flex-col gap-3.5 rounded-tarjeta p-6">
               <span className="text-[13px] font-bold tracking-[0.04em] uppercase">Sobre un trabajo</span>

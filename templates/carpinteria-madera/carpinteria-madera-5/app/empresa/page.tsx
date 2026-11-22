@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { iniciales, metadatosPagina } from "@andrei-leads/core";
+import { etiquetaOrigen, iniciales, metadatosPagina } from "@andrei-leads/core";
 
 import { Foto } from "@/components/base/Foto";
 import { Migas } from "@/components/base/Migas";
@@ -82,6 +82,8 @@ export default async function Page() {
                   <span>
                     <strong className="block font-[620]">{m.nombre}</strong>
                     {m.cargo && <span className="text-[15px] text-texto-suave">{m.cargo}</span>}
+                    {/* La foto de 72 px no lleva la píldora de Foto: la etiqueta de origen va en texto (AI Act, art. 50.4). */}
+                    {m.foto && etiquetaOrigen(m.foto) && <span className="block text-xs text-texto-suave">{etiquetaOrigen(m.foto)}</span>}
                   </span>
                 </li>
               ))}

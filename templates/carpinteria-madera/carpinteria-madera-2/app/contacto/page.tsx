@@ -28,7 +28,7 @@ export default function Page() {
             <Pareja contacto={contacto} mensaje={mensajeInicio(contacto)} tono="pleno" textoLlamar="Llamar ahora" />
             <BotonLlamada
               telefono={contacto.telefono}
-              className="self-start border-b-[3px] border-acento font-titulo text-display leading-[1.05] font-bold tracking-[-0.02em] tabular-nums no-underline"
+              className="min-h-11 self-start border-b-[3px] border-acento font-titulo text-display leading-[1.05] font-bold tracking-[-0.02em] tabular-nums no-underline"
             >
               {telefonoVisible(contacto.telefono)}
             </BotonLlamada>

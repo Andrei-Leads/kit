@@ -65,7 +65,7 @@ export default function Page() {
         <Pareja contacto={contacto} mensaje={mensaje} tono="pleno" textoWhatsapp="Pedir presupuesto por WhatsApp" className="mt-3" />
       </CabeceraPlena>
 
-      <section aria-label="Trabajos" className="seccion">
+      <section aria-label="Lista de trabajos" className="seccion">
         <div className="contenedor flex flex-col gap-[clamp(48px,7vw,88px)]">
           {lista.length > 0
             ? lista.map((g) => (

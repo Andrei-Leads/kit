@@ -26,11 +26,15 @@ const CANTIDADES = [
   ["Entre 2 y 4", "Son entre 2 y 4 piezas."],
   ["5 o más", "Son 5 piezas o más."],
 ] as const;
+/** [botón, frase con una pieza, frase con varias]: la frase concuerda con la cantidad elegida. */
 const DONDE = [
-  ["Puedo llevarla al taller", "Puedo llevarla al taller."],
-  ["Habría que recogerla", "Habría que recogerla."],
-  ["Está fija en casa", "Está fija en casa (puerta, tarima o ventana)."],
+  ["Puedo llevarla al taller", "Puedo llevarla al taller.", "Puedo llevarlas al taller."],
+  ["Habría que recogerla", "Habría que recogerla.", "Habría que recogerlas."],
+  ["Está fija en casa", "Está fija en casa (puerta, tarima o ventana).", "Están fijas en casa (puertas, tarima o ventanas)."],
 ] as const;
+
+/** Minúscula inicial salvo siglas, como `minusculaInicial` de core (sin importarla en el cliente). */
+const minInicial = (t: string) => (t.length > 1 && /[A-ZÁÉÍÓÚÑ]/.test(t[1]) ? t : t.charAt(0).toLocaleLowerCase("es") + t.slice(1));
 
 const OPCION =
   "boton min-h-12 rounded-boton border-[1.5px] px-[18px] text-base font-[560] [-webkit-tap-highlight-color:transparent]";
@@ -83,9 +87,9 @@ export function AsistentePieza({ piezas, whatsapp, mensajePorDefecto, claseWhats
   const algoElegido = (conPieza && pieza !== null) || cantidad !== null || donde !== null;
   const mensaje = algoElegido
     ? [
-        `Hola, quiero ${elegida ? elegida.titulo.toLocaleLowerCase("es") : "restaurar una pieza"}.`,
+        `Hola, quiero ${elegida ? minInicial(elegida.titulo) : "restaurar una pieza"}.`,
         cantidad !== null ? CANTIDADES[cantidad][1] : "",
-        donde !== null ? DONDE[donde][1] : "",
+        donde !== null ? DONDE[donde][cantidad !== null && cantidad > 0 ? 2 : 1] : "",
         "Os mando una foto.",
       ]
         .filter(Boolean)

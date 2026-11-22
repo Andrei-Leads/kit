@@ -35,8 +35,8 @@ const min = (t: string) => (t.length > 1 && /[A-ZÁÉÍÓÚÑ]/.test(t[1]) ? t :
 
 /**
  * Asistente «Tu encargo en tres preguntas» (encargo §6.7): pieza (servicios), dentro o fuera, y si
- * tienes medidas, en recuadros de 1 px. Solo compone el `mensaje` de BotonWhatsApp («Buenas. Necesito
- * {servicio}, para {interior|exterior}. {medidas} Os paso fotos.»): no guarda ni envía nada. Un segundo
+ * tienes medidas, en recuadros de 1 px. Solo compone el `mensaje` de BotonWhatsApp («Buenas. Quiero
+ * presupuesto para {servicio}. Es para {interior|exterior}. {medidas} Os paso fotos.»): no guarda ni envía nada. Un segundo
  * toque en la opción marcada la desmarca.
  *
  * Sin JavaScript (y hasta hidratar): la caja con las tres preguntas como texto guía y un único
@@ -50,7 +50,7 @@ export function Asistente({ piezas, whatsapp, mensajeGeneral, llamada, icono }: 
   const medidas = MEDIDAS.find((m) => m.v === sel.medidas);
 
   const mensaje = hidratado
-    ? `Buenas. Necesito ${pieza ? min(pieza.titulo) : "un trabajo de carpintería"}${sel.lugar ? `, para ${sel.lugar}` : ""}.${medidas ? ` ${medidas.frase}` : ""} Os paso fotos.`
+    ? `Buenas. Quiero presupuesto para ${pieza ? min(pieza.titulo) : "un trabajo de carpintería"}.${sel.lugar ? ` Es para ${sel.lugar}.` : ""}${medidas ? ` ${medidas.frase}` : ""} Os paso fotos.`
     : mensajeGeneral;
 
   const elegir = (clave: "pieza" | "lugar" | "medidas", v: string) => setSel((s) => ({ ...s, [clave]: s[clave] === v ? undefined : v }));

@@ -101,7 +101,7 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
             ))}
           </ul>
         )}
-        <h2 id="titulo-parecido" className="mb-4 text-h2 font-[640]">
+        <h2 id="titulo-parecido" className="mb-4 text-[clamp(1.5rem,1.2rem+1vw,2rem)] leading-[1.1] font-[640]">
           ¿Tienes algo parecido?
         </h2>
         <Pareja cta={cta} textoWhatsapp={TEXTO_WHATSAPP_TRABAJO} numeroEnLlamar className="max-w-[620px]" />

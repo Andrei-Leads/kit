@@ -48,10 +48,12 @@ Todo el archivo es de «Banco Siete Carpintería», un taller inventado de Maire
 ## 4. Textos fijos que conviene revisar
 
 - `lib/formato.ts`: los 6 pasos por defecto (`PASOS_TALLER`: «Presupuesto por escrito», «Contrato con fecha», «Limpiamos», «Garantía») y `notaHorario` («Respondemos por WhatsApp en horario de taller»: solo es cierto si el cliente contesta).
-- `lib/mensajes.ts`: el mensaje general, el de cada pieza («Buenas. Necesito {servicio}; os paso fotos y medidas.») y el de cada referencia («He visto el trabajo «…» (ref. 004) y quiero algo parecido.»).
+- `lib/mensajes.ts`: el mensaje general, el de cada pieza («Buenas. Quiero presupuesto para {servicio}; os paso fotos y medidas.») y el de cada referencia («He visto el trabajo «…» (ref. 004) y quiero algo parecido.»).
 - `components/Asistente.tsx`: las preguntas («¿Qué pieza?», «¿Va dentro o fuera?», «¿Tienes medidas?»), la nota «Fuera usamos maderas que aguantan el sol.» y el mensaje compuesto.
 - `components/secciones/ProcesoTaller.tsx`: la entradilla «Así sale una pieza de nuestro banco… Sin prisas que luego se pagan.».
 - `components/secciones/Garantias.tsx`: «Sello del taller» y «{N} años en el mismo banco».
+- `components/secciones/HeroDespiece.tsx`: «Hoja 01 · Taller propio desde {año}». Solo si el cliente tiene taller propio.
+- `components/secciones/CtaFinal.tsx`: «Pásate por el taller o escríbenos». Solo si el taller recibe visitas; si no, «Escríbenos o llámanos».
 - `app/servicios/[slug]/page.tsx`: «Empezamos por medir el hueco». `app/trabajos/page.tsx`: «Cada trabajo con su referencia, dónde está, cuánto ocupa y lo que tardamos.».
 
 ## 5. Lo que falta o queda pendiente
@@ -64,7 +66,7 @@ Todo el archivo es de «Banco Siete Carpintería», un taller inventado de Maire
 ## 6. Comprobación final (además del paso 12 de `nuevo-cliente.md`)
 
 - [ ] El despiece del hero y de `/servicios` muestra tantas letras como servicios (máx. 6) y la leyenda enlaza a cada ficha.
-- [ ] Con JS, el asistente compone bien el mensaje con los servicios reales (sin «Necesito puertas de madera de madera…»). Con un solo servicio se salta la primera pregunta. Sin `whatsapp`, la sección del asistente no sale y la pareja pasa a «Llamar al taller» a todo el ancho.
+- [ ] Con JS, el asistente compone bien el mensaje con los servicios reales (sin «Quiero presupuesto para puertas de madera de madera…»). Con un solo servicio se salta la primera pregunta. Sin `whatsapp`, la sección del asistente no sale y la pareja pasa a «Llamar al taller» a todo el ancho.
 - [ ] Las referencias («Ref. 00N») de `/trabajos` y de cada ficha son las que el cliente espera.
 - [ ] La vista previa de la home en WhatsApp muestra una foto real (`imagenesHero`).
 - [ ] `grep -rn "ejemplo\|ficticio\|Banco Siete\|Lebrero\|origen: \"ia\"" site.config.ts` no devuelve nada.

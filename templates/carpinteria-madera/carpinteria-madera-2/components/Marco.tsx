@@ -12,7 +12,7 @@ export function Marco({ actual, children }: { actual?: IdPagina; children: React
     <>
       <a
         href="#contenido"
-        className="sr-only z-[60] rounded-full bg-superficie px-5 py-3 font-semibold focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        className="sr-only z-[60] rounded-full bg-superficie px-5 py-3 font-semibold focus:not-sr-only focus:fixed focus:px-5 focus:py-3 focus:top-3 focus:left-3"
       >
         Saltar al contenido
       </a>

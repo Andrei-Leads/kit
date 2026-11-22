@@ -79,7 +79,7 @@ export default function Page() {
         </div>
         <div className={CASILLA}>
           <h2 className="etiqueta font-normal text-texto-suave">Email</h2>
-          <a href={`mailto:${contacto.email}`} className="wrap-anywhere">
+          <a href={`mailto:${contacto.email}`} className="min-h-11 content-center wrap-anywhere">
             {contacto.email}
           </a>
           {contacto.fichaGoogle && (

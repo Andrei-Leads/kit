@@ -13,6 +13,8 @@ type Props = {
   foto?: Imagen;
   /** Proporción del arco: «apaisada» (servicio, 4:3) o «cuadrada» (trabajo, 1:1); 3:2 desde `lg`. */
   forma: Forma;
+  /** h1 a tamaño display (ficha de servicio, como en el diseño); sin él, el de la ficha de trabajo. */
+  display?: boolean;
   children?: ReactNode;
 };
 
@@ -28,7 +30,7 @@ const PROPORCION_FOTO: Record<Forma, string> = {
  * la cabecera transparente; en escritorio, a la izquierda con 104 px de aire) y, al lado, migas,
  * h1 y lo que ponga la página (descripción, precio, ficha, botones).
  */
-export function CabeceraFicha({ migas, titulo, par, foto, forma, children }: Props) {
+export function CabeceraFicha({ migas, titulo, par, foto, forma, display, children }: Props) {
   const conMedio = Boolean(par || foto);
   return (
     <section data-cabecera={conMedio ? "transparente" : undefined} className={conMedio ? "bajo-cabecera" : undefined}>
@@ -51,7 +53,15 @@ export function CabeceraFicha({ migas, titulo, par, foto, forma, children }: Pro
         ) : null}
         <div className="min-w-0 flex-[1_1_340px]">
           <Migas migas={migas} />
-          <h1 className="mt-2 text-[clamp(2rem,1.4rem+2.8vw,4rem)] leading-[1.04] font-[660] tracking-[-0.025em] text-balance">{titulo}</h1>
+          <h1
+            className={
+              display
+                ? "mt-2 text-display leading-[1.02] font-[660] tracking-[-0.03em] text-balance"
+                : "mt-2 text-[clamp(2rem,1.4rem+2.8vw,4rem)] leading-[1.04] font-[660] tracking-[-0.025em] text-balance"
+            }
+          >
+            {titulo}
+          </h1>
           {children}
         </div>
       </div>

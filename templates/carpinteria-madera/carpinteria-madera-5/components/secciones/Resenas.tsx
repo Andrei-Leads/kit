@@ -47,7 +47,7 @@ export function Resenas({ resenas, valoracion, trabajos, contacto, conCta }: Pro
             </blockquote>
             <figcaption className="mt-4 text-base text-texto-suave">
               {obra.testimonio.autor} ·{" "}
-              <Link href={`/trabajos/${obra.slug}`} className="text-texto underline decoration-primario underline-offset-4">
+              <Link href={`/trabajos/${obra.slug}`} className="py-[13px] text-texto underline decoration-primario underline-offset-4">
                 {obra.titulo}
               </Link>
             </figcaption>

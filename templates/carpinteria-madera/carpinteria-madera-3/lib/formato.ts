@@ -31,7 +31,7 @@ export function metaTrabajo(t: Pick<Trabajo, "ubicacion" | "anio" | "superficie"
 
 /** «4,8 · 61 reseñas · Google». */
 export function valoracionTexto(v: NonNullable<SiteConfig["valoracion"]>): string {
-  return `${mediaVisible(v.media)} · ${v.total} reseñas · Google`;
+  return `${mediaVisible(v.media)} · ${v.total.toLocaleString("es-ES")} ${v.total === 1 ? "reseña" : "reseñas"} · Google`;
 }
 
 /**

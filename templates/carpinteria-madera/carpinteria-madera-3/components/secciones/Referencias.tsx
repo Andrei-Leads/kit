@@ -32,11 +32,11 @@ export function Referencias({ n, trabajos, galeria, primeraLamina }: Props) {
       </TituloSeccion>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-6 gap-y-10">
         {fichas.map((f, i) => (
-          <article key={f.key} data-aparecer className="flex flex-col gap-2.5">
+          <article key={f.key} data-aparecer className="relative flex flex-col gap-2.5">
             <Lamina imagen={f.imagen} numero={primeraLamina + i} sizes={TAM} />
             <p className="mt-1.5 font-titulo text-[12.5px] tracking-[0.04em] text-lapiz">{f.meta}</p>
             <h3 className="text-xl leading-[1.3] font-semibold">
-              <Link href={f.href} className="no-underline">
+              <Link href={f.href} className="no-underline after:absolute after:inset-0">
                 {f.titulo}
               </Link>
             </h3>

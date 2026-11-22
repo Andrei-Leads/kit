@@ -46,7 +46,7 @@ export function Par({ trabajo, whatsapp, nivel = "h3", servicio, id, preload }: 
         {servicio && <p className="text-sm text-texto-suave">{servicio.titulo}</p>}
         {!servicio && ficha && <p className="text-sm text-texto-suave">{ficha}</p>}
         <Titulo className="mt-1.5 text-h3 font-[620]">
-          <Link href={`/trabajos/${trabajo.slug}`} className="text-texto no-underline decoration-primario decoration-2 underline-offset-4 hover:underline">
+          <Link href={`/trabajos/${trabajo.slug}`} className="py-[9px] text-texto no-underline decoration-primario decoration-2 underline-offset-4 hover:underline">
             {trabajo.titulo}
           </Link>
         </Titulo>

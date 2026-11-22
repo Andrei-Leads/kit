@@ -91,7 +91,8 @@ Todo el archivo es de «Taller Pàtina», un negocio inventado de Valencia. Borr
 ## 4. Textos fijos que conviene revisar
 
 - `lib/mensajes.ts`: el mensaje general, los de servicio y de trabajo, y los textos de botón «Mándanos una foto de tu pieza», «Pide presupuesto» y «Tengo algo parecido».
-- `components/AsistentePieza.tsx`: `CANTIDADES` y `DONDE` (frases fijas del encargo) y «Enviar por WhatsApp».
+- `components/AsistentePieza.tsx`: `CANTIDADES` y `DONDE` (frases fijas del encargo; `DONDE` lleva la frase en singular y en plural, que se elige según la cantidad: «Puedo llevarlas al taller») y «Enviar por WhatsApp».
+- `app/servicios/page.tsx`: «Lo que recuperamos en el taller y en tu casa.». Solo si el cliente trabaja en los dos sitios.
 - `components/secciones/Asistente.tsx`: «Cuéntanos qué pieza tienes» y «Al abrirse WhatsApp, añade una foto.».
 - `components/secciones/Restauraciones.tsx`: «Piezas que han vuelto a casa» y «Desliza sobre cada foto para ver cómo llegaron al taller.».
 - `components/secciones/CtaFinal.tsx`: «¿Qué pieza quieres recuperar?» y «Mándanos una foto y te decimos qué se puede hacer con ella.». Sin WhatsApp, esta frase pasa a «Llámanos…».

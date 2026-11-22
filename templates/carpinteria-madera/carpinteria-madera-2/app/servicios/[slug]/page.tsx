@@ -102,7 +102,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
       <section aria-label="Detalle del servicio" className="seccion">
         <div className="contenedor flex flex-col gap-[clamp(40px,6vw,72px)]">
           {servicio.imagenes.length > 0 && (
-            <ul aria-label="Fotos" className="carril carril-ancho">
+            <ul aria-label="Fotos" tabIndex={0} className="carril carril-ancho">
               {servicio.imagenes.map((f) => (
                 <li key={f.src}>
                   <Foto imagen={f} sizes="(min-width: 1024px) 380px, 80vw" />

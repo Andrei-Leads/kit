@@ -36,7 +36,7 @@ export default function Page() {
       />
       <BotonLlamada
         telefono={contacto.telefono}
-        className="mt-5 inline-block text-[clamp(2rem,1.4rem+3vw,4.5rem)] leading-[1.1] font-[640] tracking-[-0.02em] text-texto underline decoration-primario decoration-[3px] underline-offset-[10px]"
+        className="mt-5 inline-block min-h-11 text-[clamp(2rem,1.4rem+3vw,4.5rem)] leading-[1.1] font-[640] tracking-[-0.02em] text-texto underline decoration-primario decoration-[3px] underline-offset-[10px]"
       >
         {telefonoVisible(contacto.telefono)}
       </BotonLlamada>
@@ -66,7 +66,7 @@ export default function Page() {
             Cómo llegar <span aria-hidden="true">&nbsp;↗</span>
           </a>
           <p className="mt-2">
-            <a href={`mailto:${contacto.email}`} className="enlace break-words">
+            <a href={`mailto:${contacto.email}`} className="enlace py-3 break-words">
               {contacto.email}
             </a>
           </p>

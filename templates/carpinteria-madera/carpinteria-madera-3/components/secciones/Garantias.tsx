@@ -33,7 +33,7 @@ export async function Garantias({ n, garantias, acreditaciones, marcas, anioFund
               <p className="titulo text-[clamp(2.25rem,1.5rem+3vw,4.25rem)] leading-[1.02]">Taller desde {anioFundacion}</p>
               {anios > 0 && (
                 <p className="font-titulo text-[12.5px] tracking-[0.04em] text-texto-suave">
-                  {anios} años en el mismo banco · {ciudad}
+                  {anios === 1 ? "1 año" : `${anios} años`} en el mismo banco · {ciudad}
                 </p>
               )}
             </div>

@@ -23,7 +23,7 @@ export default function Page() {
   const { contacto } = config;
   const mensaje = mensajeInicio(contacto);
   return (
-    <Marco>
+    <Marco actual="inicio">
       <HeroAsistente />
       <TrabajosInicio trabajos={config.trabajos} galeria={config.galeria} contacto={contacto} mensaje={mensaje} />
       <ServiciosTarjetas servicios={config.servicios} titulo="Lo que fabricamos" conAsistente={Boolean(contacto.whatsapp)} />

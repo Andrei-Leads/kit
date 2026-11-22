@@ -72,7 +72,7 @@ export function Marco({ config, pagina, ficha = false, rotulo, secciones = [], c
           <Link
             href="/"
             className={cn(
-              "min-w-0 flex-1 font-titulo leading-[1.3] font-semibold uppercase no-underline lg:max-w-[clamp(150px,18vw,300px)] lg:flex-[0_1_auto]",
+              "min-h-11 min-w-0 flex-1 content-center font-titulo leading-[1.3] font-semibold uppercase no-underline lg:max-w-[clamp(150px,18vw,300px)] lg:flex-[0_1_auto]",
               // Nombres largos: interletrado y cuerpo menores para que quepan en 2–3 líneas a 375 px.
               negocio.nombre.length > 28 ? "text-[11px] tracking-[0.04em] lg:text-[12px]" : "text-[13px] tracking-[0.1em]",
             )}

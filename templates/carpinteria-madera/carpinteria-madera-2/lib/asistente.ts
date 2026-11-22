@@ -15,7 +15,7 @@ export const TAMANOS = [
 /** Paso 3, «¿Qué acabado prefieres?»: [texto, trozo del mensaje, muestra de color]. Las muestras son dibujo, no datos. */
 export const ACABADOS = [
   ["Madera natural", "en madera natural", "madera"],
-  ["Lacado", "lacado", "lacado"],
+  ["Lacado", "con acabado lacado", "lacado"],
   ["Aún no lo sé", "sin decidir el acabado", "ninguno"],
 ] as const;
 

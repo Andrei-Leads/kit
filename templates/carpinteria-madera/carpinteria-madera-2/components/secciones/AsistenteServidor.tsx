@@ -26,7 +26,7 @@ export function AsistenteServidor({ servicios, whatsapp, mensajeBase, servicioIn
       slug: s.slug,
       frase: minusculaInicial(s.titulo),
       mensaje: mensajeDeServicio(s),
-      miniatura: foto ? <Foto imagen={foto} decorativa compacta proporcion="1/1" sizes="96px" calidad={60} className="rounded-[14px]" /> : undefined,
+      miniatura: foto ? <Foto imagen={foto} decorativa compacta proporcion="1/1" sizes="(min-width: 768px) 144px, (min-width: 360px) 40vw, 72vw" calidad={60} className="rounded-[14px]" /> : undefined,
     };
   });
   return (

@@ -1,7 +1,7 @@
 import { hayTrabajos, type Ancla, type SiteConfig } from "@andrei-leads/core";
 
 /** Página actual, para marcarla en la cápsula sin JavaScript (cada página pinta su cápsula). */
-export type IdPagina = "trabajos" | "servicios" | "empresa" | "contacto";
+export type IdPagina = "inicio" | "trabajos" | "servicios" | "empresa" | "contacto";
 
 export type Enlace = Ancla & { id: IdPagina };
 

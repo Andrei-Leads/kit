@@ -13,9 +13,9 @@ export function mensajeTaller(contacto: Pick<SiteConfig["contacto"], "mensajeWha
   return mensajeGeneral(contacto, "Buenas. Necesito un trabajo de carpintería y os paso fotos y medidas para el presupuesto.");
 }
 
-/** Ficha de servicio: el del servicio o «Buenas. Necesito {servicio}; os paso fotos y medidas.» */
+/** Ficha de servicio: el del servicio o «Buenas. Quiero presupuesto para {servicio}; os paso fotos y medidas.» (con «Necesito» se rompía con títulos como «Huecos difíciles»). */
 export function mensajePieza(servicio: Pick<Servicio, "titulo" | "mensajeWhatsapp">): string {
-  return mensajeServicio(servicio, (t) => `Buenas. Necesito ${minusculaInicial(t)}; os paso fotos y medidas.`);
+  return mensajeServicio(servicio, (t) => `Buenas. Quiero presupuesto para ${minusculaInicial(t)}; os paso fotos y medidas.`);
 }
 
 /** Ficha de trabajo: «Buenas. He visto el trabajo «{titulo}» (ref. 004) y quiero algo parecido.» */

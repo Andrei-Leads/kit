@@ -50,7 +50,12 @@ const ROTULO =
  * JavaScript, las dos fotos en fila (cada una en su arco pequeño) y la etiqueta debajo.
  */
 export function AntesDespues({ antes, despues, titulo, sizes, forma, preload, antesInmediata, className }: Props) {
-  const etiqueta = etiquetaOrigen(despues) ?? etiquetaOrigen(antes);
+  // Una etiqueta si las dos fotos tienen el mismo origen; si no, la de cada una (AI Act: ninguna foto de IA sin la suya).
+  const [origenAntes, origenDespues] = [etiquetaOrigen(antes), etiquetaOrigen(despues)];
+  const mismoOrigen = origenAntes === origenDespues;
+  const etiqueta = mismoOrigen
+    ? origenDespues
+    : [origenAntes && `Antes: ${origenAntes}`, origenDespues && `Después: ${origenDespues}`].filter(Boolean).join(" · ");
   return (
     <div className={className}>
       <DeslizadorAntesDespues
@@ -85,7 +90,7 @@ export function AntesDespues({ antes, despues, titulo, sizes, forma, preload, an
         </figure>
         {etiqueta && <span className={cn(ETIQUETA, POSICION_ETIQUETA.arco, "z-[4] hidden [@media(scripting:enabled)]:block")}>{etiqueta}</span>}
       </DeslizadorAntesDespues>
-      {etiqueta && <p className="mt-2 text-xs text-texto-suave [@media(scripting:enabled)]:hidden">{etiqueta.replace("Imagen generada", "Imágenes generadas")}</p>}
+      {etiqueta && <p className="mt-2 text-xs text-texto-suave [@media(scripting:enabled)]:hidden">{mismoOrigen ? etiqueta.replace("Imagen generada", "Imágenes generadas") : etiqueta}</p>}
     </div>
   );
 }
