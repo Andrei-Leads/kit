@@ -29,7 +29,7 @@ const SIZES = "(min-width: 1024px) 50vw, 100vw";
 
 /**
  * Ficha de trabajo (encargo §7): foto 4:3 (o AntesDespues con `antes`), ficha de datos en tabla oscura
- * (solo los que existan), `contenido`, `testimonio`, enlace al servicio y CTA «Quiero algo parecido».
+ * (solo los que existan), `contenido`, `testimonio`, enlace al servicio y CTA «¿Te ha pasado algo parecido? · Cuéntanoslo por WhatsApp» (Ysst, 22/11/2026).
  */
 export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
   const { slug } = await params;
@@ -123,8 +123,7 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
           </div>
         </div>
       </article>
-      <CtaFinal contacto={config.contacto} mensaje={mensajeDeTrabajo(trabajo)} titulo="¿Te ha pasado algo parecido?" textoWhatsapp="Quiero algo parecido" />
-      {/* [decisión] «Quiero algo parecido» en una avería: texto del encargo; lo decide Ysst. */}
+      <CtaFinal contacto={config.contacto} mensaje={mensajeDeTrabajo(trabajo)} titulo="¿Te ha pasado algo parecido?" textoWhatsapp="Cuéntanoslo por WhatsApp" />
     </>
   );
 }

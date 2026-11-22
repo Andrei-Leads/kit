@@ -22,9 +22,9 @@ export function mensajeDeServicio(servicio: Pick<Servicio, "titulo" | "mensajeWh
   return mensajeServicio(servicio, (t) => `Hola, quiero información sobre ${minusculaInicial(t)}.`);
 }
 
-/** Ficha de trabajo: «Hola, he visto el trabajo «{titulo}» y quiero algo parecido». */
+/** Ficha de trabajo: «Hola, he visto el trabajo «{titulo}» y me pasa algo parecido». */
 export function mensajeDeTrabajo(trabajo: Pick<Trabajo, "titulo">): string {
-  return mensajeTrabajo(trabajo, (t) => `Hola, he visto el trabajo «${t}» y quiero algo parecido`);
+  return mensajeTrabajo(trabajo, (t) => `Hola, he visto el trabajo «${t}» y me pasa algo parecido`);
 }
 
 /** 404: el de core. */

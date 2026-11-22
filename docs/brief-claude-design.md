@@ -48,7 +48,7 @@ Un **template**: el diseño reutilizable de una **web completa de varias página
 | `/trabajos/[slug]` | Un trabajo | Una por cada `trabajos[]` |
 | `/empresa` | Quiénes somos | Siempre. Se compone con lo que haya (historia, equipo, fotos, años, acreditaciones, garantías); cada bloque vacío se oculta |
 | `/contacto` | Contacto | Siempre |
-| `/comunidades` | Para comunidades de vecinos | Solo si existe el bloque `comunidades` (tipo obra técnica) |
+| `/comunidades` | Para comunidades de vecinos | Solo si existe el bloque `comunidades` (tipo obra técnica; en urgencias, solo si el encargo la pide) |
 | Cualquier URL que no exista | Página no encontrada (404) | Siempre, con tu diseño: un `h1` («No encontramos esta página»), una frase, enlaces a `/`, `/servicios` y `/contacto`, `BotonLlamada` y `BotonWhatsApp` (si hay WhatsApp) |
 | `/aviso-legal`, `/privacidad`, `/cookies` | Legales | Siempre. **El texto lo pone core**; tú solo decides cómo se ven dentro de tu layout (cabecera, pie, ancho, tipografía) |
 
@@ -115,7 +115,7 @@ Es el contrato de core 0.5.1 más tres novedades **opcionales** de 0.6.0 (al fin
 | `valoracion` | opcional: {`media` (1–5), `total` (entero)} de Google ("4,8 · 127 reseñas") |
 | `resenas` | lista de {`autor`, `texto`, `puntuacion` (1–5), `fecha?` (`"2026-09"` o `"2026-09-14"`), `fuente?` (`"google"`, `"web"` u `"otra"`)} |
 | `proceso` | lista (máx. 6) de {`titulo`, `texto`} |
-| `acreditaciones` | lista de {`nombre`, `numero?`} ("Empresa instaladora RII", "n.º 46/12345") |
+| `acreditaciones` | lista de {`nombre`, `numero?`, `corto?`} ("Empresa instaladora RII", "n.º 46/12345", "RII"; `corto` ≤ 12 caracteres, desde 0.8.0) |
 | `garantias` | lista (máx. 6) de textos de ≤ 80 ("Presupuesto cerrado antes de empezar") |
 | `marcas` | lista de nombres ("Cortizo", "Daikin") |
 | `tarifas` | opcional: {`items` [{`concepto`, `precio` (≤ 40)}] (mínimo 1), `nota?`} |

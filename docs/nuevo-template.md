@@ -183,7 +183,7 @@ FASES
 
 REQUISITOS (todos obligatorios)
 - Rutas fijas: / /servicios /servicios/[slug] /trabajos /trabajos/[slug] /empresa /contacto
-  /aviso-legal /privacidad /cookies (+ /comunidades solo en obra técnica y si existe). Sin trabajos
+  /aviso-legal /privacidad /cookies (+ /comunidades solo si existe: obra técnica, o urgencias si el encargo la pide). Sin trabajos
   ni galería, /trabajos da 404 y sale del menú. La etiqueta del menú es libre; la ruta no.
 - Ningún dato del negocio escrito a mano: todo de `import config from "@/site.config"`. Cada sección
   recibe solo su parte. Sin datos, la sección desaparece sin dejar hueco.

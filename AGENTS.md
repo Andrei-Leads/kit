@@ -247,7 +247,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; 
 | `valoracion` | opcional: {`media` 1–5, `total`} (resumen de Google) | Sin estrellas. **No** va al JSON-LD (`aggregateRating`) |
 | `resenas` | {`autor`, `texto`, `puntuacion` 1–5, `fecha?` (`AAAA-MM[-DD]`), `fuente?` (`google`, `web`, `otra`)} | Sección oculta |
 | `proceso` | ≤ 6 × {`titulo`, `texto`, `imagen?` (desde 0.7.0)} | El template usa sus pasos por defecto según el tipo |
-| `acreditaciones` | {`nombre`, `numero?`} (solo números reales) | Se oculta |
+| `acreditaciones` | {`nombre`, `numero?` (solo números reales), `corto?` (≤ 12, siglas para cifras o sellos; desde 0.8.0)} | Se oculta |
 | `garantias` | ≤ 6 textos (≤ 80) | Se oculta |
 | `marcas` | lista de nombres | Se oculta |
 | `tarifas` | opcional: {`items` [{`concepto`, `precio`}] (mínimo 1), `nota?`} | Sin sección de precios |
@@ -314,7 +314,7 @@ Contrato **0.3.0** (+ `seo.indexar` y `contacto.horario` estructurado en 0.4.0; 
   | recurrente *(aplazado)* | jardinería, piscinas, climatización | Contrato periódico | Por definir |
 
   Una segunda tanda del mismo nicho no puede parecerse a la primera (decisión de Ysst, 21/10/2026). Los 3 templates de una tanda difieren en al menos 4 ejes de estructura (hero, orden, sección estrella, trabajos, navegación, botones, tipografía, densidad), no solo en el color.
-- **Webs multipágina.** Rutas fijas en todos los templates: `/`, `/servicios`, `/servicios/[slug]`, `/trabajos`, `/trabajos/[slug]`, `/empresa`, `/contacto`, las tres legales y `/comunidades` (solo obra técnica, si existe `comunidades`). La etiqueta del menú es libre; la ruta no. Sin páginas por municipio. Cabecera, pie y barra móvil en `app/layout.tsx`, presentes en todas las páginas.
+- **Webs multipágina.** Rutas fijas en todos los templates: `/`, `/servicios`, `/servicios/[slug]`, `/trabajos`, `/trabajos/[slug]`, `/empresa`, `/contacto`, las tres legales y `/comunidades` (obra técnica, si existe `comunidades`; también un template de urgencias cuyo encargo la pida, como `electricidad-8`: Ysst, 22/11/2026). La etiqueta del menú es libre; la ruta no. Sin páginas por municipio. Cabecera, pie y barra móvil en `app/layout.tsx`, presentes en todas las páginas.
 - **`templates/carpinteria-metalica/carpinteria-metalica-3`** («Reparaciones», sigue las reglas de urgencias) es el primer template real. El piloto one-page `templates/jardineria-1` («Rótulo») se borró el 15/10/2026; el tipo recurrente tendrá un template nuevo. El template de prueba `pergolas` ya se borró.
 - **Estructura de un template** (la de `carpinteria-metalica-3`, con el esqueleto del antiguo piloto `jardineria-1`, ya borrado: Next 16, TypeScript, ESLint, Tailwind v4, App Router, Turbopack, `cacheComponents: true`, **sin `src/`**):
   - `app/` en la raíz del template: `layout.tsx`, `page.tsx`, `not-found.tsx`, `globals.css` y una carpeta por ruta fija. Además, `components/ui/` (shadcn), `components/secciones/`, `lib/` y `public/ejemplo/`.

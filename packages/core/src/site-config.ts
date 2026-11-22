@@ -265,6 +265,8 @@ export const siteConfigSchema = z
         z.object({
           nombre: z.string().min(1), // "Empresa instaladora de baja tensión (RII)"
           numero: z.string().min(1).optional(), // solo números reales
+          /** Siglas o nombre corto para cifras y sellos del template: "RII" (desde 0.8.0). */
+          corto: z.string().min(1).max(12, "Nombre corto: máximo 12 caracteres").optional(),
         })
       )
       .default([]),
@@ -296,7 +298,7 @@ export const siteConfigSchema = z
           .default([]),
       })
       .prefault({}),
-    /** Solo obra técnica. Sin este bloque no existe /comunidades. */
+    /** Obra técnica (y templates de urgencias cuyo encargo lo pida, como electricidad-8). Sin este bloque no existe /comunidades. */
     comunidades: z
       .object({
         texto: parrafos.min(1, "Al menos un párrafo"),
