@@ -1,0 +1,433 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Taller de siempre» (carpinteria-metalica-8), encargo §8: arcilla clara, verde oliva
+ * y barro; formas de guijarro y arcos. Solo --color-primario se sobrescribe desde site.config
+ * (estiloMarca en layout.tsx, que también calcula --color-sobre-primario).
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #f2e9dc; /* arcilla clara */
+  --color-superficie: #fbf7f1;
+  --color-alterna: #e8d9c5;
+  --color-texto: #2a2019;
+  --color-texto-suave: #5c4b3e; /* 6,9:1 sobre el fondo */
+  --color-borde: #d8c6b0;
+  --color-primario: #44603f; /* verde oliva; 7:1 con blanco */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #b8653a; /* barro: solo decoración o texto ≥ 24 px */
+  --color-foco: #2a2019;
+  /* Las variables --font-jost y --font-figtree las pone next/font en <html> (layout.tsx). */
+  --font-titulo: var(--font-jost), system-ui, sans-serif;
+  --font-texto: var(--font-figtree), system-ui, sans-serif;
+  --radius-boton: 18px 22px 18px 24px;
+  --radius-tarjeta: 28px 28px 28px 8px;
+  --radius-foto: 32px;
+  --text-display: clamp(2.5rem, 1.7rem + 3.6vw, 5rem);
+
+  /* Propios: formas orgánicas (encargo §8) */
+  --radius-guijarro-1: 46% 54% 42% 58% / 52% 44% 56% 48%;
+  --radius-guijarro-2: 58% 42% 50% 50% / 40% 56% 44% 60%;
+  --radius-guijarro-3: 52% 48% 60% 40% / 46% 58% 42% 54%;
+  --radius-guijarro-4: 40% 60% 48% 52% / 58% 42% 56% 44%;
+  --radius-arco: 50% 50% 18px 18px / 40% 40% 18px 18px;
+  --radius-chip: 14px 18px 14px 20px;
+
+  /* Derivados del primario: respaldo con color-mix; oklch(from) más abajo si existe. */
+  --color-primario-suave: color-mix(in oklab, var(--color-primario) 15%, white);
+  --color-primario-hover: color-mix(in oklab, var(--color-primario) 82%, black);
+  /* Texto en primario sobre claro: siempre algo más oscuro, aguante el color que aguante el cliente. */
+  --color-primario-tinta: color-mix(in oklab, var(--color-primario) 72%, var(--color-texto));
+  --color-cabecera-solida: color-mix(in oklab, var(--color-superficie) 94%, transparent);
+  --color-acento-suave: color-mix(in oklab, var(--color-acento) 30%, var(--color-fondo));
+
+  --shadow-suave: 0 12px 32px -18px rgb(42 32 25 / 0.35);
+
+  --text-h1-hero: clamp(2rem, 1.2rem + 3.6vw, 4.75rem);
+  --text-h2: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem);
+  --text-cifra: clamp(2.25rem, 1.6rem + 2.8vw, 3.5rem);
+  --text-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-entradilla: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-suave: oklch(from var(--color-primario) calc(l * 0.15 + 0.85) calc(c * 0.15) h); /* = color-mix 15 % con blanco, como el diseño */
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.07) c h);
+    /* La mezcla del 72 % no basta con un primario claro (#facc15: 2,3:1): luminosidad tope 0,48
+       (≥ 5:1 sobre el fondo y la superficie). Con el oliva o un azul oscuro no cambia nada. */
+    --color-primario-tinta: oklch(from color-mix(in oklab, var(--color-primario) 72%, var(--color-texto)) min(l, 0.48) c h);
+  }
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 88px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 3px;
+  }
+  [data-sobre-primario] :focus-visible {
+    outline-color: var(--color-sobre-primario);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  .contenedor {
+    width: 100%;
+    max-width: calc(1180px + 2 * clamp(20px, 5vw, 56px));
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 56px);
+  }
+  .seccion {
+    padding-block: clamp(72px, 9vw, 128px);
+  }
+  .h2 {
+    margin: 0;
+    font-family: var(--font-titulo);
+    font-size: var(--text-h2);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+  .antetitulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: var(--color-texto-suave);
+  }
+  .antetitulo::before {
+    content: "";
+    flex: none;
+    width: 12px;
+    height: 10px;
+    border-radius: var(--radius-guijarro-2);
+    background: var(--color-acento);
+  }
+  .enlace {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+  }
+  .pie-foto {
+    font-family: var(--font-texto);
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--color-texto-suave);
+  }
+
+  /* ---------- Botones (encargo §3 y entrega §3) ---------- */
+  .boton {
+    display: inline-flex;
+    min-height: 52px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 24px;
+    border: 2px solid transparent;
+    border-radius: var(--radius-boton);
+    font-family: var(--font-titulo);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.15;
+    text-align: center;
+    text-decoration: none;
+  }
+  .boton:active {
+    transform: scale(0.97);
+  }
+  .boton-grande {
+    min-height: 56px;
+    padding-inline: 28px;
+    font-size: 19px;
+  }
+  /* boton-guijarro: relleno primario */
+  .boton-guijarro {
+    background: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-sobre-primario);
+  }
+  /* boton-tierra: contorno de 2 px en texto */
+  .boton-tierra {
+    border-color: var(--color-texto);
+    color: var(--color-texto);
+  }
+  /* boton-cabecera: compacto, 44 px */
+  .boton-cabecera {
+    min-height: 44px;
+    padding-inline: 14px;
+    font-size: 16px;
+    white-space: nowrap;
+  }
+  @media (min-width: 64rem) {
+    .boton-cabecera {
+      padding-inline: 18px;
+    }
+  }
+  /* Sobre el guijarro primario del CTA final */
+  .boton-sobre {
+    background: var(--color-sobre-primario);
+    border-color: var(--color-sobre-primario);
+    color: var(--color-primario);
+    font-weight: 600;
+  }
+  .boton-sobre-contorno {
+    border-color: var(--color-sobre-primario);
+    color: var(--color-sobre-primario);
+  }
+  @media (hover: hover) {
+    .boton-guijarro:hover {
+      background: var(--color-primario-hover);
+      border-color: var(--color-primario-hover);
+    }
+    .boton-tierra:hover {
+      background: var(--color-alterna);
+    }
+    .sobre-alterna .boton-tierra:hover {
+      background: var(--color-superficie);
+    }
+    .boton-sobre:hover {
+      background: transparent;
+      color: var(--color-sobre-primario);
+    }
+    .boton-sobre-contorno:hover {
+      background: color-mix(in oklab, var(--color-sobre-primario) 14%, transparent);
+    }
+  }
+
+  /* ---------- Legales: el <article> y el <h1> los pone core ---------- */
+  .lectura-legal article {
+    margin: 0;
+    max-width: 68ch;
+    padding: 0;
+    line-height: 1.65;
+  }
+  .lectura-legal h1 {
+    font-family: var(--font-titulo);
+    font-size: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    margin-bottom: 0.75rem;
+  }
+  .lectura-legal h2 {
+    font-family: var(--font-titulo);
+    font-size: 24px;
+    font-weight: 500;
+  }
+  .lectura-legal a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+/* ---------- Cabecera transparente → sólida (encargo §5, solo CSS) ---------- */
+.cabecera::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-cabecera-solida);
+  border-bottom: 1px solid var(--color-borde);
+}
+@keyframes cabecera-solida {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .cabecera::before {
+      animation: cabecera-solida linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 120px;
+    }
+  }
+}
+
+/* ---------- Menú: hoja inferior redondeada (MenuPopover reestilado) ---------- */
+.menu-hoja {
+  position: fixed;
+  inset: auto 0 0 0;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  max-height: 88dvh;
+  overflow: auto;
+  border: 0;
+}
+.menu-hoja::backdrop {
+  background: rgb(42 32 25 / 0.45);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-hoja {
+    transition:
+      opacity 240ms ease-out,
+      translate 240ms ease-out,
+      display 240ms allow-discrete,
+      overlay 240ms allow-discrete;
+  }
+  .menu-hoja:popover-open {
+    opacity: 1;
+    translate: 0 0;
+  }
+  @starting-style {
+    .menu-hoja:popover-open {
+      opacity: 0;
+      translate: 0 24px;
+    }
+  }
+}
+
+/* ---------- Barra móvil en bandeja ---------- */
+@keyframes barra-sube {
+  from {
+    transform: translateY(100%);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .barra-bandeja {
+    animation: barra-sube 250ms ease-out both;
+  }
+}
+
+/* ---------- Sellos de cifras: giro estático y aparición con view() ---------- */
+.sello {
+  rotate: -2deg;
+}
+.sello:nth-child(even) {
+  rotate: 1.5deg;
+}
+@keyframes sello-aparece {
+  from {
+    opacity: 0;
+    transform: scale(0.92) rotate(-2deg);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sello {
+      animation: sello-aparece linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+    .sello:nth-child(2) {
+      animation-range: entry 8% entry 68%;
+    }
+    .sello:nth-child(3) {
+      animation-range: entry 16% entry 76%;
+    }
+    .sello:nth-child(4) {
+      animation-range: entry 24% entry 84%;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sello,
+  .sello:nth-child(even) {
+    rotate: none;
+  }
+}
+
+/* ---------- Tablón de reseñas: notas giradas solo en escritorio y sin «reducir movimiento» ---------- */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  .nota {
+    rotate: -1.5deg;
+  }
+  .nota:nth-child(even) {
+    rotate: 1.5deg;
+  }
+  .nota-grande {
+    rotate: -0.6deg;
+  }
+}
+.nota:nth-child(even) .chincheta {
+  background: var(--color-primario);
+}
+
+/* ---------- Tarjetas: elevación al pasar ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .elevable {
+    transition: transform 160ms ease;
+  }
+  @media (hover: hover) {
+    .elevable:hover {
+      transform: translateY(-4px);
+    }
+  }
+}
+
+/* ---------- Configurador ---------- */
+@keyframes paso-entra {
+  from {
+    opacity: 0;
+    translate: 16px 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .paso-entra {
+    animation: paso-entra 220ms ease-out both;
+  }
+  .progreso {
+    transition: transform 250ms ease;
+  }
+  .opcion {
+    transition:
+      transform 160ms ease,
+      border-color 160ms ease;
+  }
+  @media (hover: hover) {
+    .opcion:hover {
+      transform: translateY(-4px);
+    }
+  }
+}
+.opcion {
+  border-color: var(--color-borde);
+  background: var(--color-superficie);
+}
+@media (hover: hover) {
+  .opcion:hover {
+    border-color: var(--color-texto);
+  }
+}
+.opcion[aria-pressed="true"] {
+  border-color: var(--color-primario);
+  background: var(--color-primario-suave);
+}
+
+/* ---------- Antes y después: tirador en guijarro, foco visible en el contenedor ---------- */
+.comparador:has(input:focus-visible) {
+  outline: 3px solid var(--color-foco);
+  outline-offset: 3px;
+}

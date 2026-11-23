@@ -216,8 +216,8 @@ REQUISITOS (todos obligatorios)
 - Accesibilidad: zonas táctiles ≥ 44 px, foco visible, contraste AA, chips que no son enlace = <span>,
   menú móvil usable con teclado y lector de pantalla.
 - Logo negocio.logo {src, alt} a 32 px a la izquierda del nombre escrito, con alt="". El nombre se ve
-  siempre, en 2 líneas como máximo y nunca cortado con «…», sin romper la cabecera a 375 px. Sin
-  variante «solo logo».
+  siempre, nunca cortado con «…» y sin romper la cabecera a 375 px: 2 líneas como máximo hasta unos
+  40 caracteres; con nombres más largos se aceptan 3 (Ysst, 23/11/2026). Sin variante «solo logo».
 - Precio: la etiqueta «DESDE» solo si precioDesde empieza por «desde»; si no, el texto tal cual.
 - WhatsApp de servicio: el botón lleva el texto corto del diseño («Pregunta por WhatsApp», «Mándanos
   una foto»…) y el servicio va en el mensaje precargado (mensajeServicio), sin frases rotas con títulos
@@ -311,7 +311,7 @@ grep -rl '"use client"' app components lib | xargs grep -n -E '^import \{[^}]*\}
 curl -s $URL/empresa | grep -o '<script src="[^"]*" async' | cut -d'"' -f2 | while read s; do curl -s $URL$s; done | wc -c
 ```
 
-Referencia (core 0.7.0, Next 16.4.6 y React 19.3.1, 22/11/2026): unos **580 KB** sin comprimir de base por página (≈ 180 KB gzip) más las islas del template; es lo normal. Referencia anterior (core 0.5.1, Next 16.4; bytes de `wc -c`): unos **545–575 KB** sin comprimir (≈ 165–175 KB gzip), también en las páginas **con** asistente de WhatsApp (con core 0.5.0 daban ~850–870 KB). De ellos, unos 480 KB son el suelo de React + Next. Si sale **~850–880 KB**, un componente cliente arrastra zod: importa un valor de `@/site.config` (o de un `lib/*` que lo importe), o la web sigue en core < 0.5.1 e importa un valor de core. Para ver qué pesa y quién lo importa: `pnpm next analyze` (desde la carpeta del template; busca `zod`).
+Referencia (core 0.7.0, Next 16.4.6 y React 19.3.1, 22/11/2026): unos **470 KB** sin comprimir de base por página (≈ 140 KB gzip) contando solo los módulos, como hace el comando; con el `<script noModule>` de polyfills (+109 KB, ≈ 38 KB gzip) salen unos **580 KB** (≈ 180 KB gzip). Más las islas del template; es lo normal. Di siempre cuál de las dos cifras das: en carpintería metálica 4–8 dos integradores midieron sin `noModule` y tres con él (23/11/2026). Referencia anterior (core 0.5.1, Next 16.4; bytes de `wc -c`): unos **545–575 KB** sin comprimir (≈ 165–175 KB gzip), también en las páginas **con** asistente de WhatsApp (con core 0.5.0 daban ~850–870 KB). De ellos, unos 480 KB son el suelo de React + Next. Si sale **~850–880 KB**, un componente cliente arrastra zod: importa un valor de `@/site.config` (o de un `lib/*` que lo importe), o la web sigue en core < 0.5.1 e importa un valor de core. Para ver qué pesa y quién lo importa: `pnpm next analyze` (desde la carpeta del template; busca `zod`).
 
 **HTML generado.** Desde la carpeta del template, servidor en segundo plano con su PID:
 
