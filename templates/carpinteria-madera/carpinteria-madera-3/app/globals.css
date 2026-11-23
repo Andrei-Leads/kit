@@ -1,0 +1,411 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Banco de trabajo» (carpinteria-madera-3), encargo §8: papel kraft, tinta sepia y lápiz
+ * de carpintero. Solo --color-primario se sobrescribe desde site.config (estiloMarca en layout.tsx,
+ * que también calcula --color-sobre-primario). El primario como texto o línea fina sobre el kraft
+ * pasa SIEMPRE por --color-lapiz (el primario oscurecido si hace falta), para que un amarillo de
+ * cliente siga leyéndose.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #ece2cf; /* kraft claro */
+  --color-superficie: #f5eee0;
+  --color-alterna: #e0d2b8;
+  --color-texto: #2e2116; /* tinta sepia */
+  --color-texto-suave: #5e4a36; /* 6,5:1 sobre fondo, 5,6:1 sobre alterna */
+  --color-borde: #b9a27f;
+  --color-primario: #8a3b12; /* lápiz de carpintero; blanco encima 7,7:1 */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #2e2116; /* el duotono: tinta */
+  --color-foco: var(--color-lapiz);
+  /* --font-jetbrains y --font-public las pone next/font en <html> (layout.tsx). */
+  --font-titulo: var(--font-jetbrains), ui-monospace, monospace;
+  --font-texto: var(--font-public), system-ui, sans-serif;
+  --radius-boton: 2px;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+  --text-display: clamp(2.125rem, 1.4rem + 3.4vw, 4.5rem);
+
+  /* Propios (encargo §8) */
+  --color-tinta: var(--color-texto);
+  --color-trazo: color-mix(in oklch, var(--color-texto) 30%, transparent); /* despiece y retícula */
+  --color-reticula: color-mix(in oklch, var(--color-texto) 6%, transparent);
+  --color-lapiz: color-mix(in oklch, var(--color-primario) 72%, var(--color-texto)); /* cotas, letras y marcas */
+  --color-primario-hover: color-mix(in oklch, var(--color-primario) 86%, black);
+  --color-pie: var(--color-alterna);
+  --text-h1: clamp(2rem, 1.4rem + 2.6vw, 3.75rem); /* h1 de páginas interiores */
+  --text-h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.5rem);
+  --text-h2-grande: clamp(1.75rem, 1.2rem + 2.2vw, 3.25rem); /* proceso y CTA final */
+  --text-h3-bloque: clamp(1.375rem, 1.1rem + 1.2vw, 2.125rem); /* bloques de las fichas */
+  --text-cuerpo: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
+  --text-etiqueta: 0.8125rem;
+}
+
+/* Con color relativo (Baseline), los derivados exactos del encargo. */
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-trazo: oklch(from var(--color-texto) l c h / 0.3);
+    --color-reticula: oklch(from var(--color-texto) l c h / 0.06);
+    /* El lápiz es el primario; si el cliente trae uno claro (amarillo), se oscurece hasta leerse sobre el kraft. */
+    --color-lapiz: oklch(from var(--color-primario) min(l, 0.47) c h);
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.07) c h);
+  }
+}
+
+:root {
+  --gutter: clamp(20px, 1.9vw, 32px);
+  --sec: clamp(72px, 3rem + 4vw, 128px);
+  --sec-grande: clamp(88px, 4rem + 5vw, 160px);
+}
+
+@utility mono {
+  font-family: var(--font-titulo);
+}
+
+/* Etiqueta mono de 13 px: «Hoja 01 · Taller propio desde 1987», «Lám. 03», «Ref. 004 · Triana». */
+@utility etiqueta {
+  font-family: var(--font-titulo);
+  font-size: var(--text-etiqueta);
+  letter-spacing: 0.04em;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 88px;
+  }
+  body {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  /* Enlaces subrayados (regla 17 del brief): en tinta, con el lápiz al pasar. */
+  a {
+    color: var(--color-texto);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+  a:hover {
+    color: var(--color-lapiz);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  /* Títulos en mono (encargo §9): display, h1 interior, h2 y h3. */
+  .titulo {
+    font-family: var(--font-titulo);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------- Botones (variantes del encargo §8 y de «Pareja CTA») ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    min-height: 56px;
+    padding: 8px 20px;
+    border-radius: var(--radius-boton);
+    font-family: var(--font-titulo);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1.25;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background-color 0.15s ease,
+      transform 0.08s ease;
+  }
+  .btn:active {
+    transform: translateY(1px) scale(0.985);
+  }
+  .btn:focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  /* hero-relleno: el CTA principal (primario, texto sobre-primario). */
+  .btn-relleno,
+  .btn-relleno:hover {
+    background: var(--color-primario);
+    color: var(--color-sobre-primario);
+  }
+  /* hero-contorno: Llamar junto al principal (2 px de tinta). */
+  .btn-contorno {
+    background: transparent;
+    color: var(--color-texto);
+    border: 2px solid var(--color-texto);
+  }
+  .btn-contorno:hover {
+    color: var(--color-texto);
+  }
+  @media (hover: hover) {
+    .btn-relleno:hover {
+      background: var(--color-primario-hover);
+    }
+    .btn-contorno:hover {
+      background: var(--color-alterna);
+    }
+  }
+  /* cabecera-texto: los dos botones de la cabecera, a 48 px. */
+  .btn-cabecera {
+    min-height: 48px;
+    padding: 0 16px;
+    font-size: 12.5px;
+    gap: 8px;
+  }
+
+  /* Enlace mono en mayúsculas («Ver todas las referencias →», «Cómo llegar →»). */
+  .enlace-mono {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    font-family: var(--font-titulo);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Letra de pieza en recuadro (pieza-enlace). */
+  .letra {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--color-lapiz);
+    color: var(--color-lapiz);
+    font-family: var(--font-titulo);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* Retícula de 12 columnas visible en escritorio (líneas muy finas, 0 KB). */
+  .reticula-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .reticula-12 > div {
+    border-inline: 1px solid var(--color-reticula);
+  }
+}
+
+/*
+ * Texto de core en las legales: columna de 66 caracteres sobre kraft, títulos en mono. Fuera de
+ * @layer a propósito: las clases de utilidad que trae core (mx-auto, px-6, text-3xl…) van en la capa
+ * utilities y solo se pueden ajustar desde CSS sin capa.
+ */
+.legal-banco article {
+  margin: 0;
+  max-width: 66ch;
+  padding: 0;
+  line-height: 1.65;
+}
+.legal-banco h1 {
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 1.3rem + 2vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+.legal-banco h2,
+.legal-banco h3 {
+  font-family: var(--font-titulo);
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+.legal-banco p,
+.legal-banco ul {
+  margin-bottom: 0.75rem;
+}
+.legal-banco ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+
+/* ---------- Animaciones (encargo §12): solo transform y opacity, estado por defecto visible ---------- */
+@keyframes cota {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes lamina {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes numero {
+  from {
+    opacity: 0.3;
+  }
+}
+@keyframes marca {
+  0%,
+  14% {
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: 1;
+  }
+  86%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes junta {
+  from {
+    transform: translate(var(--dx), var(--dy));
+  }
+}
+@keyframes barra {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+/* Guion del índice activo: sin soporte (o con «reducir movimiento») no se pinta. */
+.indice-guion {
+  opacity: 0;
+}
+
+/*
+ * Proceso del taller (estrella, encargo §5): por defecto, bloques con su lámina encima. Solo en
+ * escritorio, con animation-timeline y sin «reducir movimiento», dos columnas con la lámina pegajosa.
+ */
+.proceso-sticky {
+  display: none;
+}
+
+@supports (animation-timeline: view()) and (timeline-scope: --a) {
+  @media (prefers-reduced-motion: no-preference) {
+    .cota-anim {
+      transform-origin: left center;
+      animation: cota linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    .junta g {
+      animation: junta linear both;
+      animation-timeline: --cta;
+      animation-range: entry 10% cover 55%;
+    }
+    .junta {
+      view-timeline-name: --cta;
+    }
+
+    @media (min-width: 64rem) {
+      .proceso-bloques {
+        display: none;
+      }
+      .proceso-sticky {
+        display: grid;
+        timeline-scope: --paso1, --paso2, --paso3, --paso4, --paso5, --paso6;
+      }
+      .paso-texto:nth-child(1) { view-timeline-name: --paso1; }
+      .paso-texto:nth-child(2) { view-timeline-name: --paso2; }
+      .paso-texto:nth-child(3) { view-timeline-name: --paso3; }
+      .paso-texto:nth-child(4) { view-timeline-name: --paso4; }
+      .paso-texto:nth-child(5) { view-timeline-name: --paso5; }
+      .paso-texto:nth-child(6) { view-timeline-name: --paso6; }
+      .paso-numero {
+        animation: numero linear both;
+        animation-timeline: view();
+        animation-range: entry 30% cover 45%;
+      }
+      .paso-lamina {
+        animation: lamina linear both;
+        animation-range: entry 10% cover 40%;
+      }
+      .paso-lamina:nth-child(1) { animation-timeline: --paso1; }
+      .paso-lamina:nth-child(2) { animation-timeline: --paso2; }
+      .paso-lamina:nth-child(3) { animation-timeline: --paso3; }
+      .paso-lamina:nth-child(4) { animation-timeline: --paso4; }
+      .paso-lamina:nth-child(5) { animation-timeline: --paso5; }
+      .paso-lamina:nth-child(6) { animation-timeline: --paso6; }
+    }
+  }
+}
+
+/* ---------- Menú móvil (MenuPopover reestilado): panel que cae bajo la cabecera ---------- */
+.menu-banco {
+  inset: 64px 0 auto 0;
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms ease-out,
+    display 200ms allow-discrete,
+    overlay 200ms allow-discrete;
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.menu-banco:popover-open {
+  opacity: 1;
+  transform: none;
+}
+@starting-style {
+  .menu-banco:popover-open {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+.menu-banco::backdrop {
+  background: color-mix(in oklch, var(--color-texto) 35%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-banco {
+    transition: none;
+  }
+}
+/* El botón dice «Cerrar» mientras el menú está abierto (sin JavaScript). */
+.menu-cerrar {
+  display: none;
+}
+body:has(#menu:popover-open) .menu-abrir {
+  display: none;
+}
+body:has(#menu:popover-open) .menu-cerrar {
+  display: inline;
+}
+
+/* ---------- Barra móvil: entra desde abajo (encargo §12) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-banco {
+    animation: barra 280ms ease-out both;
+  }
+}

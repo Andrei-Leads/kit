@@ -1,0 +1,610 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Plano» (carpinteria-metalica-4), encargo §8: papel de plano, fichas blancas y
+ * cianotipia. Toda la paleta azul DERIVA del primario (duotono de la marca): con
+ * marca.colorPrimario (estiloMarca en layout.tsx) cambian a la vez la cianotipia, la retícula, las
+ * cotas y el acento. Respaldo con color-mix; oklch(from …) donde existe.
+ * Radios 0 y ninguna sombra (prohibidas por el encargo).
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #f4f6f9; /* papel de plano */
+  --color-superficie: #ffffff; /* fichas */
+  --color-alterna: var(--c-alterna); /* cianotipia, deriva del primario */
+  --color-texto: #0f1f33;
+  --color-texto-suave: #43546a; /* 7,1:1 sobre el fondo */
+  --color-borde: #b9c6d6;
+  --color-primario: #1f5fa8; /* 6,4:1 con blanco */
+  --color-sobre-primario: #ffffff;
+  --color-acento: var(--c-acento); /* líneas sobre cianotipia; nunca texto sobre papel */
+  --color-foco: #0f1f33; /* blanco dentro de [data-alterna] */
+  /* Las variables --font-martian y --font-instrument las pone next/font en <html> (layout.tsx). */
+  --font-titulo: var(--font-martian), ui-monospace, monospace;
+  --font-texto: var(--font-instrument), system-ui, sans-serif;
+  --radius-boton: 0;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+  --text-display: clamp(2rem, 1.35rem + 2.8vw, 4rem);
+
+  /* Propios */
+  --color-reticula: var(--c-reticula);
+  --color-reticula-fuerte: var(--c-reticula-fuerte);
+  --color-cota: var(--c-cota); /* solo líneas; las etiquetas de cota van en texto */
+  --color-sobre-alterna: #eef4fb;
+  --color-sobre-alterna-suave: color-mix(in oklab, var(--color-primario) 22%, #dfe7f0); /* deriva del primario (Ysst, 23/11/2026) */
+  --text-h2: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  --text-cuerpo: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --text-entradilla: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --text-etiqueta: 0.8125rem;
+}
+
+/* Derivados del primario: color-mix de respaldo y oklch(from) si el navegador lo entiende. */
+:root {
+  --paso-reticula: 8px;
+  --linea: 1px;
+  --c-alterna: color-mix(in oklab, var(--color-primario) 35%, #050a14);
+  --c-acento: color-mix(in oklab, var(--color-primario) 45%, white);
+  --c-reticula: color-mix(in oklab, var(--color-primario) 10%, #f4f6f9);
+  --c-reticula-fuerte: color-mix(in oklab, var(--color-primario) 26%, #f4f6f9);
+  --c-cota: color-mix(in oklab, var(--color-primario) 60%, #43546a);
+  --c-primario-hover: color-mix(in oklab, var(--color-primario) 80%, #050a14);
+  --c-primario-pulsado: color-mix(in oklab, var(--color-primario) 64%, #050a14);
+  --c-linea-alterna: color-mix(in oklab, var(--c-acento) 35%, transparent);
+}
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --c-alterna: oklch(from var(--color-primario) 0.27 calc(c * 0.75) h);
+    --c-acento: oklch(from var(--color-primario) 0.82 calc(c * 0.6) h);
+    --c-reticula: oklch(from var(--color-primario) 0.92 calc(c * 0.25) h);
+    --c-reticula-fuerte: oklch(from var(--color-primario) 0.82 calc(c * 0.25) h);
+    --c-cota: oklch(from var(--color-primario) 0.45 calc(c * 0.25) h);
+    --c-primario-hover: oklch(from var(--color-primario) calc(l - 0.07) c h);
+    --c-primario-pulsado: oklch(from var(--color-primario) calc(l - 0.13) c h);
+  }
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 72px;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (min-width: 1024px) {
+    html {
+      scroll-padding-top: 84px;
+    }
+  }
+  body {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+  /* Sobre cianotipia, el foco va en blanco (encargo §8). */
+  [data-alterna] :focus-visible,
+  [data-alterna]:focus-visible {
+    outline-color: #ffffff;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  /* ---------- Retícula de plano (encargo §5.1): 0 bytes de imagen, sigue al primario ---------- */
+  .reticula {
+    background-color: var(--color-fondo);
+    background-image:
+      linear-gradient(90deg, var(--color-reticula-fuerte) 1px, transparent 1px),
+      linear-gradient(180deg, var(--color-reticula-fuerte) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-reticula) 1px, transparent 1px),
+      linear-gradient(180deg, var(--color-reticula) 1px, transparent 1px);
+    background-size:
+      40px 40px,
+      40px 40px,
+      var(--paso-reticula) var(--paso-reticula),
+      var(--paso-reticula) var(--paso-reticula);
+  }
+  .reticula-alterna {
+    background-color: var(--color-alterna);
+    background-image:
+      linear-gradient(90deg, color-mix(in oklab, var(--color-acento) 20%, transparent) 1px, transparent 1px),
+      linear-gradient(180deg, color-mix(in oklab, var(--color-acento) 20%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklab, var(--color-acento) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(180deg, color-mix(in oklab, var(--color-acento) 8%, transparent) 1px, transparent 1px);
+    background-size:
+      40px 40px,
+      40px 40px,
+      var(--paso-reticula) var(--paso-reticula),
+      var(--paso-reticula) var(--paso-reticula);
+    color: var(--color-sobre-alterna);
+  }
+  /* Ficha sin foto: bloque rayado a 45° con la REF grande. */
+  .rayado {
+    background-color: var(--color-fondo);
+    background-image: repeating-linear-gradient(45deg, var(--color-reticula-fuerte) 0 1.5px, transparent 1.5px 10px);
+  }
+
+  .gutter {
+    padding-inline: clamp(20px, 5vw, 64px);
+  }
+  .ancho {
+    max-width: 1180px;
+  }
+  .seccion {
+    padding-top: clamp(48px, 8vw, 96px);
+  }
+  .etiqueta {
+    font-family: var(--font-titulo);
+    font-size: var(--text-etiqueta);
+    letter-spacing: 0.04em;
+    line-height: 1.45;
+  }
+  .h2 {
+    font-family: var(--font-titulo);
+    font-size: var(--text-h2);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .h1-plano {
+    font-family: var(--font-titulo);
+    font-size: var(--text-display);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+    font-stretch: 87%;
+  }
+  @media (min-width: 1024px) {
+    .h1-plano {
+      font-stretch: 100%;
+    }
+  }
+  .enlace {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    font-family: var(--font-titulo);
+    font-size: 14px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  @media (hover: hover) {
+    .enlace:hover {
+      color: var(--color-primario);
+    }
+  }
+
+  /* ---------- Botones (entrega §03): rectos, mono, contorno de 2 px ---------- */
+  .boton {
+    display: flex;
+    min-height: 56px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    font-family: var(--font-titulo);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+  }
+  .boton-grande {
+    min-height: 60px;
+    font-size: 15px;
+  }
+  .boton-medio {
+    min-height: 52px;
+  }
+  .boton:active {
+    transform: translateY(1px);
+  }
+  /* boton-lamina: WhatsApp principal, relleno primario. */
+  .boton-lamina {
+    background: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-sobre-primario);
+  }
+  .boton-lamina:active {
+    background: var(--c-primario-pulsado);
+    border-color: var(--c-primario-pulsado);
+  }
+  /* boton-trazo: Llamar junto a WhatsApp, contorno de 2 px en texto. */
+  .boton-trazo {
+    background: transparent;
+    border-color: var(--color-texto);
+    color: var(--color-texto);
+  }
+  .boton-trazo:active {
+    background: var(--color-texto);
+    color: var(--color-fondo);
+  }
+  /* boton-cajetin: compacto, para la cabecera (44 px). */
+  .boton-cajetin {
+    min-height: 44px;
+    gap: 8px;
+    padding: 0 14px;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  /* Sobre cianotipia (CTA final, barra móvil): filete de acento y contorno claro. */
+  [data-alterna] .boton-lamina {
+    border-color: var(--color-acento);
+  }
+  [data-alterna] .boton-trazo {
+    border-color: var(--color-sobre-alterna);
+    color: var(--color-sobre-alterna);
+  }
+  [data-alterna] .boton-trazo:active {
+    background: var(--color-sobre-alterna);
+    color: var(--color-alterna);
+  }
+  @media (hover: hover) {
+    .boton-lamina:hover {
+      background: var(--c-primario-hover);
+      border-color: var(--c-primario-hover);
+      color: var(--color-sobre-primario);
+    }
+    [data-alterna] .boton-lamina:hover {
+      border-color: var(--color-acento);
+    }
+    .boton-trazo:hover {
+      background: var(--color-texto);
+      color: var(--color-fondo);
+    }
+    [data-alterna] .boton-trazo:hover {
+      background: var(--color-sobre-alterna);
+      color: var(--color-alterna);
+    }
+  }
+  /* Cota corta de 8 px bajo la etiqueta del botón del hero. */
+  .cota-boton {
+    display: flex;
+    width: 32px;
+    height: 8px;
+    align-items: center;
+    opacity: 0.75;
+  }
+  .cota-boton::before,
+  .cota-boton::after {
+    content: "";
+    width: 1px;
+    height: 8px;
+    background: currentColor;
+  }
+  .cota-boton > span {
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+  }
+
+  /* ---------- Cotas (encargo §5.2): línea con dos topes; la etiqueta, en texto ---------- */
+  .cota-linea {
+    display: flex;
+    height: 12px;
+    align-items: center;
+  }
+  .cota-linea::before,
+  .cota-linea::after {
+    content: "";
+    flex: none;
+    width: 1px;
+    height: 12px;
+    background: var(--color-cota);
+    rotate: 45deg;
+  }
+  .cota-trazo {
+    flex: 1;
+    height: 1px;
+    background: var(--color-cota);
+    transform-origin: left center;
+  }
+  .cota-vertical {
+    display: flex;
+    width: 12px;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+  }
+  .cota-vertical::before,
+  .cota-vertical::after {
+    content: "";
+    width: 12px;
+    height: 1px;
+    background: var(--color-cota);
+    rotate: 45deg;
+  }
+  .cota-vertical > span {
+    flex: 1;
+    width: 1px;
+    background: var(--color-cota);
+  }
+
+  /* Capa en cianotipia que destapa la foto de obra (la foto no se anima). Por defecto, fuera. */
+  .destapa {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--color-alterna);
+    transform: translateX(101%);
+    pointer-events: none;
+  }
+
+  /* ---------- Relato con scroll (encargo §5) ---------- */
+  .relato {
+    timeline-scope: --l1, --l2, --l3, --l4, --l5, --l6;
+  }
+  .relato-pasos {
+    position: relative;
+    padding-left: 30px;
+  }
+  .relato-pasos::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 6px;
+    width: 1px;
+    background: var(--color-cota);
+  }
+  .relato-paso {
+    position: relative;
+  }
+  .relato-paso::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: -30px;
+    width: 13px;
+    height: 1px;
+    background: var(--color-texto);
+  }
+  .relato-paso::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -24px;
+    width: 1px;
+    height: 13px;
+    background: var(--color-texto);
+    rotate: 45deg;
+  }
+  .relato-paso:nth-child(1) {
+    view-timeline-name: --l1;
+  }
+  .relato-paso:nth-child(2) {
+    view-timeline-name: --l2;
+  }
+  .relato-paso:nth-child(3) {
+    view-timeline-name: --l3;
+  }
+  .relato-paso:nth-child(4) {
+    view-timeline-name: --l4;
+  }
+  .relato-paso:nth-child(5) {
+    view-timeline-name: --l5;
+  }
+  .relato-paso:nth-child(6) {
+    view-timeline-name: --l6;
+  }
+  .relato-panel {
+    height: 160px;
+    padding: 16px;
+  }
+  @media (min-width: 1024px) {
+    .relato-panel {
+      position: sticky;
+      top: 84px;
+      height: calc(100vh - 120px);
+      max-height: 560px;
+    }
+    .relato-paso {
+      min-height: 58vh;
+    }
+  }
+
+  /* ---------- Observaciones: reseña larga cortada a 6 líneas con «Leer entera» (<details>) ---------- */
+  .resena-corta {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+    overflow: hidden;
+  }
+  .resena:has(details[open]) .resena-corta {
+    display: block;
+    -webkit-line-clamp: unset;
+  }
+  .resena details[open] .leer-abrir,
+  .resena details:not([open]) .leer-cerrar {
+    display: none;
+  }
+
+  /* ---------- Legales: el <article> y el <h1> los pone core ---------- */
+  .lectura-legal article {
+    margin: 0;
+    max-width: 68ch;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .lectura-legal h1 {
+    font-family: var(--font-titulo);
+    font-size: clamp(1.75rem, 1.3rem + 2vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+    margin-bottom: 1.5rem;
+    text-wrap: balance;
+  }
+  .lectura-legal h2 {
+    font-family: var(--font-titulo);
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .lectura-legal a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+/* ---------- Menú móvil: hoja a pantalla completa en cianotipia (popover nativo) ---------- */
+.menu-plano {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  border: 0;
+  padding: 0 20px 24px;
+  overflow-y: auto;
+}
+
+/* ---------- Animaciones (encargo §12): solo transform y opacity; estado por defecto visible ---------- */
+@keyframes cota {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes cota-etiqueta {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes destapa {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(101%);
+  }
+}
+@keyframes capa {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes entra-abajo {
+  from {
+    transform: translateY(100%);
+  }
+}
+@keyframes paso-entra {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* Cotas fuera del hero: la línea se dibuja con scaleX, la etiqueta aparece. */
+    .cota-animada .cota-trazo {
+      animation: cota linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+    .cota-animada .cota-texto {
+      animation: cota-etiqueta linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+    .destapa {
+      animation: destapa cubic-bezier(0.6, 0, 0.2, 1) both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+    }
+    /* Capas del dibujo: cada una ligada a su paso. Sin data-paso, la capa se ve desde el principio. */
+    @media (min-width: 1024px) {
+      .capa[data-paso] {
+        animation: capa linear both;
+        animation-range: entry 40% cover 45%;
+      }
+      .capa[data-paso="1"] {
+        animation-timeline: --l1;
+      }
+      .capa[data-paso="2"] {
+        animation-timeline: --l2;
+      }
+      .capa[data-paso="3"] {
+        animation-timeline: --l3;
+      }
+      .capa[data-paso="4"] {
+        animation-timeline: --l4;
+      }
+      .capa[data-paso="5"] {
+        animation-timeline: --l5;
+      }
+      .capa[data-paso="6"] {
+        animation-timeline: --l6;
+      }
+    }
+  }
+
+  .flecha {
+    display: inline-block;
+    transition: transform 150ms ease;
+  }
+  a:hover .flecha,
+  a:focus-visible .flecha {
+    transform: translateX(4px);
+  }
+
+  .barra-movil {
+    animation: entra-abajo 250ms ease-out both;
+  }
+
+  .paso-entra {
+    animation: paso-entra 200ms ease-out both;
+  }
+
+  .cruz-replanteo {
+    transition: transform 200ms ease;
+  }
+
+  .boton {
+    transition:
+      background-color 120ms ease,
+      color 120ms ease,
+      transform 80ms ease;
+  }
+
+  .menu-plano {
+    transition:
+      opacity 200ms ease-out,
+      transform 200ms ease-out,
+      display 200ms allow-discrete,
+      overlay 200ms allow-discrete;
+  }
+  .menu-plano:popover-open {
+    opacity: 1;
+    transform: none;
+  }
+  @starting-style {
+    .menu-plano:popover-open {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+}
+
+details[open] > summary .cruz-replanteo {
+  transform: rotate(45deg);
+}
