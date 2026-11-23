@@ -1,0 +1,517 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Galería» (carpinteria-madera-4): papel blanco, tinta negra y un
+ * único acento bermellón (encargo §8 y entrega §09). Líneas de 2 px, radio 0,
+ * sin sombras ni degradados. Solo --color-primario (y --color-sobre-primario,
+ * que calcula core) se sobrescriben desde site.config: estilo del <html> en
+ * app/layout.tsx. El primario solo toca números de pieza, filtro activo,
+ * comillas y «Quiero algo parecido»: el botón principal es negro.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #fafafa;
+  --color-superficie: #ffffff;
+  --color-alterna: #ececec;
+  --color-texto: #111111;
+  --color-texto-suave: #555555; /* 7,1:1 sobre fondo, 6,3:1 sobre alterna */
+  --color-borde: #111111;
+  --color-primario: #c4341a; /* bermellón: blanco encima 5,5:1, sobre fondo 5,2:1; marca.colorPrimario */
+  --color-sobre-primario: #ffffff;
+  --color-acento: #111111;
+  --color-foco: #111111;
+
+  --font-titulo: var(--font-big-shoulders), "Arial Narrow", sans-serif;
+  --font-texto: var(--font-instrument-sans), system-ui, sans-serif;
+
+  --radius-boton: 0;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+
+  --text-display: clamp(2.75rem, 1.5rem + 5.4vw, 8rem);
+  --text-display--line-height: 0.92;
+
+  /* Propios */
+  --color-negro: #0f0f0f; /* bloques invertidos */
+  --color-sobre-negro: #ffffff;
+  --color-gris-claro: #cfcfcf; /* texto secundario sobre negro (12:1) */
+  --color-hover-claro: #e8e8e8;
+  --color-hover-tinta: #383838;
+  --color-hover-blanco: #dcdcdc;
+  --color-hover-negro: #2a2a2a;
+  --color-fila: #f0f0f0; /* hover de filas enlazadas */
+  /* Número de pieza: el primario; con un primario de menos de 3:1 sobre el fondo, tinta (layout.tsx). */
+  --color-numero: var(--color-primario);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario), black 14%);
+
+  --text-h2: clamp(1.75rem, 1.2rem + 2.4vw, 3.5rem);
+  --text-h2--line-height: 0.95;
+  --text-cuerpo: clamp(0.9375rem, 0.9rem + 0.15vw, 1.0625rem);
+  --text-cuerpo--line-height: 1.5;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+  }
+}
+
+:root {
+  --grosor-linea: 2px;
+  --calle-rejilla: clamp(0.5rem, 0.3rem + 0.8vw, 1rem);
+  --pad: clamp(1rem, 0.6rem + 1.6vw, 2.5rem);
+  --seccion: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  /* Subrayado de 4 px del número con un primario poco contrastado (layout.tsx). */
+  --linea-numero: none;
+  scroll-padding-top: 72px;
+  scroll-padding-bottom: 72px;
+}
+
+@layer base {
+  html {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-fondo);
+    font-size: var(--text-cuerpo);
+    line-height: 1.5;
+  }
+  a {
+    color: inherit;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #fff;
+  }
+  .sobre-negro :focus-visible {
+    outline-color: var(--color-sobre-negro);
+    box-shadow: 0 0 0 2px var(--color-negro);
+  }
+}
+
+/* ── Utilidades del diseño ─────────────────────────────────────────────── */
+
+@utility contenedor {
+  width: 100%;
+  padding-inline: var(--pad);
+}
+
+/* Big Shoulders con el eje óptico al máximo: la versión «Display» del diseño. */
+@utility ft {
+  font-family: var(--font-titulo);
+  font-variation-settings: "opsz" 72;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* Pies, fichas y etiquetas: condensada 700 a 13 px con espaciado .06em. */
+@utility pie-ficha {
+  font-family: var(--font-titulo);
+  font-variation-settings: "opsz" 72;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@utility titulo-display {
+  font-family: var(--font-titulo);
+  font-variation-settings: "opsz" 72;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: var(--text-display);
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+@utility titulo-h2 {
+  font-family: var(--font-titulo);
+  font-variation-settings: "opsz" 72;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: var(--text-h2);
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+/* Número de pieza («N.º 07»): primario; con primario claro, tinta con subrayado de 4 px. */
+@utility numero {
+  color: var(--color-numero);
+  text-decoration-line: var(--linea-numero);
+  text-decoration-color: var(--color-primario);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 4px;
+}
+
+@utility linea {
+  border-color: var(--color-borde);
+}
+
+@layer components {
+  /* ── Botones (className sobre BotonWhatsApp / BotonLlamada) ─────────────── */
+  .boton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 56px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    border: 2px solid currentColor;
+    font-family: var(--font-titulo);
+    font-variation-settings: "opsz" 72;
+    font-weight: 800;
+    font-size: 1.25rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      transform 80ms ease,
+      background-color 150ms ease,
+      border-color 150ms ease;
+  }
+  .boton:active {
+    transform: translateY(2px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .boton:active {
+      transform: none;
+    }
+  }
+  /* hero-negro: WhatsApp principal (negro, no primario: un primario flojo no rompe el CTA). */
+  .boton-negro {
+    background: var(--color-texto);
+    border-color: var(--color-texto);
+    color: #fff;
+  }
+  /* hero-contorno y cabecera-texto: Llamar junto a cada WhatsApp. */
+  .boton-contorno {
+    background: transparent;
+    border-color: var(--color-texto);
+    color: var(--color-texto);
+  }
+  /* ficha-acento: «Quiero algo parecido» en la ficha de pieza. */
+  .boton-acento {
+    background: var(--color-primario);
+    border-color: var(--color-primario);
+    color: var(--color-sobre-primario);
+  }
+  /* cta-blanco y cta-contorno-blanco: sobre bloque negro. */
+  .boton-blanco {
+    background: #fff;
+    border-color: #fff;
+    color: var(--color-texto);
+  }
+  .boton-contorno-blanco {
+    background: transparent;
+    border-color: #fff;
+    color: #fff;
+  }
+  @media (hover: hover) {
+    .boton-negro:hover {
+      background: var(--color-hover-tinta);
+      border-color: var(--color-hover-tinta);
+    }
+    .boton-contorno:hover {
+      background: var(--color-hover-claro);
+    }
+    .boton-acento:hover {
+      background: var(--color-primario-hover);
+      border-color: var(--color-primario-hover);
+    }
+    .boton-blanco:hover {
+      background: var(--color-hover-blanco);
+      border-color: var(--color-hover-blanco);
+    }
+    .boton-contorno-blanco:hover {
+      background: var(--color-hover-negro);
+    }
+  }
+
+  /* Pareja WhatsApp + Llamar: sin WhatsApp, Llamar ocupa el sitio sin dejar hueco. */
+  .pareja {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 760px;
+  }
+  /* Base de WhatsApp a 200 px (260 en el diseño) y los dos textos sin partir: el teléfono de core
+     lleva un espacio más que el del diseño y, en columnas estrechas, un botón de dos líneas se veía
+     roto. Si no caben en una fila, cada botón pasa a la suya a todo el ancho, como en móvil. */
+  .pareja > .boton-principal {
+    flex: 1.4 1 200px;
+    white-space: nowrap;
+  }
+  .pareja > .boton-secundario {
+    flex: 1 1 220px;
+    white-space: nowrap;
+  }
+  .pareja-hero > .boton {
+    font-size: 1.375rem;
+  }
+  .pareja-grande {
+    max-width: 900px;
+  }
+  .pareja-grande > .boton {
+    min-height: 64px;
+    font-size: 1.5rem;
+  }
+}
+
+/* ── Rejilla de piezas ─────────────────────────────────────────────────── */
+
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(150px, 22%), 1fr));
+  grid-auto-flow: dense;
+  column-gap: var(--calle-rejilla);
+  row-gap: calc(var(--calle-rejilla) * 3);
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  /* Mosaico: con 5 piezas o más, la 1, la 9, la 17… ocupan 2×2. */
+  .rejilla-mosaico:has(> .tarjeta:nth-child(5)) > .tarjeta:nth-child(8n + 1) {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  /* Con un servicio elegido no hay mosaico: :nth-child cuenta también las ocultas. */
+  .piezas:has(.filtro input:not([value="todas"]):checked) .rejilla > .tarjeta {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+/* Foto de tarjeta: scale 1 → 1,03 al pasar o enfocar; número que sube 2 px con subrayado. */
+.tarjeta-enlace img {
+  color: transparent;
+}
+.tarjeta-enlace .numero-pieza {
+  position: relative;
+  align-self: flex-start;
+}
+.tarjeta-enlace .numero-pieza::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -2px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.tarjeta-enlace:hover .numero-pieza::after,
+.tarjeta-enlace:focus-visible .numero-pieza::after {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tarjeta-enlace img {
+    transition: scale 250ms ease;
+  }
+  .tarjeta-enlace:hover img,
+  .tarjeta-enlace:focus-visible img {
+    scale: 1.03;
+  }
+  .tarjeta-enlace .numero-pieza {
+    transition: translate 150ms ease;
+  }
+  .tarjeta-enlace:hover .numero-pieza,
+  .tarjeta-enlace:focus-visible .numero-pieza {
+    translate: 0 -2px;
+  }
+  .tarjeta-enlace .numero-pieza::after {
+    transition: transform 150ms ease;
+  }
+}
+
+/* Filtro sin JS: radios nativos dentro de etiquetas rectangulares. */
+.filtro label:has(input:checked) {
+  background: var(--color-primario);
+  color: var(--color-sobre-primario);
+}
+@media (hover: hover) {
+  .filtro label:not(:has(input:checked)):hover {
+    background: var(--color-hover-claro);
+  }
+}
+.filtro label:has(input:focus-visible) {
+  outline: 3px solid var(--color-foco);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #fff;
+}
+.piezas [data-recuento] {
+  display: none;
+}
+.piezas:has(.filtro input[value="todas"]:checked) [data-recuento="todas"],
+.piezas:not(:has(.filtro)) [data-recuento="todas"] {
+  display: inline;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .piezas:has(.filtro input:not([value="todas"]):checked) .tarjeta {
+    transition:
+      opacity 180ms ease,
+      display 180ms allow-discrete;
+  }
+  @starting-style {
+    .piezas:has(.filtro input:not([value="todas"]):checked) .tarjeta {
+      opacity: 0;
+    }
+  }
+}
+
+/* ── Menú a pantalla completa (popover nativo) ────────────────────────── */
+
+.menu-pantalla {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  overflow-y: auto;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+}
+.menu-pantalla:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-pantalla {
+    transition:
+      opacity 220ms ease-out,
+      overlay 220ms allow-discrete,
+      display 220ms allow-discrete;
+  }
+  .menu-pantalla li {
+    transition:
+      opacity 220ms ease-out calc(var(--i, 0) * 40ms),
+      translate 220ms ease-out calc(var(--i, 0) * 40ms);
+  }
+  @starting-style {
+    .menu-pantalla:popover-open {
+      opacity: 0;
+    }
+    .menu-pantalla:popover-open li {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-pantalla {
+    transition:
+      opacity 220ms ease-out,
+      overlay 220ms allow-discrete,
+      display 220ms allow-discrete;
+  }
+  @starting-style {
+    .menu-pantalla:popover-open {
+      opacity: 0;
+    }
+  }
+}
+/* Página actual (cada página lleva un marcador `data-pagina`, sin JS). */
+.menu-pantalla .actual-sr {
+  display: none;
+}
+body:has([data-pagina="trabajos"]) [data-ruta="/trabajos"],
+body:has([data-pagina="servicios"]) [data-ruta="/servicios"],
+body:has([data-pagina="empresa"]) [data-ruta="/empresa"],
+body:has([data-pagina="contacto"]) [data-ruta="/contacto"] {
+  text-decoration: underline;
+  text-decoration-thickness: 4px;
+  text-underline-offset: 6px;
+}
+body:has([data-pagina="trabajos"]) [data-ruta="/trabajos"] .actual-sr,
+body:has([data-pagina="servicios"]) [data-ruta="/servicios"] .actual-sr,
+body:has([data-pagina="empresa"]) [data-ruta="/empresa"] .actual-sr,
+body:has([data-pagina="contacto"]) [data-ruta="/contacto"] .actual-sr {
+  display: inline;
+}
+
+/* ── Barra móvil: entra desde abajo ────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-entra {
+    transition: translate 280ms ease-out;
+  }
+  @starting-style {
+    .barra-entra {
+      translate: 0 100%;
+    }
+  }
+}
+
+/* ── Preguntas: «+» que gira ───────────────────────────────────────────── */
+details[open] > summary .mas {
+  rotate: 45deg;
+}
+@media (prefers-reduced-motion: no-preference) {
+  summary .mas {
+    transition: rotate 150ms ease;
+  }
+}
+
+/* ── Antes y después: tirador de línea negra de 2 px con cuadrado blanco ── */
+.ad-tirador {
+  outline-offset: 2px;
+}
+
+/* ── Legales: columna de 70 caracteres, cuerpo en sans y títulos condensados ── */
+.lectura-legal article {
+  max-width: 70ch;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 12px 0 8px;
+  font-family: var(--font-titulo);
+  font-variation-settings: "opsz" 72;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 1.5rem + 4vw, 5.5rem);
+  line-height: 0.92;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 0;
+  margin-top: 1.75rem;
+  padding-top: 12px;
+  border-top: 2px solid var(--color-borde);
+  font-family: var(--font-titulo);
+  font-variation-settings: "opsz" 72;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.75rem;
+  line-height: 1.6;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
