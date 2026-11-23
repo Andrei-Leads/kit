@@ -40,7 +40,7 @@ export default function NotFound() {
           ))}
         </ul>
       </nav>
-      <Pareja cta={{ telefono: contacto.telefono, whatsapp: contacto.whatsapp, mensaje: MENSAJE_NO_ENCONTRADA }} />
+      <Pareja cta={{ telefono: contacto.telefono, whatsapp: contacto.whatsapp, mensaje: MENSAJE_NO_ENCONTRADA }} textoWhatsapp="Escríbenos" />
     </section>
   );
 }

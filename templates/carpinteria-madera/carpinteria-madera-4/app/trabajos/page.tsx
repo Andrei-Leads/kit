@@ -31,7 +31,7 @@ export default function Page() {
         titulo="Piezas"
         recuento={piezasTexto(total)}
       />
-      <RejillaDelCatalogo config={config} piezas={numerar(trabajos)} precargar id="catalogo" className="pt-[clamp(1.5rem,1rem+2vw,3rem)]" />
+      <RejillaDelCatalogo config={config} piezas={numerar(trabajos)} precargar id="catalogo" className="pt-[clamp(2rem,1.4rem+2.4vw,4rem)]" />
       <CtaFinal contacto={contacto} mensaje={mensajeInicio(contacto)} />
     </>
   );

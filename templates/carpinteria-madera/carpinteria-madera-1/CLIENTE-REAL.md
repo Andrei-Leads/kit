@@ -28,13 +28,13 @@ Todo el archivo es de «Fusteria Ebri», un taller inventado de Valencia. Borra 
 - [ ] `trabajos`: los 6 son inventados. Cada trabajo necesita `servicio`: es lo que lo agrupa por estancia (ver §3). Sin `servicio`, el trabajo va al grupo «Otros trabajos».
 - [ ] `valoracion` (4,9 / 86) y `resenas`: son inventadas. Pon solo las reales de su ficha de Google, o quita los dos campos.
 - [ ] `proceso`: los 5 pasos de ejemplo hablan de «Presupuesto cerrado» y de «Precio y fecha de montaje por escrito». Pon los pasos reales del cliente, o `[]` para usar los de core.
-- [ ] `garantias` («Presupuesto cerrado por escrito», «Fecha de montaje en el contrato», «Dos años de garantía en herrajes y montaje») y `marcas` (Blum, Hettich, Grass): solo lo que el cliente confirme.
+- [ ] `garantias` («Presupuesto cerrado por escrito», «Fecha de montaje en el contrato», «Cinco años de garantía en herrajes y montaje») y `marcas` (Blum, Hettich, Grass): solo lo que el cliente confirme. Un mueble a medida vendido a un consumidor ya tiene 3 años de garantía legal: no anuncies una garantía igual o menor como ventaja propia.
 - [ ] `empresa.historia`, `imagenes` y `equipo`: Vicent y Pau Ebri son inventados.
 - [ ] `preguntas` (plazos de «tres a cinco semanas», «la medición va incluida»): revísalas con el cliente.
 - [ ] `seo.titulo`, `seo.descripcion` y `seo.url` (`fusteriaebri.example` → el dominio definitivo), más **`seo.indexar: true`**.
 - [ ] `analitica: { vercel: true }` (plan Básico) y *Enable* en Vercel.
 - [ ] `redes`: `instagram.com/fusteria.ebri.ejemplo` → las reales, o quita el campo.
-- [ ] Precios: el ejemplo no trae ninguno. Pon `precioDesde` o `tarifas` solo con cifras validadas por el cliente. Con `precioDesde`, la ficha de servicio muestra «Desde …».
+- [ ] Precios: el ejemplo no trae ninguno. Pon `precioDesde` o `trabajos[].precio` solo con cifras validadas por el cliente (`tarifas` no se pinta en este diseño). `trabajos[].precio` sale tal cual en la línea de ficha del trabajo. La ficha de servicio pinta `precioDesde` tal cual; si el texto empieza por «desde» («desde 900 €»), esa palabra sale aparte, en versalitas.
 
 ## 2. Fotos y vídeo
 
@@ -64,7 +64,10 @@ Todo el archivo es de «Fusteria Ebri», un taller inventado de Valencia. Borra 
   - el mensaje general, «Hola, he visto vuestra web y quiero presupuesto para un mueble a medida. Os mando fotos y medidas del hueco.»;
   - el de la ficha de servicio, «Hola, quiero presupuesto para {servicio}. Os mando fotos del sitio.»;
   - los textos de los botones («Pide presupuesto», «Envíanos fotos y medidas», «Quiero algo parecido», «Quiero algo así»).
+- `app/servicios/[slug]/page.tsx`: el cierre «Envíanos fotos y medidas del hueco» (sin `whatsapp`, «Llámanos y lo hablamos»).
 - `components/secciones/Garantias.tsx`: «{N} años de taller.», calculado desde `anioFundacion`.
+- Los títulos que hablan del «hueco» suponen muebles empotrados: «Hablemos de tu hueco» (`app/contacto/page.tsx`), «¿Tienes un hueco que llenar?» (`components/secciones/CtaFinal.tsx`), «Cuéntanos tu hueco» (`AsistenteHueco.tsx`) y «Envíanos fotos y medidas del hueco» (`app/servicios/[slug]/page.tsx`). Si el cliente hace sobre todo mesas o piezas sueltas, cámbialos.
+- `components/secciones/Zonas.tsx`: «Dónde montamos» supone que el cliente monta en casa.
 - `app/empresa/page.tsx`: el h1 «Nuestro taller» y «Montamos en {zonas}.».
 - `app/contacto/page.tsx`: la columna «El taller» supone que la dirección es un taller visitable. Si es un domicilio, cámbiala.
 - `components/secciones/Resenas.tsx`: sin `valoracion`, el h2 es «Lo que dicen de nosotros».

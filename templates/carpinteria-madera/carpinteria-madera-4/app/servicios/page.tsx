@@ -26,7 +26,7 @@ export default function Page() {
         titulo="Servicios"
         recuento={serviciosTexto(servicios.length)}
       />
-      <section aria-label="Catálogo de servicios" className="contenedor flex flex-col gap-[18px] pt-[clamp(1.5rem,1rem+2vw,3rem)]">
+      <section aria-label="Catálogo de servicios" className="contenedor flex flex-col gap-[18px] pt-(--seccion)">
         <Catalogo servicios={servicios} trabajos={trabajos} nivel="h2" />
         <Pareja telefono={contacto.telefono} whatsapp={contacto.whatsapp} mensaje={mensaje} className="mt-2" />
       </section>

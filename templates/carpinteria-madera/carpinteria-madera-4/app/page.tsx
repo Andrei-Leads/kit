@@ -28,7 +28,7 @@ export default function Page() {
   return (
     <>
       <HeroCollage config={config} mensaje={mensaje} />
-      <RejillaDelCatalogo config={config} piezas={piezas} total={trabajos.length} titulo="Piezas" id="piezas" className="pt-(--seccion)" />
+      <RejillaDelCatalogo config={config} piezas={piezas} total={trabajos.length} titulo="Piezas" id="piezas" className="pt-[clamp(2rem,1.4rem+2.4vw,4rem)]" />
       <section aria-labelledby="titulo-catalogo" className="contenedor flex flex-col gap-[18px] pt-(--seccion)">
         <h2 id="titulo-catalogo" className="titulo-h2 m-0">
           Catálogo de servicios

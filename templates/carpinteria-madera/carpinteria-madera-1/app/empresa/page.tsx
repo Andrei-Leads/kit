@@ -35,7 +35,9 @@ export default async function Page() {
             {anios > 0 && (
               <div className="flex-none">
                 <p className="font-titulo text-[clamp(5rem,3rem+7vw,10rem)] leading-[0.9] text-primario-texto italic">{anios}</p>
-                <p className="mt-2 text-texto-suave">años desde {negocio.anioFundacion}</p>
+                <p className="mt-2 text-texto-suave">
+                  {anios === 1 ? "año" : "años"} desde {negocio.anioFundacion}
+                </p>
               </div>
             )}
             <div className="max-w-[60ch] flex-[1_1_340px]">

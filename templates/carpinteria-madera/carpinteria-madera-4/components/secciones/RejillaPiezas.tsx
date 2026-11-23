@@ -115,7 +115,8 @@ export function RejillaPiezas({ piezas, servicios, conFiltro, titulo, total, pre
               {recuentos}
             </span>
           </legend>
-          <div className="flex gap-1.5 overflow-x-auto pb-1 [scrollbar-width:thin]">
+          {/* 5 px de margen dentro del carril (compensados fuera): sin él, el carril con scroll recortaba el anillo de foco de las etiquetas. */}
+          <div className="-mx-[5px] -mt-[5px] flex gap-1.5 overflow-x-auto px-[5px] pt-[5px] pb-1.5 [scrollbar-width:thin]">
             {[{ slug: "todas", titulo: "Todas", n: piezas.length }, ...conPiezas].map((s) => (
               <label
                 key={s.slug}

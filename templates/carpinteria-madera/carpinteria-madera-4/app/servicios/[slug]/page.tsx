@@ -88,7 +88,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
         )}
       </section>
       {piezas.length > 0 ? (
-        <RejillaPiezas piezas={piezas} servicios={servicios} titulo={`Piezas de ${minusculaInicial(servicio.titulo)}`} id="piezas-servicio" className="pt-(--seccion)" />
+        <RejillaPiezas piezas={piezas} servicios={servicios} titulo="Piezas de este servicio" id="piezas-servicio" className="pt-(--seccion)" />
       ) : (
         <RejillaGaleria fotos={servicio.imagenes} titulo="Imágenes" recuento={servicio.imagenes.length === 1 ? "1 imagen" : `${servicio.imagenes.length} imágenes`} className="pt-(--seccion)" />
       )}

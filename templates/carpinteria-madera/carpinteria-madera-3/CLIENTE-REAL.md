@@ -16,7 +16,7 @@ Todo el archivo es de «Banco Siete Carpintería», un taller inventado de Maire
 - [ ] `trabajos`: los 4 son inventados. La referencia («Ref. 004») es la posición en la lista: si se reordena, cambian las referencias. Ver §2 para las fotos.
 - [ ] `valoracion` (4,8 / 61) y `resenas`: inventadas. Solo las reales de su ficha de Google, o quita los dos campos.
 - [ ] `proceso`: los 6 pasos de ejemplo prometen «volvemos al mes para ajustar». Pon los pasos reales del cliente, cada uno con su `imagen` si la hay, o quita el campo para usar los 6 del diseño (que prometen «presupuesto por escrito», «contrato con fecha», «limpiamos» y «garantía»: revísalos, ver §3).
-- [ ] `garantias` («Presupuesto por escrito con plazo», «Visita de ajuste al mes», «Dos años de garantía en ensambles»), `acreditaciones` y `marcas`: solo lo que el cliente confirme.
+- [ ] `garantias` («Presupuesto por escrito con plazo», «Visita de ajuste al mes», «Cinco años de garantía en ensambles»), `acreditaciones` y `marcas`: solo lo que el cliente confirme. Una garantía en años nunca puede ser inferior a los 3 años legales de un bien vendido a un consumidor.
 - [ ] `empresa.historia`, `imagenes` y `equipo` (los Lebrero son inventados).
 - [ ] `preguntas`: las de ejemplo hablan de visitar el taller y de que la madera se mueve. Revísalas con el cliente.
 - [ ] `seo.titulo`, `seo.descripcion` y `seo.url` (`bancosiete.example` → el dominio definitivo), más **`seo.indexar: true`**.

@@ -25,7 +25,7 @@ const MADERAS = [
   { v: "nogal", texto: "Nogal", frase: "Me gustaría en nogal." },
   { v: "fresno", texto: "Fresno", frase: "Me gustaría en fresno." },
   { v: "lacado", texto: "Lacado", frase: "Me gustaría con acabado lacado." },
-  { v: "decidir", texto: "Por decidir", frase: "La madera, aún por decidir." },
+  { v: "decidir", texto: "Por decidir", frase: "La madera aún está por decidir." },
 ] as const;
 
 /** Qué tiene el cliente (encargo §3). */
@@ -59,7 +59,9 @@ export function Asistente({ piezas, whatsapp, mensajeGeneral, llamada, icono }: 
   const madera = MADERAS.find((m) => m.v === sel.madera);
   const referencia = REFERENCIAS.find((r) => r.v === sel.referencia);
 
-  const mensaje = hidratado
+  // Sin nada elegido, el mensaje general (también el `contacto.mensajeWhatsapp` del cliente).
+  const algoElegido = (!unica && sel.pieza) || madera || referencia;
+  const mensaje = hidratado && algoElegido
     ? [`Hola, quiero presupuesto para ${pieza ? min(pieza.titulo) : "un mueble a medida"}.`, madera?.frase, referencia?.frase].filter(Boolean).join(" ")
     : mensajeGeneral;
 

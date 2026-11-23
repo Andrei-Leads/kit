@@ -178,7 +178,7 @@ export default defineSiteConfig({
     { titulo: "Fabricamos", texto: "Cada pieza se hace en nuestro taller." },
     { titulo: "Montamos y limpiamos", texto: "Montaje en casa y todo recogido al terminar." },
   ],
-  garantias: ["Presupuesto cerrado por escrito", "Fecha de montaje en el contrato", "Dos años de garantía en herrajes y montaje"],
+  garantias: ["Presupuesto cerrado por escrito", "Fecha de montaje en el contrato", "Cinco años de garantía en herrajes y montaje"],
   marcas: ["Blum", "Hettich", "Grass"],
   empresa: {
     historia: [

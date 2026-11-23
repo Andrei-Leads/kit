@@ -259,6 +259,17 @@
     flex: 1 1 220px;
     white-space: nowrap;
   }
+  /* Por debajo de 576 px, cada botón en su fila (como en móvil) y el texto puede partir: uno largo
+     («Pide presupuesto de encargos para interioristas», 492 px) desbordaba la página a 320–540 px. */
+  @media (width < 36rem) {
+    .pareja > .boton-principal,
+    .pareja > .boton-secundario {
+      flex-basis: 100%;
+      white-space: normal;
+      text-wrap: balance;
+      padding-block: 8px;
+    }
+  }
   .pareja-hero > .boton {
     font-size: 1.375rem;
   }

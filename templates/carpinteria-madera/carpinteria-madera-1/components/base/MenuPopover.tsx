@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CerrarMenu } from "@/components/CerrarMenu";
 import type { EnlaceMenu } from "@/lib/navegacion";
 import { cn } from "@/lib/utils";
 
@@ -47,6 +48,7 @@ export function MenuPopover({ enlaces, id = "menu", className, claseBoton }: Pro
           </ul>
         </nav>
       </div>
+      <CerrarMenu idMenu={id} />
     </>
   );
 }

@@ -96,7 +96,13 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
       {restoFotos.length > 0 && (
         <section aria-label={`Más fotos de ${servicio.titulo}`} className={`${SECCION} grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-6`}>
           {restoFotos.map((f) => (
-            <Foto key={f.src} imagen={f} sizes="(min-width: 1024px) 45vw, 100vw" proporcion="1/1" />
+            <Foto
+              key={f.src}
+              imagen={f}
+              // auto-fit: con 1 foto ocupa todo el ancho; con 2, la mitad; con 3 o más, un tercio o menos.
+              sizes={restoFotos.length === 1 ? "100vw" : restoFotos.length === 2 ? "(min-width: 640px) 50vw, 100vw" : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"}
+              proporcion="1/1"
+            />
           ))}
         </section>
       )}
@@ -124,7 +130,16 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
       )}
       <section aria-labelledby="titulo-cierre" className="marco mt-[clamp(64px,8vw,120px)] grid gap-6 bg-alterna py-[clamp(56px,7vw,104px)]">
         <h2 id="titulo-cierre" className="max-w-[16ch] font-titulo text-[clamp(2.25rem,1.5rem+3.4vw,5rem)] leading-none tracking-[-0.025em]">
-          Envíanos fotos y <em>medidas</em> del hueco
+          {/* Sin WhatsApp no hay dónde mandar fotos: el titular invita a llamar. */}
+          {contacto.whatsapp ? (
+            <>
+              Envíanos fotos y <em>medidas</em> del hueco
+            </>
+          ) : (
+            <>
+              Llámanos y lo <em>hablamos</em>
+            </>
+          )}
         </h2>
         <Pareja cta={cta} textoWhatsapp={TEXTO_WHATSAPP} />
         {valoracion && <p className="text-[15px] text-texto-suave">{lineaValoracion(valoracion)}</p>}

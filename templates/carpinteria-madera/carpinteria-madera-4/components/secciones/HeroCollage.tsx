@@ -20,7 +20,7 @@ function Valoracion({ valoracion }: { valoracion: SiteConfig["valoracion"] }) {
   return (
     <p className="pie-ficha m-0 text-[0.9375rem] lg:text-base">
       <span aria-hidden="true">★ </span>
-      {mediaVisible(valoracion.media)} · {valoracion.total} reseñas en Google
+      {mediaVisible(valoracion.media)} · {valoracion.total} {valoracion.total === 1 ? "reseña" : "reseñas"} en Google
     </p>
   );
 }

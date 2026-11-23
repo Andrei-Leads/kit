@@ -148,7 +148,7 @@ export default defineSiteConfig({
     { titulo: "Montamos", texto: "Colocamos y ajustamos en tu casa.", imagen: ia("paso-ensamble.jpg", "Marco encolado con sargentos") },
     { titulo: "Repasamos", texto: "Volvemos al mes para ajustar si la madera se ha movido.", imagen: ia("paso-montaje.jpg", "Puerta colgada con un nivel apoyado") },
   ],
-  garantias: ["Presupuesto por escrito con plazo", "Visita de ajuste al mes", "Dos años de garantía en ensambles"],
+  garantias: ["Presupuesto por escrito con plazo", "Visita de ajuste al mes", "Cinco años de garantía en ensambles"],
   empresa: {
     historia: ["El taller lo abrió Antonio Lebrero en 1987 en Mairena.", "Hoy lo llevan sus dos hijos con tres oficiales."],
     imagenes: [ia("formones-detalle.jpg", "Formones ordenados sobre el banco")],

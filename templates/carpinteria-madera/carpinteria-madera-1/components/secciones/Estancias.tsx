@@ -40,7 +40,7 @@ export function BotonEstancia({ estancia, contacto }: { estancia: Estancia; cont
 export function AnclasEstancias({ estancias }: { estancias: readonly Estancia[] }) {
   if (estancias.length < 2) return null;
   return (
-    <nav aria-label="Estancias" className="flex flex-wrap gap-x-6 border-b border-filete py-1 text-[15px]">
+    <nav aria-label="Estancias" className="flex flex-wrap gap-x-6 gap-y-1 border-b border-filete py-3 text-[15px]">
       {estancias.map((e) => (
         <a key={e.id} href={`#${e.id}`} className="enlace inline-flex min-h-11 items-center">
           {e.titulo}

@@ -64,6 +64,8 @@ export function Foto({ imagen, sizes, proporcion = "4/5", preload, eager, decora
         sizes={sizes}
         preload={preload}
         loading={eager && !preload ? "eager" : undefined}
+        // Sin prioridad baja, React precarga en el <head> toda <img> eager: 3 precargas en el inicio.
+        fetchPriority={eager && !preload ? "low" : undefined}
         className={cn("object-cover text-transparent", gris && "grayscale")}
       />
       {children}

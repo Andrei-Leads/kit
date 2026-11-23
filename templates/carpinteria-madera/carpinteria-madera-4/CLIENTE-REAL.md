@@ -21,7 +21,7 @@ Todo el archivo es de «Obrador Mallol», un obrador inventado del Poblenou (Bar
 - [ ] `seo.titulo`, `seo.descripcion` y `seo.url` (`obrador-mallol.example` → el dominio definitivo), más **`seo.indexar: true`**.
 - [ ] `analitica: { vercel: true }` (plan Básico) y *Enable* en Vercel.
 - [ ] `redes`: `instagram.com/obradormallol.example` → las reales, o quita el campo.
-- [ ] Precios: el ejemplo no trae ninguno. Pon `precioDesde` o `trabajos[].precio` solo con cifras validadas por el cliente (salen tal cual, en mayúsculas condensadas).
+- [ ] Precios: el ejemplo no trae ninguno. Pon `precioDesde` o `trabajos[].precio` solo con cifras validadas por el cliente (salen tal cual, en mayúsculas condensadas; `trabajos[].precio` va en la fila «Precio aprox.» de la ficha de pieza).
 
 ## 2. Fotos y vídeo
 
@@ -51,6 +51,8 @@ Todo el archivo es de «Obrador Mallol», un obrador inventado del Poblenou (Bar
 - `components/secciones/ComoTrabajamos.tsx`: usa los 4 pasos de core para tipo proyecto, o `proceso` del cliente si lo trae.
 - `components/secciones/Garantias.tsx`: «Desde {año}» y «Herrajes {marcas}».
 - `components/secciones/CtaFinal.tsx`: «Cuéntanos tu pieza» (y «Pide presupuesto de {servicio}» en cada ficha). Bajo los botones, solo el horario: sin promesa de tiempo de respuesta.
+- `app/servicios/[slug]/page.tsx`: «Pide presupuesto de {servicio}» (botón) y «Piezas de {servicio}» (título de la rejilla) llevan el título del servicio. Con títulos que no son piezas salen frases forzadas («Pide presupuesto de encargos para interioristas», «Piezas de encargos para interioristas»): elige títulos de servicio que funcionen ahí, o pon `mensajeWhatsapp` propio en ese servicio.
+- `app/servicios/[slug]/page.tsx`: «Piezas de este servicio» sobre la rejilla de la ficha.
 - `app/trabajos/[slug]/page.tsx`: «Quiero algo parecido» y «¿Algo parecido a la N.º 07?».
 - `app/empresa/page.tsx`: el `h1` «El obrador» y el menú «Obrador» (`lib/piezas.ts`). Si el cliente no tiene obrador propio, «El taller» o «Quiénes somos».
 - `app/not-found.tsx`: «Esta pieza no está en el catálogo.».

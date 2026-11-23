@@ -106,13 +106,13 @@ export function Asistente({ piezas, whatsapp, mensajePorDefecto, claseWhatsapp, 
         Dinos qué pieza, para qué estancia y para cuándo.
       </p>
       <div className="grid gap-5 border-t border-filete pt-6">
-        <p
-          key={mensaje}
-          aria-live="polite"
-          className="paso-asistente max-w-[52ch] font-titulo text-[clamp(1.25rem,1.1rem+0.6vw,1.6rem)] leading-[1.35] italic [@media(scripting:none)]:hidden"
-        >
-          «{mensaje}»
-        </p>
+        {/* La región viva no cambia de nodo: el <p> con `key` se remonta en cada toque (para su
+            animación de entrada) y una región viva recién creada no se anuncia. */}
+        <div aria-live="polite" className="[@media(scripting:none)]:hidden">
+          <p key={mensaje} className="paso-asistente max-w-[52ch] font-titulo text-[clamp(1.25rem,1.1rem+0.6vw,1.6rem)] leading-[1.35] italic">
+            «{mensaje}»
+          </p>
+        </div>
         <div className="flex w-full max-w-[680px] flex-wrap gap-3">
           <BotonWhatsApp numero={whatsapp} mensaje={mensaje} className={clsx(claseWhatsapp, "flex-[1.4_1_250px]")}>
             {icono}
