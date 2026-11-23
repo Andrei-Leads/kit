@@ -43,7 +43,6 @@ Todo el archivo es de «Tensa Instalaciones», un negocio inventado de Madrid. B
 - [ ] **Logo:** con `negocio.logo`, va a 36 px junto al nombre.
 - [ ] **Color primario:** verde eucalipto `#0f5c4a`. **Tiñe también el fondo y las secciones alternas** (mezclas del 5–20 %), así que cambia toda la web. *Recomendado:* un color de marca medio u oscuro; con uno muy saturado, revisa los fondos y el aviso de contraste del build.
 - [ ] **Página actual del menú:** punto de color por CSS (`data-pagina`), sin `aria-current`. Menú a pantalla completa con la isla `CerrarMenuAlSalir` (aceptada).
-- [ ] **Título «Lo que te prometemos»** de las garantías (`components/secciones/Garantias.tsx`): convierte cualquier garantía en una promesa. *Recomendado:* «Nuestras garantías», como se decidió en premium y reformas, salvo que el cliente lo confirme todo.
 - [ ] **Filtro de `/trabajos`** con anclas `#servicio-<slug>` y `:target` (aceptado).
 - [ ] Reseñas muy largas: no se recortan (el diseño cortaba a 6 líneas con «Leer en Google»).
 

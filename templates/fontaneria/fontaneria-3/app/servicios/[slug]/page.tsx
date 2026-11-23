@@ -19,7 +19,7 @@ import { PreguntasFrecuentes } from "@/components/secciones/PreguntasFrecuentes"
 import { RejillaTrabajos } from "@/components/secciones/RejillaTrabajos";
 import { ResenasVecinos } from "@/components/secciones/ResenasVecinos";
 import { Precio, Servicios } from "@/components/secciones/Servicios";
-import { etiquetaWhatsappServicio, mensajeDeServicio } from "@/lib/mensajes";
+import { TEXTO_WHATSAPP_SERVICIO, mensajeDeServicio } from "@/lib/mensajes";
 import { datosCta } from "@/lib/textos";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +51,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
   if (!servicio) notFound();
 
   const cta = datosCta(config, mensajeDeServicio(servicio));
-  const textoWa = etiquetaWhatsappServicio(servicio);
+  const textoWa = TEXTO_WHATSAPP_SERVICIO;
   const [foto, ...masFotos] = servicio.imagenes;
   const hayCuerpo = servicio.contenido.length > 0;
   const trabajos = trabajosDelServicio(config.trabajos, servicio);

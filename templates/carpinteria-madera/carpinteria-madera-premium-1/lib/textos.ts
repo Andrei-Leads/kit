@@ -33,7 +33,7 @@ export function lineaConfianza(
   tipo: "valoracion" | "horario" | "whatsapp" = "valoracion",
 ): string | undefined {
   const horario = config.contacto.horario.length > 0 ? horarioCorto(config.contacto.horario) : undefined;
-  if (tipo === "whatsapp" && config.contacto.whatsapp) return "Respuesta por WhatsApp en horario de taller";
+  if (tipo === "whatsapp" && config.contacto.whatsapp) return "Por WhatsApp puedes mandarnos fotos y medidas";
   if (tipo === "horario") return horario ?? (config.valoracion ? textoValoracion(config.valoracion) : undefined);
   return config.valoracion ? textoValoracion(config.valoracion) : horario;
 }

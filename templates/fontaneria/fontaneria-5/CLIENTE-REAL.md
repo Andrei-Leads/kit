@@ -39,7 +39,6 @@ Todo el archivo es de «Alapont», un fontanero autónomo inventado de Torrent. 
 
 ## 3. Decisiones que tomar con el cliente o con Ysst
 
-- [ ] **Botón de WhatsApp de la ficha de servicio:** usa todavía la regla antigua de fontanería, «Pide presupuesto de {servicio} por WhatsApp» (`lib/mensajes.ts`, `textoWhatsappServicio`). La regla aprobada en electricidad es un texto corto con el servicio en el mensaje. *Recomendado:* pasar a la regla nueva si el botón se parte o el título es largo.
 - [ ] **Mensaje de servicio con `{titulo}`:** «Hola, necesito {servicio}. Estoy en (pueblo):» choca con algunos títulos («Hola, necesito humedades por fuga»). *Propuesta abierta:* «Hola, os escribo por {servicio}. Estoy en (pueblo):», o `mensajeWhatsapp` propio en cada servicio.
 - [ ] **Tiempo de llegada por municipio:** el contrato solo tiene uno (`tiempoLlegada`). Si el cliente tarda distinto según el pueblo, no lo pongas en la red: deja el tiempo del municipio más lejano o quítalo.
 - [ ] **Filtro de `/trabajos`:** aquí el ancla salta a la primera tarjeta del servicio, no filtra (abierta en fontanería).

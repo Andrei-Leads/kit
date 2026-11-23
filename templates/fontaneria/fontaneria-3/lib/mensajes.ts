@@ -28,7 +28,5 @@ export function mensajeDeTrabajo(trabajo: Pick<Trabajo, "titulo">): string {
   return mensajeTrabajo(trabajo, (t) => `Hola, he visto «${t}» en vuestra web. Tengo algo parecido en casa.`);
 }
 
-/** Texto del botón de WhatsApp de la ficha de servicio (regla del kit): nunca «Pide tu…». */
-export function etiquetaWhatsappServicio(servicio: Pick<Servicio, "titulo">): string {
-  return `Pide presupuesto de ${minusculaInicial(servicio.titulo)} por WhatsApp`;
-}
+/** Texto del botón de WhatsApp de la ficha de servicio (regla del kit): corto; el servicio va en el mensaje. */
+export const TEXTO_WHATSAPP_SERVICIO = "Pregunta por WhatsApp";
