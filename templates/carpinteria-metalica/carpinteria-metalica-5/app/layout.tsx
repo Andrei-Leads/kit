@@ -11,12 +11,11 @@ import { mensajeInicio } from "@/lib/mensajes";
 import { menu, menuPie } from "@/lib/navegacion";
 
 // next/font las descarga en el build y las sirve desde la propia web (sin peticiones a Google).
-// Newsreader (títulos, cifras y el h1 del hero, variable con eje óptico y cursiva) y Schibsted
+// Newsreader (títulos, cifras y el h1 del hero, variable con cursiva; sin el eje óptico, −150 KB, Ysst 23/11/2026) y Schibsted
 // Grotesk (texto y botones). Variables en wght: sin lista de pesos.
 const newsreader = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
   variable: "--font-newsreader",
   display: "swap",
 });

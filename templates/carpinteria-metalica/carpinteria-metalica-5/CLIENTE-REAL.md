@@ -65,7 +65,7 @@ Todo el archivo es de «Lumbral Ventanas», un negocio inventado de Alcobendas (
   - Si hay, `antes` con **el mismo encuadre**: sale el deslizador antes/después.
   - Sin trabajos ni `galeria`, `/trabajos` no existe.
 - [ ] **Empresa (3:2):** 2 fotos de taller. Se pintan en blanco y negro.
-  - El equipo es una lista sin fotos: `equipo[].foto` no se pinta.
+  - El equipo es una lista; con `equipo[].foto` sale una miniatura de 56 px junto al nombre (foto real, nunca una cara de IA).
 - [ ] **Formato:** JPG de calidad ~82, lado largo ≤ 1600 px, y un `alt` que describa la foto. La ficha de estilo está en `public/ejemplo/CREDITOS.md`; léela antes de borrarla.
 
 ## 3. Decisiones que tomar con el cliente o con Ysst

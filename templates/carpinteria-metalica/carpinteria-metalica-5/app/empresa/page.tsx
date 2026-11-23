@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { listaY, metadatosPagina } from "@andrei-leads/core";
+import { etiquetaOrigen, listaY, metadatosPagina } from "@andrei-leads/core";
 
 import config from "@/site.config";
 import { Foto } from "@/components/base/Foto";
@@ -12,7 +12,7 @@ export const metadata: Metadata = metadatosPagina(config, { ruta: "/empresa", ti
 
 /**
  * /empresa «El *taller*» (encargo §7): historia con capitular, fotos con `grayscale(.6)`
- * estático, equipo como lista de nombres y cargos (sin fotos), compromisos y CTA final. Con
+ * estático, equipo como lista de nombres y cargos (con miniatura si hay `foto`), compromisos y CTA final. Con
  * todo vacío: descripción, zonas y CTA.
  */
 export default function Page() {
@@ -59,7 +59,13 @@ export default function Page() {
             <ul className="m-0 flex-[2_1_480px] list-none border-t border-anodizado p-0">
               {equipo.map((p) => (
                 <li key={p.nombre} className="flex flex-wrap items-baseline justify-between gap-4 border-b border-borde py-5">
-                  <span className="font-titulo text-[28px] leading-[1.2]">{p.nombre}</span>
+                  <span className="flex items-center gap-4">
+                    {p.foto && <Foto imagen={p.foto} decorativa proporcion="1/1" sizes="56px" etiqueta="no" className="size-14 shrink-0" />}
+                    <span className="flex flex-col">
+                      <span className="font-titulo text-[28px] leading-[1.2]">{p.nombre}</span>
+                      {p.foto && etiquetaOrigen(p.foto) && <span className="text-xs text-texto-suave">{etiquetaOrigen(p.foto)}</span>}
+                    </span>
+                  </span>
                   {p.cargo && <span className="versalitas">{p.cargo}</span>}
                 </li>
               ))}
