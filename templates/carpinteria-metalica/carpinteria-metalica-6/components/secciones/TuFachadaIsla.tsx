@@ -20,7 +20,7 @@ type Props = {
   cabeza: ReactNode;
 };
 
-const CUANTAS = ["1 o 2 ventanas", "De 3 a 5", "Toda la vivienda", "Todo el edificio"];
+const CUANTAS = ["1 o 2", "De 3 a 5", "Toda la vivienda", "Todo el edificio"];
 const DONDE = ["un piso", "una casa", "un bajo", "una comunidad"];
 const INICIO = "Hola, os escribo desde vuestra web.";
 const FINAL = "Os mando una foto de la fachada.";

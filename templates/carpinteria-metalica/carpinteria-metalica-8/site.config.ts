@@ -170,7 +170,7 @@ export default defineSiteConfig({
     { titulo: "Revisión", texto: "Comprobamos contigo que todo funciona." },
   ],
   acreditaciones: [
-    { nombre: "Socio del gremio local de cerrajería (ficticio)" }, // ACREDITACIÓN FICTICIA: borrar en la web del cliente
+    { nombre: "Socio del gremio local de cerrajería" }, // ACREDITACIÓN FICTICIA (ficticio): borrar en la web del cliente
   ],
   garantias: ["Presupuesto por escrito antes de empezar", "Las reparaciones pequeñas, en el día", "Volvemos si algo falla", "Retiramos el material viejo"],
   marcas: ["Cortizo", "Somfy"],

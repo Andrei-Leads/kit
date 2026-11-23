@@ -17,7 +17,7 @@ Todo el archivo es de «Serralleria Bosch Ribalta», un negocio inventado de Bad
 - [ ] `valoracion` (4,7 / 112) y `resenas`: inventadas. Solo las reales de su ficha de Google, o quita los dos campos.
 - [ ] `proceso`: los 5 pasos de ejemplo (el primero nombra WhatsApp). Pon los reales o `[]` para usar los 4 de core.
 - [ ] `garantias` («Las reparaciones pequeñas, en el día», «Volvemos si algo falla»…): solo lo que el cliente confirme.
-- [ ] `marcas` (Cortizo, Somfy) y `acreditaciones` («Socio del gremio local de cerrajería (ficticio)»): bórralas o pon las reales.
+- [ ] `marcas` (Cortizo, Somfy) y `acreditaciones` («Socio del gremio local de cerrajería», ficticia: marcada en el comentario): bórralas o pon las reales.
 - [ ] `empresa.historia` (Josep, Marc y Laia son inventados; el último párrafo promete «te contesta alguien del taller»: confírmalo o quítalo), `imagenes` y `equipo` (4 personas: sale la cifra «4 personas en el taller»).
 - [ ] `preguntas`: hablan de urgencias, comercios, edificios protegidos y plazos de galería. Revísalas con el cliente.
 - [ ] `seo.titulo`, `seo.descripcion` y `seo.url` (`boschribalta.example` → el dominio definitivo), más **`seo.indexar: true`**.

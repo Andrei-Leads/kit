@@ -34,7 +34,7 @@
   --color-reticula-fuerte: var(--c-reticula-fuerte);
   --color-cota: var(--c-cota); /* solo líneas; las etiquetas de cota van en texto */
   --color-sobre-alterna: #eef4fb;
-  --color-sobre-alterna-suave: #b9cde4;
+  --color-sobre-alterna-suave: color-mix(in oklab, var(--color-primario) 22%, #dfe7f0); /* deriva del primario (Ysst, 23/11/2026) */
   --text-h2: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
   --text-cuerpo: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
   --text-entradilla: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
