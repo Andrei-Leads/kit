@@ -20,9 +20,10 @@ const bigShoulders = Big_Shoulders({
   variable: "--font-big-shoulders",
   display: "swap",
   // next/font no tiene métricas de Big Shoulders para ajustar el respaldo (avisaba en cada build):
-  // respaldo condensado del sistema sin ajuste. Los titulares no empujan contenido crítico.
+  // el respaldo calibrado a mano («Big Shoulders respaldo», @font-face en globals.css) evita el
+  // salto de líneas cuando la fuente llega tarde.
   adjustFontFallback: false,
-  fallback: ["Arial Narrow", "sans-serif"],
+  fallback: ["Big Shoulders respaldo", "sans-serif"],
 });
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],

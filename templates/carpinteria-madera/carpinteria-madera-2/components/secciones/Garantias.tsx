@@ -18,7 +18,7 @@ export function Garantias({ garantias, acreditaciones = [], marcas }: Props) {
     <section aria-labelledby="h2-garantias" className="bg-alterna py-[clamp(56px,8vw,104px)]">
       <div className="contenedor flex flex-col gap-7">
         <h2 id="h2-garantias" className="h2">
-          Lo que firmamos
+          Nuestras garantías
         </h2>
         {(garantias.length > 0 || acreditaciones.length > 0) && (
           <ul className="flex flex-wrap gap-3">

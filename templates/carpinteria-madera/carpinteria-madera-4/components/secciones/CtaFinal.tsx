@@ -6,7 +6,7 @@ import { horarioLinea } from "@/lib/piezas";
 type Props = {
   contacto: Pick<SiteConfig["contacto"], "telefono" | "whatsapp" | "horario">;
   mensaje: string;
-  /** «Cuéntanos tu pieza» o, en la ficha de servicio, «Pide presupuesto de {servicio}». */
+  /** «Cuéntanos tu pieza» o, en la ficha de servicio, «¿Hablamos de tu pieza?». */
   titulo?: string;
 };
 

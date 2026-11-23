@@ -13,7 +13,8 @@ import config from "@/site.config";
 export const metadata: Metadata = metadatosPagina(config, { ruta: "/empresa", titulo: "Quiénes somos" });
 
 /**
- * /empresa (encargo §7): migas, h1, historia con «{n} años · Restaurando desde {año}», fotos del
+ * /empresa (encargo §7): migas, h1, `descripcionCorta` como entradilla (con pocos datos la página no
+ * se queda en el título), historia con «{n} años · Restaurando desde {año}», fotos del
  * taller en arcos, equipo (iniciales si no hay foto; nunca una cara de IA), en el taller, garantías,
  * zonas y CTA final. Cada bloque vacío se oculta.
  */
@@ -31,6 +32,7 @@ export default async function Page() {
           ]}
         />
         <h1 className="titulo-display mt-3">Quiénes somos</h1>
+        <p className="mt-3 max-w-[52ch] text-texto-suave text-pretty">{negocio.descripcionCorta}</p>
         {(primero || anios > 0) && (
           <div className="mt-[clamp(24px,4vw,48px)] flex flex-wrap items-start gap-x-[clamp(40px,6vw,96px)] gap-y-6">
             {primero && (

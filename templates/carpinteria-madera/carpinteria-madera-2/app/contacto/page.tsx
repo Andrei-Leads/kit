@@ -32,7 +32,6 @@ export default function Page() {
             >
               {telefonoVisible(contacto.telefono)}
             </BotonLlamada>
-            {contacto.whatsapp && <p className="text-[15px]">Respuesta por WhatsApp en horario de trabajo.</p>}
           </div>
 
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-4">

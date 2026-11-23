@@ -19,7 +19,8 @@ export function Cifras({ cifras, className }: { cifras: readonly Cifra[]; classN
         <div key={c.texto} data-aparecer="" className="flex flex-col-reverse gap-1.5">
           <dt className="text-[15px] leading-[1.3]">{c.texto}</dt>
           <dd className="font-titulo text-cifra leading-none font-bold tracking-[-0.03em] tabular-nums">
-            {c.previo && <span className="mr-1.5 text-[0.32em] font-semibold tracking-normal">{c.previo}</span>}
+            {/* El espacio va dentro del rótulo (a su cuerpo): el lector de pantalla lee «Desde 2009», no «Desde2009». */}
+            {c.previo && <span className="text-[0.32em] font-semibold tracking-normal">{c.previo} </span>}
             {c.numero}
           </dd>
         </div>

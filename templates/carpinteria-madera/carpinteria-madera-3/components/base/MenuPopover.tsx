@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CerrarMenu } from "@/components/CerrarMenu";
 import type { IdPagina, PaginaMenu, SeccionNumerada } from "@/lib/navegacion";
 
 type Props = {
@@ -17,7 +18,9 @@ type Props = {
  * Pieza base del registro (kit/registry/base/MenuPopover.tsx), reestilada como el menú móvil del
  * diseño: panel que cae bajo la cabecera con las páginas en mono grande y, debajo, «En esta página»
  * (el índice lateral, que en móvil no existe). API `popover` nativa: abre y cierra sin JavaScript,
- * con Esc o tocando fuera. El botón dice «Cerrar» con el menú abierto (CSS, globals.css).
+ * con Esc o tocando fuera. El botón dice «Cerrar» con el menú abierto (CSS, globals.css). La isla
+ * `CerrarMenu` lo cierra al pulsar un enlace, también un ancla de «En esta página», o al salir el
+ * foco con Tab.
  */
 export function MenuPopover({ paginas, actual, ficha = false, secciones, id = "menu" }: Props) {
   return (
@@ -68,6 +71,7 @@ export function MenuPopover({ paginas, actual, ficha = false, secciones, id = "m
           </div>
         )}
       </nav>
+      <CerrarMenu idMenu={id} />
     </>
   );
 }

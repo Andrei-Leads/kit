@@ -11,12 +11,12 @@ import { mensajeInicio } from "@/lib/mensajes";
 import { menu, menuCompleto } from "@/lib/navegacion";
 
 // next/font las descarga en el build y las sirve desde la propia web (sin peticiones a Google).
-// Newsreader variable con el eje `opsz` y su cursiva (encargo §9), precargada: es la del h1 (LCP
-// sin foto). Instrument Sans variable sin precarga (encargo §8, presupuesto).
+// Newsreader variable con su cursiva (encargo §9), precargada: es la del h1 (LCP sin foto). Sin el
+// eje óptico `opsz` (decisión de Ysst, 23-nov-2026): con él pesaba 279 KB; sin él, unos 122 KB.
+// Instrument Sans variable sin precarga (encargo §8, presupuesto).
 const newsreader = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
   variable: "--font-newsreader",
   display: "swap",
 });

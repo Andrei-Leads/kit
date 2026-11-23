@@ -21,11 +21,11 @@ export function mensajeInicio(contacto: Pick<SiteConfig["contacto"], "mensajeWha
 
 /**
  * `servicios[].mensajeWhatsapp` o «Hola, quiero presupuesto para {servicio}. Os mando fotos del
- * sitio.» (encargo §3). «Quiero presupuesto para…» se lee bien con cualquier título (lección de la
+ * espacio.» (encargo §3). «Quiero presupuesto para…» se lee bien con cualquier título (lección de la
  * tanda: «quiero huecos difíciles» daba frases rotas).
  */
 export function mensajeDeServicio(servicio: Pick<Servicio, "titulo" | "mensajeWhatsapp">): string {
-  return mensajeServicio(servicio, (t) => `Hola, quiero presupuesto para ${minusculaInicial(t)}. Os mando fotos del sitio.`);
+  return mensajeServicio(servicio, (t) => `Hola, quiero presupuesto para ${minusculaInicial(t)}. Os mando fotos del espacio.`);
 }
 
 /** «Hola, he visto el trabajo «{titulo}» y quiero algo parecido.» (encargo §3). */

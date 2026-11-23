@@ -13,7 +13,7 @@ type Props = {
 };
 
 /**
- * «Lo que firmamos» (encargo §6.5): un sello de taller con doble recuadro de 1 px. «Taller desde
+ * «Nuestras garantías» (encargo §6.5, que lo titulaba «Lo que firmamos»): un sello de taller con doble recuadro de 1 px. «Taller desde
  * 1987» en mono grande con los años, las garantías en lista con guiones, las acreditaciones y las
  * marcas. Cada parte existe solo con su dato (la página no pinta la sección si no hay ninguno).
  */
@@ -23,7 +23,7 @@ export async function Garantias({ n, garantias, acreditaciones, marcas, anioFund
   return (
     <section id="garantias" aria-labelledby="h2-garantias" className="pt-(--sec)">
       <TituloSeccion n={n} id="h2-garantias">
-        Lo que firmamos
+        Nuestras garantías
       </TituloSeccion>
       <div className="border border-tinta p-1.5">
         <div className="flex flex-wrap items-start gap-x-14 gap-y-8 border border-tinta p-[clamp(24px,1rem+2vw,48px)]">

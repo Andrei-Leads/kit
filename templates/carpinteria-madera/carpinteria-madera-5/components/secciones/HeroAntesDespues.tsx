@@ -17,6 +17,8 @@ const SIZES = "(min-width: 1280px) 650px, (min-width: 1024px) 54vw, 100vw";
  * el arco (o la primera foto del primer trabajo). Sin fotos, hero tipográfico con el arco vacío
  * dibujado en primario (crema si el primario del cliente no llega a 3:1). En móvil, el arco sube
  * bajo la cabecera transparente; en escritorio, va a la izquierda (7 columnas). Nada se anima.
+ * En móvil el arco no pasa de 45svh de alto (se achata, sin estrecharse): en pantallas bajas (375×667) el «Llamar» del hero quedaba
+ * pegado a la barra móvil; en las altas sigue siendo cuadrado.
  */
 export function HeroAntesDespues({ negocio, contacto, trabajos, imagenesHero, valoracion }: Props) {
   const cta = { telefono: contacto.telefono, whatsapp: contacto.whatsapp, mensaje: mensajeInicio(contacto) };
@@ -50,12 +52,12 @@ export function HeroAntesDespues({ negocio, contacto, trabajos, imagenesHero, va
               forma="cuadrada"
               preload
               antesInmediata
-              className="max-lg:[@media(scripting:none)]:pt-[calc(var(--alto-cabecera)+8px)]"
+              className="arco-hero max-lg:[@media(scripting:none)]:pt-[calc(var(--alto-cabecera)+8px)]"
             />
           ) : foto ? (
-            <Foto imagen={foto} sizes={SIZES} proporcion="1/1" preload posicionEtiqueta="arco" className="lg:aspect-[3/2]" />
+            <Foto imagen={foto} sizes={SIZES} proporcion="1/1" preload posicionEtiqueta="arco" className="w-full max-lg:max-h-[45svh] lg:aspect-[3/2]" />
           ) : (
-            <div className="flex aspect-square flex-col justify-end rounded-foto border border-arco px-5 pb-7 lg:aspect-[3/2] lg:px-10 lg:pb-9">
+            <div className="flex aspect-square w-full flex-col justify-end rounded-foto border border-arco px-5 pb-7 max-lg:max-h-[45svh] lg:aspect-[3/2] lg:px-10 lg:pb-9">
               <p className="max-w-[36ch] text-[15px] text-texto-suave lg:text-cuerpo">{negocio.descripcionCorta}</p>
             </div>
           )}

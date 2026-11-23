@@ -49,7 +49,7 @@ export function ProcesoTaller({ n, pasos, primeraLamina, contacto, mensaje, nota
         Del tablón a la pieza
       </TituloSeccion>
       <p className="mb-10 max-w-[60ch] text-texto-suave">
-        Así sale una pieza de nuestro banco: desde que medimos el hueco hasta que volvemos a ajustarla. Sin prisas que luego se pagan.
+        Así sale una pieza de nuestro banco, paso a paso.
       </p>
 
       <ol className="proceso-bloques grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-x-6 gap-y-12">
@@ -57,7 +57,7 @@ export function ProcesoTaller({ n, pasos, primeraLamina, contacto, mensaje, nota
           <li key={p.titulo} className="flex flex-col gap-3">
             {lamina(p, i, TAM_BLOQUE)}
             <p className="titulo mt-2 text-[clamp(2.5rem,2rem+2vw,4rem)] leading-none text-lapiz">{numero(i, false)}</p>
-            <h3 className="titulo text-[1.3125rem] leading-[1.2] tracking-normal">{p.titulo}</h3>
+            <h3 className="titulo text-[1.3125rem] leading-[1.2]">{p.titulo}</h3>
             <p>{p.texto}</p>
           </li>
         ))}
@@ -68,7 +68,7 @@ export function ProcesoTaller({ n, pasos, primeraLamina, contacto, mensaje, nota
           {pasos.map((p, i) => (
             <li key={p.titulo} className="paso-texto flex min-h-[72vh] flex-col justify-center gap-3.5 border-t border-borde py-8">
               <p className="paso-numero titulo text-[clamp(3rem,2rem+3vw,5.5rem)] leading-none text-lapiz">{numero(i, true)}</p>
-              <h3 className="titulo text-[clamp(1.25rem,1rem+1vw,1.75rem)] leading-[1.2] tracking-normal">{p.titulo}</h3>
+              <h3 className="titulo text-[clamp(1.25rem,1rem+1vw,1.75rem)] leading-[1.2]">{p.titulo}</h3>
               <p className="max-w-[44ch]">{p.texto}</p>
             </li>
           ))}

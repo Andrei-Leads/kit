@@ -126,18 +126,18 @@ export default defineSiteConfig({
   ],
   valoracion: { media: 4.8, total: 61 },
   resenas: [
-    { autor: "Manuel Ortega", texto: "Oficio de verdad.", puntuacion: 5, fecha: "2026-10-09", fuente: "google" },
+    { autor: "Manuel O.", texto: "Oficio de verdad.", puntuacion: 5, fecha: "2026-10-09", fuente: "google" },
     {
-      autor: "Rocío Delgado",
+      autor: "Rocío D.",
       texto:
         "Nos hicieron la celosía del patio. Vinieron a medir, nos enseñaron la madera en el taller y nos dijeron cuánto iban a tardar. Tardaron eso. El patio ahora se puede usar en agosto.",
       puntuacion: 5,
       fecha: "2026-08-27",
       fuente: "google",
     },
-    { autor: "Javier Pineda", texto: "Buen trabajo, algo más caros que otros, pero se nota.", puntuacion: 4, fecha: "2026-07-15", fuente: "google" },
-    { autor: "Carmen Vela", texto: "La cocina de pino huele a madera todavía. Encantados.", puntuacion: 5, fecha: "2026-05", fuente: "google" },
-    { autor: "Alberto Ruiz", texto: "Muy serios con los plazos.", puntuacion: 5, fecha: "2026-03-02", fuente: "google" },
+    { autor: "Javier P.", texto: "Buen trabajo, algo más caros que otros, pero se nota.", puntuacion: 4, fecha: "2026-07-15", fuente: "google" },
+    { autor: "Carmen V.", texto: "La cocina de pino huele a madera todavía. Encantados.", puntuacion: 5, fecha: "2026-05", fuente: "google" },
+    { autor: "Alberto R.", texto: "Muy serios con los plazos.", puntuacion: 5, fecha: "2026-03-02", fuente: "google" },
   ],
   // Una foto por paso (`proceso[].imagen`, core 0.7.0): la lámina pegajosa del proceso. Sin foto, un dibujo.
   proceso: [
@@ -150,12 +150,12 @@ export default defineSiteConfig({
   ],
   garantias: ["Presupuesto por escrito con plazo", "Visita de ajuste al mes", "Cinco años de garantía en ensambles"],
   empresa: {
-    historia: ["El taller lo abrió Antonio Lebrero en 1987 en Mairena.", "Hoy lo llevan sus dos hijos con tres oficiales."],
+    historia: ["El taller lo abrió Antonio L. en 1987 en Mairena.", "Hoy lo llevan sus dos hijos con tres oficiales."],
     imagenes: [ia("formones-detalle.jpg", "Formones ordenados sobre el banco")],
     equipo: [
-      { nombre: "Antonio Lebrero", cargo: "Fundador" },
-      { nombre: "Rafael Lebrero", cargo: "Taller" },
-      { nombre: "Pilar Lebrero", cargo: "Presupuestos y montaje" },
+      { nombre: "Antonio L.", cargo: "Fundador" },
+      { nombre: "Rafael L.", cargo: "Taller" },
+      { nombre: "Pilar L.", cargo: "Presupuestos y montaje" },
     ],
   },
   imagenesHero: [ia("hero-banco-cenital.jpg", "Banco de trabajo con una puerta de iroko a medio ensamblar")],

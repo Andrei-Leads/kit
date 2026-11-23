@@ -66,7 +66,7 @@ export default function Page() {
             >
               <div className="flex flex-col gap-3">
                 <p className="font-titulo text-[13px] font-semibold tracking-[0.04em] text-lapiz">Pieza {letra(i)}</p>
-                <h2 id={`h2-${s.slug}`} className="titulo text-[clamp(1.5rem,1.2rem+1.4vw,2.25rem)] leading-[1.1] tracking-normal">
+                <h2 id={`h2-${s.slug}`} className="titulo text-[clamp(1.5rem,1.2rem+1.4vw,2.25rem)] leading-[1.1]">
                   {s.titulo}
                 </h2>
                 <p className="max-w-[56ch]">{s.descripcion}</p>

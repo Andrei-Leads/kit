@@ -12,13 +12,13 @@ Todo el archivo es de «Ensamble Norte», un negocio inventado de Tres Cantos (M
 - [ ] `registroMercantil`: solo en una sociedad, con los datos reales. Si es autónomo, quita el campo.
 - [ ] `contacto`: `telefono`/`whatsapp` (`+34600000522`), `email` (`.example`), `direccion` («Calle Ejemplo, 32»), `horario` (debe coincidir con la ficha de Google), `mensajeWhatsapp` y `fichaGoogle` (`cid=000…0522`).
 - [ ] `zonas`: los municipios reales. Su número sale como cifra («8 municipios donde montamos»).
-- [ ] `servicios`: los del cliente, cada uno con su foto. Son también las opciones del paso 1 del configurador (con más de 6 salen 5 + «Otra cosa»). `contenido`, `incluye`, `preguntas` y el `mensajeWhatsapp` de «Armarios empotrados» son de ejemplo («montamos en un día»).
+- [ ] `servicios`: los del cliente, cada uno con su foto. Son también las opciones del paso 1 del configurador (con más de 6 salen 5 + «Otra cosa»). `contenido`, `incluye`, `preguntas` y el `mensajeWhatsapp` de «Armarios empotrados» son de ejemplo («montamos en un día»). Sin `contenido`, la ficha no pinta «Cómo lo hacemos» (no repite la descripción) y «Incluye» pasa a h2.
 - [ ] **Precios:** `precioDesde` de «Armarios empotrados», «Vestidores» y «Puertas» son inventados (`// PRECIO FICTICIO`). Bórralos o pon solo cifras validadas por el cliente.
 - [ ] `trabajos`: los 4 son inventados (con `superficie`, `duracion` y testimonio). Ver §2 para las fotos.
 - [ ] `valoracion` (4,8 / 143) y `resenas`: inventadas. Solo las reales de su ficha de Google, o quita los dos campos.
 - [ ] `proceso`: vacío, así que salen los 4 pasos de core. Si el cliente tiene los suyos, ponlos (máximo 6), sin prometer plazos que no cumpla.
 - [ ] `garantias` («Presupuesto cerrado en 48 h», «Fecha de montaje en el contrato», «Tres años de garantía en herrajes») y `marcas` (Blum, Häfele): solo lo que el cliente confirme.
-- [ ] `empresa.historia` («Hoy somos siete en una nave de Tres Cantos»), `imagenes` y `equipo` (vacío en el ejemplo).
+- [ ] `empresa.historia` («Hoy somos siete en una nave de Tres Cantos»), `imagenes` y `equipo` (vacío en el ejemplo). En `resenas` y `testimonio`, nombre + inicial del apellido («Lucía R.»).
 - [ ] `preguntas`: las de ejemplo hablan de plazos («unas tres semanas») y de retirar el armario viejo. Revísalas con el cliente.
 - [ ] `seo.titulo`, `seo.descripcion` y `seo.url` (`ensamble-norte.example` → el dominio definitivo), más **`seo.indexar: true`**.
 - [ ] `analitica: { vercel: true }` (plan Básico) y *Enable* en Vercel.
@@ -38,18 +38,16 @@ Todo el archivo es de «Ensamble Norte», un negocio inventado de Tres Cantos (M
 
 - [ ] **Logo en la cápsula:** con `negocio.logo`, sale el logo a 32 px (`alt=""`) **junto al nombre**, que se ve siempre. Con un nombre de más de 28 caracteres, en móvil la cápsula quita su botón «Llamar» (sigue en la barra inferior y en el menú) y el nombre ocupa 2–3 líneas. *Recomendado:* nombre comercial corto; logo cuadrado o isotipo legible a 32 px.
 - [ ] **Color primario:** el campo pleno (hero, cabeceras, CTA final, 404) se calcula del primario del cliente (`oklch` con luminosidad 0,3); el verde por defecto es `#2f6b47`. Con un amarillo (`#facc15`) el pleno sale marrón oscuro y los botones verdes pasan a amarillo con texto casi negro. *Recomendado:* un color de marca medio u oscuro; con uno claro, mirar el aviso de contraste del build.
-- [ ] **Título «Lo que firmamos»** de las garantías: convierte cualquier garantía en una cláusula firmada. *Recomendado:* cambiarlo a «Nuestras garantías» (decisión de Ysst aún abierta), salvo que todas las garantías estén en el contrato.
 - [ ] **Tamaños y acabados del configurador** (`lib/asistente.ts`: «Menos de 1 m»… «Aún no lo he medido»; «Madera natural», «Lacado», «Aún no lo sé»): pensados para armarios. Si el cliente hace sobre todo cocinas o puertas, ajústalos.
-- [ ] **Mensaje compuesto** «Hola, os escribo desde la web. Quiero {servicio en minúscula} para un hueco {tamaño}, {acabado}. ¿Me dais presupuesto?…»: con títulos de servicio que no son una pieza («Huecos difíciles») la frase queda rara. *Recomendado:* titular los servicios como piezas («Armarios bajo escalera»).
+- [ ] **Mensaje compuesto** del configurador: «Hola, quiero presupuesto para {servicio con minúscula inicial}.» y cada respuesta como frase aparte («El hueco mide entre 1 y 2 m. Prefiero acabado lacado. Os mando foto del hueco.»). Se lee bien con cualquier título («Huecos difíciles», «Reparar una puerta que roza»); las frases de tamaño hablan del «hueco», así que con servicios que no son muebles para un hueco conviene revisar `TAMANOS`.
 - [ ] Etiqueta «IA» en las miniaturas y «Imagen generada con IA» en las fotos: con fotos reales no salen.
 
 ## 4. Textos fijos que conviene revisar
 
 - `lib/asistente.ts`: `TAMANOS`, `ACABADOS`, `MENSAJE_BASE` y los mensajes compuestos.
 - `components/Asistente.tsx`: «Te enseñamos muestras al medir.» (paso 3) y «Al abrirse WhatsApp, añade una foto del hueco.». Solo si es cierto.
-- `components/secciones/Garantias.tsx`: el título «Lo que firmamos» y «Trabajamos con» delante de las marcas.
+- `components/secciones/Garantias.tsx`: el título «Nuestras garantías» y «Trabajamos con» delante de las marcas.
 - `components/secciones/CtaFinal.tsx`: «Dinos el hueco y te decimos la pieza.».
-- `app/contacto/page.tsx`: «Respuesta por WhatsApp en horario de trabajo.». Solo es cierto si el cliente contesta.
 - `app/servicios/page.tsx`: «Todo se fabrica a la medida de tu hueco…». `app/servicios/[slug]/page.tsx`: «Cuéntanos tu hueco por teléfono» (sin WhatsApp).
 - `lib/textos.ts`: las cifras (año, valoración, municipios, trabajos publicados). Salen solas de los datos; comprueba que sean ciertas.
 

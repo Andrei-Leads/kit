@@ -18,13 +18,13 @@ const TAM = "(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw";
 /**
  * Referencias del taller (encargo §6.2): los tres primeros trabajos como fichas (lámina 4:3 con borde,
  * etiqueta mono «Ref. 004 · Triana · 2025 · 2,6 m² · 5 semanas», título y descripción). Sin trabajos,
- * las tres primeras fotos de la galería. Aparecen al hacer scroll (`data-aparecer`, solo CSS).
+ * las tres primeras fotos de la galería (sin `titulo`, sin h3: el alt ya lo lee el lector en la foto). Aparecen al hacer scroll (`data-aparecer`, solo CSS).
  */
 export function Referencias({ n, trabajos, galeria, primeraLamina }: Props) {
   const fichas =
     trabajos.length > 0
       ? trabajos.slice(0, 3).map((t, i) => ({ key: t.slug, imagen: t.imagenes[0], meta: metaTrabajo(t, i), titulo: t.titulo, desc: t.descripcion, href: `/trabajos/${t.slug}` }))
-      : galeria.slice(0, 3).map((g) => ({ key: g.src, imagen: g, meta: "Galería", titulo: g.titulo ?? g.alt, desc: "", href: "/trabajos" }));
+      : galeria.slice(0, 3).map((g) => ({ key: g.src, imagen: g, meta: "Galería", titulo: g.titulo, desc: "", href: "/trabajos" }));
   return (
     <section id="referencias" aria-labelledby="h2-referencias" className="pt-(--sec)">
       <TituloSeccion n={n} id="h2-referencias">
@@ -35,11 +35,13 @@ export function Referencias({ n, trabajos, galeria, primeraLamina }: Props) {
           <article key={f.key} data-aparecer className="relative flex flex-col gap-2.5">
             <Lamina imagen={f.imagen} numero={primeraLamina + i} sizes={TAM} />
             <p className="mt-1.5 font-titulo text-[12.5px] tracking-[0.04em] text-lapiz">{f.meta}</p>
-            <h3 className="text-xl leading-[1.3] font-semibold">
-              <Link href={f.href} className="no-underline after:absolute after:inset-0">
-                {f.titulo}
-              </Link>
-            </h3>
+            {f.titulo && (
+              <h3 className="text-xl leading-[1.3] font-semibold">
+                <Link href={f.href} className="no-underline after:absolute after:inset-0">
+                  {f.titulo}
+                </Link>
+              </h3>
+            )}
             {f.desc && <p className="text-base text-texto-suave">{f.desc}</p>}
           </article>
         ))}
