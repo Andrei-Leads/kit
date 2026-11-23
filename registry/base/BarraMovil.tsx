@@ -46,7 +46,8 @@ export function BarraMovil({ telefono, whatsapp, mensaje, variante, primero = "l
   const botones = primero === "llamar" ? [llamar, wa] : [wa, llamar];
 
   return (
-    <div
+    <nav
+      aria-label="Contacto rápido"
       className={cn(
         "fixed inset-x-0 bottom-0 z-40 flex divide-x divide-borde border-t border-borde bg-fondo pb-[env(safe-area-inset-bottom)] md:hidden",
         className,
@@ -58,6 +59,6 @@ export function BarraMovil({ telefono, whatsapp, mensaje, variante, primero = "l
         </button>
       )}
       {botones}
-    </div>
+    </nav>
   );
 }
