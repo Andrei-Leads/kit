@@ -38,7 +38,7 @@ Todo el archivo es de «Serralleria Bosch Ribalta», un negocio inventado de Bad
 ## 3. Decisiones que tomar con el cliente o con Ysst
 
 - [ ] **Nombre largo en la cabecera:** hasta 22 caracteres, a 20 px; de 23 a 36, a 15 px en dos líneas; desde 37, a 13 px y el botón «Menú» pasa a icono (☰ con texto para lector de pantalla). *Recomendado:* el nombre comercial corto.
-- [ ] **Mensaje general** «Hola, os escribo desde vuestra web. Quería pediros un trabajo:» (encargo). Sale en la cabecera, la barra, el CTA y `/contacto`. *Recomendado:* dejarlo, o `contacto.mensajeWhatsapp` propio.
+- [ ] **Mensaje general:** el neutro de core (`MENSAJE_GENERICO`). Sale en la cabecera, la barra, el CTA y `/contacto`. Si el cliente quiere otro, `contacto.mensajeWhatsapp` propio.
 - [ ] **Color primario:** botones, círculos del proceso y el guijarro del CTA final. `estiloMarca` calcula el texto encima (con un amarillo sale casi negro, probado con `#facc15`). *Recomendado:* un color medio u oscuro.
 - [ ] **Sello del hero:** «Desde {año}»; sin año, la valoración; sin las dos, no sale.
 - [ ] Opciones fijas del configurador («un piso / un local o comercio / una comunidad / una casa» y «esta semana / este mes / sin prisa»): valorar con el cliente si encajan.

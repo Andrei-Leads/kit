@@ -1,7 +1,7 @@
-import { mensajeGeneral, mensajeServicio, mensajeTrabajo, type Servicio, type SiteConfig, type Trabajo } from "@andrei-leads/core";
+import { MENSAJE_GENERICO, mensajeGeneral, mensajeServicio, mensajeTrabajo, type Servicio, type SiteConfig, type Trabajo } from "@andrei-leads/core";
 
-/** Mensaje general del diseño (encargo §3): inicio, cabecera, barra móvil, contacto y CTA final. */
-export const MENSAJE_TALLER = "Hola, os escribo desde vuestra web. Quería pediros un trabajo:";
+/** Mensaje general: el neutro de core (Ysst, 23/11/2026), en inicio, cabecera, barra móvil, contacto y CTA final. */
+export const MENSAJE_TALLER = MENSAJE_GENERICO;
 
 /** Página 404 (encargo §3). */
 export const MENSAJE_NO_ENCONTRADA = "Hola, he llegado a una página de vuestra web que no existe. Quería preguntaros:";
