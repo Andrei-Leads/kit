@@ -35,14 +35,13 @@ export function valoracionTexto(v: NonNullable<SiteConfig["valoracion"]>): strin
 }
 
 /**
- * Línea de confianza bajo los botones (brief §7.6): el horario de formatearHorario y, con WhatsApp,
- * «Respondemos por WhatsApp en horario de taller».
+ * Línea de confianza bajo los botones (brief §7.6): el horario de formatearHorario. Sin promesa de
+ * respuesta por WhatsApp (decisión de Ysst, 23-nov-2026).
  */
-export function notaHorario(contacto: Pick<SiteConfig["contacto"], "horario" | "whatsapp">): string {
-  const horario = formatearHorario(contacto.horario)
+export function notaHorario(contacto: Pick<SiteConfig["contacto"], "horario">): string {
+  return formatearHorario(contacto.horario)
     .map((h) => `${h.dias} · ${h.horas}`)
     .join(" · ");
-  return contacto.whatsapp ? `${horario} · Respondemos por WhatsApp en horario de taller` : horario;
 }
 
 /** "2026-10-09" → "09.10.2026"; "2026-05" → "05.2026". Sin Date. */
@@ -68,19 +67,9 @@ export function resenasRecientes(resenas: readonly Resena[], max = 6): Resena[] 
 }
 
 /**
- * Pasos por defecto del diseño (sin `proceso` en los datos), los del tipo proyecto del brief:
- * visita → presupuesto → contrato con fecha → obra → limpieza → garantía.
+ * Pasos del proceso: los de `proceso` o, sin datos, los 4 del tipo proyecto de core (sin promesas de
+ * contrato ni de garantía; decisión de Ysst, 23-nov-2026). Como mucho 6 (el contrato ya lo limita).
  */
-const PASOS_TALLER: readonly Paso[] = [
-  { titulo: "Visitamos y medimos", texto: "Vamos a tu casa, vemos el hueco y tomamos medidas." },
-  { titulo: "Presupuesto por escrito", texto: "Con la madera, el trabajo y lo que cuesta." },
-  { titulo: "Contrato con fecha", texto: "Acordamos cuándo empezamos y cuándo terminamos." },
-  { titulo: "Fabricamos y montamos", texto: "En nuestro taller, y luego en tu casa." },
-  { titulo: "Limpiamos", texto: "Recogemos virutas y restos antes de irnos." },
-  { titulo: "Garantía", texto: "Si algo se mueve, volvemos a ajustarlo." },
-];
-
-/** Como mucho 6 pasos (el contrato ya lo limita). */
 export function pasosTaller(proceso: SiteConfig["proceso"]): readonly Paso[] {
-  return pasosProceso(proceso, PASOS_TALLER).slice(0, 6);
+  return pasosProceso(proceso, "proyecto").slice(0, 6);
 }

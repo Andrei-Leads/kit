@@ -81,7 +81,7 @@ export default function Page() {
 
           {grupos.map((g) => (
             <section key={g.id} id={g.id} aria-labelledby={`h2-${g.id}`} className="scroll-mt-24 pt-12">
-              <h2 id={`h2-${g.id}`} className="titulo mb-3 flex items-baseline gap-3 text-[1.375rem] tracking-normal">
+              <h2 id={`h2-${g.id}`} className="titulo mb-3 flex items-baseline gap-3 text-[1.375rem]">
                 <span className="text-[13px] text-lapiz">{g.letra === "—" ? "Sin pieza" : `Pieza ${g.letra}`}</span>
                 {g.titulo}
               </h2>

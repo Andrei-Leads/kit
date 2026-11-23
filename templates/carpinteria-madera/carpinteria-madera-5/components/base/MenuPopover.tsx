@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Ancla } from "@andrei-leads/core";
 
+import { CerrarMenu } from "@/components/CerrarMenu";
 import { IconoMenu } from "@/components/Iconos";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +17,8 @@ type Props = {
  * Pieza base del registro (kit/registry/base/MenuPopover.tsx), reestilada en «Restauración»
  * (encargo §8): hoja que sube desde abajo sobre `superficie`, con asa, «Cerrar» y los enlaces a
  * 24 px entre separadores (animación en globals.css, `.menu-hoja`). API `popover` nativa: abre y
- * cierra sin JavaScript, con Esc o al tocar fuera, y el navegador gestiona el foco.
+ * cierra sin JavaScript, con Esc o al tocar fuera, y el navegador gestiona el foco. La isla
+ * `CerrarMenu` lo cierra además al pulsar un enlace (navegación de cliente) o si el foco sale con Tab.
  *
  * Tokens: --color-superficie, --color-texto, --color-borde, --color-foco, --radius-boton.
  */
@@ -51,6 +53,7 @@ export function MenuPopover({ enlaces, id = "menu", className, claseBoton }: Pro
           </ul>
         </nav>
       </div>
+      <CerrarMenu idMenu={id} />
     </>
   );
 }

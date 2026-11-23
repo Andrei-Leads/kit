@@ -8,16 +8,16 @@ Template de carpintería de madera (tipo proyecto). La web es una hoja de taller
 
 Todo el archivo es de «Banco Siete Carpintería», un taller inventado de Mairena del Aljarafe (Sevilla). Borra también el comentario de cabecera y el ayudante `ia()` si ya no hay fotos de IA.
 
-- [ ] `negocio.nombre`, `nombreLegal`, `nif` (el de ejemplo, B41529067, tiene el control inválido), `sector` (sale en el h1 del inicio: «{sector} en {ciudad}», y en el de `/servicios`), `descripcionCorta` (sale bajo el h1 y en el pie), `anioFundacion` (sale en «Hoja 01 · Taller propio desde 1987», en el sello del pie, en «Lo que firmamos» con los años calculados y en `/empresa`) y `tipoSchema`.
+- [ ] `negocio.nombre`, `nombreLegal`, `nif` (el de ejemplo, B41529067, tiene el control inválido), `sector` (sale en el h1 del inicio: «{sector} en {ciudad}», y en el de `/servicios`), `descripcionCorta` (sale bajo el h1 y en el pie), `anioFundacion` (sale en «Hoja 01 · Taller propio desde 1987», en el sello del pie, en «Nuestras garantías» con los años calculados y en `/empresa`) y `tipoSchema`.
 - [ ] `registroMercantil`: solo en una sociedad, con los datos reales. Si es autónomo, quita el campo.
 - [ ] `contacto`: `telefono`/`whatsapp` (`+34600000703`), `email` (`.example`), `direccion` («Calle Ejemplo, 21, nave 4»), `horario` (debe coincidir con la ficha de Google) y `fichaGoogle` (`cid=000…0703`). El ejemplo no trae `coordenadas` (la dirección es ficticia): con la dirección real, añádelas para que «Cómo llegar» apunte al punto exacto.
 - [ ] `zonas`: los municipios reales («Dónde montamos»).
-- [ ] `servicios`: los del cliente, **en el orden en que deben salir las letras A, B, C…** del despiece (solo se dibujan 6 piezas; a partir de la séptima sale «y N más →»). `contenido`, `incluye` y `preguntas` son de ejemplo (iroko al sol, huecos fuera de escuadra…).
+- [ ] `servicios`: los del cliente, **en el orden en que deben salir las letras A, B, C…** del despiece (solo se dibujan 6 piezas; a partir de la séptima sale «y N más →»). `contenido`, `incluye` y `preguntas` son de ejemplo (iroko al sol, huecos fuera de escuadra…). Sin `contenido` ni fotos, la ficha no pinta «Qué hacemos» (no repite la descripción).
 - [ ] `trabajos`: los 4 son inventados. La referencia («Ref. 004») es la posición en la lista: si se reordena, cambian las referencias. Ver §2 para las fotos.
 - [ ] `valoracion` (4,8 / 61) y `resenas`: inventadas. Solo las reales de su ficha de Google, o quita los dos campos.
-- [ ] `proceso`: los 6 pasos de ejemplo prometen «volvemos al mes para ajustar». Pon los pasos reales del cliente, cada uno con su `imagen` si la hay, o quita el campo para usar los 6 del diseño (que prometen «presupuesto por escrito», «contrato con fecha», «limpiamos» y «garantía»: revísalos, ver §3).
+- [ ] `proceso`: los 6 pasos de ejemplo prometen «volvemos al mes para ajustar». Pon los pasos reales del cliente, cada uno con su `imagen` si la hay, o quita el campo para usar los 4 del tipo proyecto de core (sin foto: cada lámina sale con un dibujo del despiece).
 - [ ] `garantias` («Presupuesto por escrito con plazo», «Visita de ajuste al mes», «Cinco años de garantía en ensambles»), `acreditaciones` y `marcas`: solo lo que el cliente confirme. Una garantía en años nunca puede ser inferior a los 3 años legales de un bien vendido a un consumidor.
-- [ ] `empresa.historia`, `imagenes` y `equipo` (los Lebrero son inventados).
+- [ ] `empresa.historia`, `imagenes` y `equipo` (los Lebrero son inventados). En `resenas`, `testimonio`, `equipo` y la `historia`, nombre + inicial del apellido («Antonio L.»). Con una sola foto en `empresa.imagenes`, en escritorio sale a media columna.
 - [ ] `preguntas`: las de ejemplo hablan de visitar el taller y de que la madera se mueve. Revísalas con el cliente.
 - [ ] `seo.titulo`, `seo.descripcion` y `seo.url` (`bancosiete.example` → el dominio definitivo), más **`seo.indexar: true`**.
 - [ ] `analitica: { vercel: true }` (plan Básico) y *Enable* en Vercel.
@@ -30,7 +30,7 @@ Todo el archivo es de «Banco Siete Carpintería», un taller inventado de Maire
 - [ ] **Hero, 4:3:** `imagenesHero[0]` es la «Lámina 01» del hero y la imagen de Open Graph (vista previa de WhatsApp). Mejor una foto del taller o del banco con una pieza a medias que un interior terminado. Sin foto, el hero se queda con el despiece y la vista previa usa la galería o el primer servicio.
 - [ ] **Proceso, 4:3:** una foto por paso en `proceso[].imagen`. Sin foto, el paso pinta un fragmento del despiece con «sin foto» (está pensado así, no es un hueco).
 - [ ] **Servicios, 4:3 en el inicio y `/servicios`, 4:5 en su ficha:** sujeto centrado. Un servicio sin foto sale sin miniatura.
-- [ ] **Trabajos, 4:5:** una foto principal y, si hay, `antes` con el mismo encuadre (deslizador). Sin trabajos ni `galeria`, `/trabajos` no existe; con solo `galeria`, salen láminas 1:1.
+- [ ] **Trabajos, 4:5:** una foto principal y, si hay, `antes` con el mismo encuadre (deslizador). Sin trabajos ni `galeria`, `/trabajos` no existe; con solo `galeria`, salen láminas 1:1 (en el inicio, una foto sin `titulo` sale sin título).
 - [ ] **Empresa, 3:2:** `empresa.imagenes` (la primera se precarga).
 - [ ] Sin vídeo: el diseño no usa `videoHero` ni `videoPano`.
 - [ ] JPG de calidad ~82, con el lado largo ≤ 1600 px y un `alt` que describa la foto.
@@ -41,16 +41,16 @@ Todo el archivo es de «Banco Siete Carpintería», un taller inventado de Maire
 - [ ] **Fotos del proceso:** el encargo las ponía en `empresa.imagenes[0–5]`; el template usa `proceso[].imagen` (contrato 0.7.0) y deja `empresa.imagenes` para `/empresa`. *Recomendado:* mantenerlo así.
 - [ ] **Logo:** con `negocio.logo`, la cabecera muestra un logo de 32 px junto al nombre (el logo va con `alt=""`). Con nombres de más de 28 caracteres, el nombre baja de cuerpo y ocupa 2–4 líneas en móvil (nunca se corta).
 - [ ] **Color primario:** el teja `#8a3b12` por defecto; el color «lápiz» (letras del despiece, cotas, números) se deriva del primario y nunca pasa de una luminosidad media, para que se lea sobre el kraft. Probado con `#1e40af` y `#facc15`. *Recomendado:* un color de marca medio u oscuro; mirar el aviso de contraste del build.
-- [ ] **Título «Lo que firmamos»** de las garantías (y en `/empresa`): convierte cualquier garantía en una cláusula firmada. *Recomendado:* dejarlo solo si todas las garantías están en el presupuesto o contrato; si no, «Nuestras garantías» (decisión de Ysst aún abierta en otras tandas).
 - [ ] **Mensaje general** «Buenas. Necesito un trabajo de carpintería y os paso fotos y medidas para el presupuesto.» (cabecera, barra, pie, inicio, `/contacto`). *Recomendado:* `contacto.mensajeWhatsapp` propio si el cliente prefiere otro tono.
 - [ ] Etiqueta de IA en el pie de cada lámina: con fotos reales (`origen: "cliente"`) no sale.
 
 ## 4. Textos fijos que conviene revisar
 
-- `lib/formato.ts`: los 6 pasos por defecto (`PASOS_TALLER`: «Presupuesto por escrito», «Contrato con fecha», «Limpiamos», «Garantía») y `notaHorario` («Respondemos por WhatsApp en horario de taller»: solo es cierto si el cliente contesta).
+- `lib/formato.ts`: `notaHorario` (solo el horario, sin promesa de respuesta). Sin `proceso`, los pasos son los de core.
 - `lib/mensajes.ts`: el mensaje general, el de cada pieza («Buenas. Quiero presupuesto para {servicio}; os paso fotos y medidas.») y el de cada referencia («He visto el trabajo «…» (ref. 004) y quiero algo parecido.»).
 - `components/Asistente.tsx`: las preguntas («¿Qué pieza?», «¿Va dentro o fuera?», «¿Tienes medidas?»), la nota «Fuera usamos maderas que aguantan el sol.» y el mensaje compuesto.
-- `components/secciones/ProcesoTaller.tsx`: la entradilla «Así sale una pieza de nuestro banco… Sin prisas que luego se pagan.».
+- `components/secciones/ProcesoTaller.tsx`: la entradilla «Así sale una pieza de nuestro banco, paso a paso.».
+- `components/secciones/Garantias.tsx` y `app/empresa/page.tsx`: el título «Nuestras garantías».
 - `components/secciones/Garantias.tsx`: «Sello del taller» y «{N} años en el mismo banco».
 - `components/secciones/HeroDespiece.tsx`: «Hoja 01 · Taller propio desde {año}». Solo si el cliente tiene taller propio.
 - `components/secciones/CtaFinal.tsx`: «Pásate por el taller o escríbenos». Solo si el taller recibe visitas; si no, «Escríbenos o llámanos».

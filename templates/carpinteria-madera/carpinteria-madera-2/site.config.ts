@@ -124,11 +124,11 @@ export default defineSiteConfig({
   valoracion: { media: 4.8, total: 143 },
   // Reseñas de ejemplo (inventadas): en la web del cliente, las suyas de Google.
   resenas: [
-    { autor: "Lucía Romero", texto: "Rápidos y claros con el precio.", puntuacion: 5, fecha: "2026-10-21", fuente: "google" },
-    { autor: "Sergio Navas", texto: "Teníamos un hueco con un pilar en medio y nadie quería hacerlo. Vinieron a medir, nos dieron dos opciones y el armario quedó integrado como si fuera de obra. Montaje en una mañana.", puntuacion: 5, fecha: "2026-09-30", fuente: "google" },
-    { autor: "Elena Bravo", texto: "La cocina, perfecta. El plazo se alargó una semana por los electrodomésticos, no por ellos.", puntuacion: 4, fecha: "2026-08-12", fuente: "google" },
-    { autor: "Raúl Medina", texto: "Muy recomendables.", puntuacion: 5, fecha: "2026-07", fuente: "google" },
-    { autor: "Inés Castro", texto: "Las puertas correderas no hacen ni un ruido. Un acierto.", puntuacion: 5, fecha: "2026-05-03", fuente: "google" },
+    { autor: "Lucía R.", texto: "Rápidos y claros con el precio.", puntuacion: 5, fecha: "2026-10-21", fuente: "google" },
+    { autor: "Sergio N.", texto: "Teníamos un hueco con un pilar en medio y nadie quería hacerlo. Vinieron a medir, nos dieron dos opciones y el armario quedó integrado como si fuera de obra. Montaje en una mañana.", puntuacion: 5, fecha: "2026-09-30", fuente: "google" },
+    { autor: "Elena B.", texto: "La cocina, perfecta. El plazo se alargó una semana por los electrodomésticos, no por ellos.", puntuacion: 4, fecha: "2026-08-12", fuente: "google" },
+    { autor: "Raúl M.", texto: "Muy recomendables.", puntuacion: 5, fecha: "2026-07", fuente: "google" },
+    { autor: "Inés C.", texto: "Las puertas correderas no hacen ni un ruido. Un acierto.", puntuacion: 5, fecha: "2026-05-03", fuente: "google" },
   ],
   // Sin proceso propio: el template usa los 4 pasos por defecto de core para el tipo proyecto.
   proceso: [],

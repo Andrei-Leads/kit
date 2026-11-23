@@ -27,7 +27,7 @@ export function TituloSeccion({ n, id, children, grande, className }: Props) {
           <div className="absolute inset-y-0 right-0 border-l border-lapiz" />
         </div>
       </div>
-      <h2 id={id} className={cn("titulo leading-[1.1]", grande ? "text-h2-grande" : "text-h2")}>
+      <h2 id={id} className={cn("titulo leading-[1.1] tracking-[-0.01em]", grande ? "text-h2-grande" : "text-h2")}>
         {children}
       </h2>
     </div>
@@ -38,7 +38,7 @@ export function TituloSeccion({ n, id, children, grande, className }: Props) {
 export function TituloBloque({ n, id, children }: { n?: string; id: string; children: ReactNode }) {
   return (
     <h2 id={id} className="titulo mb-5 flex items-baseline gap-3.5 border-t border-tinta pt-4 text-h3-bloque leading-[1.15]">
-      {n && <span className="text-[13px] tracking-normal text-lapiz">{n}</span>}
+      {n && <span className="text-[13px] text-lapiz">{n}</span>}
       {children}
     </h2>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { BotonWhatsApp } from "@andrei-leads/core";
+import { BotonWhatsApp, minusculaInicial } from "@andrei-leads/core";
 import clsx from "clsx";
 
 /** Lo justo de cada servicio para el asistente: los datos llegan como props desde el servidor. */
@@ -32,9 +32,6 @@ const DONDE = [
   ["Habría que recogerla", "Habría que recogerla.", "Habría que recogerlas."],
   ["Está fija en casa", "Está fija en casa (puerta, tarima o ventana).", "Están fijas en casa (puertas, tarima o ventanas)."],
 ] as const;
-
-/** Minúscula inicial salvo siglas, como `minusculaInicial` de core (sin importarla en el cliente). */
-const minInicial = (t: string) => (t.length > 1 && /[A-ZÁÉÍÓÚÑ]/.test(t[1]) ? t : t.charAt(0).toLocaleLowerCase("es") + t.slice(1));
 
 const OPCION =
   "boton min-h-12 rounded-boton border-[1.5px] px-[18px] text-base font-[560] [-webkit-tap-highlight-color:transparent]";
@@ -87,7 +84,9 @@ export function AsistentePieza({ piezas, whatsapp, mensajePorDefecto, claseWhats
   const algoElegido = (conPieza && pieza !== null) || cantidad !== null || donde !== null;
   const mensaje = algoElegido
     ? [
-        `Hola, quiero ${elegida ? minInicial(elegida.titulo) : "restaurar una pieza"}.`,
+        // Plantilla común (Ysst, 23/11/2026): el título del servicio solo entra tras «presupuesto para»,
+        // que funciona con cualquier título («Muebles antiguos», «Reparar una puerta que roza»…).
+        `Hola, quiero presupuesto para ${elegida ? minusculaInicial(elegida.titulo) : "restaurar una pieza"}.`,
         cantidad !== null ? CANTIDADES[cantidad][1] : "",
         donde !== null ? DONDE[donde][cantidad !== null && cantidad > 0 ? 2 : 1] : "",
         "Os mando una foto.",

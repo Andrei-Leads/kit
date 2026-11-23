@@ -75,6 +75,8 @@ export default defineSiteConfig({
       titulo: "Encargos para interioristas",
       slug: "interioristas",
       descripcion: "Fabricamos a partir de los planos de tu estudio, en viviendas y locales.",
+      // «Hola, quiero presupuesto para encargos para interioristas.» sonaba raro: mensaje propio.
+      mensajeWhatsapp: "Hola, soy interiorista y quiero presupuesto para un encargo.",
       imagenes: [ia("mostrador-born.jpg", "Mostrador de roble en una tienda")],
     },
   ],

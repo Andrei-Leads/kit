@@ -9,10 +9,10 @@ Template de restauración de madera (tipo proyecto: lacado de puertas, muebles a
 Todo el archivo es de «Taller Pàtina», un negocio inventado de Valencia. Borra también el comentario de cabecera.
 
 - [ ] `negocio`:
-  - `nombre` y `nombreLegal` («Amparo Gil Bonet», autónoma inventada).
+  - `nombre` y `nombreLegal` («Amparo Ejemplo Gil», autónoma inventada).
   - `nif`: el de ejemplo, 48213765Q, tiene la letra de control inválida.
   - `sector`: sale en el h1 como «{sector} en {ciudad}».
-  - `descripcionCorta`: sale en el pie y en el hero sin fotos.
+  - `descripcionCorta`: sale en el pie, en el hero sin fotos y como entradilla bajo el título de `/empresa`.
   - `anioFundacion`: sale como «Restaurando desde {año}» y como «{n} años» en `/empresa`.
   - `tipoSchema`.
 - [ ] `registroMercantil`: solo en una sociedad, con los datos reales. Si es autónomo, no se pone.
@@ -58,7 +58,7 @@ Todo el archivo es de «Taller Pàtina», un negocio inventado de Valencia. Borr
   - Cada trabajo con `antes` sale como un par con deslizador.
   - El primero con `antes` es el hero. Su `imagenes[0]` es el LCP y la imagen de Open Graph si no hay `imagenesHero`.
   - El «antes» y el «después» se hacen desde el mismo punto, a la misma altura y con la misma luz. Sin eso, el deslizador no funciona.
-  - Proporción 3:2 o 4:3. En el arco se recortan a 1:1 en el hero móvil, a 4:5 en los pares móviles y a 3:2 en escritorio, así que la pieza va centrada.
+  - Proporción 3:2 o 4:3. En el arco se recortan a 1:1 en el hero móvil (algo más apaisado en pantallas bajas: el arco no pasa de 45svh de alto), a 4:5 en los pares móviles y a 3:2 en escritorio, así que la pieza va centrada.
   - El «antes» se sirve con calidad 60.
 - [ ] **Sin ningún `antes`:** el hero muestra `imagenesHero[0]` sola en el arco (o la primera foto del primer trabajo). Sin fotos, el hero es tipográfico, con el arco dibujado.
 - [ ] **Servicios, 4:3:** la tarjeta lleva la foto. Un servicio sin foto sale con un icono de línea de la pieza (puerta, mueble, tarima o ventana, según el título).
@@ -78,10 +78,6 @@ Todo el archivo es de «Taller Pàtina», un negocio inventado de Valencia. Borr
   - `estiloMarca` calcula el texto encima de los botones.
   - Si el primario del cliente no llega a 3:1 sobre el nogal, el arco dibujado pasa a crema solo.
   - *Recomendado:* un color medio o claro. Con un azul oscuro, los subrayados y bordes quedan poco visibles sobre el nogal; con `#1e40af` se probó y se lee, pero justo.
-- [ ] **Mensaje del asistente** «Hola, quiero {servicio}. {cantidad} {dónde} Os mando una foto.»:
-  - Con títulos de servicio como «Muebles antiguos» queda «Hola, quiero muebles antiguos.».
-  - *Recomendado:* pendiente de Ysst. La opción es «Hola, quiero presupuesto para {servicio}.».
-  - Mientras tanto, conviene elegir títulos de servicio que se lean bien detrás de «quiero».
 - [ ] **Texto del botón de la ficha de servicio:**
   - El texto es «Pide presupuesto», sin el nombre del servicio.
   - El nombre del servicio ya va en el mensaje.
@@ -91,7 +87,7 @@ Todo el archivo es de «Taller Pàtina», un negocio inventado de Valencia. Borr
 ## 4. Textos fijos que conviene revisar
 
 - `lib/mensajes.ts`: el mensaje general, los de servicio y de trabajo, y los textos de botón «Mándanos una foto de tu pieza», «Pide presupuesto» y «Tengo algo parecido».
-- `components/AsistentePieza.tsx`: `CANTIDADES` y `DONDE` (frases fijas del encargo; `DONDE` lleva la frase en singular y en plural, que se elige según la cantidad: «Puedo llevarlas al taller») y «Enviar por WhatsApp».
+- `components/AsistentePieza.tsx`: el mensaje que compone («Hola, quiero presupuesto para {servicio}.», con el título en minúscula inicial, o «…para restaurar una pieza.» si no se elige servicio; luego la cantidad, el lugar y «Os mando una foto.»), `CANTIDADES` y `DONDE` (frases fijas del encargo; `DONDE` lleva la frase en singular y en plural, que se elige según la cantidad: «Puedo llevarlas al taller») y «Enviar por WhatsApp».
 - `app/servicios/page.tsx`: «Lo que recuperamos en el taller y en tu casa.». Solo si el cliente trabaja en los dos sitios.
 - `components/secciones/Asistente.tsx`: «Cuéntanos qué pieza tienes» y «Al abrirse WhatsApp, añade una foto.».
 - `components/secciones/Restauraciones.tsx`: «Piezas que han vuelto a casa» y «Desliza sobre cada foto para ver cómo llegaron al taller.».

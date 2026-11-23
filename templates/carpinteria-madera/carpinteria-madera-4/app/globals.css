@@ -3,6 +3,26 @@
 @import "../components/base/aparecer.css";
 
 /*
+ * Respaldo calibrado de Big Shoulders. next/font no tiene sus métricas (adjustFontFallback: false),
+ * y la letra del sistema es mucho más ancha: con la fuente tardía, el nombre de la cabecera pasaba de
+ * 2 líneas a 1 y la página saltaba (CLS 0,36 en /servicios a 375 px). Arial Bold (o Helvetica,
+ * Liberation Sans, Roboto) reducida al 70 % ocupa lo mismo que Big Shoulders 800 con opsz 72 en
+ * mayúsculas, y los overrides reproducen su altura de línea (ascent 0,99 y descent 0,21 em).
+ * Calibrado en Chromium con Liberation Sans (métricas de Arial): CLS < 0,1 con las fuentes
+ * retrasadas 1,5 s. `font-weight: 100 900` evita la negrita sintética sobre la cara Bold.
+ */
+@font-face {
+  font-family: "Big Shoulders respaldo";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Helvetica-Bold"),
+    local("Liberation Sans Bold"), local("LiberationSans-Bold"), local("Roboto Bold"), local("Roboto-Bold");
+  font-weight: 100 900;
+  size-adjust: 70%;
+  ascent-override: 141%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+}
+
+/*
  * Tokens de «Galería» (carpinteria-madera-4): papel blanco, tinta negra y un
  * único acento bermellón (encargo §8 y entrega §09). Líneas de 2 px, radio 0,
  * sin sombras ni degradados. Solo --color-primario (y --color-sobre-primario,
@@ -23,7 +43,7 @@
   --color-acento: #111111;
   --color-foco: #111111;
 
-  --font-titulo: var(--font-big-shoulders), "Arial Narrow", sans-serif;
+  --font-titulo: var(--font-big-shoulders), "Big Shoulders respaldo", sans-serif;
   --font-texto: var(--font-instrument-sans), system-ui, sans-serif;
 
   --radius-boton: 0;
@@ -260,7 +280,7 @@
     white-space: nowrap;
   }
   /* Por debajo de 576 px, cada botón en su fila (como en móvil) y el texto puede partir: uno largo
-     («Pide presupuesto de encargos para interioristas», 492 px) desbordaba la página a 320–540 px. */
+     desbordaba la página a 320–540 px. */
   @media (width < 36rem) {
     .pareja > .boton-principal,
     .pareja > .boton-secundario {

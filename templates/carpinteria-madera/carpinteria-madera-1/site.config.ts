@@ -2,7 +2,7 @@
 // Claude Design, con el patrón ficticio evidente del kit: «Calle Ejemplo», dominios .example,
 // cid=000…, teléfono 600 00 01 01, registro «(ficticio)» y NIF con dígito de control inválido.
 // Todas las fotos de ejemplo son relleno con origen "ia" (public/ejemplo/CREDITOS.md). Sin
-// seo.indexar ni analitica: las activa cada web, nunca el template.
+// seo.indexar ni estadísticas de visitas: las activa cada web, nunca el template.
 import { defineSiteConfig, type Imagen } from "@andrei-leads/core";
 
 const ia = (src: string, alt: string): Imagen => ({ src: `/ejemplo/${src}`, alt, origen: "ia" });
@@ -152,24 +152,24 @@ export default defineSiteConfig({
   ],
   valoracion: { media: 4.9, total: 86 },
   resenas: [
-    { autor: "Clara Martí", texto: "Ajustaron la cocina a un suelo nada recto. Impecable.", puntuacion: 5, fecha: "2026-10-02", fuente: "google" },
+    { autor: "Clara M.", texto: "Ajustaron la cocina a un suelo nada recto. Impecable.", puntuacion: 5, fecha: "2026-10-02", fuente: "google" },
     {
-      autor: "Jordi Puchades",
+      autor: "Jordi P.",
       texto:
         "Nos hicieron el vestidor en tres semanas, como dijeron. Vinieron a medir dos veces para no fallar y el montaje fue limpio: barrieron hasta el rellano. Los cajones cierran solos y no hay ni un hueco entre puertas.",
       puntuacion: 5,
       fecha: "2026-09-14",
       fuente: "google",
     },
-    { autor: "Marisa Gil", texto: "Buen trato y buen acabado.", puntuacion: 5, fecha: "2026-08", fuente: "google" },
+    { autor: "Marisa G.", texto: "Buen trato y buen acabado.", puntuacion: 5, fecha: "2026-08", fuente: "google" },
     {
-      autor: "Andrés Sanchis",
+      autor: "Andrés S.",
       texto: "Tardaron una semana más de lo previsto por la madera, pero avisaron y el resultado lo compensa.",
       puntuacion: 4,
       fecha: "2026-06-20",
       fuente: "google",
     },
-    { autor: "Neus Ferrando", texto: "La librería es lo primero que mira todo el que entra en casa.", puntuacion: 5, fecha: "2026-04", fuente: "google" },
+    { autor: "Neus F.", texto: "La librería es lo primero que mira todo el que entra en casa.", puntuacion: 5, fecha: "2026-04", fuente: "google" },
   ],
   proceso: [
     { titulo: "Medimos", texto: "Vamos a tu casa, medimos el hueco y vemos cómo vives el espacio." },
@@ -187,8 +187,8 @@ export default defineSiteConfig({
     ],
     imagenes: [ia("taller-banco.jpg", "Banco de trabajo con tablones de roble"), ia("taller-tablones.jpg", "Tablones apilados en el taller")],
     equipo: [
-      { nombre: "Vicent Ebri", cargo: "Fundador" },
-      { nombre: "Pau Ebri", cargo: "Taller y montaje" },
+      { nombre: "Vicent E.", cargo: "Fundador" },
+      { nombre: "Pau E.", cargo: "Taller y montaje" },
     ],
   },
   imagenesHero: [

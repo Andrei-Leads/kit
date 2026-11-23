@@ -34,7 +34,7 @@ export function Resenas({ resenas, valoracion, trabajos, fichaGoogle, children }
             </p>
             <p className="pie-ficha m-0 text-sm">
               <span aria-hidden="true">de 5 · </span>
-              {valoracion.total} {valoracion.total === 1 ? "reseña" : "reseñas"} en Google
+              {valoracion.total.toLocaleString("es-ES")} {valoracion.total === 1 ? "reseña" : "reseñas"} en Google
             </p>
             {fichaGoogle && (
               <a href={fichaGoogle} rel="noopener" className="ft flex min-h-11 items-center self-start text-base tracking-[0.04em] text-texto underline">

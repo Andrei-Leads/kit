@@ -15,7 +15,7 @@ const TITULO_BLOQUE = "titulo mb-4 border-t border-tinta pt-4 text-h3-bloque lea
 
 /**
  * /empresa, «El taller» (encargo §7): la historia (o la descripción corta), las fotos del taller en
- * láminas 3:2, «Cómo trabajamos» (los pasos del proceso en corto), el equipo, «Lo que firmamos» (las
+ * láminas 3:2, «Cómo trabajamos» (los pasos del proceso en corto), el equipo, «Nuestras garantías» (las
  * garantías) y la dirección con «Cómo llegar» junto a la pareja. Cada bloque sin datos se oculta.
  */
 export default function Page() {
@@ -41,7 +41,13 @@ export default function Page() {
         </div>
       </CabeceraPagina>
 
-      {empresa.imagenes.length > 0 && (
+      {/* Con una sola foto, media columna en escritorio (a todo el ancho, una 3:2 quedaba muy alta). */}
+      {empresa.imagenes.length === 1 && (
+        <div className="pt-12 lg:w-1/2">
+          <Lamina imagen={empresa.imagenes[0]} numero={1} proporcion="3/2" preload sizes="(min-width: 1024px) 45vw, 100vw" />
+        </div>
+      )}
+      {empresa.imagenes.length > 1 && (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6 pt-12">
           {empresa.imagenes.map((im, i) => (
             <Lamina key={im.src + i} imagen={im} numero={i + 1} proporcion="3/2" preload={i === 0} sizes="(min-width: 1024px) 45vw, 100vw" />
@@ -80,9 +86,9 @@ export default function Page() {
       )}
 
       {garantias.length > 0 && (
-        <section aria-labelledby="h2-firmamos" className="pt-16">
-          <h2 id="h2-firmamos" className={TITULO_BLOQUE}>
-            Lo que firmamos
+        <section aria-labelledby="h2-garantias" className="pt-16">
+          <h2 id="h2-garantias" className={TITULO_BLOQUE}>
+            Nuestras garantías
           </h2>
           <ul className="flex flex-col gap-3">
             {garantias.map((g) => (

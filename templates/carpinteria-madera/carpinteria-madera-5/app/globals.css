@@ -249,6 +249,16 @@
   margin-top: calc(-1 * var(--alto-cabecera));
 }
 
+/* Arco del hero de inicio (antes/después) en móvil: como mucho 45svh de alto (más ancho que alto), para que en pantallas
+   bajas el «Llamar» del hero no quede pegado a la barra móvil. Sin JS, las dos fotos van en fila y
+   no hace falta. */
+@media (scripting: enabled) and (width < 64rem) {
+  .arco-hero > :first-child {
+    width: 100%; /* el arco se achata (no se estrecha): sigue a todo el ancho */
+    max-height: 45svh;
+  }
+}
+
 /* ── Botones: hover solo con puntero, pulsado con scale(.97) ───────────────── */
 @media (prefers-reduced-motion: no-preference) {
   .boton {

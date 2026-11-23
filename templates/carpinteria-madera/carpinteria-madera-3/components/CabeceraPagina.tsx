@@ -26,7 +26,7 @@ export function CabeceraPagina({ migas, rotulo, titulo, tamano = "h1", children 
             "titulo",
             tamano === "display" && "text-display leading-[1.04]",
             tamano === "h1" && "text-h1 leading-[1.05]",
-            tamano === "ficha" && "text-[clamp(1.75rem,1.3rem+2vw,3rem)] leading-[1.1] tracking-[-0.01em]",
+            tamano === "ficha" && "text-[clamp(1.75rem,1.3rem+2vw,3rem)] leading-[1.1]",
           )}
         >
           {titulo}

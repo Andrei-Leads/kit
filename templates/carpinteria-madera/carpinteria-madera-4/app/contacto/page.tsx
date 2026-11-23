@@ -99,7 +99,7 @@ export default function Page() {
       ? [
           {
             k: "Google",
-            v: valoracion ? `${mediaVisible(valoracion.media)} · ${valoracion.total} ${valoracion.total === 1 ? "reseña" : "reseñas"} en Google` : "Ficha de Google",
+            v: valoracion ? `${mediaVisible(valoracion.media)} · ${valoracion.total.toLocaleString("es-ES")} ${valoracion.total === 1 ? "reseña" : "reseñas"} en Google` : "Ficha de Google",
             enlace: (
               <a href={contacto.fichaGoogle} target="_blank" rel="noopener" className={ENLACE}>
                 Ver la ficha<span aria-hidden="true">&nbsp;→</span>

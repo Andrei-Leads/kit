@@ -29,7 +29,7 @@ Todo el archivo es de «Fusteria Ebri», un taller inventado de Valencia. Borra 
 - [ ] `valoracion` (4,9 / 86) y `resenas`: son inventadas. Pon solo las reales de su ficha de Google, o quita los dos campos.
 - [ ] `proceso`: los 5 pasos de ejemplo hablan de «Presupuesto cerrado» y de «Precio y fecha de montaje por escrito». Pon los pasos reales del cliente, o `[]` para usar los de core.
 - [ ] `garantias` («Presupuesto cerrado por escrito», «Fecha de montaje en el contrato», «Cinco años de garantía en herrajes y montaje») y `marcas` (Blum, Hettich, Grass): solo lo que el cliente confirme. Un mueble a medida vendido a un consumidor ya tiene 3 años de garantía legal: no anuncies una garantía igual o menor como ventaja propia.
-- [ ] `empresa.historia`, `imagenes` y `equipo`: Vicent y Pau Ebri son inventados.
+- [ ] `empresa.historia`, `imagenes` y `equipo`: Vicent E. y Pau E. son inventados. En `resenas`, `testimonio` y `equipo`, nombre + inicial del apellido («Clara M.»), salvo que el cliente quiera el apellido completo.
 - [ ] `preguntas` (plazos de «tres a cinco semanas», «la medición va incluida»): revísalas con el cliente.
 - [ ] `seo.titulo`, `seo.descripcion` y `seo.url` (`fusteriaebri.example` → el dominio definitivo), más **`seo.indexar: true`**.
 - [ ] `analitica: { vercel: true }` (plan Básico) y *Enable* en Vercel.
@@ -50,7 +50,7 @@ Todo el archivo es de «Fusteria Ebri», un taller inventado de Valencia. Borra 
 ## 3. Decisiones que tomar con el cliente o con Ysst
 
 - [ ] **Agrupar por estancia:** hoy los grupos de «Trabajos por estancia» son los **servicios** (`trabajos[].servicio`). Si el cliente piensa en estancias (cocina, dormitorio…) y no en servicios, el contrato no tiene un campo `estancia`. *Recomendado:* que los servicios sean las estancias («Cocinas a medida», «Armarios y vestidores», «Muebles de baño»…), como en el ejemplo.
-- [ ] **Nombre largo:** la cabecera muestra el nombre completo en serif (nunca con «…»). Con un nombre de más de unos 30 caracteres, en móvil ocupa 4 o 5 líneas y la cabecera crece. *Recomendado:* el nombre comercial corto en `negocio.nombre` (el largo va en `nombreLegal`).
+- [ ] **Nombre largo:** la cabecera muestra el nombre completo en serif (nunca con «…»). Con más de 28 caracteres, en móvil baja de 19 a 15 px y «Llamar» y «Menú» estrechan su relleno: con logo y 54 caracteres ocupa 3 líneas a 375 px (más en pantallas de 360 px o menos). *Recomendado:* el nombre comercial corto en `negocio.nombre` (el largo va en `nombreLegal`).
 - [ ] **Color primario:** solo pinta botones, números y la capitular. Si el primario es claro, el texto en color primario se oscurece solo (`--color-primario-texto`), y `estiloMarca` calcula el color del texto de los botones. *Recomendado:* un tono madera medio u oscuro. Con un amarillo funciona, pero conviene mirar el aviso de contraste del build.
 - [ ] **«Nuestras garantías»** (en la entrega, «Por escrito») y **«Marcas»** (en la entrega, «Herrajes»): son los títulos genéricos del template. Si todas las garantías están en el contrato, se puede volver a «Por escrito».
 - [ ] La etiqueta «Imagen generada con IA» del equipo y de las fotos: con fotos reales no sale.
@@ -62,7 +62,7 @@ Todo el archivo es de «Fusteria Ebri», un taller inventado de Valencia. Borra 
 - `components/Asistente.tsx`: `ESTANCIAS` y `PLAZOS` (las opciones fijas) y el mensaje compuesto «Hola, quiero presupuesto para {pieza}. Es para {estancia}. {plazo} Os mando fotos y medidas.».
 - `lib/mensajes.ts`:
   - el mensaje general, «Hola, he visto vuestra web y quiero presupuesto para un mueble a medida. Os mando fotos y medidas del hueco.»;
-  - el de la ficha de servicio, «Hola, quiero presupuesto para {servicio}. Os mando fotos del sitio.»;
+  - el de la ficha de servicio, «Hola, quiero presupuesto para {servicio}. Os mando fotos del espacio.»;
   - los textos de los botones («Pide presupuesto», «Envíanos fotos y medidas», «Quiero algo parecido», «Quiero algo así»).
 - `app/servicios/[slug]/page.tsx`: el cierre «Envíanos fotos y medidas del hueco» (sin `whatsapp`, «Llámanos y lo hablamos»).
 - `components/secciones/Garantias.tsx`: «{N} años de taller.», calculado desde `anioFundacion`.

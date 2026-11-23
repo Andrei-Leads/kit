@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { buscarServicio, metadatosServicio, minusculaInicial, parametrosServicios } from "@andrei-leads/core";
+import { buscarServicio, metadatosServicio, parametrosServicios } from "@andrei-leads/core";
 
 import config from "@/site.config";
 import { Migas } from "@/components/base/Migas";
@@ -29,9 +29,10 @@ export async function generateMetadata({ params }: PageProps<"/servicios/[slug]"
 
 /**
  * Ficha de servicio (entrega §07): «Catálogo 01» en acento, `h1` display, descripción, precio «desde»
- * tal cual y la pareja con el servicio en el mensaje → `contenido` a dos columnas → «Incluye» con
- * su pareja → «Piezas de {servicio}» (sin filtro) o, sin piezas, las fotos del servicio →
- * preguntas del servicio (o las generales) → CTA final «Pide presupuesto de {servicio}».
+ * tal cual y la pareja («Pide presupuesto», con el servicio en el mensaje) → `contenido` a dos columnas → «Incluye» con
+ * su pareja → «Piezas de este servicio» (sin filtro) o, sin piezas, las fotos del servicio →
+ * preguntas del servicio (o las generales) → CTA final «¿Hablamos de tu pieza?». El botón dice
+ * «Pide presupuesto» (sin el título del servicio: con títulos largos el botón y el titular se rompían).
  */
 export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
   const { slug } = await params;
@@ -41,7 +42,6 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
   const { contacto, servicios, trabajos, preguntas } = config;
   const indice = servicios.indexOf(servicio);
   const mensaje = mensajeDeServicio(servicio);
-  const textoWhatsapp = `Pide presupuesto de ${minusculaInicial(servicio.titulo)}`;
   const piezas = numerar(trabajos).filter((p) => p.trabajo.servicio === servicio.slug);
 
   return (
@@ -61,7 +61,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
           <h1 className="titulo-display m-0 text-balance">{servicio.titulo}</h1>
           <p className="m-0 max-w-[52ch] text-lg text-pretty">{servicio.descripcion}</p>
           {servicio.precioDesde && <p className="pie-ficha m-0 text-base">{servicio.precioDesde}</p>}
-          <Pareja telefono={contacto.telefono} whatsapp={contacto.whatsapp} mensaje={mensaje} textoWhatsapp={textoWhatsapp} />
+          <Pareja telefono={contacto.telefono} whatsapp={contacto.whatsapp} mensaje={mensaje} />
         </div>
         {servicio.contenido.length > 0 && (
           <div className="max-w-[1100px] [column-gap:40px] [columns:2_320px]">
@@ -83,7 +83,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
                 </li>
               ))}
             </ul>
-            <Pareja telefono={contacto.telefono} whatsapp={contacto.whatsapp} mensaje={mensaje} textoWhatsapp={textoWhatsapp} />
+            <Pareja telefono={contacto.telefono} whatsapp={contacto.whatsapp} mensaje={mensaje} />
           </div>
         )}
       </section>
@@ -93,7 +93,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
         <RejillaGaleria fotos={servicio.imagenes} titulo="Imágenes" recuento={servicio.imagenes.length === 1 ? "1 imagen" : `${servicio.imagenes.length} imágenes`} className="pt-(--seccion)" />
       )}
       <PreguntasFrecuentes preguntas={servicio.preguntas.length > 0 ? servicio.preguntas : preguntas} />
-      <CtaFinal contacto={contacto} mensaje={mensaje} titulo={textoWhatsapp} />
+      <CtaFinal contacto={contacto} mensaje={mensaje} titulo="¿Hablamos de tu pieza?" />
     </>
   );
 }

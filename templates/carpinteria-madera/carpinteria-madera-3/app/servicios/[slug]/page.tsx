@@ -31,8 +31,8 @@ export async function generateMetadata({ params }: PageProps<"/servicios/[slug]"
 
 /**
  * Ficha de pieza (encargo §7): «Pieza A», h1 al tamaño del hero, descripción y la pareja con su
- * mensaje; después los bloques numerados «Qué hacemos» (`contenido` o la descripción, y sus láminas
- * 4:5), «Qué incluye» (lista mono «01 — …» y la pareja), «Trabajos de esta pieza» y «Preguntas».
+ * mensaje; después los bloques numerados «Qué hacemos» (`contenido` y sus láminas 4:5; sin ninguno
+ * de los dos no sale, para no repetir la descripción de la cabecera), «Qué incluye» (lista mono «01 — …» y la pareja), «Trabajos de esta pieza» y «Preguntas».
  * Cierra con «Empezamos por medir el hueco». El índice lateral lista los bloques que existen.
  */
 export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
@@ -45,11 +45,13 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
   const l = letra(indice);
   const mensaje = mensajePieza(servicio);
   const nota = notaHorario(contacto);
-  const parrafos = servicio.contenido.length > 0 ? servicio.contenido : [servicio.descripcion];
+  // Sin `contenido`, los párrafos no repiten la descripción, que ya está bajo el h1.
+  const parrafos = servicio.contenido;
+  const hayQueHacemos = parrafos.length > 0 || servicio.imagenes.length > 0;
   const relacionados = trabajos.map((t, i) => ({ t, i })).filter(({ t }) => t.servicio === servicio.slug);
 
   const secciones = numerar([
-    { id: "que-hacemos", texto: "Qué hacemos" },
+    hayQueHacemos && { id: "que-hacemos", texto: "Qué hacemos" },
     servicio.incluye.length > 0 && { id: "que-incluye", texto: "Qué incluye" },
     relacionados.length > 0 && { id: "trabajos-pieza", texto: "Trabajos" },
     servicio.preguntas.length > 0 && { id: "preguntas", texto: "Preguntas" },
@@ -77,28 +79,32 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
         </div>
       </CabeceraPagina>
 
-      <section id="que-hacemos" aria-labelledby="h2-que-hacemos" className="pt-18">
-        <TituloBloque n={n("que-hacemos")} id="h2-que-hacemos">
-          Qué hacemos
-        </TituloBloque>
-        <div className="flex max-w-[66ch] flex-col gap-4">
-          {parrafos.map((p) => (
-            <p key={p}>{p}</p>
-          ))}
-        </div>
-        {servicio.imagenes.length > 0 && (
-          <div className="mt-8 grid max-w-[820px] grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-6">
-            {servicio.imagenes.map((im, i) => (
-              <Lamina key={im.src + i} imagen={im} numero={i + 1} proporcion="4/5" sizes="(min-width: 1024px) 400px, 100vw" />
-            ))}
-          </div>
-        )}
-        {servicio.incluye.length === 0 && (
-          <div className="mt-10 max-w-[720px]">
-            <Pareja contacto={contacto} mensaje={mensaje} />
-          </div>
-        )}
-      </section>
+      {hayQueHacemos && (
+        <section id="que-hacemos" aria-labelledby="h2-que-hacemos" className="pt-18">
+          <TituloBloque n={n("que-hacemos")} id="h2-que-hacemos">
+            Qué hacemos
+          </TituloBloque>
+          {parrafos.length > 0 && (
+            <div className="mb-8 flex max-w-[66ch] flex-col gap-4">
+              {parrafos.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
+          )}
+          {servicio.imagenes.length > 0 && (
+            <div className="grid max-w-[820px] grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-6">
+              {servicio.imagenes.map((im, i) => (
+                <Lamina key={im.src + i} imagen={im} numero={i + 1} proporcion="4/5" sizes="(min-width: 1024px) 400px, 100vw" />
+              ))}
+            </div>
+          )}
+          {servicio.incluye.length === 0 && (
+            <div className="mt-10 max-w-[720px]">
+              <Pareja contacto={contacto} mensaje={mensaje} />
+            </div>
+          )}
+        </section>
+      )}
 
       {servicio.incluye.length > 0 && (
         <section id="que-incluye" aria-labelledby="h2-que-incluye" className="pt-18">
@@ -150,7 +156,7 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
       )}
 
       <section aria-labelledby="h2-medir" className="flex max-w-[720px] flex-col gap-6 pt-22">
-        <h2 id="h2-medir" className="titulo text-h2 leading-[1.1]">
+        <h2 id="h2-medir" className="titulo text-h2 leading-[1.1] tracking-[-0.01em]">
           Empezamos por medir el hueco
         </h2>
         <Pareja contacto={contacto} mensaje={mensaje} nota={nota} />

@@ -12,7 +12,7 @@ Todo el archivo es de «Obrador Mallol», un obrador inventado del Poblenou (Bar
 - [ ] `registroMercantil`: solo en una sociedad, con los datos reales. Si es autónomo, quita el campo.
 - [ ] `contacto`: `telefono`/`whatsapp` (`+34600000604`), `email` (`.example`), `direccion` («Calle Ejemplo, 112, bajos»), `horario` (debe coincidir con la ficha de Google) y `fichaGoogle` (`cid=000…0604`). El ejemplo no trae `coordenadas`: con la dirección real, añádelas para que «Cómo llegar» apunte al punto exacto.
 - [ ] `zonas`: los municipios reales («Trabajamos en», separados por barras).
-- [ ] `servicios`: los del cliente, en el orden del catálogo (el número «01», «02»… y el «Catálogo 01» de cada ficha es la posición en la lista). `contenido` e `incluye` de «Cocinas» son de ejemplo.
+- [ ] `servicios`: los del cliente, en el orden del catálogo (el número «01», «02»… y el «Catálogo 01» de cada ficha es la posición en la lista). `contenido` e `incluye` de «Cocinas» son de ejemplo. «Encargos para interioristas» lleva `mensajeWhatsapp` propio («Hola, soy interiorista y quiero presupuesto para un encargo.») porque el mensaje por defecto («Hola, quiero presupuesto para {servicio}.») sonaba raro con ese título: haz lo mismo con cualquier título que no encaje ahí.
 - [ ] `trabajos`: los 7 son inventados. **El número de pieza («N.º 07») es la posición en la lista**: si se reordena, cambian los números (y los mensajes de WhatsApp que los citan). El collage y la rejilla del inicio ordenan por `anio`, de más reciente a más antiguo. Ver §2 para las fotos.
 - [ ] `valoracion` (4,9 / 52) y `resenas`: inventadas. Solo las reales de su ficha de Google, o quita los dos campos.
 - [ ] `garantias` («Presupuesto cerrado con plano», «Plazo de entrega en contrato», «Cinco años de garantía en estructura»), `acreditaciones` y `marcas` (Blum y Salice): solo lo que el cliente confirme. Salen juntas en la franja negra del inicio y en `/empresa`.
@@ -37,7 +37,7 @@ Todo el archivo es de «Obrador Mallol», un obrador inventado del Poblenou (Bar
 
 ## 3. Decisiones que tomar con el cliente o con Ysst
 
-- [ ] **Tipografía:** Big Shoulders (eje óptico a 72, que es la antigua «Big Shoulders Display» del diseño) e Instrument Sans, con `next/font`. Big Shoulders no tiene métricas para ajustar el respaldo: va con «Arial Narrow» sin ajuste.
+- [ ] **Tipografía:** Big Shoulders (eje óptico a 72, que es la antigua «Big Shoulders Display» del diseño) e Instrument Sans, con `next/font`. Big Shoulders no tiene métricas en `next/font`: el respaldo es «Big Shoulders respaldo» (`@font-face` al principio de `app/globals.css`, Arial Bold o equivalente al 70 % con la altura de línea de Big Shoulders), para que nada salte si la fuente llega tarde. Si cambias la fuente de titulares, recalibra o quita ese respaldo.
 - [ ] **Color primario:** el rojo `#c4341a` por defecto, en números, filtro activo y el botón de la ficha de pieza. Si el primario del cliente no llega a 3:1 sobre el blanco roto (`#facc15`, por ejemplo), los números pasan a negro subrayado en el color del cliente (`app/layout.tsx`). Probado con `#1e40af` y `#facc15`.
 - [ ] **Logo:** con `negocio.logo`, la cabecera muestra un logo de 32 px junto al nombre (`alt=""`). Con nombres de más de 22 caracteres, el nombre baja de cuerpo y ocupa varias líneas en móvil, sin cortarse.
 - [ ] **«Herrajes Blum y Salice»:** el diseño presenta `marcas` como herrajes. *Recomendado:* dejarlo si las marcas del cliente son de herrajes; si son de otra cosa (barnices, tableros), cambiar la palabra en `Garantias.tsx` y `app/empresa/page.tsx`.
@@ -50,8 +50,8 @@ Todo el archivo es de «Obrador Mallol», un obrador inventado del Poblenou (Bar
 - `components/Asistente.tsx`: las preguntas («Qué pieza», «Qué madera o acabado»: roble, nogal, fresno, lacado; «Qué tienes»: plano del interiorista, fotos, solo la idea) y sus frases. Ajusta las maderas a las que trabaja el cliente.
 - `components/secciones/ComoTrabajamos.tsx`: usa los 4 pasos de core para tipo proyecto, o `proceso` del cliente si lo trae.
 - `components/secciones/Garantias.tsx`: «Desde {año}» y «Herrajes {marcas}».
-- `components/secciones/CtaFinal.tsx`: «Cuéntanos tu pieza» (y «Pide presupuesto de {servicio}» en cada ficha). Bajo los botones, solo el horario: sin promesa de tiempo de respuesta.
-- `app/servicios/[slug]/page.tsx`: «Pide presupuesto de {servicio}» (botón) y «Piezas de {servicio}» (título de la rejilla) llevan el título del servicio. Con títulos que no son piezas salen frases forzadas («Pide presupuesto de encargos para interioristas», «Piezas de encargos para interioristas»): elige títulos de servicio que funcionen ahí, o pon `mensajeWhatsapp` propio en ese servicio.
+- `components/secciones/CtaFinal.tsx`: «Cuéntanos tu pieza» (y «¿Hablamos de tu pieza?» en cada ficha de servicio). Bajo los botones, solo el horario: sin promesa de tiempo de respuesta.
+- `app/servicios/[slug]/page.tsx`: el botón dice «Pide presupuesto» y la rejilla «Piezas de este servicio», sin el título del servicio. El título sí entra en el mensaje de WhatsApp («Hola, quiero presupuesto para {servicio}.»): si con algún título suena raro, pon `mensajeWhatsapp` propio en ese servicio.
 - `app/servicios/[slug]/page.tsx`: «Piezas de este servicio» sobre la rejilla de la ficha.
 - `app/trabajos/[slug]/page.tsx`: «Quiero algo parecido» y «¿Algo parecido a la N.º 07?».
 - `app/empresa/page.tsx`: el `h1` «El obrador» y el menú «Obrador» (`lib/piezas.ts`). Si el cliente no tiene obrador propio, «El taller» o «Quiénes somos».

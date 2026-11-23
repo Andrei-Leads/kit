@@ -36,7 +36,7 @@ export function Piezas({ n, servicios, laminas, contacto, mensaje }: Props) {
                 {letra(i)}
               </span>
               <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                <h3 className="titulo text-[clamp(1.1875rem,1rem+0.8vw,1.625rem)] leading-[1.2] tracking-normal">
+                <h3 className="titulo text-[clamp(1.1875rem,1rem+0.8vw,1.625rem)] leading-[1.2]">
                   <span className="sr-only">Pieza {letra(i)}: </span>
                   {s.titulo}
                 </h3>

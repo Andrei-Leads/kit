@@ -14,7 +14,7 @@ import { clsx as cn } from "clsx";
 export type OpcionAsistente = {
   titulo: string;
   slug: string;
-  /** El título en minúscula para meterlo en la frase («Quiero armarios empotrados…»). */
+  /** El título con minúscula inicial para la frase («Hola, quiero presupuesto para armarios empotrados.»). */
   frase: string;
   /** Mensaje del enlace sin JavaScript: `servicios[].mensajeWhatsapp` o el del template. */
   mensaje: string;

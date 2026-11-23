@@ -10,7 +10,7 @@ const ia = (src: string, alt: string): Imagen => ({ src: `/ejemplo/${src}`, alt,
 export default defineSiteConfig({
   negocio: {
     nombre: "Taller Pàtina",
-    nombreLegal: "Amparo Gil Bonet", // autónoma ficticia: sin registroMercantil
+    nombreLegal: "Amparo Ejemplo Gil", // autónoma ficticia («Ejemplo» en lugar del primer apellido): sin registroMercantil
     nif: "48213765Q", // ficticio: la letra de control no corresponde a propósito (la correcta sería S)
     sector: "Restauración de madera",
     descripcionCorta: "Restauramos y lacamos puertas, recuperamos muebles antiguos y acuchillamos tarimas en Valencia y su área.",
@@ -157,18 +157,18 @@ export default defineSiteConfig({
   ],
   valoracion: { media: 4.9, total: 74 },
   resenas: [
-    { autor: "Ferran Cervera", texto: "La puerta ha vuelto a nacer.", puntuacion: 5, fecha: "2026-10-27", fuente: "google" },
+    { autor: "Ferran C.", texto: "La puerta ha vuelto a nacer.", puntuacion: 5, fecha: "2026-10-27", fuente: "google" },
     {
-      autor: "Rosa Alapont",
+      autor: "Rosa A.",
       texto:
         "Lacaron todas las puertas del piso en ocho días. Se llevaron las hojas, las trajeron perfectas y los marcos los hicieron en casa sin manchar nada. El cambio es enorme y costó mucho menos que puertas nuevas.",
       puntuacion: 5,
       fecha: "2026-09-19",
       fuente: "google",
     },
-    { autor: "Pepa Soriano", texto: "Restauraron la cómoda de mi abuela con muchísimo cariño.", puntuacion: 5, fecha: "2026-08", fuente: "google" },
-    { autor: "Óscar Llorens", texto: "Buen trabajo en la tarima. Algo de polvo el primer día, aunque avisaron.", puntuacion: 4, fecha: "2026-06-08", fuente: "google" },
-    { autor: "Teresa Mora", texto: "Amables y cumplidores.", puntuacion: 5, fecha: "2026-04-14", fuente: "google" },
+    { autor: "Pepa S.", texto: "Restauraron la cómoda de mi abuela con muchísimo cariño.", puntuacion: 5, fecha: "2026-08", fuente: "google" },
+    { autor: "Óscar L.", texto: "Buen trabajo en la tarima. Algo de polvo el primer día, aunque avisaron.", puntuacion: 4, fecha: "2026-06-08", fuente: "google" },
+    { autor: "Teresa M.", texto: "Amables y cumplidores.", puntuacion: 5, fecha: "2026-04-14", fuente: "google" },
   ],
   proceso: [
     { titulo: "Nos mandas una foto", texto: "Por WhatsApp te decimos si tiene arreglo y un precio orientativo." },

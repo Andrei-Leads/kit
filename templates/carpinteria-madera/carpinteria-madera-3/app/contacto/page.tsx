@@ -92,7 +92,7 @@ export default function Page() {
 
       {zonas.length > 0 && (
         <section aria-labelledby="h2-zonas" className="pt-12">
-          <h2 id="h2-zonas" className="titulo mb-4 text-2xl tracking-normal">
+          <h2 id="h2-zonas" className="titulo mb-4 text-2xl">
             Dónde montamos
           </h2>
           <ListaZonas zonas={zonas} />

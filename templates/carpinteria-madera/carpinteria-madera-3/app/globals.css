@@ -115,10 +115,17 @@
 }
 
 @layer components {
-  /* Títulos en mono (encargo §9): display, h1 interior, h2 y h3. */
+  /*
+   * Títulos en mono (encargo §9): display, h1 interior, h2 y h3. Interletrado del diseño: -0,02em
+   * solo en los h1, -0,01em en los h2 de sección (TituloSeccion y los cierres «Empezamos por
+   * medir…»: `tracking-[-0.01em]`) y 0 en los h2/h3 interiores y en las cifras grandes.
+   */
   .titulo {
     font-family: var(--font-titulo);
     font-weight: 500;
+    letter-spacing: 0;
+  }
+  h1.titulo {
     letter-spacing: -0.02em;
   }
 

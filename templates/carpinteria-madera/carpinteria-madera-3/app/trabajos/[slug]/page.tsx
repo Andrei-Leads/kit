@@ -75,7 +75,7 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
           { href: `/trabajos/${trabajo.slug}`, texto: ref },
         ]}
         rotulo={
-          <span className="block font-titulo text-[clamp(3rem,2rem+4vw,6rem)] leading-none font-medium tracking-[-0.02em] text-lapiz">{ref}</span>
+          <span className="block font-titulo text-[clamp(3rem,2rem+4vw,6rem)] leading-none font-medium text-lapiz">{ref}</span>
         }
         titulo={trabajo.titulo}
         tamano="ficha"
@@ -144,7 +144,7 @@ export default async function Page({ params }: PageProps<"/trabajos/[slug]">) {
             <span aria-hidden="true">→</span>
           </Link>
         )}
-        <h2 id="h2-parecido" className="titulo text-h2 leading-[1.1]">
+        <h2 id="h2-parecido" className="titulo text-h2 leading-[1.1] tracking-[-0.01em]">
           ¿Quieres algo parecido?
         </h2>
         <Pareja contacto={contacto} mensaje={mensajeReferencia(trabajo, indice)} textoWhatsapp="Quiero algo parecido" nota={notaHorario(contacto)} />

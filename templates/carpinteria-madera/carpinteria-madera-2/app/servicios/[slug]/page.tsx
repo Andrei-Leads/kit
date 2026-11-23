@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps<"/servicios/[slug]"
 /**
  * Ficha de servicio (encargo §7): cabecera en el campo pleno con migas, h1, «desde» y «o llámanos»,
  * y el asistente con el servicio ya elegido (paso 2 de 3); sin WhatsApp, una tarjeta con la
- * llamada. Debajo: fotos en carril, «Cómo lo hacemos», «Incluye» en píldoras, la pareja, trabajos
+ * llamada. Debajo: fotos en carril, «Cómo lo hacemos» (solo con `contenido`), «Incluye» en píldoras, la pareja, trabajos
  * de este servicio, preguntas y CTA con su mensaje. Cada bloque vacío se oculta.
  */
 export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
@@ -53,7 +53,10 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
   const enFrase = minusculaInicial(servicio.titulo);
   const tel = telefonoVisible(contacto.telefono);
   const trabajos = trabajosDelServicio(config.trabajos, servicio);
-  const parrafos = servicio.contenido.length > 0 ? servicio.contenido : [servicio.descripcion];
+  // «Cómo lo hacemos» solo con `contenido`: sin él repetiría la descripción de la cabecera.
+  const parrafos = servicio.contenido;
+  // Sin ese h2, «Incluye» sube a h2 (no salta del h1 al h3).
+  const TituloIncluye = parrafos.length > 0 ? "h3" : "h2";
 
   return (
     <Marco actual="servicios">
@@ -110,29 +113,33 @@ export default async function Page({ params }: PageProps<"/servicios/[slug]">) {
               ))}
             </ul>
           )}
-          <div className="flex flex-wrap items-start gap-[clamp(28px,5vw,72px)]">
-            <div className="flex max-w-[62ch] flex-[1_1_380px] flex-col gap-3.5">
-              <h2 className="h2">Cómo lo hacemos</h2>
-              {parrafos.map((p) => (
-                <p key={p} className="text-[clamp(1.05rem,1rem+0.3vw,1.2rem)]">
-                  {p}
-                </p>
-              ))}
-            </div>
-            {servicio.incluye.length > 0 && (
-              <div className="flex flex-[1_1_320px] flex-col gap-3.5">
-                <h3 className="font-titulo text-xl font-bold">Incluye</h3>
-                <ul className="flex flex-wrap gap-2.5">
-                  {servicio.incluye.map((x) => (
-                    <li key={x} className="pildora-check min-h-12 bg-alterna py-1.5 pr-5 pl-2">
-                      <Check tamano={30} />
-                      {x}
-                    </li>
+          {(parrafos.length > 0 || servicio.incluye.length > 0) && (
+            <div className="flex flex-wrap items-start gap-[clamp(28px,5vw,72px)]">
+              {parrafos.length > 0 && (
+                <div className="flex max-w-[62ch] flex-[1_1_380px] flex-col gap-3.5">
+                  <h2 className="h2">Cómo lo hacemos</h2>
+                  {parrafos.map((p) => (
+                    <p key={p} className="text-[clamp(1.05rem,1rem+0.3vw,1.2rem)]">
+                      {p}
+                    </p>
                   ))}
-                </ul>
-              </div>
-            )}
-          </div>
+                </div>
+              )}
+              {servicio.incluye.length > 0 && (
+                <div className="flex flex-[1_1_320px] flex-col gap-3.5">
+                  <TituloIncluye className="font-titulo text-xl font-bold">Incluye</TituloIncluye>
+                  <ul className="flex flex-wrap gap-2.5">
+                    {servicio.incluye.map((x) => (
+                      <li key={x} className="pildora-check min-h-12 bg-alterna py-1.5 pr-5 pl-2">
+                        <Check tamano={30} />
+                        {x}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
           <Pareja contacto={contacto} mensaje={mensaje} textoWhatsapp="Envíanos fotos por WhatsApp" />
           {trabajos.length > 0 && (
             <div className="flex flex-col gap-6">
