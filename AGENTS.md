@@ -132,6 +132,12 @@ kit/
 │     ├─ reformas-4/               # «Diario de obra» (cronología en mono sobre negro cálido, índice lateral, videoPano)
 │     └─ reformas-5/               # «Tu casa» (vídeo con póster, estancias en arcos, cabecera transparente)
 │     └─ reformas-premium-1/       # línea premium: «Estancia» (vídeo en el hero, antes/después que crece)
+│  └─ carpinteria-madera/            # nueva generación (core 0.7.0 + registry/), tipo proyecto; fotos de relleno
+│     ├─ carpinteria-madera-1/     # «Veta» (macro de veta a sangre, serif editorial, trabajos por estancia)
+│     ├─ carpinteria-madera-2/     # «A medida» (configurador hueco → pieza → acabado en el hero)
+│     ├─ carpinteria-madera-3/     # «Banco de trabajo» (hoja de despiece en papel kraft, láminas, índice lateral)
+│     ├─ carpinteria-madera-4/     # «Galería» (rejilla de piezas numeradas con filtro, collage, blanco y negro + acento)
+│     └─ carpinteria-madera-5/     # «Restauración» (antes/después en arco sobre nogal, videoPano)
 │  └─ (premium) fontaneria/fontaneria-premium-1 «Caudal», electricidad/electricidad-premium-1 «Tensión»,
 │     carpinteria-metalica/carpinteria-metalica-premium-1 «Marco», carpinteria-madera/carpinteria-madera-premium-1 «Oficio»
 │                                  # línea premium (tipo proyecto, nunca urgencias): efectos solo con CSS, tokens de movimiento comunes
@@ -521,6 +527,8 @@ Si Ysst pide un proceso cuyo documento aún no existe, guíale con lo que hay en
 **Hecho (22/11/2026, rama `claude/project-thread-hdui03`):** la línea premium (`templates/<nicho>/<nicho>-premium-1`: fontanería «Caudal», electricidad «Tensión», reformas «Estancia», carpintería metálica «Marco» y carpintería de madera «Oficio»), desde las exportaciones de Claude Design, con core 0.7.0. Tipo proyecto (premium no es urgencias). Efectos (parallax, marquesina, pano que crece, bloques apilados, cabecera inteligente, View Transitions) solo con CSS y con los mismos tokens de movimiento en los 5 (`--ease-salida`, `--ease-suave`, `--dur-revelado` .9s, `--dur-hover` .5s, `--dur-pagina` .4s, `--escalonado` .12s, `--desplaz-revelado` 1.5rem); sin GSAP. Cada uno pasó 4 revisiones. Fotos de relleno y vídeos comentados en `site.config.ts`; tabla de huecos en `public/ejemplo/CREDITOS.md`. Pendiente de revisión de Ysst en local; decisiones abiertas en la carpeta del proyecto `nueva-generacion/premium-integracion/`.
 
 **Hecho (22/11/2026, rama `claude/project-thread-rx5jre`):** los 5 templates de carpintería metálica de la nueva generación (`templates/carpinteria-metalica/carpinteria-metalica-4..8`: «Plano», «Perfil», «Fachada nueva», «Forja», «Taller de siempre»), desde las exportaciones de Claude Design, con core 0.7.0 y las piezas de `registry/`, tipo proyecto. Cada uno pasó 4 revisiones y lleva `CLIENTE-REAL.md`. Fotos de relleno marcadas; faltan las de IA y sus prompts en `docs/fotos-ejemplo/carpinteria-metalica-<n>/`. Pendiente de revisión de Ysst en local; decisiones abiertas en la carpeta del proyecto `nueva-generacion/carpinteria-metalica-integracion/`.
+
+**Hecho (22/11/2026, rama `claude/project-thread-jai6u0`):** los 5 templates de carpintería de madera de la nueva generación (`templates/carpinteria-madera/carpinteria-madera-1..5`: «Veta», «A medida», «Banco de trabajo», «Galería» y «Restauración»), desde las exportaciones de Claude Design, con core 0.7.0 y las piezas de `registry/`. Cada uno pasó 4 revisiones y lleva `CLIENTE-REAL.md`. `-1` y `-4` llegaron un día después (23/11/2026) por el mismo proceso. Fotos de relleno marcadas. Pendiente de revisión de Ysst en local; decisiones abiertas en la carpeta del proyecto `nueva-generacion/carpinteria-madera-integracion/`.
 
 **Más adelante (core):** que `metadatosPagina` no diga «N trabajos reales…» en demos, que la privacidad no hable de «formulario» y que el aviso legal muestre el teléfono con `telefonoVisible` (vistos en electricidad-4..8; Ysst, 22/11/2026).
 

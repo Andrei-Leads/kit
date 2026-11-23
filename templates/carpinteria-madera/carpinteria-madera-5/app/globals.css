@@ -1,0 +1,424 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Restauración» (carpinteria-madera-5): nogal oscuro, crema y ámbar de barniz
+ * (encargo §8 y entrega de Claude Design). Formas orgánicas: arcos en las fotos y esquinas
+ * desiguales en las tarjetas. Solo --color-primario (y --color-sobre-primario, que calcula
+ * core) se sobrescriben desde site.config: estilo del <html> en app/layout.tsx.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #1c1410; /* nogal */
+  --color-superficie: #271c16; /* tarjetas */
+  --color-alterna: #2f2219; /* secciones alternas */
+  --color-texto: #f3e9dc; /* crema, 15,6:1 sobre fondo */
+  --color-texto-suave: #c9b6a1; /* 9,2:1 sobre fondo, 7,8:1 sobre alterna */
+  --color-borde: #4a382c;
+  --color-primario: #d4893a; /* ámbar de barniz: solo relleno de CTA, subrayados y bordes */
+  --color-sobre-primario: #1c1410; /* 6,4:1 sobre el ámbar; core lo recalcula con marca.colorPrimario */
+  --color-acento: #8fa37a; /* verde pátina: puntos y números */
+  --color-foco: #f3c27a; /* anillo de foco y estrellas */
+
+  --font-titulo: var(--font-commissioner), system-ui, sans-serif;
+  --font-texto: var(--font-commissioner), system-ui, sans-serif;
+
+  --radius-boton: 999px;
+  --radius-tarjeta: 24px 24px 24px 64px;
+  --radius-foto: 48% 48% 24px 24px / 32% 32% 24px 24px; /* arco */
+
+  --text-display: clamp(2.25rem, 1.5rem + 3.4vw, 5rem);
+  --text-display--line-height: 1.03;
+
+  /* Propios */
+  --color-etiqueta: rgb(28 20 16 / 0.75); /* fondo de «Antes», «Después» y la etiqueta de origen */
+  --color-primario-hover: color-mix(in oklch, var(--color-primario), white 12%);
+  --color-primario-pulsado: color-mix(in oklch, var(--color-primario), black 8%);
+  /* Arco vacío dibujado: el primario, o la crema si el primario del cliente no llega a 3:1 (layout). */
+  --color-arco: var(--color-primario);
+
+  --radius-arco-pequeno: 48% 48% 16px 16px / 32% 32% 16px 16px;
+  --radius-arco-medio: 48% 48% 20px 20px / 32% 32% 20px 20px;
+  --radius-foto-tarjeta: 18px 18px 18px 40px;
+  --radius-pregunta: 20px 20px 20px 40px;
+  --radius-caja: 32px 32px 32px 96px;
+  --radius-hoja: 28px 28px 0 0;
+
+  --text-h2: clamp(1.75rem, 1.3rem + 1.8vw, 3rem);
+  --text-h2--line-height: 1.08;
+  --text-h3: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+  --text-h3--line-height: 1.15;
+  --text-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-cuerpo--line-height: 1.6;
+  --text-entrada: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --text-entrada--line-height: 1.4;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-primario-hover: oklch(from var(--color-primario) calc(l + 0.07) c h);
+    --color-primario-pulsado: oklch(from var(--color-primario) calc(l - 0.04) c h);
+  }
+}
+
+:root {
+  --alto-cabecera: 64px;
+}
+@media (width >= 64rem) {
+  :root {
+    --alto-cabecera: 84px;
+  }
+}
+
+/* 1184 px de contenido, margen lateral de 16 a 48 px. */
+@utility contenedor {
+  width: 100%;
+  max-width: calc(1184px + 2 * clamp(16px, 4vw, 48px));
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 48px);
+}
+
+/* Sección aireada. */
+@utility seccion {
+  padding-block: clamp(56px, 9vw, 120px);
+}
+
+/* Antetítulo: versalitas de 14 px con el punto verde pátina. */
+@utility antetitulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 560;
+  color: var(--color-texto-suave);
+  &::before {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-acento);
+  }
+}
+
+@utility titulo-display {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-size: var(--text-display);
+  line-height: 1.03;
+  letter-spacing: -0.03em;
+  font-weight: 660;
+  text-wrap: balance;
+}
+
+@utility titulo-seccion {
+  margin: 0;
+  font-size: var(--text-h2);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 640;
+  text-wrap: balance;
+}
+
+/*
+ * Enlace de texto: siempre en crema con subrayado de primario (encargo §8: un primario oscuro
+ * del cliente, como #1e40af, no llega al contraste como color de texto sobre el nogal).
+ */
+@utility enlace {
+  color: var(--color-texto);
+  font-weight: 600;
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-primario);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  &:hover {
+    text-decoration-thickness: 3px;
+  }
+}
+
+/* Punto verde de las listas (incluye, garantías). */
+@utility punto {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-acento);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    font-weight: 420;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  /* Barra móvil y cabecera fijas: que no tapen el elemento con foco (WCAG 2.4.11). */
+  html {
+    scroll-padding-top: calc(var(--alto-cabecera) + 16px);
+  }
+  @media (width < 64rem) {
+    html {
+      scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    }
+  }
+  /* Foco: anillo de 3 px en --color-foco con 2 px de separación (sobre foto y sobre primario). */
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+}
+
+/* ── Cabecera fija: sólida por defecto; transparente sobre el arco (solo CSS) ──
+ * Las páginas con el arco arriba (inicio, servicio y trabajo) llevan `data-cabecera="transparente"`.
+ * El ::before es el fondo sólido y el ::after el velo degradado. Sin animation-timeline o con
+ * «reducir movimiento», la cabecera es sólida siempre. Solo se anima la opacidad. */
+.cabecera::before,
+.cabecera::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  pointer-events: none;
+}
+.cabecera::before {
+  bottom: 0;
+  z-index: -1;
+  background: var(--color-fondo);
+  border-bottom: 1px solid var(--color-borde);
+}
+.cabecera::after {
+  z-index: -2;
+  height: calc(var(--alto-cabecera) + 32px);
+  background: linear-gradient(rgb(28 20 16 / 0.7), transparent);
+  opacity: 0;
+}
+@keyframes cabecera-solida {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes cabecera-velo {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    body:has([data-cabecera="transparente"]) .cabecera::before {
+      animation: cabecera-solida linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 120px;
+    }
+    body:has([data-cabecera="transparente"]) .cabecera::after {
+      animation: cabecera-velo linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 120px;
+    }
+  }
+}
+
+/* El arco de las páginas con cabecera transparente sube bajo la cabecera (el <main> reserva su alto). */
+.bajo-cabecera {
+  margin-top: calc(-1 * var(--alto-cabecera));
+}
+
+/* ── Botones: hover solo con puntero, pulsado con scale(.97) ───────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .boton {
+    transition:
+      transform 120ms ease,
+      background-color 150ms ease;
+  }
+}
+.boton:active {
+  transform: scale(0.97);
+}
+
+/* ── Tirador del antes/después: escala al enfocar o pulsar ─────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .tirador {
+    transition: scale 150ms ease;
+  }
+  .group\/ad:has(input:focus-visible) .tirador,
+  .group\/ad:has(input:active) .tirador {
+    scale: 1.1;
+  }
+}
+
+/* ── Tarjetas de servicio: borde ámbar al pasar ────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .tarjeta-servicio {
+    transition:
+      border-color 200ms ease,
+      transform 200ms ease;
+  }
+}
+.tarjeta-servicio:active {
+  transform: scale(0.99);
+}
+
+/* Apariciones del encargo §12: pares 20 px en 360 ms; tarjetas 16 px. aparecer.css ya va ligado al scroll. */
+
+/* ── Menú móvil (popover nativo): hoja que sube desde abajo ───────────────── */
+.menu-hoja {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  max-height: 100dvh;
+  margin: 0;
+  overflow: auto;
+  border: 0;
+  border-top: 1px solid var(--color-borde);
+  border-radius: var(--radius-hoja);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+}
+.menu-hoja::backdrop {
+  background: rgb(10 7 5 / 0.62);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-hoja {
+    transition:
+      translate 260ms ease,
+      opacity 260ms ease,
+      overlay 260ms allow-discrete,
+      display 260ms allow-discrete;
+  }
+  @starting-style {
+    .menu-hoja:popover-open {
+      translate: 0 100%;
+      opacity: 0;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-hoja {
+    transition:
+      opacity 200ms ease,
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+  @starting-style {
+    .menu-hoja:popover-open {
+      opacity: 0;
+    }
+  }
+}
+
+/* ── Barra móvil: entra desde abajo al cargar ─────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-movil {
+    transition: translate 280ms ease-out;
+  }
+  @starting-style {
+    .barra-movil {
+      translate: 0 100%;
+    }
+  }
+}
+
+/* ── Carril de reseñas: sin barra de desplazamiento visible ────────────────── */
+.carril {
+  scrollbar-width: none;
+}
+.carril::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Preguntas: «+» en círculo que gira ───────────────────────────────────── */
+.pregunta summary::-webkit-details-marker {
+  display: none;
+}
+.pregunta[open] .mas {
+  rotate: 45deg;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pregunta .mas {
+    transition: rotate 200ms ease;
+  }
+}
+
+/* ── Asistente: cada paso y el mensaje aparecen (8 px + opacidad) ────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .paso-asistente {
+    transition:
+      opacity 200ms ease,
+      translate 200ms ease;
+  }
+  @starting-style {
+    .paso-asistente {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+}
+
+/* ── Legales: columna de 68 caracteres; el texto y el <h1> los pone core ─── */
+.lectura-legal article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 0 0 1.75rem;
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+  line-height: 1.05;
+  font-weight: 660;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 2.25rem 0 0.5rem;
+  font-size: 1.375rem;
+  line-height: 1.25;
+  font-weight: 640;
+}
+.lectura-legal h3 {
+  margin: 1.5rem 0 0.375rem;
+  font-size: 1.125rem;
+  font-weight: 620;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.75rem;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  color: var(--color-texto);
+  text-decoration: underline;
+  text-decoration-color: var(--color-primario);
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}

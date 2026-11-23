@@ -1,0 +1,374 @@
+@import "tailwindcss";
+@import "@andrei-leads/core/styles.css";
+@import "../components/base/aparecer.css";
+
+/*
+ * Tokens de «Veta» (carpinteria-madera-1): papel hueso, tinta marrón y roble tostado (encargo §8 y
+ * entrega de Claude Design). Formas rectas finas: filetes de 1 px, sin radios ni sombras. Solo
+ * --color-primario (y --color-sobre-primario, que calcula core) se sobrescriben desde site.config:
+ * estilo del <html> en app/layout.tsx.
+ */
+@theme {
+  /* 16 tokens comunes */
+  --color-fondo: #f5efe6; /* papel hueso */
+  --color-superficie: #fbf8f3;
+  --color-alterna: #ece3d6;
+  --color-texto: #2a211b; /* tinta marrón */
+  --color-texto-suave: #6b5d50; /* 5,6:1 sobre fondo, 5,0:1 sobre alterna */
+  --color-borde: #d9cdbd;
+  --color-primario: #8b5a2b; /* roble tostado; blanco encima 5,8:1 */
+  --color-sobre-primario: #ffffff; /* core lo recalcula con marca.colorPrimario */
+  --color-acento: #5d6b4f; /* salvia, solo detalles */
+  --color-foco: #5c3a1a; /* respaldo; con oklch relativo, el primario a L 0,4 (abajo) */
+
+  --font-titulo: var(--font-newsreader), Georgia, serif;
+  --font-texto: var(--font-instrument), system-ui, sans-serif;
+
+  --radius-boton: 0;
+  --radius-tarjeta: 0;
+  --radius-foto: 0;
+
+  --text-display: clamp(2.75rem, 1.6rem + 5vw, 7.5rem);
+  --text-display--line-height: 0.98;
+
+  /* Propios */
+  --color-filete: rgb(42 33 27 / 0.22); /* = oklch(from var(--color-texto) l c h / 0.22) */
+  --color-velo: rgb(24 16 10 / 0.6);
+  --color-primario-hover: color-mix(in oklch, var(--color-primario), black 14%);
+  /* El primario como color de texto (números, capitular): oscurecido si el del cliente es claro. */
+  --color-primario-texto: var(--color-primario);
+  --color-tinta-hover: #3d3128;
+
+  --text-h2: clamp(2rem, 1.4rem + 2.6vw, 4rem);
+  --text-h2--line-height: 1.05;
+  --text-estancia: clamp(2.5rem, 1.3rem + 5vw, 6.5rem);
+  --text-estancia--line-height: 0.98;
+  --text-cuerpo: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --text-cuerpo--line-height: 1.6;
+  --text-entrada: clamp(1.2rem, 1.1rem + 0.4vw, 1.375rem);
+  --text-entrada--line-height: 1.55;
+  --text-pregunta: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem);
+  --text-pregunta--line-height: 1.25;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --color-foco: oklch(from var(--color-primario) 0.4 c h);
+    --color-primario-hover: oklch(from var(--color-primario) calc(l - 0.08) c h);
+    --color-primario-texto: oklch(from var(--color-primario) min(l, 0.5) c h);
+  }
+}
+
+/* Margen lateral de la entrega (20–72 px); por encima de 1440 px de contenido, centrado. */
+@utility marco {
+  padding-inline: max(clamp(20px, 5vw, 72px), calc((100% - 1440px) / 2));
+}
+
+/* Separación entre secciones del inicio (entrega: clamp(80px, 10cqi, 160px)). */
+@utility seccion {
+  padding-top: clamp(80px, 10vw, 160px);
+}
+
+@utility titulo-display {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-size: var(--text-display);
+  line-height: 0.98;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+@utility titulo-h2 {
+  margin: 0;
+  font-family: var(--font-titulo);
+  font-size: var(--text-h2);
+  line-height: 1.05;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Títulos de columna (garantías, contacto): serif de 26 px. */
+@utility titulo-columna {
+  margin: 0 0 12px;
+  font-family: var(--font-titulo);
+  font-size: 26px;
+  line-height: 1.15;
+  font-weight: 400;
+}
+
+/* Pie de foto en cursiva serif. */
+@utility pie-foto {
+  font-family: var(--font-titulo);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-texto-suave);
+  text-wrap: pretty;
+}
+
+/* Enlace de texto subrayado (preflight quita el subrayado: brief, regla 17). */
+@utility enlace {
+  color: var(--color-texto);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  &:hover {
+    color: var(--color-primario-texto);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 80px;
+  }
+  @media (width < 64rem) {
+    html {
+      scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+  }
+  body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-size: var(--text-cuerpo);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  em {
+    font-style: italic;
+  }
+  /* Foco (entrega): anillo de 3 px en --color-foco con 2 px de separación. */
+  :focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 2px;
+  }
+}
+
+/* ── Botones: hover solo con puntero, pulsado translateY(1px) scale(.98), halo hueso al enfocar ── */
+.boton:focus-visible {
+  box-shadow: 0 0 0 7px var(--color-superficie);
+}
+.boton:active {
+  transform: translateY(1px) scale(0.98);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .boton {
+    transition:
+      background-color 150ms ease,
+      transform 100ms ease;
+  }
+}
+
+/* ── Flecha de tarjetas y enlaces: 0 → 4 px al pasar o enfocar (encargo §12) ── */
+@media (prefers-reduced-motion: no-preference) {
+  .flecha {
+    display: inline-block;
+    transition: translate 150ms ease;
+  }
+  @media (hover: hover) {
+    .con-flecha:hover .flecha {
+      translate: 4px 0;
+    }
+  }
+  .con-flecha:focus-visible .flecha {
+    translate: 4px 0;
+  }
+}
+
+/* ── Filete bajo cada h2: se dibuja de izquierda a derecha al entrar (encargo §12) ── */
+@keyframes filete {
+  from {
+    transform: scaleX(0);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .filete-dibuja {
+      transform-origin: left;
+      animation: filete linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 80%;
+    }
+  }
+}
+
+/* ── Fotos de «Trabajos por estancia»: opacidad 0,4 → 1 y escala 1,04 → 1 (encargo §12) ── */
+@keyframes foto-estancia {
+  from {
+    opacity: 0.4;
+    scale: 1.04;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .foto-estancia img {
+      animation: foto-estancia linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+  }
+}
+
+/* ── Cabecera: la página actual lleva filete de tinta (solo CSS; cada página marca data-pagina) ── */
+body:has([data-pagina="trabajos"]) [data-nav="trabajos"],
+body:has([data-pagina="servicios"]) [data-nav="servicios"],
+body:has([data-pagina="empresa"]) [data-nav="empresa"],
+body:has([data-pagina="contacto"]) [data-nav="contacto"] {
+  border-bottom-color: var(--color-texto);
+}
+
+/* ── Menú móvil (popover nativo): panel bajo la cabecera, enlaces en serif de 28 px ── */
+.menu-panel {
+  position: fixed;
+  inset: 64px 0 auto 0;
+  width: 100%;
+  max-width: none;
+  max-height: calc(100dvh - 64px);
+  margin: 0;
+  overflow: auto;
+  border: 0;
+  border-bottom: 1px solid var(--color-filete);
+  background: var(--color-fondo);
+  color: var(--color-texto);
+}
+@supports (anchor-name: --a) {
+  .cabecera {
+    anchor-name: --cabecera;
+  }
+  .menu-panel {
+    position-anchor: --cabecera;
+    top: anchor(bottom);
+    max-height: calc(100dvh - anchor-size(height));
+  }
+}
+.menu-panel::backdrop {
+  background: transparent;
+}
+.menu-cerrar {
+  display: none;
+}
+html:has(#menu:popover-open) .menu-abrir {
+  display: none;
+}
+html:has(#menu:popover-open) .menu-cerrar {
+  display: inline;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .menu-panel {
+    transition:
+      opacity 200ms ease,
+      translate 200ms ease,
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+  @starting-style {
+    .menu-panel:popover-open {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+}
+
+/* ── Barra móvil: entra desde abajo al cargar (encargo §12) ── */
+@media (prefers-reduced-motion: no-preference) {
+  .barra-movil {
+    transition: translate 280ms ease-out;
+  }
+  @starting-style {
+    .barra-movil {
+      translate: 0 100%;
+    }
+  }
+}
+
+/* ── Preguntas: el «+» gira al abrir ── */
+.pregunta summary::-webkit-details-marker {
+  display: none;
+}
+.pregunta[open] .mas {
+  rotate: 45deg;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pregunta .mas {
+    transition: rotate 200ms ease;
+  }
+}
+
+/* ── Asistente: el mensaje aparece al cambiar (8 px + opacidad, 200 ms) ── */
+@media (prefers-reduced-motion: no-preference) {
+  .paso-asistente {
+    transition:
+      opacity 200ms ease,
+      translate 200ms ease;
+  }
+  @starting-style {
+    .paso-asistente {
+      opacity: 0;
+      translate: 0 8px;
+    }
+  }
+}
+
+/* ── Capitular del primer párrafo de la ficha de servicio ── */
+.capitular::first-letter {
+  float: left;
+  margin: 0.06em 0.1em 0 0;
+  font-family: var(--font-titulo);
+  font-size: 5.2em;
+  line-height: 0.8;
+  font-weight: 400;
+  color: var(--color-primario-texto);
+}
+
+/* ── Legales: columna de 68 caracteres; el texto y el <h1> los pone core ── */
+.lectura-legal article {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.lectura-legal h1 {
+  margin: 0 0 2rem;
+  font-family: var(--font-titulo);
+  font-size: clamp(2.5rem, 1.6rem + 3.5vw, 5rem);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.lectura-legal h2 {
+  margin: 2rem 0 0.5rem;
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+.lectura-legal h3 {
+  margin: 1.5rem 0 0.375rem;
+  font-size: 17px;
+  font-weight: 600;
+}
+.lectura-legal p,
+.lectura-legal li {
+  margin-top: 0.75rem;
+}
+.lectura-legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.lectura-legal a {
+  color: var(--color-texto);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}
