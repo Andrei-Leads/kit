@@ -1,6 +1,6 @@
 # Fotos y vídeo de ejemplo de «Perfil» (carpinteria-metalica-5)
 
-**Estado (24/11/2026):** 13 fotos ya son de IA (ChatGPT; prompts en `docs/fotos-ejemplo/carpinteria-metalica-5/prompts-chatgpt.md`). Siguen de relleno `obra-01-moraleja.jpg` y el vídeo (una banda de luz que barre el póster). El póster quedó a 1448 × 814 (16:9, sin ampliar). Lo que falta está **pendiente de la foto o del vídeo generados con IA** según la ficha fotográfica de la entrega de Claude Design. En `site.config.ts` todas las imágenes llevan `origen: "ia"`, con la etiqueta «Imagen generada con IA».
+**Estado (24/11/2026):** las 14 fotos ya son de IA (ChatGPT; prompts en `docs/fotos-ejemplo/carpinteria-metalica-5/prompts-chatgpt.md`). Sigue de relleno el vídeo (una banda de luz que barre el póster). El póster quedó a 1448 × 814 (16:9, sin ampliar). Lo que falta está **pendiente de la foto o del vídeo generados con IA** según la ficha fotográfica de la entrega de Claude Design. En `site.config.ts` todas las imágenes llevan `origen: "ia"`, con la etiqueta «Imagen generada con IA».
 
 **Prompt base**, que se antepone a cada prompt de la tabla:
 
@@ -17,7 +17,7 @@ Origen: «Generada con IA (ChatGPT, OpenAI)».
 | Archivo | Prompt (se añade al base) | Proporción | Dónde | Estado |
 |---|---|---|---|---|
 | `hero-poster.jpg` | Macro de 100 mm a f/8 del canto de un perfil de corredera anodizado en champán, con la tira de luz cruzándolo en diagonal. El perfil ocupa un tercio del encuadre, con algo de polvo de taller. Motivo en la zona central 4:5 | 16:9 (1920 × 1080) | Póster del vídeo del hero, que es el LCP. En móvil se recorta a la zona central | IA (ChatGPT) |
-| `obra-01-moraleja.jpg` | 35 mm a la altura de los ojos, frontal. Ventanal corredero de tres hojas en un salón a la hora azul, interior iluminado en cálido y jardín en penumbra | 3:2 | `imagenesHero[0]` (Open Graph) y obra «Ventanal de salón en La Moraleja» | Relleno |
+| `obra-01-moraleja.jpg` | 35 mm a la altura de los ojos, frontal. Ventanal corredero de tres hojas en un salón a la hora azul, interior iluminado en cálido y jardín en penumbra | 3:2 | `imagenesHero[0]` (Open Graph) y obra «Ventanal de salón en La Moraleja» | IA (ChatGPT) |
 | `obra-02-chamberi.jpg` | Ático madrileño, ventana de hoja oculta antracita y tejados de teja árabe a la hora azul | 3:2 | Obra «Ático en Chamberí» | IA (ChatGPT) |
 | `obra-02-antes.jpg` | El mismo encuadre que obra-02: ventana de madera vieja pintada de blanco y desconchada, luz de interior tenue | 3:2 | Ídem, `antes` (deslizador antes/después) | IA (ChatGPT) |
 | `obra-03-pozuelo.jpg` | Salón abierto a un jardín con una corredera minimalista empotrada en el suelo, al anochecer | 3:2 | Obra «Salón abierto al jardín en Pozuelo» y segunda foto de «Correderas elevables» | IA (ChatGPT) |
