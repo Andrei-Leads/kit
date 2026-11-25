@@ -1,6 +1,6 @@
 # Fotos de ejemplo de «Forja» (carpinteria-metalica-7)
 
-**Estado (25/11/2026):** 14 fotos ya son de IA (ChatGPT; prompts en `docs/fotos-ejemplo/carpinteria-metalica-7/prompts-chatgpt.md`). Siguen de relleno (JPG oscuro rayado en gris cálido, con el nombre del archivo) `obra-06-antes.jpg` (debe tener el mismo encuadre que `obra-06-reparacion-benetusser.jpg`). Ficha fotográfica de la entrega de Claude Design (§6):
+**Estado (25/11/2026):** las 15 fotos son de IA (ChatGPT; prompts en `docs/fotos-ejemplo/carpinteria-metalica-7/prompts-chatgpt.md`). Ficha fotográfica de la entrega de Claude Design (§6):
 
 - **Luz:** dura y lateral, entra por el portón del taller; nunca flash.
 - **Óptica:** 35 mm. El taller desde la cadera; las obras de frente, con algo de calle o patio.
@@ -23,7 +23,7 @@ En `site.config.ts` todas llevan `origen: "ia"` (etiqueta «Imagen generada con 
 | `obra-04-porton-silla.jpg` | Portón corredero de patio, chapa abajo y barrotes arriba, guía en el suelo | 4:3 | Trabajo «Portón corredero de patio» | IA (ChatGPT) |
 | `obra-05-escalera-russafa.jpg` | Escalera de caracol de hierro negro en un patio interior de finca antigua | 4:5 (sujeto centrado: se recorta a 4:3 y 1:1) | Trabajo «Escalera de caracol en Russafa» | IA (ChatGPT) |
 | `obra-06-reparacion-benetusser.jpg` | Barandilla de escalera de comunidad soldada y pintada de negro, peldaños de terrazo | 1:1 | Trabajo «Barandilla reparada en Benetússer» («después») | IA (ChatGPT) |
-| `obra-06-antes.jpg` | La misma barandilla, mismo encuadre: base comida por el óxido y barrotes sueltos | 1:1 | Ídem, «antes» (deslizador) | Relleno |
+| `obra-06-antes.jpg` | La misma barandilla, mismo encuadre: base comida por el óxido y barrotes sueltos | 1:1 | Ídem, «antes» (deslizador) | IA (ChatGPT) |
 | `pieza-rejas.jpg` | Macro de una voluta de forja con remache y calamina | 4:3 (1:1 en móvil) | Servicio «Rejas de ventana» | IA (ChatGPT) |
 | `pieza-barandillas.jpg` | Pasamanos de forja en primer plano a 45° | 4:3 | Servicio «Barandillas de balcón y escalera» | IA (ChatGPT) |
 | `pieza-portones.jpg` | Bisagra y cerrojo de portón con imprimación de minio | 4:3 | Servicio «Portones y puertas de patio» | IA (ChatGPT) |
