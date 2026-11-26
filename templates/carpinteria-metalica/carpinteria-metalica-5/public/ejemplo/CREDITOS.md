@@ -1,6 +1,6 @@
 # Fotos y vídeo de ejemplo de «Perfil» (carpinteria-metalica-5)
 
-**Todo es relleno**: JPG oscuro rayado con el nombre del archivo y un vídeo de relleno (una banda de luz que barre el póster). Está **pendiente de la foto o del vídeo generados con IA** según la ficha fotográfica de la entrega de Claude Design. En `site.config.ts` todas las imágenes llevan `origen: "ia"`, con la etiqueta «Imagen generada con IA».
+**Estado (24/11/2026):** las 14 fotos ya son de IA (ChatGPT; prompts en `docs/fotos-ejemplo/carpinteria-metalica-5/prompts-chatgpt.md`). Sigue de relleno el vídeo (una banda de luz que barre el póster). El póster quedó a 1448 × 814 (16:9, sin ampliar). Lo que falta está **pendiente de la foto o del vídeo generados con IA** según la ficha fotográfica de la entrega de Claude Design. En `site.config.ts` todas las imágenes llevan `origen: "ia"`, con la etiqueta «Imagen generada con IA».
 
 **Prompt base**, que se antepone a cada prompt de la tabla:
 
@@ -16,20 +16,20 @@ Origen: «Generada con IA (ChatGPT, OpenAI)».
 
 | Archivo | Prompt (se añade al base) | Proporción | Dónde | Estado |
 |---|---|---|---|---|
-| `hero-poster.jpg` | Macro de 100 mm a f/8 del canto de un perfil de corredera anodizado en champán, con la tira de luz cruzándolo en diagonal. El perfil ocupa un tercio del encuadre, con algo de polvo de taller. Motivo en la zona central 4:5 | 16:9 (1920 × 1080) | Póster del vídeo del hero, que es el LCP. En móvil se recorta a la zona central | Relleno |
-| `obra-01-moraleja.jpg` | 35 mm a la altura de los ojos, frontal. Ventanal corredero de tres hojas en un salón a la hora azul, interior iluminado en cálido y jardín en penumbra | 3:2 | `imagenesHero[0]` (Open Graph) y obra «Ventanal de salón en La Moraleja» | Relleno |
-| `obra-02-chamberi.jpg` | Ático madrileño, ventana de hoja oculta antracita y tejados de teja árabe a la hora azul | 3:2 | Obra «Ático en Chamberí» | Relleno |
-| `obra-02-antes.jpg` | El mismo encuadre que obra-02: ventana de madera vieja pintada de blanco y desconchada, luz de interior tenue | 3:2 | Ídem, `antes` (deslizador antes/después) | Relleno |
-| `obra-03-pozuelo.jpg` | Salón abierto a un jardín con una corredera minimalista empotrada en el suelo, al anochecer | 3:2 | Obra «Salón abierto al jardín en Pozuelo» y segunda foto de «Correderas elevables» | Relleno |
-| `obra-04-tres-cantos.jpg` | Puerta pivotante antracita de suelo a techo, entreabierta, de noche, con luz cálida saliendo por la rendija | 4:5 | Obra «Puerta pivotante en Tres Cantos» | Relleno |
-| `obra-05-las-rozas.jpg` | Porche acristalado con correderas grandes, iluminado por dentro al anochecer | 3:2 | Obra «Porche acristalado en Las Rozas» | Relleno |
-| `solucion-elevable.jpg` | Macro del carril inferior de una corredera elevable, con felpudo y tornillería visibles | 3:2 | Solución «Correderas elevables de gran formato» | Relleno |
-| `solucion-hoja-oculta.jpg` | Encuentro de un marco antracita texturado con un muro de ladrillo visto y sellado perimetral | 3:2 | Solución «Ventanas de hoja oculta» | Relleno |
-| `solucion-minimalista.jpg` | Cruce de dos hojas de perfil mínimo con el canto verdoso del vidrio laminado | 3:2 | Solución «Correderas minimalistas» | Relleno |
-| `solucion-pivotante.jpg` | Pivote inferior de acero inoxidable sobre un pavimento de piedra oscura | 3:2 | Solución «Puertas pivotantes de entrada» | Relleno |
-| `solucion-oscilobatiente.jpg` | Herraje oscilobatiente con una junta de EPDM en primer plano | 3:2 | Solución «Oscilobatientes con rotura de puente térmico» | Relleno |
-| `taller-ajuste.jpg` | Antebrazo con guante de nitrilo negro, desenfocado, ajustando un herraje sobre el banco. Es la única presencia humana | 3:2 | `/empresa` (en blanco y negro) | Relleno |
-| `taller-perfiles.jpg` | Perfiles de aluminio apoyados en un caballete del taller, en clave baja | 3:2 | `/empresa` (en blanco y negro) | Relleno |
+| `hero-poster.jpg` | Macro de 100 mm a f/8 del canto de un perfil de corredera anodizado en champán, con la tira de luz cruzándolo en diagonal. El perfil ocupa un tercio del encuadre, con algo de polvo de taller. Motivo en la zona central 4:5 | 16:9 (1920 × 1080) | Póster del vídeo del hero, que es el LCP. En móvil se recorta a la zona central | IA (ChatGPT) |
+| `obra-01-moraleja.jpg` | 35 mm a la altura de los ojos, frontal. Ventanal corredero de tres hojas en un salón a la hora azul, interior iluminado en cálido y jardín en penumbra | 3:2 | `imagenesHero[0]` (Open Graph) y obra «Ventanal de salón en La Moraleja» | IA (ChatGPT) |
+| `obra-02-chamberi.jpg` | Ático madrileño, ventana de hoja oculta antracita y tejados de teja árabe a la hora azul | 3:2 | Obra «Ático en Chamberí» | IA (ChatGPT) |
+| `obra-02-antes.jpg` | El mismo encuadre que obra-02: ventana de madera vieja pintada de blanco y desconchada, luz de interior tenue | 3:2 | Ídem, `antes` (deslizador antes/después) | IA (ChatGPT) |
+| `obra-03-pozuelo.jpg` | Salón abierto a un jardín con una corredera minimalista empotrada en el suelo, al anochecer | 3:2 | Obra «Salón abierto al jardín en Pozuelo» y segunda foto de «Correderas elevables» | IA (ChatGPT) |
+| `obra-04-tres-cantos.jpg` | Puerta pivotante antracita de suelo a techo, entreabierta, de noche, con luz cálida saliendo por la rendija | 4:5 | Obra «Puerta pivotante en Tres Cantos» | IA (ChatGPT) |
+| `obra-05-las-rozas.jpg` | Porche acristalado con correderas grandes, iluminado por dentro al anochecer | 3:2 | Obra «Porche acristalado en Las Rozas» | IA (ChatGPT) |
+| `solucion-elevable.jpg` | Macro del carril inferior de una corredera elevable, con felpudo y tornillería visibles | 3:2 | Solución «Correderas elevables de gran formato» | IA (ChatGPT) |
+| `solucion-hoja-oculta.jpg` | Encuentro de un marco antracita texturado con un muro de ladrillo visto y sellado perimetral | 3:2 | Solución «Ventanas de hoja oculta» | IA (ChatGPT) |
+| `solucion-minimalista.jpg` | Cruce de dos hojas de perfil mínimo con el canto verdoso del vidrio laminado | 3:2 | Solución «Correderas minimalistas» | IA (ChatGPT) |
+| `solucion-pivotante.jpg` | Pivote inferior de acero inoxidable sobre un pavimento de piedra oscura | 3:2 | Solución «Puertas pivotantes de entrada» | IA (ChatGPT) |
+| `solucion-oscilobatiente.jpg` | Herraje oscilobatiente con una junta de EPDM en primer plano | 3:2 | Solución «Oscilobatientes con rotura de puente térmico» | IA (ChatGPT) |
+| `taller-ajuste.jpg` | Antebrazo con guante de nitrilo negro, desenfocado, ajustando un herraje sobre el banco. Es la única presencia humana | 3:2 | `/empresa` (en blanco y negro) | IA (ChatGPT) |
+| `taller-perfiles.jpg` | Perfiles de aluminio apoyados en un caballete del taller, en clave baja | 3:2 | `/empresa` (en blanco y negro) | IA (ChatGPT) |
 
 «Cerramientos de porche» no lleva foto a propósito: así se ve la ficha tipográfica, con el número romano grande.
 

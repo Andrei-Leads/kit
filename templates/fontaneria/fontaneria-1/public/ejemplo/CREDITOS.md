@@ -1,9 +1,12 @@
 # Fotos de ejemplo de fontaneria-1 «Qué te pasa»
 
-Estado: **relleno** (gris rayado con el nombre del archivo), generado con Pillow al integrar el template
-(21/11/2026). Las fotos definitivas las genera Ysst con IA siguiendo la ficha de estilo fotográfico de la
-entrega (clave baja, macro, casi monocromo, agua y metal, sin personas ni manos) y se sustituyen
-reemplazando cada archivo con el mismo nombre. Todas llevan `origen: "ia"` en `site.config.ts`.
+Estado: **generadas con IA (ChatGPT, OpenAI)** el 23/11/2026 con los prompts de
+`docs/fotos-ejemplo/fontaneria-1/prompts-chatgpt.md` (fotos de móvil del fontanero, clave baja, linterna
+como única luz, sin personas ni manos). Convertidas a JPG (calidad 82, sin ampliar, sin metadatos): 1448×1086
+(4:3) y 1254×1254 (`llave-paso.jpg`, 1:1). Todas llevan `origen: "ia"` en `site.config.ts`. **Solo para
+demos:** en la web de un cliente real se sustituyen por sus fotos (nunca IA en `/trabajos`).
+
+Origen de todas: **Generada con IA (ChatGPT, OpenAI)**.
 
 | Archivo | Qué muestra | Proporción | Dónde |
 |---|---|---|---|
