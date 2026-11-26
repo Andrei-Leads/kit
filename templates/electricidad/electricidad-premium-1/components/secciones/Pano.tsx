@@ -54,17 +54,6 @@ export function Pano({ video, imagen, cifras, servicios, cta }: Props) {
           </div>
         )}
 
-        {poster && video === undefined && poster.origen === "ia" && (
-          <span className="etiqueta absolute top-[calc(var(--alto-cabecera)+16px)] left-[clamp(20px,4vw,48px)] bg-[var(--color-velo)] px-2.5 py-1.5 text-[11px] text-texto backdrop-blur-[6px]">
-            Imagen generada con IA
-          </span>
-        )}
-        {video && video.poster.origen === "ia" && (
-          <span className="etiqueta absolute top-[calc(var(--alto-cabecera)+16px)] left-[clamp(20px,4vw,48px)] bg-[var(--color-velo)] px-2.5 py-1.5 text-[11px] text-texto backdrop-blur-[6px]">
-            Vídeo generado con IA
-          </span>
-        )}
-
         <div className="contenedor relative mt-auto flex flex-col gap-[clamp(20px,3vw,40px)] pt-16 pb-[calc(var(--alto-barra)+20px)] md:pb-[clamp(32px,6vh,72px)]">
           {cifras.length > 0 && (
             <dl className="pano-cifras m-0 grid max-w-[960px] grid-cols-2 gap-x-8 gap-y-5 lg:grid-cols-[repeat(auto-fit,minmax(140px,1fr))]">

@@ -24,7 +24,6 @@ const CAPA = "relative m-0 group-data-[activo]/ad:col-start-1 group-data-[activo
 const ROTULO = "etiqueta absolute top-3 z-[3] border border-[var(--color-linea)] bg-[var(--color-velo)] px-2 py-1 text-[11px] text-texto backdrop-blur-[6px]";
 
 export function AntesDespues({ antes, despues, sizes, className }: Props) {
-  const ia = antes.origen === "ia" || despues.origen === "ia";
   return (
     <div className={className}>
       <DeslizadorAntesDespues>
@@ -41,7 +40,6 @@ export function AntesDespues({ antes, despues, sizes, className }: Props) {
       </DeslizadorAntesDespues>
       <p className="etiqueta m-0 mt-3 text-[11px] text-texto-suave">
         <span className="hidden [@media(scripting:enabled)]:inline">Desliza para comparar</span>
-        {ia && <span className="[@media(scripting:enabled)]:before:content-['_·_']">Imágenes generadas con IA</span>}
       </p>
     </div>
   );

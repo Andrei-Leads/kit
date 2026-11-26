@@ -4,9 +4,9 @@ const nextConfig: NextConfig = {
 
   transpilePackages: ["@andrei-leads/core"],
   images: {
-    formats: ["image/avif", "image/webp"],
-    // 60: miniaturas del planificador y del «antes» (40–64 px); 75: el resto.
-    qualities: [60, 75],
+    formats: ["image/webp"],
+    // 60: miniaturas del planificador y del «antes» (40–64 px); 85: el resto (solo WebP: el AVIF a 75 emborronaba las fotos).
+    qualities: [60, 85],
   },
 
   cacheComponents: true,

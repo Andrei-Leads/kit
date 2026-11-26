@@ -39,11 +39,6 @@ export function EnElTaller({ proceso, videoPano, empresa, contacto, conCta, sinF
                 className="lg:aspect-video"
               >
                 <VideoTaller src={videoPano.src} srcAv1={videoPano.srcAv1} />
-                {videoPano.poster.origen === "ia" && (
-                  <span className="pointer-events-none absolute right-4 bottom-[22px] z-[2] rounded-boton bg-etiqueta px-[9px] py-1 text-[11px] font-medium text-texto">
-                    Vídeo generado con IA
-                  </span>
-                )}
               </Foto>
             </div>
           )}

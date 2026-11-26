@@ -19,7 +19,6 @@ export function metaTrabajo(t: Pick<Trabajo, "ubicacion" | "superficie" | "durac
 export function TarjetaTrabajo({ trabajo, servicio, nivel = "h3" }: { trabajo: Trabajo; servicio?: Pick<Servicio, "titulo">; nivel?: "h2" | "h3" }) {
   const Titulo = nivel;
   const foto = trabajo.imagenes[0];
-  const antesIa = trabajo.antes?.origen === "ia" && foto.origen === "ia";
   const meta = metaTrabajo(trabajo);
   return (
     <Link
@@ -27,7 +26,7 @@ export function TarjetaTrabajo({ trabajo, servicio, nivel = "h3" }: { trabajo: T
       className="flex h-full min-w-0 flex-col rounded-tarjeta bg-superficie p-2 text-texto no-underline shadow-tarjeta motion-safe:transition-transform motion-safe:duration-200 hover:-translate-y-[3px]"
     >
       <div className="relative">
-        <Foto imagen={foto} sizes={SIZES} decorativa etiqueta={antesIa ? "Imágenes generadas con IA" : undefined} />
+        <Foto imagen={foto} sizes={SIZES} decorativa />
         {trabajo.antes && <MiniaturaAntes imagen={trabajo.antes} />}
       </div>
       <div className="flex flex-col items-start gap-2 px-2 pt-3.5 pb-2">

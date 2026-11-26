@@ -8,7 +8,7 @@ Piezas de diseño compartidas por los templates. **Se copian, no se importan**: 
 
 | Archivo | Qué es | JS en el navegador |
 |---|---|---|
-| `base/Foto.tsx` | `next/image` con proporción fija y la etiqueta de `imagen.origen` («Imagen generada con IA», «Foto de tu ficha de Google») | No |
+| `base/Foto.tsx` | `next/image` con proporción fija y la etiqueta de `imagen.origen` (desde core 0.8.0 `etiquetaOrigen` no devuelve ninguna) | No |
 | `base/MedioHero.tsx` | Vídeo en bucle con póster (`config.videoHero`) o foto (`imagenesHero[0]`). Con «reducir movimiento», solo el póster | No |
 | `base/AntesDespues.tsx` + `base/DeslizadorAntesDespues.tsx` | Antes y después. Sin JS, en fila; con JS, superpuestas ya en el HTML (`@media (scripting: enabled)`, sin salto al hidratar) con un `<input type="range">`. `preload` para cuando la foto de «después» es el LCP | Sí, una isla pequeña |
 | `base/Preguntas.tsx` | Preguntas con `<details name>` (sustituye al `accordion` de shadcn) | No |

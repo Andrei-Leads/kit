@@ -119,9 +119,9 @@ Si un dato tiene mal formato, `pnpm build` falla con un mensaje en español que 
   5. **Exportar:** JPG, lado largo **2000 px**, calidad **88**, `subsampling=0`, girada según su EXIF, en `public/fotos/`, con `origen: "ficha-google"` y un `alt` que describa la foto.
   6. **Huecos:** donde no haya foto suya, una de IA del template que encaje (`public/ejemplo/`, `origen: "ia"`), **nunca** en `/trabajos`.
   7. **Anotar** en `CLIENTE-REAL.md` de la web que hay que confirmar con el cliente el permiso para usar esas fotos antes de `indexar: true`.
-- **Nitidez (templates de la nueva generación):** traen `formats: ["image/avif", "image/webp"]` y calidad 75, y el AVIF a esa calidad emborrona las fotos (una foto de servicio de 7 KB). Hasta que se decida el cambio en `kit`, en la web: `next.config.ts` → `formats: ["image/webp"]` y `qualities: [85, 90]`; `components/base/Foto.tsx` → `quality={calidad ?? 90}` y el tipo de `calidad` a `85 | 90`; cada `calidad={60}` del template a `85`.
-- **Pie «Foto de tu ficha de Google»:** lo pone core (`etiquetaOrigen`) y, leído por un visitante, suena raro. Hasta que se cambie en core, en la web solo se muestra la etiqueta de IA: un `lib/etiqueta.ts` con `etiquetaIA(imagen) = imagen.origen === "ia" ? etiquetaOrigen(imagen) : undefined` y cambiar `etiquetaOrigen(` por `etiquetaIA(` en los componentes. La de IA es obligatoria (AI Act): esa no se quita.
-- **Cliente real:** sus fotos reales en `public/` de la web, **fuera de `/ejemplo/`** (la etiqueta desaparece sola), referenciadas desde `site.config.ts` con su `alt`. **Nunca** una foto generada con IA presentada como trabajo suyo.
+- **Nitidez:** desde el 26/11/2026 los templates sirven solo WebP a calidad 85 (`next.config.ts`: `formats: ["image/webp"]`, `qualities` con 85). Antes llevaban AVIF a calidad 75, que emborronaba las fotos (una foto de servicio de 7 KB). Una web copiada antes: cambia esas dos líneas de su `next.config.ts`.
+- **Etiquetas de origen:** desde core 0.8.0 no se pinta ni «Imagen generada con IA» ni «Foto de tu ficha de Google» (decisión de Ysst, 26/11/2026; ver `AGENTS.md` §10). En una web con core 0.7.x, quítalas en la web: un `lib/etiqueta.ts` con `etiquetaIA()` que devuelve `undefined` y cambiar `etiquetaOrigen(` por `etiquetaIA(` en los componentes (como `web-expoaluminio`), o actualizar core.
+- **Cliente real:** sus fotos reales en `public/` de la web, **fuera de `/ejemplo/`** referenciadas desde `site.config.ts` con su `alt`. **Nunca** una foto generada con IA presentada como trabajo suyo.
 
 ### 7. Ver la web en local
 
@@ -214,7 +214,7 @@ Debe salir:
 
 **Corregir `seo.url` (solo demos):** la URL sale del nombre del **proyecto de Vercel** (el del repo), que puede no coincidir con la carpeta local (pasó: carpeta `web-talleres-martin-valencia-s-l`, repo y URL `web-talleres-martin-valencia-sl`). Con la URL real a la vista, edita `web-<cliente>/site.config.ts` (`seo.url: "https://web-<cliente>.vercel.app"`), `pnpm build`, commit y `git push` (lo ejecuta Ysst); Vercel redespliega solo. Comprueba con `curl -s "$URL/" | grep -o '<link rel="canonical"[^>]*>'` que sale esa URL.
 
-Y mirarla de verdad (capturas con Playwright o en el navegador) a **1280 y 375 px**: fotos nítidas (`curl -s "$URL/" | grep -o 'q=[0-9]*' | sort -u` debe dar `q=85`/`q=90`, no `q=75`), nombre de la cabecera en una línea y ningún pie «Foto de tu ficha de Google». Las secciones con animación de entrada salen en blanco en una captura de página entera: hay que hacer scroll hasta ellas.
+Y mirarla de verdad (capturas con Playwright o en el navegador) a **1280 y 375 px**: fotos nítidas (`curl -s "$URL/" | grep -o 'q=[0-9]*' | sort -u` debe dar `q=85` (o `q=60` en miniaturas), no `q=75`) y nombre de la cabecera en una línea. Las secciones con animación de entrada salen en blanco en una captura de página entera: hay que hacer scroll hasta ellas.
 
 Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren con el número y el mensaje precargado.
 
@@ -269,7 +269,7 @@ Qué se ve en el panel y los límites por plan de Vercel: `docs/cambio-de-plan.m
 | `pnpm build` acaba con `SecurityFatalError: Your version of Next.js is affected by a known security vulnerability` | La web sigue en `next` 16.4.0 (fallos críticos corregidos en 16.4.1 y 16.4.5) | Subir: `pnpm add next@16.4.6 eslint-config-next@16.4.6 react@19.3.1 react-dom@19.3.1`, quitar `experimental.agentFeedback` de `next.config.ts` y `pnpm build`. Si el build da «queries have exactly one entry» (next/font), `rm -rf .next` y repetir |
 | `pnpm build` falla con «useContext null» | `NODE_ENV=development` en el shell | `NODE_ENV=production pnpm build` |
 | `npm error 404 … registry.npmjs.org/@andrei-leads%2fcore` en el build de Vercel | Falta el `.npmrc` en el repo de la web | Paso 2: `.npmrc` con la línea del registro, commit y push |
-| Las fotos se ven borrosas en la web desplegada (también las de IA) | AVIF a calidad 75 del template y/o fotos de Maps bajadas reducidas (`=w1600`) y recomprimidas | Paso 6: originales con `=s0` a 2000 px y calidad 88; solo WebP a calidad 90 |
+| Las fotos se ven borrosas en la web desplegada (también las de IA) | Web copiada de un template con AVIF a calidad 75 y/o fotos de Maps bajadas reducidas (`=w1600`) y recomprimidas | Paso 6: originales con `=s0` a 2000 px y calidad 88; solo WebP a calidad 85 |
 | El nombre de la cabecera se parte a media palabra en móvil | Nombre largo junto al logo | Nombre comercial corto (paso 5); mirar a 360 y 375 px |
 | En local la web no cambia tras `pnpm build` | Sigue vivo un `next start` anterior en el mismo puerto | `pkill -f next` y volver a `pnpm start` |
 | Se pega el contenido de `NPM_RC` en la terminal | Confusión entre comando y contenido | Va en el campo *Value* de Vercel, no en la terminal |

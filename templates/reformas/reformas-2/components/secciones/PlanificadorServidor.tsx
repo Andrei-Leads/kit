@@ -37,14 +37,12 @@ export function PlanificadorServidor({ servicios, contacto, mensajeBase, servici
       ) : undefined,
     };
   });
-  const notaIa = !servicioFijo && servicios.length > 1 && servicios.some((s) => s.imagenes[0]?.origen === "ia");
   return (
     <Planificador
       opciones={opciones}
       numero={contacto.whatsapp}
       mensajeBase={mensajeBase}
       servicioFijo={servicioFijo && { titulo: servicioFijo.titulo, frase: minusculaInicial(servicioFijo.titulo) }}
-      notaIa={notaIa}
       llamada={
         <BotonLlamada telefono={contacto.telefono} className="boton boton-contorno flex-[1_1_100%] px-[18px] @min-[30rem]:flex-[1_1_200px]">
           <IconoTelefono />
