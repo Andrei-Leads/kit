@@ -4,7 +4,9 @@ const nextConfig: NextConfig = {
 
   transpilePackages: ["@andrei-leads/core"],
   images: {
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
+    // Calidad 85 (por defecto Next usa 75, que emborronaba las fotos).
+    qualities: [85],
   },
 
   cacheComponents: true,

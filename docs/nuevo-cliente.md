@@ -18,7 +18,7 @@ Versión simple: fotocopias la maqueta, le pones los datos del cliente y la mand
 
 - [ ] **Token personal** en `~/.npmrc` (para instalar core en local). Comprobación: `npm whoami --registry=https://npm.pkg.github.com` debe devolver tu usuario. Si falla, ver `docs/publicar-core.md` → «Llave».
 - [ ] Acceso a **Bitwarden** (token de Vercel «Vercel — leer @andrei-leads/core»).
-- [ ] **Template elegido** (`kit/templates/<nicho>/<nicho>-<n>`) y versión publicada de core que usa (hoy, `0.5.1`).
+- [ ] **Template elegido** (`kit/templates/<nicho>/<nicho>-<n>`) y versión publicada de core que usa (hoy, `0.7.0`).
 - [ ] **Datos del cliente** (o ficticios, si es una prueba) y **fotos** (reales del cliente, o las de ejemplo del template para una demo).
 - [ ] Nombre de la web: `web-<cliente>` (minúsculas y guiones).
 
@@ -49,7 +49,8 @@ grep -n -E '"name"|andrei-leads' package.json
 echo "@andrei-leads:registry=https://npm.pkg.github.com" > .npmrc
 ```
 
-- El `grep` debe mostrar `"name": "web-<cliente>"` y `"@andrei-leads/core": "^0.N.0"` (`0.N.0` = la versión publicada actual, hoy `0.5.1`: `sed` con el número real, no con `N`).
+- El `grep` debe mostrar `"name": "web-<cliente>"` y `"@andrei-leads/core": "^0.N.0"` (`0.N.0` = la versión publicada actual, hoy `0.7.0`: `sed` con el número real, no con `N`).
+- **No te saltes el `.npmrc`:** el template no lo trae (en `kit` está en la raíz). Sin él, Vercel busca core en el registro público y el build falla con `E404 … registry.npmjs.org/@andrei-leads%2fcore` aunque `NPM_RC` esté bien (pasó con `web-expoaluminio`).
 - El `.npmrc` lleva **solo la dirección del registro**, nunca el token (el token está en `~/.npmrc`). Si llevara `${NPM_TOKEN}`, en local tendría prioridad sobre `~/.npmrc` y daría 401.
 
 ### 3. Instalar core desde GitHub Packages
@@ -85,7 +86,12 @@ Se edita **`web-<cliente>/site.config.ts`**, **nunca** el del template en `kit` 
 - **Cliente real:** sus datos (contrato en `AGENTS.md` §6). Borra todo lo ficticio del ejemplo: precios marcados `PRECIO FICTICIO`, `registroMercantil`, `fichaGoogle`, `valoracion`, reseñas, trabajos y textos que no sean suyos. Precios solo con cifras validadas por el cliente.
 - **Demo:** `seo.url` = la URL de Vercel del proyecto (`https://web-<cliente>.vercel.app`), porque de ahí salen el canonical y la imagen de la vista previa al compartir por WhatsApp; con `https://ejemplo.com` la vista previa sale sin foto. Esa URL no se conoce hasta el primer despliegue: pon un valor provisional ahora y corrígelo tras el paso 11 (ver «Corregir `seo.url`» en el paso 12). **Cliente real:** su dominio.
 - **Prueba o demo:** en `contacto.telefono` y `contacto.whatsapp`, un número tuyo (formato `+34` + 9 dígitos, sin espacios), para que los botones funcionen sin llamar a un desconocido.
-- **Demo para un lead** (SOP de Notion «Lead interesado → web demo»): al revés, los **números reales del negocio**; en el Meet no se pulsan los botones.
+- **Demo para un lead** (SOP de Notion «Lead interesado → web demo»): al revés, los **números reales del negocio**; en el Meet no se pulsan los botones. Además:
+  - **Datos:** los de su ficha del CRM de prospección (`localhost:3011/negocio/<place_id>`: dirección, horario, coordenadas, `cid` para `fichaGoogle`, reseñas). Lo que la ficha no trae (móvil con WhatsApp, email) se pide a Ysst. Si el teléfono es un **fijo sin WhatsApp**, los templates con asistente de WhatsApp pierden su pieza central: pide el móvil antes de elegir template.
+  - **NIF y razón social** desconocidos: valor provisional (`B00000000`) y anotarlo en la cabecera de `site.config.ts` y en `CLIENTE-REAL.md`.
+  - **Reseñas:** solo las buenas (4–5 estrellas), con el texto tal cual (también en catalán). Si la media es baja (p. ej. 3,9), **sin** `valoracion`. `fecha` solo si se sabe (la ficha da «hace N años»: mejor omitirla que inventar el mes).
+  - **Nombre:** el comercial corto (`Expoaluminio`, no `Carpintería Metálica Expoaluminio A.G.`); lo largo va en `nombreLegal`. Con logo, mira la cabecera a 360 y 375 px: una palabra larga se parte por la mitad («Expoalumini / o»).
+  - **Servicios:** los que dice la ficha y los que se **ven** en sus fotos (p. ej. cerramientos de terraza), sin prometer plazos, garantías ni precios. `proceso`, `garantias`, `marcas`, `acreditaciones` y `equipo` vacíos si no hay datos: el template los oculta.
 
 Comprobación, desde **`web-<cliente>/`** (no debe salir nada):
 
@@ -105,7 +111,17 @@ Si un dato tiene mal formato, `pnpm build` falla con un mensaje en español que 
   4. Revisa que el `alt` en `site.config.ts` describe **lo que se ve en la foto real**, no lo que pedía la ficha.
 
   Las fotos de ejemplo son del template: hazlo en `kit/templates/<nicho>/<template>/public/ejemplo/` (así sirven a todas las demos) y copia los archivos a la web.
-- **Cliente real:** sus fotos reales en `public/` de la web, **fuera de `/ejemplo/`** (la etiqueta desaparece sola), referenciadas desde `site.config.ts` con su `alt`. **Nunca** una foto generada con IA presentada como trabajo suyo.
+- **Demo para un lead, con las fotos de su ficha de Google** (con el sí de Ysst; probado con `web-expoaluminio`, 26/11/2026):
+  1. **Ver las fotos:** abrir la ficha en Google Maps (`https://maps.google.com/?cid=<cid>`) con el navegador de Ysst → clic en la foto principal → pestaña «Todas». Las URL del CRM caducan (403); las de Maps no.
+  2. **Bajar los originales**, no las miniaturas: cada foto es `https://lh3.googleusercontent.com/<ruta>`; con el sufijo **`=s0`** baja el original (3000–5000 px), con `=w1600` una copia reducida que luego se ve borrosa. Se bajan con `curl` desde cualquier sitio.
+  3. **Quedarse solo con fotos de trabajos** e identificar cada una (hacer una hoja de contactos y mirarla): fuera las duplicadas, las de otros negocios o lugares (una iglesia, una nave ajena), las fachadas sin contexto y las de clientes con caras. Su propia tienda sí vale (hero y «El taller»), y su logo (`negocio.logo`).
+  4. **Colocarlas con sentido:** hero = su tienda o taller + una obra vistosa; cada obra en `trabajos` (título y descripción solo con lo que se ve: sin años, lugares ni medidas inventados); cada servicio con su foto; `empresa.imagenes` con la tienda.
+  5. **Exportar:** JPG, lado largo **2000 px**, calidad **88**, `subsampling=0`, girada según su EXIF, en `public/fotos/`, con `origen: "ficha-google"` y un `alt` que describa la foto.
+  6. **Huecos:** donde no haya foto suya, una de IA del template que encaje (`public/ejemplo/`, `origen: "ia"`), **nunca** en `/trabajos`.
+  7. **Anotar** en `CLIENTE-REAL.md` de la web que hay que confirmar con el cliente el permiso para usar esas fotos antes de `indexar: true`.
+- **Nitidez:** desde el 26/11/2026 los templates sirven solo WebP a calidad 85 (`next.config.ts`: `formats: ["image/webp"]`, `qualities` con 85). Antes llevaban AVIF a calidad 75, que emborronaba las fotos (una foto de servicio de 7 KB). Una web copiada antes: cambia esas dos líneas de su `next.config.ts`.
+- **Etiquetas de origen:** desde core 0.8.0 no se pinta ni «Imagen generada con IA» ni «Foto de tu ficha de Google» (decisión de Ysst, 26/11/2026; ver `AGENTS.md` §10). En una web con core 0.7.x, quítalas en la web: un `lib/etiqueta.ts` con `etiquetaIA()` que devuelve `undefined` y cambiar `etiquetaOrigen(` por `etiquetaIA(` en los componentes (como `web-expoaluminio`), o actualizar core.
+- **Cliente real:** sus fotos reales en `public/` de la web, **fuera de `/ejemplo/`** referenciadas desde `site.config.ts` con su `alt`. **Nunca** una foto generada con IA presentada como trabajo suyo.
 
 ### 7. Ver la web en local
 
@@ -198,6 +214,8 @@ Debe salir:
 
 **Corregir `seo.url` (solo demos):** la URL sale del nombre del **proyecto de Vercel** (el del repo), que puede no coincidir con la carpeta local (pasó: carpeta `web-talleres-martin-valencia-s-l`, repo y URL `web-talleres-martin-valencia-sl`). Con la URL real a la vista, edita `web-<cliente>/site.config.ts` (`seo.url: "https://web-<cliente>.vercel.app"`), `pnpm build`, commit y `git push` (lo ejecuta Ysst); Vercel redespliega solo. Comprueba con `curl -s "$URL/" | grep -o '<link rel="canonical"[^>]*>'` que sale esa URL.
 
+Y mirarla de verdad (capturas con Playwright o en el navegador) a **1280 y 375 px**: fotos nítidas (`curl -s "$URL/" | grep -o 'q=[0-9]*' | sort -u` debe dar `q=85` (o `q=60` en miniaturas), no `q=75`) y nombre de la cabecera en una línea. Las secciones con animación de entrada salen en blanco en una captura de página entera: hay que hacer scroll hasta ellas.
+
 Después, **desde un móvil**: pulsar Llamar y WhatsApp y comprobar que abren con el número y el mensaje precargado.
 
 ### 13. Activar la analítica (plan Básico)
@@ -250,6 +268,10 @@ Qué se ve en el panel y los límites por plan de Vercel: `docs/cambio-de-plan.m
 | Analytics activado, pero el `script.js` de la ruta propia (`/<16 caracteres>/script.js`) da `404` y el panel no recibe visitas | Se desplegó antes del *Enable*: la ruta va dentro del JavaScript del build | Redeploy sin «Use existing Build Cache», o un `git push` (paso 13.5) |
 | `pnpm build` acaba con `SecurityFatalError: Your version of Next.js is affected by a known security vulnerability` | La web sigue en `next` 16.4.0 (fallos críticos corregidos en 16.4.1 y 16.4.5) | Subir: `pnpm add next@16.4.6 eslint-config-next@16.4.6 react@19.3.1 react-dom@19.3.1`, quitar `experimental.agentFeedback` de `next.config.ts` y `pnpm build`. Si el build da «queries have exactly one entry» (next/font), `rm -rf .next` y repetir |
 | `pnpm build` falla con «useContext null» | `NODE_ENV=development` en el shell | `NODE_ENV=production pnpm build` |
+| `npm error 404 … registry.npmjs.org/@andrei-leads%2fcore` en el build de Vercel | Falta el `.npmrc` en el repo de la web | Paso 2: `.npmrc` con la línea del registro, commit y push |
+| Las fotos se ven borrosas en la web desplegada (también las de IA) | Web copiada de un template con AVIF a calidad 75 y/o fotos de Maps bajadas reducidas (`=w1600`) y recomprimidas | Paso 6: originales con `=s0` a 2000 px y calidad 88; solo WebP a calidad 85 |
+| El nombre de la cabecera se parte a media palabra en móvil | Nombre largo junto al logo | Nombre comercial corto (paso 5); mirar a 360 y 375 px |
+| En local la web no cambia tras `pnpm build` | Sigue vivo un `next start` anterior en el mismo puerto | `pkill -f next` y volver a `pnpm start` |
 | Se pega el contenido de `NPM_RC` en la terminal | Confusión entre comando y contenido | Va en el campo *Value* de Vercel, no en la terminal |
 
 ## Antes de un cliente real
@@ -270,3 +292,4 @@ Pasos 1 a 4: copiar el template fuera de `kit`, borrar `node_modules` y `.next`,
 - `web-prueba` (oct 2026): primera prueba de despliegue en Vercel (proceso provisional).
 - `web-metalicas-ejemplo` (13/10/2026): proceso completo con `carpinteria-metalica-3` y core `0.3.0` (hoy `0.4.0`); repo público y Vercel Hobby. Trampa encontrada: `NPM_RC` con otro campo de Bitwarden (401).
 - `web-talleres-martin-valencia-sl` (22/10/2026): primera demo de un **lead real** con este documento (`carpinteria-metalica-1`, core `0.5.1`). Pasos 9-12 sin problemas; Deployment Protection por defecto no bloquea el dominio de producción `.vercel.app` (rutas 200 desde fuera). Hallazgos: el nombre del repo cambió respecto a la carpeta (corregir `seo.url`), aviso de seguridad de Next en el build local y números reales del negocio en vez de los de Ysst.
+- `web-expoaluminio` (26/11/2026): demo de un lead interesado con `carpinteria-metalica-8` y core `0.7.0`, hecha desde la nube con las fotos de su ficha de Google. Fallos y arreglos, ya en este documento: faltaba el `.npmrc` (E404 en Vercel), fotos borrosas (AVIF a calidad 75 y fotos de Maps reducidas), nombre partido en móvil y pie «Foto de tu ficha de Google».

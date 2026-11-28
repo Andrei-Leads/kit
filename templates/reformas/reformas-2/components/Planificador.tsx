@@ -28,8 +28,6 @@ type Props = {
   servicioFijo?: { titulo: string; frase: string };
   /** `BotonLlamada` «Llamar · {teléfono}», pintado en el servidor. */
   llamada: ReactNode;
-  /** Alguna miniatura es de IA: «Imágenes generadas con IA» una vez, junto al progreso. */
-  notaIa?: boolean;
 };
 
 type Paso = "servicio" | "tamano" | "plazo";
@@ -54,7 +52,7 @@ const LEGEND =
  * opciones pasan a ser botones con `aria-pressed`; cada paso es un `fieldset` con `legend`, el
  * progreso se anuncia (`aria-live`) y el foco va a la `legend` del paso nuevo.
  */
-export function Planificador({ opciones, numero, mensajeBase, servicioFijo, llamada, notaIa }: Props) {
+export function Planificador({ opciones, numero, mensajeBase, servicioFijo, llamada }: Props) {
   const hidratado = useSyncExternalStore(sinSuscripcion, () => true, () => false);
   const fijo: Eleccion | undefined = servicioFijo ?? (opciones.length === 1 ? opciones[0] : undefined);
   const pasos: Paso[] = fijo ? ["tamano", "plazo"] : ["servicio", "tamano", "plazo"];
@@ -184,7 +182,6 @@ export function Planificador({ opciones, numero, mensajeBase, servicioFijo, llam
               ← Atrás
             </button>
           )}
-          {notaIa && paso === "servicio" && <span className="text-[11px] text-texto-suave">Imágenes generadas con IA</span>}
         </div>
       </div>
 

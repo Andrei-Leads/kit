@@ -3,8 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   transpilePackages: ["@andrei-leads/core"],
   images: {
-    formats: ["image/avif", "image/webp"],
-    qualities: [75],
+    formats: ["image/webp"],
+    qualities: [85],
   },
 
   cacheComponents: true,
