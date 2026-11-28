@@ -1,5 +1,21 @@
 # @andrei-leads/core
 
+## 0.8.0
+
+### Minor Changes
+
+- 227d33a: Campo opcional nuevo en el contrato (una web que no lo use no cambia):
+  
+  - **`acreditaciones[].corto?`:** siglas o nombre corto de la acreditación (≤ 12 caracteres, por ejemplo «RII»), para las cifras y los sellos de los templates. Sin él, cada template decide (electricidad-5 saca las siglas del paréntesis final del nombre).
+- 990709c: `etiquetaOrigen` ya no devuelve etiqueta: las webs dejan de mostrar «Imagen generada con IA» y «Foto de tu ficha de Google» (decisión de Ysst, 26/11/2026). `imagen.origen` sigue en el contrato.
+
+### Patch Changes
+
+- 6e11014: Textos por defecto más seguros:
+  
+  - El primer paso del proceso de tipo proyecto ya no nombra WhatsApp: el texto es «Nos llamas o nos escribes y vemos qué quieres hacer.». Antes salía «Por WhatsApp» también en webs sin WhatsApp.
+  - El mensaje de WhatsApp por defecto de `mensajeServicio` pasa el título del servicio a minúscula inicial y acaba en punto: «Hola, quiero información sobre cambio de bañera.». Los templates que pasan su propio texto no cambian.
+
 ## 0.7.0
 
 ### Minor Changes
